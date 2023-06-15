@@ -79,7 +79,6 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         if (is_admin):
-
             out: Dict = {}
             out["token"] = t
             out["users"] = jsonable_encoder(db.query(User).all())
