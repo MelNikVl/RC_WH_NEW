@@ -1,0 +1,70 @@
+from fastapi import APIRouter
+
+from controllers.materials import MaterialsController
+from controllers.geolocation import GeoLocationController
+from controllers.front import FrontMainController
+
+from app.controllers.auth import AuthController
+from app.controllers.logs import LogsController
+
+
+APIRouter.enter = lambda self: self
+APIRouter.exit = lambda *args: ''
+
+router = APIRouter(prefix='/app',
+                   tags=['app'])
+
+materials = APIRouter(prefix='/materials',
+                      tags=['materials'])
+
+geolocation = APIRouter(prefix='/geolocation',
+                        tags=['geolocation'])
+
+auth = APIRouter(prefix='/auth',
+                 tags=['auth'])
+
+logs = APIRouter(prefix='/logs',
+                 tags=['logs'])
+
+for_admins = APIRouter(prefix='/for_admins',
+                 tags=['for_admins'])
+
+"""
+указываем энпоинты
+"""
+
+# здесь указываем эндпоинты
+router.get("")(FrontMainController.index)
+router.get("/auth")(FrontMainController.user_auth)
+router.get("/ping")(FrontMainController.ping)
+
+router.get("/admins_page")(FrontMainController.admins_page)
+
+
+materials.post("/create")(MaterialsController.create)
+materials.post("/get")(MaterialsController.get)
+materials.put("/update-description")(MaterialsController.update_description)
+materials.get("/list")(MaterialsController.list_of_materials)
+materials.delete("/delete")(MaterialsController.delete_material)
+materials.get("/get_last_update")(MaterialsController.get_last_update)
+materials.post("/upload_photo")(MaterialsController.upload_photo)
+materials.post("/update_title")(MaterialsController.update_title)
+
+
+
+geolocation.post("/create")(GeoLocationController.create)
+geolocation.post("/get-by-id")(GeoLocationController.get_by_id)
+geolocation.post('/add_to_trash')(GeoLocationController.add_to_trash)
+
+
+auth.post("/token")(AuthController.token)
+auth.post("/create_new_user")(AuthController.create_new_user)
+auth.post("/become-admin")(AuthController.become_admin)
+auth.get("/get_users")(AuthController.get_users)
+auth.delete("/delete_user")(AuthController.delete_user)
+auth.get("/telegram_and_app_id")(AuthController.telegram_and_app_id)
+auth.get("/get_admins")(AuthController.get_admins)
+auth.post("/add_telegramm_id")(AuthController.add_telegramm_id)
+
+
+logs.get("/get_all")(LogsController.logs)

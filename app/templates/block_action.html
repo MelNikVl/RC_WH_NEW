@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <script type="text/javascript" src="/static/jquery-3.6.4.min.js"></script>
+    <!--  линк на стили -->
+    <link rel="stylesheet" href="/static/style.css">
+    <!--  добавляем фавконку -->
+    <link rel="icon" href="/static/w.jpg" type="image/x-icon">
+</head>
+<body>
+    <div class="title_1">Main office IT warehouse tracker (Block page)</div>
+    <div class="title_1">У вас недостаточно прав для запрашиваемого действия</div>
+    <div class="admins_table">
+            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"' class="button_admins_page">Вернуться в приложение</button>
+    </div>
+
+</body>
+</html>

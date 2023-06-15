@@ -1,0 +1,327 @@
+tr:hover {
+    background: #dee3e3;
+}
+tr.selected{
+    background: #ccdfdf;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.table-wrapper {
+    /* opacity: 0; */
+}
+
+.button-wrapper {
+    position: sticky;
+    top: 0px;
+    background: #fff;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    width: 80%;
+}
+
+.input-wrapper {
+    /* position: sticky; */
+    top: 0px;
+    /* background: #fff; */
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 1em;
+    max-width: 630px;
+}
+
+thead {
+    position: sticky;
+    top: 68px;
+}
+
+table {
+    font-family: Arial, sans-serif;
+    text-align: left !important;
+    width: 80%;
+    /* border-collapse: collapse; */
+    margin: 0 0 0 1em;
+}
+
+th {
+    padding: 20px 10px 20px 10px
+}
+
+td {
+    padding: 8px 12px;
+}
+
+th:nth-child(even) {
+    color: black;
+    background: #92d7c7;
+    /* border-right: 1px solid; */
+    /* border-left: 1px solid; */
+}
+
+.fl-table thead th:nth-child(odd) {
+    color: #000000;
+    background: #92d7c7;
+}
+
+button:hover:enabled{
+    background: #9fb5f7;
+    cursor: pointer;
+}
+button:disabled{
+    background: #e1e8eb;
+}
+button {
+    -webkit-appearance: none;
+    transition: 0.2s;
+    border: none;
+    padding: 10px 20px;
+    background: #a7d2e7;
+    font-size: 16px;
+    margin: 0 0 5px 10px;
+    border-radius: 1em;
+}
+.popup-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: #0000006e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+.popup{
+    background: white;
+    border-radius: 15px;
+    /* width: 70vw; */
+    /* height: 80vh; */
+    position: relative;
+    padding: 20px;
+}
+.close-btn{
+    width: 40px;
+    height: 40px;
+    right: 20px;
+    top: 20px;
+    position: absolute;
+    cursor: pointer;
+}
+.close-btn > img{
+    width: 100%;
+    height: 100%;
+}
+h1{
+    display: block;
+    margin: 2em 0;
+    /* text-align: center; */
+}
+.popup input[type="text"]{
+    display: block;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: #00000042 1px 1px 10px;
+    font-size: 1em;
+    border: none;
+    padding: 6px 30px;
+    width: 65%;
+}
+.popup button{
+    font-size: 20px;
+    margin: 15px 0;
+}
+textarea{
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    resize: none;
+}
+#history-block{
+    overflow: scroll;
+    height: 64vh;
+}
+.filter{
+    font-size: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.308);
+    padding: 5px 10px;
+}
+
+
+.title_1 {
+    font-size: 2em;
+    margin: 1em 0 1em 0.5em;
+    font-weight: bold;
+    font-family: math;
+    float: left;
+}
+.input-file {
+	position: relative;
+	display: inline-block;
+}
+.input-file span {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	outline: none;
+	text-decoration: none;
+	font-size: 14px;
+	vertical-align: middle;
+	color: rgb(255 255 255);
+	text-align: center;
+	border-radius: 4px;
+	background-color: #419152;
+	line-height: 22px;
+	height: 40px;
+	padding: 10px 20px;
+	box-sizing: border-box;
+	border: none;
+	margin: 0;
+	transition: background-color 0.2s;
+}
+.input-file input[type=file] {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	display: inline-block;
+	width: 0;
+	height: 0;
+}
+form{
+    display: inline-block;
+}
+/* Focus */
+.input-file input[type=file]:focus + span {
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Hover/active */
+.input-file:hover span {
+	background-color: #59be6e;
+}
+.input-file:active span {
+	background-color: #2E703A;
+}
+
+/* Disabled */
+.input-file input[type=file]:disabled + span {
+	background-color: #eee;
+}
+.upload-btns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.select{
+    position: absolute;
+    width: 100%;
+    display: none;
+    background-color: #fff;
+}
+.new-wrapper{
+    width: 45%;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+.select-result{
+    border: none;
+    cursor: pointer;
+}
+.option{
+    padding: 6px 30px;
+    cursor: pointer;
+}
+.option:hover{
+    background-color: #9fb5f7;
+}
+input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:22px;
+    height:22px;
+    background:white;
+    border: 1px solid #bebebe;
+    border-radius: 15%;
+}
+input[type='checkbox']:checked {
+    background-image: url(checked.svg);
+    background-size: cover;
+    background-color: #fff;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+tbody input[type='checkbox'] {
+    pointer-events: none;
+}
+.pagination{
+    margin: 20px;
+}
+
+.filter_count{
+    margin: 1em 20px;
+    /* background-color: #9999993b; */
+    font-size: x-large;
+}
+
+.button_admins_page {
+    margin: 1em 20px;
+    font-size: inherit;
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: #4c88af;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.admins_table{
+    margin: 1em 20px;
+    font-size: inherit;
+    float: left;
+}
+
+.other_buttons {/* margin: 1em 20px; */font-size: inherit;/* float: left; */background-color: #a4d5bd;}
+
+.disabled-btn {/* margin: 1em 20px; */font-size: inherit;/* float: left; */background-color: #a4d5bd;pointer-events: none;}
+
+.hello{
+    margin: 1em 20px;
+    font-size: x-large;
+}
+
+.hello_2 {margin: 1em 20px;font-size: revert;}
+
+.peremescheniye p {
+      background-color: #8080803d;
+      padding: 1em;
+    }
+
+.button_exit {
+      /* background-color: #8080803d; */
+      padding: 2.5em 0 0 0;
+      text-align: right;
+      margin: 1em;
+      width: 78.7%;
+    }
+
+.clear {/* background: #000; */clear: both;}
+
+.for_logs_1 {/* padding: 2.5em 0 0 0; *//* text-align: right; */margin: 0 0 0 1.2em;/* width: 78.7%; */}

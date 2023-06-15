@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <script type="text/javascript" src="/static/jquery-3.6.4.min.js"></script>
+    <!--  линк на стили -->
+    <link rel="stylesheet" href="/static/style.css">
+    <!--  добавляем фавконку -->
+    <link rel="icon" href="/static/w.jpg" type="image/x-icon">
+</head>
+
+<body>
+    <div class="title_1">Main office IT warehouse tracker (LOGS)</div>
+    <div class="clear"></div>
+    <a class="for_logs_1" id="app" href='/app/admins_page?t={{ data["token"] }}'>обратно в админку</a>
+    <div class="pagination">
+        <input id="previous" type="button" value="<">
+        <input id="next" type="button" value=">">
+        <span>Вы на {{ data["current_page"] }} странице из <span id="page_count">{{ data["page_count"] }}</span></span>
+
+    </div>
+    <div class="filter_count">
+        <input type="text" name="material_id" id="material_id" placeholder="ID материала" value='{{ data["id_filter"] }}'>
+        <input type="text" name="user_id" id="user_id" placeholder="ID пользователя" value='{{ data["user_filter"] }}'>
+<!--        <input type="text" name="date_time" id="date_time" placeholder="Date" value='{{ data["date_filter"] }}'>-->
+        <input id="apply" type="button" value="Применить">
+    </div>
+
+    <table class="fl-table" id="table">
+        <thead style="top: 0px;">
+            <tr>
+                <th>ID</th>
+                <th>Вид таблицы</th>
+                <th>User id</th>
+                <th>Passive id</th>
+                <th>Modified colls</th>
+                <th>values_of_change</th>
+                <th>date_time</th>
+            </tr>
+        </thead>
+        <!--   итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
+        <tbody>
+            {% for item in data["items"] %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.kind_table }}</td>
+                <td>{{ item.user_id }}</td>
+                <td>{{ item.passive_id }}</td>
+                <td>{{ item.modified_cols }}</td>
+                <td>{{ item.values_of_change }}</td>
+                <td>{{ item.date_time }}</td>
+            </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+    <script>
+        $(document).ready(function () {
+            let url = new URL(window.location);
+            let params = new URLSearchParams(url.search);
+            let page_string = params.get("p");
+            let page;
+            if (page_string)
+                page = parseInt(page_string);
+            else
+                page = 1
+            if (page > 1) {
+                $("#previous").click(function () {
+                    params.set("p", page - 1);
+                    window.location.search = params.toString();
+                });
+            }
+            if (page < $("#page_count").text()) {
+                $("#next").click(function () {
+                    params.set("p", page + 1);
+                    window.location.search = params.toString();
+                });
+            };
+            $("#apply").click(function () {
+                let material_val = $("#material_id").val();
+                let user_val = $("#user_id").val();
+                if (material_val)
+                    params.set("id", material_val);
+                else 
+                    params.delete("id");
+                if (user_val)
+                    params.set("user", user_val);
+                else
+                    params.delete("user");
+
+                window.location.search = params.toString();
+            });
+        });
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+**/.idea
+/app/log.log
+/venv/*
+**/__pycache__/
