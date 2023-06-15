@@ -2,4 +2,3 @@
 /app/log.log
 /venv/*
 **/__pycache__/
-**/warehouse.db
