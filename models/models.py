@@ -30,6 +30,17 @@ class Material(Base):
     date_time: datetime = Column(DateTime)
     geolocation_id: int = Column(Integer, ForeignKey('geolocation.id'))
 
+class Trash(Base):
+    __tablename__ = "trash"
+
+    id: int = Column(Integer, primary_key=True, index=True)
+    user_id: int = Column(Integer, ForeignKey('user.id'))
+    category: str = Column(String)
+    title: str = Column(String)
+    description: str = Column(String)
+    date_time: datetime = Column(DateTime)
+    geolocation_id: int = Column(Integer, ForeignKey('geolocation.id'))
+
 
 class GeoLocation(Base):
     __tablename__ = "geolocation"

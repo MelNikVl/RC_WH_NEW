@@ -9,7 +9,7 @@ from utils.utils import response
 
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User, LogItem, GeoLocation
+from models.models import User, LogItem, GeoLocation, Material
 
 """
 контроллер 
@@ -77,4 +77,8 @@ class GeoLocationController:
     async def get_materials_for_trash(user: User = Depends(AuthUtil.decode_jwt),
                                       db: Session = Depends(get_db)):
         get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
-        return response(data=get_materials_for_trash)
+        materials_for_trash = []
+        for i in get_materials_for_trash:
+            materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
+
+        return response(data=materials_for_trash)
