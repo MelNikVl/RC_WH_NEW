@@ -59,6 +59,7 @@ class GeoLocationController:
         add_to_trash.status = "на списание"
         db.commit()
 
+
         # логируем
         create_geo_event = LogItem(kind_table="Расположение активов",
                                    user_id=user["username"],
