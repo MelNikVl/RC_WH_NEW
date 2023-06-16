@@ -1,12 +1,16 @@
 import datetime
+from typing import Dict
 
-from fastapi import Depends
+from fastapi import Depends, Request
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from crud.geolocation import GeoLocationCRUD
 from payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
+from starlette.responses import FileResponse
 from utils.utils import response
 
+from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
 from models.models import User, LogItem, GeoLocation, Material
@@ -82,3 +86,32 @@ class GeoLocationController:
             materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
 
         return response(data=materials_for_trash)
+
+    @staticmethod
+    async def download_file_for_trash():
+        # Укажите путь и имя файла, который нужно скачать
+        file_path = "llll.xlsx"
+
+        # Верните объект FileResponse для скачивания файла
+        return FileResponse(file_path, filename="имя_файла_при_скачивании")
+
+    @staticmethod
+    async def trash_page(db: Session = Depends(get_db),
+                          request: Request = None,
+                          t: str = None  # jwt токен
+                          ):
+
+        out: Dict = {}
+
+        get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
+        materials_for_trash = []
+        count_for_trash = 0
+        for i in get_materials_for_trash:
+            materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
+            count_for_trash += 1
+
+        out[0] = materials_for_trash
+        out["token"] = t
+        out["count_for_trash"] = count_for_trash
+
+        return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
