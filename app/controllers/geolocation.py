@@ -58,4 +58,22 @@ class GeoLocationController:
         add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).first()
         add_to_trash.status = "на списание"
         db.commit()
+
+        # логируем
+        create_geo_event = LogItem(kind_table="Расположение активов",
+                                   user_id=user["username"],
+                                   passive_id=material_id,
+                                   modified_cols="status",
+                                   values_of_change="актив отправлен в список на списание",
+                                   date_time=datetime.datetime.now()
+                                   )
+        db.add(create_geo_event)
+        db.commit()
+
         return response(data=f'актив {material_id} добавлен в список на списание')
+
+    @staticmethod
+    async def get_materials_for_trash(user: User = Depends(AuthUtil.decode_jwt),
+                                      db: Session = Depends(get_db)):
+        get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
+        return response(data=get_materials_for_trash)

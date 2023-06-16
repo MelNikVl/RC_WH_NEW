@@ -52,7 +52,8 @@ table {
 }
 
 th {
-    padding: 20px 10px 20px 10px
+    padding: 20px 10px 20px 10px;
+    background: #92d7c7;
 }
 
 td {
@@ -106,7 +107,7 @@ button {
     /* width: 70vw; */
     /* height: 80vh; */
     position: relative;
-    padding: 20px;
+    padding: 2em 1em;
 }
 .close-btn{
     width: 40px;
@@ -117,8 +118,10 @@ button {
     cursor: pointer;
 }
 .close-btn > img{
-    width: 100%;
+    width: 50%;
     height: 100%;
+    text-align: right;
+    margin: 0 1em;
 }
 h1{
     display: block;
@@ -289,13 +292,21 @@ tbody input[type='checkbox'] {
     border-radius: 4px;
     cursor: pointer;
     display: block;
-    width: 100%;
+    width: 80%;
 }
 
 .admins_table{
     margin: 1em 20px;
     font-size: inherit;
     float: left;
+}
+
+.users_table_for_admins {
+    font-size: inherit;
+    margin: 3em 0;
+    background: whitesmoke;
+    padding: 1em;
+    border-radius: 1em;
 }
 
 .other_buttons {/* margin: 1em 20px; */font-size: inherit;/* float: left; */background-color: #a4d5bd;}

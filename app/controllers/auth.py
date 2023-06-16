@@ -63,17 +63,16 @@ class AuthController:
             return "недостаточно прав для создания пользователей"
 
     @staticmethod
-    async def become_admin(admin_password: str,
-                           user: User = Depends(AuthUtil.decode_jwt),
-                           db: Session = Depends(get_db)):
-        password = "4352525"
-        if admin_password == password:
-            new_admin = update(User).where(User.id == user.get("id")).values(is_admin=True)
-            db.execute(new_admin)
+    async def make_admin(new_admin: str,
+                         user: User = Depends(AuthUtil.decode_jwt),
+                         db: Session = Depends(get_db)):
+        if user.get("role"):
+            update_stmt = update(User).where(User.username == new_admin).values(is_admin=True)
+            db.execute(update_stmt)
             db.commit()
-            return {"success": "Congrats! You are admin now"}
+            return {"success": f'Пользователь {new_admin} назначен админом'}
         else:
-            return {"error": "wrong admin password"}
+            return {"error": "у вас нет прав на это действие"}
 
     @staticmethod
     async def get_users(db: Session = Depends(get_db),
