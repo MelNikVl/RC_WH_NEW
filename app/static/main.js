@@ -18,23 +18,23 @@ function invert_selection(elem){
     switch ($('tbody > tr.selected').length) {
         case 0:
             $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash").prop('disabled', true);
-            $("#delete_user, #give_admins_rights").addClass("disabled-btn");
+            $("#delete_user, #make_admin").addClass("disabled-btn");
             break;
         case 1:
             $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash").prop('disabled', false);
-            $("#delete_user, #give_admins_rights").removeClass("disabled-btn");
+            $("#delete_user, #make_admin").removeClass("disabled-btn");
             break;
         default:
             $("#history, #add_photo, #remont").prop('disabled', true);
             $("#delete").prop('disabled', false);
-            $("#give_admins_rights").addClass("disabled-btn");
+            $("#make_admin").addClass("disabled-btn");
             break;
     }
 }
 
 // активность кнопок (доступна она или нет)
 $(document).ready(function () {
-    $("#delete_user, #give_admins_rights").addClass("disabled-btn");
+    $("#delete_user, #make_admin").addClass("disabled-btn");
     $("#submit-photo").on("click", async function(){
         let id = $("tbody > tr.selected").children('td').eq(1).text();
         const temp = await upload_photos(id);
@@ -78,14 +78,16 @@ $(document).ready(function () {
     });
 
     $("#submit-geo").on("click", function () {
-        $("tbody > tr.selected").each(function(index){
+        $("tbody > tr.selected").each(async function(index){
             let id = $(this).children("td").eq(1).text();
-            update_geo({
+            await update_geo({
                 "material_id": id,
                 "place": $('#new-geo-popup input[type="text"]').eq(0).val(),
                 "client_mail": $('#new-geo-popup input[type="text"]').eq(1).val(),
+                "status": $('#new-geo-popup input[type="text"]').eq(2).val(),
             });
         });
+        window.location.reload();
     });
 
 
@@ -204,7 +206,6 @@ async function update_geo(data) {
         const json = await response.json();
         console.log('Успех:', JSON.stringify(json));
         $("#new-geo-popup").fadeOut(200);
-        window.location.reload();
     } catch (error) {
         console.log(error);
     }

@@ -59,7 +59,7 @@ class GeoLocationController:
     async def add_to_trash(material_id,
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
-        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).first()
+        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(GeoLocation.material_id.desc()).first()
         add_to_trash.status = "на списание"
         db.commit()
 
@@ -69,7 +69,7 @@ class GeoLocationController:
                                    user_id=user["username"],
                                    passive_id=material_id,
                                    modified_cols="status",
-                                   values_of_change="актив отправлен в список на списание",
+                                   values_of_change="актив добавлен к списанию",
                                    date_time=datetime.datetime.now()
                                    )
         db.add(create_geo_event)
@@ -103,12 +103,14 @@ class GeoLocationController:
 
         out: Dict = {}
 
+
         get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
         materials_for_trash = []
         count_for_trash = 0
         for i in get_materials_for_trash:
-            materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
-            count_for_trash += 1
+            if db.query(Material).filter(Material.id == i.material_id).first():
+                materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
+                count_for_trash += 1
 
         out[0] = materials_for_trash
         out["token"] = t

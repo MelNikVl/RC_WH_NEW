@@ -63,14 +63,14 @@ class AuthController:
             return "недостаточно прав для создания пользователей"
 
     @staticmethod
-    async def make_admin(new_admin: str,
+    async def make_admin(username: str,
                          user: User = Depends(AuthUtil.decode_jwt),
                          db: Session = Depends(get_db)):
         if user.get("role"):
-            update_stmt = update(User).where(User.username == new_admin).values(is_admin=True)
+            update_stmt = update(User).where(User.username == username).values(is_admin=True)
             db.execute(update_stmt)
             db.commit()
-            return {"success": f'Пользователь {new_admin} назначен админом'}
+            return {"success": f'Пользователь {username} назначен админом'}
         else:
             return {"error": "у вас нет прав на это действие"}
 

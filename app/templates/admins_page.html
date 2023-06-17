@@ -21,7 +21,7 @@
         <div class="admins_table">
             <button id="create_new_user" class="button_admins_page ">Создать пользователя</button>
             <button id="delete_user" class="button_admins_page ">Удалить пользователя</button>
-            <button id="give_admins_rights" class="button_admins_page ">Назначить админом</button>
+            <button id="make_admin" class="button_admins_page ">Назначить админом</button>
             <table class="users_table_for_admins" id="table">
                 <thead>
                     <tr>
@@ -71,6 +71,9 @@
     </div>
     <script>
         $(document).ready(function () {
+            $("#make_admin").on("click", function () {
+                make_admin($("tbody > tr.selected td:nth-child(4)").text())
+            });
             $("#create_new_user").on("click", function () {
                 $("#new-user-popup").fadeIn(300);
             });
@@ -94,6 +97,22 @@
                 const response = await fetch(host + "/auth/create_new_user", {
                     method: 'POST',
                     body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + access_token
+                    }
+                });
+                const text = await response.json();
+                window.location.reload();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function make_admin(username) {
+            try {
+                const response = await fetch(host + "/auth/make-admin?username="+username, {
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + access_token
