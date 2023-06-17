@@ -81,9 +81,11 @@
                 create_new_user();
             });
             $("#delete_user").on("click", function () {
-                $("tbody > tr.selected").each(function (index) {
-                    delete_user($("tbody > tr.selected").eq(index).children("td").eq(3).text());
-                });
+                if (confirm('Вы уверены?')) {
+                    $("tbody > tr.selected").each(function (index) {
+                        delete_user($("tbody > tr.selected").eq(index).children("td").eq(3).text());
+                    });  
+                };
             });
         });
         async function create_new_user() {
@@ -111,7 +113,7 @@
 
         async function make_admin(username) {
             try {
-                const response = await fetch(host + "/auth/make-admin?username="+username, {
+                const response = await fetch(host + "/auth/make-admin?username=" + username, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
