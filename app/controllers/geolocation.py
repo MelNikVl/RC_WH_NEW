@@ -54,15 +54,13 @@ class GeoLocationController:
         geolocation = await GeoLocationCRUD.get_by_id(material_id=body.material_id, db=db)
         return response(data=geolocation)
 
-
     @staticmethod
     async def add_to_trash(material_id,
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
-        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(GeoLocation.material_id.desc()).first()
+        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all()[-1]
         add_to_trash.status = "на списание"
         db.commit()
-
 
         # логируем
         create_geo_event = LogItem(kind_table="Расположение активов",
@@ -97,20 +95,25 @@ class GeoLocationController:
 
     @staticmethod
     async def trash_page(db: Session = Depends(get_db),
-                          request: Request = None,
-                          t: str = None  # jwt токен
-                          ):
+                         request: Request = None,
+                         t: str = None  # jwt токен
+                         ):
 
         out: Dict = {}
-
 
         get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
         materials_for_trash = []
         count_for_trash = 0
         for i in get_materials_for_trash:
-            if db.query(Material).filter(Material.id == i.material_id).first():
-                materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
-                count_for_trash += 1
+            flag = False
+            if (db.query(Material).filter(Material.id == i.material_id).first()):
+                for j in materials_for_trash:
+                    if (j.id == i.material_id):
+                        flag = True
+                        break
+                if not flag:
+                    materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
+                    count_for_trash += 1
 
         out[0] = materials_for_trash
         out["token"] = t
