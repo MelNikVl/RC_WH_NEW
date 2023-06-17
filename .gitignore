@@ -2,4 +2,4 @@
 /app/log.log
 /venv/*
 **/__pycache__/
-app/\\fs-mo\*/
+app/\\fs-mo\ADMINS\Photo_warehouse\photos\**/
