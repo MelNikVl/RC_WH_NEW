@@ -3,3 +3,4 @@
 /venv/*
 **/__pycache__/
 app/photos/**/*.png
+app/photos/**/*.jpg
