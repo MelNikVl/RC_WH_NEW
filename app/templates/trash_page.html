@@ -12,6 +12,8 @@
     <!--  добавляем фавконку -->
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
     <script src="/static/main.js"></script>
+    <script src="https://unpkg.com/docx@8.0.4/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 </head>
 
 <body>
@@ -23,7 +25,8 @@
     <div class="count_for_trash">товаров на списание - {{ data.count_for_trash }}</div>
     <div class="table-wrapper">
         <div class="button-wrapper">
-            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>гоушки в приложение</button>
+            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>гоушки в
+                приложение</button>
             <button id="send_to_trash">Списать активы</button>
             <button id="form_file">Выгрузить список в файл</button>
         </div>
@@ -59,7 +62,117 @@
             <tbody>
         </table>
     </div>
-    <script src="static/main.js"></script>
+    <script>
+        $("#form_file").on("click", function () {
+            generate();
+        });
+        let generate = function () {
+            const table = new docx.Table({
+                width: {
+                    size: 100,
+                    type: docx.WidthType.PERCENTAGE,
+                },
+                rows: [
+                    new docx.TableRow({
+                        children: [
+                            new docx.TableCell({
+                                children: [
+                                    new docx.Paragraph({
+                                        children: [
+                                            new docx.TextRun({
+                                                text: "ID",
+                                                bold: true,
+                                                size: "11pt"
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
+                            new docx.TableCell({
+                                children: [
+                                    new docx.Paragraph({
+                                        children: [
+                                            new docx.TextRun({
+                                                text: "Title",
+                                                bold: true,
+                                                size: "11pt"
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
+                            new docx.TableCell({
+                                children: [
+                                    new docx.Paragraph({
+                                        children: [
+                                            new docx.TextRun({
+                                                text: "Date",
+                                                bold: true,
+                                                size: "11pt"
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+                ]
+            });
+            $("tbody tr").each(function(index, elem){ 
+                let tableRow = new docx.TableRow({
+                    children: [
+                        new docx.TableCell({
+                            children: [new docx.Paragraph($(elem).children("td").eq(1).text())],
+                        }),
+                        new docx.TableCell({
+                            children: [new docx.Paragraph($(elem).children("td").eq(4).text())],
+                        }),
+                        new docx.TableCell({
+                            children: [new docx.Paragraph($(elem).children("td").eq(6).text())],
+                        }),
+                    ],
+                });
+                table.addChildElement(tableRow);
+            });
+            const doc = new docx.Document({
+                sections: [
+                    {
+                        properties: {},
+                        children: [
+                            new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({
+                                        text: "НАКЛАДНАЯ НА СПИСАННЫЕ ТОВАРЫ",
+                                        bold: true,
+                                        size: "16pt"
+                                    }),
+                                ],
+                            }),
+                            new docx.Paragraph({ children: [] }),
+                            new docx.Paragraph({
+                                children: [
+                                    table
+                                ]
+                            }),
+                            new docx.Paragraph({ children: [] }),
+                            new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({
+                                        text: "Подпись ответственного _______",
+                                        bold: true,
+                                        size: "16pt"
+                                    }),
+                                ],
+                            }),
+                        ]
+                    }
+                ]
+            });
+            docx.Packer.toBlob(doc).then((blob) => {
+                saveAs(blob, "example.docx");
+            });
+        }
+    </script>
 </body>
 
 </html>
