@@ -82,6 +82,7 @@
             $("#apply").click(function () {
                 let material_val = $("#material_id").val();
                 let user_val = $("#user_id").val();
+                let date_val = $("#date_time").val();
                 if (material_val)
                     params.set("id", material_val);
                 else 
@@ -90,6 +91,10 @@
                     params.set("user", user_val);
                 else
                     params.delete("user");
+                if (date_val)
+                    params.set("date_1", date_val);
+                else 
+                    params.delete("date_1");
 
                 window.location.search = params.toString();
             });
