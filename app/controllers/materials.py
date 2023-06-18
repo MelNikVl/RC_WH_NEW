@@ -121,46 +121,47 @@ class MaterialsController:
     # удаление актива
     @staticmethod
     async def delete_material(id_for_delete,
-                              # body: MaterialDeleteRequest,
                               db: Session = Depends(get_db),
                               user: User = Depends(AuthUtil.decode_jwt)):
         if user.get("role"):
+            material = db.query(Material).filter(Material.id == id_for_delete).first()
+            db.delete(material)
+
+            geo_material = db.query(GeoLocation).filter(GeoLocation.material_id == id_for_delete).all()
+            for i in geo_material:
+                db.delete(i)
+
+            db.commit()
+
             try:
-                material = db.query(Material).filter(Material.id == id_for_delete).first()
-                db.delete(material)
+                destination_folder = f'\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos\\{id_for_delete}'
+                # Удаляем папку на сервере
+                shutil.rmtree(destination_folder)
+
+                # логируем
+                create_geo_event = LogItem(kind_table="Активы",
+                                           user_id=user["username"],
+                                           passive_id=id_for_delete,
+                                           modified_cols="удаление фото",
+                                           values_of_change=f'папка с фото удалена с сервера',
+                                           date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                           )
+                db.add(create_geo_event)
                 db.commit()
 
-                try:
-                    destination_folder = f'\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos\\{id_for_delete}'
-                    # Удаляем папку на сервере
-                    shutil.rmtree(destination_folder)
-
-                    # логируем
-                    create_geo_event = LogItem(kind_table="АКТИВЫ",
-                                               user_id=user["id"],
-                                               passive_id=id_for_delete,
-                                               modified_cols="удаление",
-                                               values_of_change=f'папка с фото удалена с сервера',
-                                               date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                               )
-                    db.add(create_geo_event)
-                    db.commit()
-
-                except Exception as e:
-                    # логируем
-                    create_geo_event = LogItem(kind_table="Расположение активов",
-                                               user_id=user["id"],
-                                               passive_id=id_for_delete,
-                                               modified_cols="удаление",
-                                               values_of_change=f'при удалении папки с сервера возникла ошибка - {e}',
-                                               date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                               )
-                    db.add(create_geo_event)
-                    db.commit()
-
-                return response(data={"INFO": f'Актив с ID {id_for_delete} удален успешно'})
             except Exception as e:
-                return f'актива с id = {id_for_delete} не найдено'
+                # логируем
+                create_geo_event = LogItem(kind_table="Расположение активов",
+                                           user_id=user["id"],
+                                           passive_id=id_for_delete,
+                                           modified_cols="удаление",
+                                           values_of_change=f'при удалении папки с сервера возникла ошибка - {e}',
+                                           date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                           )
+                db.add(create_geo_event)
+                db.commit()
+
+            return response(data={"INFO": f'Актив с ID {id_for_delete} удален успешно'})
         else:
             return "Недостаточно прав"
 
