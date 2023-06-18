@@ -338,3 +338,7 @@ tbody input[type='checkbox'] {
 .for_logs_1 {/* padding: 2.5em 0 0 0; *//* text-align: right; */margin: 0 0 0 1.2em;/* width: 78.7%; */}
 
 .count_for_trash {margin: 1em 0 1em 0.5em;font-size: x-large;}
+
+.instruction_1 {
+    margin: 1em 0 1em 0.5em;font-size: x-large;
+}

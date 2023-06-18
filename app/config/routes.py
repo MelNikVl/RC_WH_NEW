@@ -36,6 +36,7 @@ for_admins = APIRouter(prefix='/for_admins',
 router.get("")(FrontMainController.index)
 router.get("/auth")(FrontMainController.user_auth)
 router.get("/ping")(FrontMainController.ping)
+router.get("/instructions")(FrontMainController.instructions)
 
 router.get("/admins_page")(FrontMainController.admins_page)
 

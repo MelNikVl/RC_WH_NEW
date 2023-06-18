@@ -85,3 +85,13 @@ class FrontMainController:
             return templates.TemplateResponse("admins_page.html", {"request": request, "data": out})
         else:
             return fastapi.responses.RedirectResponse('/app', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+    @staticmethod
+    async def instructions(db: Session = Depends(get_db),
+                          request: Request = None,
+                          t: str = None  # jwt токен
+                          ):
+        out: Dict = {}
+        out["token"] = t
+
+        return templates.TemplateResponse("instructions.html", {"request": request, "data": out})

@@ -15,16 +15,22 @@
 
 <body>
     <div class="title_1">Main office IT warehouse tracker</div>
-    <div class="button_exit"><button id="go_to_auth" class="other_buttons"
-            onclick="window.location.href = '/app/auth'">Выйти</button></div>
+    <div class="button_exit">
+        <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
+            Как пользоваться прилоежением</button>
+        <button id="go_to_auth" class="other_buttons"
+            onclick="window.location.href = '/app/auth'">Выйти</button>
+    </div>
+
     <div class="clear"></div>
     <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
     {% if data.role == True %}
-    <p class="hello_2">у тебя административный доступ</p>
+    <p class="hello_2">у тебя <u>административный</u> доступ</p>
     {% endif %}
     {% if data.role == False %}
-    <p class="hello_2">у тебя пользовательский доступ</p>
+    <p class="hello_2">у тебя <u>пользовательский</u> доступ</p>
     {% endif %}
+
     <div class="table-wrapper">
         <div class="button-wrapper">
             <button id="new">Завести актив</button>
@@ -32,7 +38,7 @@
             <button id="relocate">Переместить актив</button>
             <button id="history">Посмотреть перемещения актив</button>
             <button id="add_photo">Добавить фото</button>
-            <button id="remont">Взять в ремонт</button>
+            <button id="remont">Ремонт</button>
             <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Списание</button>
             {% if data.role == True %}
                 <button id="for_admins" class="other_buttons" onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Администрирование</button>
