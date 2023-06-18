@@ -12,6 +12,9 @@
     <!--  добавляем фавконку -->
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
     <script src="/static/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!--  добавляем шрифт в JS строку -->
+    <script src="/static/timesnewroman-normal.js"></script>
 </head>
 
 <body>
@@ -20,10 +23,11 @@
             onclick="window.location.href = '/app/auth'">Выйти</button></div>
     <div class="clear"></div>
 
-    <div class="count_for_trash">товаров на списание - {{ data.count_for_trash }}</div>
+    <div class="count_for_trash">товаров на списание: {{ data.count_for_trash }}</div>
     <div class="table-wrapper">
         <div class="button-wrapper">
-            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>гоушки в приложение</button>
+            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>гоушки в
+                приложение</button>
             <button id="send_to_trash">Списать активы</button>
             <button id="form_file">Выгрузить список в файл</button>
         </div>
@@ -59,7 +63,21 @@
             <tbody>
         </table>
     </div>
-    <script src="static/main.js"></script>
+    <!-- формируем файл списания, что бы скачать его -->
+    <script>
+        var myFont;
+        $(document).ready(async function () {
+            $("#form_file").on("click", function () {
+                var doc = new jspdf.jsPDF();
+                doc.addFileToVFS("timesnewroman.ttf", font);
+                console.log(font);
+                doc.addFont("timesnewroman.ttf", "font", "normal");
+                doc.setFont("font");
+                doc.html("Акт на списание Материальных средств ЗАО «РЕНЕЙССАНС КОНСТРАКШН» (компьютеры, оргтехника, периферийное оборудование)№______________ от 14.04.2016 г.");
+                doc.save('Акт списания товаров.pdf');
+            })
+        });
+    </script>
 </body>
 
 </html>

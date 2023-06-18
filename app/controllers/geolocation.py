@@ -35,13 +35,13 @@ class GeoLocationController:
 
         # логируем
         create_geo_event = LogItem(kind_table="Расположение активов",
-                                   user_id=user["id"],
+                                   user_id=user["username"],
                                    passive_id=body.material_id,
                                    modified_cols="новое расположение",
                                    values_of_change=f'новое место: {body.place},'
-                                                    f'новый статус: {body.status},'
+                                                    f' новый статус: {body.status},'
                                                     f' новый ответственный: {body.client_mail}',
-                                   date_time=datetime.datetime.now()
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                    )
         db.add(create_geo_event)
         db.commit()
@@ -68,7 +68,7 @@ class GeoLocationController:
                                    passive_id=material_id,
                                    modified_cols="status",
                                    values_of_change="актив добавлен к списанию",
-                                   date_time=datetime.datetime.now()
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                    )
         db.add(create_geo_event)
         db.commit()

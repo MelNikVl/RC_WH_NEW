@@ -33,7 +33,7 @@ class AuthController:
                                      passive_id=user_db.id,
                                      modified_cols="успешная авторизация WEB",
                                      values_of_change=None,
-                                     date_time=datetime.datetime.now()
+                                     date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                      )
         db.add(autorisation_event)
         db.commit()

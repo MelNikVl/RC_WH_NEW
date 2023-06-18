@@ -13,6 +13,7 @@ from crud.materials import MaterialCRUD
 from utils.utils import response
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
+from db import db
 from db.db import get_db
 from payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest, \
     MaterialDeleteRequest
@@ -140,7 +141,7 @@ class MaterialsController:
                                                passive_id=id_for_delete,
                                                modified_cols="удаление",
                                                values_of_change=f'папка с фото удалена с сервера',
-                                               date_time=datetime.datetime.now()
+                                               date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                                )
                     db.add(create_geo_event)
                     db.commit()
@@ -152,7 +153,7 @@ class MaterialsController:
                                                passive_id=id_for_delete,
                                                modified_cols="удаление",
                                                values_of_change=f'при удалении папки с сервера возникла ошибка - {e}',
-                                               date_time=datetime.datetime.now()
+                                               date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                                )
                     db.add(create_geo_event)
                     db.commit()
@@ -181,6 +182,7 @@ class MaterialsController:
     @staticmethod
     async def upload_photo(material_id,
                            file: UploadFile = File(...),
+                           db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt)):
 
         # Путь к папке назначения на сервере
@@ -198,6 +200,17 @@ class MaterialsController:
         # Загружаем файл в папку назначения
         with open(destination_path, "wb") as buffer:
             buffer.write(await file.read())
+
+        # логируем авторизацию
+        autorisation_event = LogItem(kind_table="Активы",
+                                     user_id=user.get("username"),
+                                     passive_id=material_id,
+                                     modified_cols="добавление фото для актива из WEB",
+                                     values_of_change=None,
+                                     date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                     )
+        db.add(autorisation_event)
+        db.commit()
 
         return {"message": f'Photo successfully added'}
 

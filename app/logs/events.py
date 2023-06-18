@@ -17,7 +17,7 @@ def bind_materials(Material):
                 f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
                 f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'изменение актива', "
                 f" '{target.description}',"
-                f"'{datetime.datetime.now()}');"))
+                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
     @event.listens_for(Material, 'after_delete')
     def after_delete(mapper, connection, target):
@@ -26,7 +26,7 @@ def bind_materials(Material):
                 f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
                 f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'удаление актива',"
                 f" '{target.description}',"
-                f"'{datetime.datetime.now()}');"))
+                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
     @event.listens_for(Material, 'after_insert')
     def after_insert(mapper, connection, target):
@@ -35,7 +35,7 @@ def bind_materials(Material):
                 f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
                 f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'создание актива',"
                 f" '{target.description}',"
-                f"'{datetime.datetime.now()}');"))
+                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
 
 def bind_users(User):
@@ -47,7 +47,7 @@ def bind_users(User):
                 f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
                 f"VALUES ('Пользователи', 'admin', '{target.id}', 'creating user',"
                 f" 'id: {target.username}, chat_id: {target.chat_id}, admin_permission: {target.is_admin}', "
-                f"'{datetime.datetime.now()}');"))
+                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
     @event.listens_for(User, 'after_update')
     def after_update_user(mapper, connection, target):
@@ -57,7 +57,7 @@ def bind_users(User):
                 f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
                 f"VALUES ('Пользователи', '{target.id}', '{target.id}', 'update permission',"
                 f" 'id: {target.username}, chat_id: {target.chat_id}, admin_permission: {target.is_admin}', "
-                f"'{datetime.datetime.now()}');"))
+                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
     @event.listens_for(User, 'after_delete')
     def after_delete_user(mapper, connection, target):
@@ -67,7 +67,7 @@ def bind_users(User):
                 f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
                 f"VALUES ('Пользователи', 'admin', '{target.id}', 'удаление пользователя',"
                 f" 'id: {target.username}, chat_id: {target.chat_id}, admin_permission: {target.is_admin}', "
-                f"'{datetime.datetime.now()}');"))
+                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
 
 # def bind_geo(GeoLocation):

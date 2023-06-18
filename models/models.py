@@ -62,4 +62,4 @@ class LogItem(Base):
     passive_id: int = Column(Integer)
     modified_cols: str = Column(String)
     values_of_change: str = Column(String)
-    date_time: datetime = Column(DateTime)
+    date_time: str = Column(String)
