@@ -4,3 +4,4 @@
 **/__pycache__/
 app/photos/**/*.png
 app/photos/**/*.jpg
+app/invoices/*.docx

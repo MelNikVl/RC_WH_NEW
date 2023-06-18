@@ -64,119 +64,32 @@
     </div>
     <script>
         $("#form_file").on("click", function () {
-            generate();
+            let data = { "data": [] };
+            $('tbody > tr').each(function(index){
+                let id = $(this).children("td").eq(1).text();
+                let title = $(this).children("td").eq(4).text();
+                let date = $(this).children("td").eq(6).text();
+                data["data"].push([id, title, date]);
+            });
+            download(data);
+
         });
-        let generate = function () {
-            const table = new docx.Table({
-                width: {
-                    size: 100,
-                    type: docx.WidthType.PERCENTAGE,
-                },
-                rows: [
-                    new docx.TableRow({
-                        children: [
-                            new docx.TableCell({
-                                children: [
-                                    new docx.Paragraph({
-                                        children: [
-                                            new docx.TextRun({
-                                                text: "ID",
-                                                bold: true,
-                                                size: "11"
-                                            }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-                            new docx.TableCell({
-                                children: [
-                                    new docx.Paragraph({
-                                        children: [
-                                            new docx.TextRun({
-                                                text: "Title",
-                                                bold: true,
-                                                size: "11"
-                                            }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-                            new docx.TableCell({
-                                children: [
-                                    new docx.Paragraph({
-                                        children: [
-                                            new docx.TextRun({
-                                                text: "Date",
-                                                bold: true,
-                                                size: "11"
-                                            }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-                        ],
-                    }),
-                ]
-            });
-            $("tbody tr").each(function (index, elem) {
-                let tableRow = new docx.TableRow({
-                    children: [
-                        new docx.TableCell({
-                            children: [new docx.Paragraph($(elem).children("td").eq(1).text())],
-                        }),
-                        new docx.TableCell({
-                            children: [new docx.Paragraph($(elem).children("td").eq(4).text())],
-                        }),
-                        new docx.TableCell({
-                            children: [new docx.Paragraph($(elem).children("td").eq(6).text())],
-                        }),
-                    ],
+        async function download(data) {
+            try {
+                const response = await fetch(host + "/materials/invoice", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + access_token
+                    },
+                    body: JSON.stringify(data),
                 });
-                table.addChildElement(tableRow);
-            });
-            const doc = new docx.Document({
-                sections: [
-                    {
-                        children: [
-                            new docx.Paragraph({
-                                children: [
-                                    new docx.TextRun({
-                                        text: "НАКЛАДНАЯ НА СПИСАННЫЕ ТОВАРЫ",
-                                        bold: true,
-                                        size: "16"
-                                    }),
-                                ],
-                            }),
-                            new docx.Paragraph({ children: [] }),
-                            new docx.Paragraph({
-                                children: [
-                                    table
-                                ]
-                            }),
-                            new docx.Paragraph({ children: [] }),
-                            new docx.Paragraph({
-                                children: [
-                                    new docx.TextRun({
-                                        text: "Подпись ответственного  _______",
-                                        bold: true,
-                                        size: "16"
-                                    }),
-                                ],
-                            }),
-                        ]
-                    }
-                ]
-            });
-            saveDocumentToFile(doc, "Накладная.docx")
-        }
-        function saveDocumentToFile(doc, fileName) {
-            // const packer = new docx.Packer();
-            const mimeType =
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            docx.Packer.toBlob(doc).then(blob => {
-                const docblob = blob.slice(0, blob.size, mimeType);
-                saveAs(docblob, fileName);
-            });
+                const blob = await response.blob();
+                saveAs(blob, "Накладная.docx");
+                // window.location.reload();
+            } catch (error) {
+                console.error(error);
+            }
         }
     </script>
 </body>

@@ -40,6 +40,7 @@ router.get("/instructions")(FrontMainController.instructions)
 
 router.get("/admins_page")(FrontMainController.admins_page)
 
+materials.post("/invoice")(FrontMainController.generate_invoice)
 materials.post("/create")(MaterialsController.create)
 materials.post("/get")(MaterialsController.get)
 materials.put("/update-description")(MaterialsController.update_description)

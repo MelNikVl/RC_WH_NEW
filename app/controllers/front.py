@@ -1,3 +1,6 @@
+import datetime
+from io import BytesIO
+import os
 from typing import List, Dict
 
 import fastapi
@@ -19,6 +22,10 @@ from app.utils.auth import AuthUtil
 from db.db import get_db
 from models.models import User
 
+from app.payload.request import InvoiceCreateRequest
+from docx import Document
+from fastapi.responses import FileResponse
+
 """
 выдаем на фронт OUT 
 Session = Depends(get_db) - единораазовые обращения к таблицам
@@ -33,6 +40,39 @@ class FrontMainController:
     @staticmethod
     async def ping(user: user_dependency):
         return Response("ok", media_type="text/plain")
+    
+    @staticmethod
+    async def generate_invoice(materials: InvoiceCreateRequest) -> FileResponse:
+        directory = "invoices"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        out_name = os.path.join(directory, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ".docx")
+
+        document = Document()
+        par = document.add_paragraph()
+        par.add_run('Акт на списание Материальных средств ЗАО «РЕНЕЙССАНС КОНСТРАКШН»').bold = True
+        par.alignment = 1
+
+        par = document.add_paragraph()
+        par.add_run('(компьютеры, оргтеника, периферийное оборудование)').bold = True
+        par.alignment = 1
+
+        par = document.add_paragraph()
+        par.add_run('№______________ от ' + datetime.datetime.now().strftime("%Y.%m.%d")).bold = True
+        par.alignment = 1
+
+        table = document.add_table(1, 3)
+        heading_cells = table.rows[0].cells
+        heading_cells[0].text = 'ID'
+        heading_cells[1].text = 'Title'
+        heading_cells[2].text = 'Date'
+        for item in materials.data:
+            row_cells = table.add_row().cells
+            row_cells[0].text = item[0]
+            row_cells[1].text = item[1]
+            row_cells[2].text = item[2]
+        document.save(out_name)
+        return FileResponse(out_name)
 
     @staticmethod
     async def index(db: Session = Depends(get_db), request: Request = None, t: str = None):

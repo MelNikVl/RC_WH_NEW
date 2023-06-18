@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -11,6 +11,10 @@ class MaterialCreateRequest(BaseModel):
     description: str
     place: Optional[str]
     # client_mail: Optional[str]
+
+class InvoiceCreateRequest(BaseModel):
+    data: List[List[str]]
+
 
 class MaterialGetRequest(BaseModel):
     id: int
