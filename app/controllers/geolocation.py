@@ -1,4 +1,5 @@
 import datetime
+import json
 from typing import Dict
 
 from fastapi import Depends, Request
@@ -13,7 +14,7 @@ from utils.utils import response
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User, LogItem, GeoLocation, Material
+from models.models import User, LogItem, GeoLocation, Material, Trash
 
 """
 контроллер 
@@ -76,16 +77,6 @@ class GeoLocationController:
         return response(data=f'актив {material_id} добавлен в список на списание')
 
     @staticmethod
-    async def get_materials_for_trash(user: User = Depends(AuthUtil.decode_jwt),
-                                      db: Session = Depends(get_db)):
-        get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
-        materials_for_trash = []
-        for i in get_materials_for_trash:
-            materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
-
-        return response(data=materials_for_trash)
-
-    @staticmethod
     async def download_file_for_trash():
         # Укажите путь и имя файла, который нужно скачать
         file_path = "llll.xlsx"
@@ -106,7 +97,7 @@ class GeoLocationController:
         count_for_trash = 0
         for i in get_materials_for_trash:
             flag = False
-            if (db.query(Material).filter(Material.id == i.material_id).first()):
+            if db.query(Material).filter(Material.id == i.material_id).first():
                 for j in materials_for_trash:
                     if (j.id == i.material_id):
                         flag = True
@@ -120,3 +111,47 @@ class GeoLocationController:
         out["count_for_trash"] = count_for_trash
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
+
+    @staticmethod
+    async def send_to_trash_finally(db: Session = Depends(get_db),
+                                    user: User = Depends(AuthUtil.decode_jwt)):
+        get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
+        materials_for_trash = []
+        for i in get_materials_for_trash:
+            flag = False
+            if db.query(Material).filter(Material.id == i.material_id).first():
+                for j in materials_for_trash:
+                    if (j.id == i.material_id):
+                        flag = True
+                        break
+                if not flag:
+                    materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
+
+        for y in materials_for_trash:
+            moving = []
+
+            material_moving = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
+            for m in material_moving:
+                # moving.append(f'--- место: {m.place}, ответственный: {m.client_mail}, дата перемещения: {m.date_time}')
+                moving.append({"место": m.place, "ответственный": m.client_mail, "дата перемещения": m.date_time})
+
+            create_new_trash_archive = Trash(user_id=user.get("username"),
+                                             material_id=y.id,
+                                             category=y.category,
+                                             title=y.title,
+                                             description=y.description,
+                                             # moving=json.dumps(moving, ensure_ascii=False),
+                                             moving=str(jsonable_encoder(moving)),
+                                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                            )
+            db.add(create_new_trash_archive)
+
+            material_for_delete = db.query(Material).filter(Material.id == y.id).first()
+            db.delete(material_for_delete)
+
+            geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).first()
+            db.delete(geo_for_delete)
+
+            db.commit()
+
+            return response(data=f'активы {materials_for_trash} списаны')
