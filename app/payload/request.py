@@ -12,6 +12,8 @@ class MaterialCreateRequest(BaseModel):
     place: Optional[str]
     # client_mail: Optional[str]
 
+
+# класс для формирования файла загрузки списка товаров на утиль
 class InvoiceCreateRequest(BaseModel):
     data: List[List[str]]
 

@@ -46,7 +46,7 @@ class FrontMainController:
         directory = "invoices"
         if not os.path.exists(directory):
             os.makedirs(directory)
-        out_name = os.path.join(directory, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ".docx")
+        out_name = os.path.join(directory, datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S") + ".docx")
 
         document = Document()
         par = document.add_paragraph()
@@ -61,16 +61,24 @@ class FrontMainController:
         par.add_run('№______________ от ' + datetime.datetime.now().strftime("%Y.%m.%d")).bold = True
         par.alignment = 1
 
-        table = document.add_table(1, 3)
+        table = document.add_table(1, 6)
+        table.style = 'Table Grid'
         heading_cells = table.rows[0].cells
-        heading_cells[0].text = 'ID'
-        heading_cells[1].text = 'Title'
-        heading_cells[2].text = 'Date'
+        heading_cells[0].text = '№'
+        heading_cells[1].text = 'ID'
+        heading_cells[2].text = 'Category'
+        heading_cells[3].text = 'Title'
+        heading_cells[4].text = 'Description'
+        heading_cells[5].text = 'Date'
+
         for item in materials.data:
             row_cells = table.add_row().cells
             row_cells[0].text = item[0]
             row_cells[1].text = item[1]
             row_cells[2].text = item[2]
+            row_cells[3].text = item[3]
+            row_cells[4].text = item[4]
+            row_cells[5].text = item[5]
         document.save(out_name)
         return FileResponse(out_name)
 

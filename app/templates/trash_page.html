@@ -12,7 +12,6 @@
     <!--  добавляем фавконку -->
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
     <script src="/static/main.js"></script>
-    <script src="https://unpkg.com/docx@8.0.4/build/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 </head>
 
@@ -65,11 +64,15 @@
     <script>
         $("#form_file").on("click", function () {
             let data = { "data": [] };
+            let counter = 1;
             $('tbody > tr').each(function(index){
                 let id = $(this).children("td").eq(1).text();
+                let category = $(this).children("td").eq(3).text();
                 let title = $(this).children("td").eq(4).text();
+                let description = $(this).children("td").eq(5).children("textarea").val();
                 let date = $(this).children("td").eq(6).text();
-                data["data"].push([id, title, date]);
+                data["data"].push([counter, id, category, title, description, date]);
+                counter++;
             });
             download(data);
 
