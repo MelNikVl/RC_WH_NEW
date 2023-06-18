@@ -42,7 +42,7 @@ class LogsController:
         if user != "":
             query = query.filter(LogItem.user_id == user)
         if date_1 != "":
-            query = query.filter(LogItem.date_time == date_1)
+            query = query.filter(LogItem.date_time.contains(date_1))
 
         logs_from = query.all()
         # END_FILTERS
