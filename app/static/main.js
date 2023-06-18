@@ -17,11 +17,11 @@ function invert_selection(elem){
     // здесь мы прописываем какие кнопки активны после выбора товара или товаров
     switch ($('tbody > tr.selected').length) {
         case 0:
-            $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash").prop('disabled', true);
+            $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash, #move_to_trash").prop('disabled', true);
             $("#delete_user, #make_admin").addClass("disabled-btn");
             break;
         case 1:
-            $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash").prop('disabled', false);
+            $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash, #move_to_trash").prop('disabled', false);
             $("#delete_user, #make_admin").removeClass("disabled-btn");
             break;
         default:
@@ -34,14 +34,25 @@ function invert_selection(elem){
 
 // активность кнопок (доступна она или нет)
 $(document).ready(function () {
+    //Деактивация кнопок при старте страницы
     $("#delete_user, #make_admin").addClass("disabled-btn");
+    $("#history,#submit-photo, #delete, #relocate, #send_to_trash, #add_photo, #remont, #move_to_trash").prop('disabled', true);
+
+    $("#move_to_trash").on("click", function(){
+        if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы?')) {
+            $("tbody > tr.selected").each(async function(index){
+                let id = $(this).children("td").eq(1).text();
+                await move_to_trash(id);
+            });
+            window.location.reload();
+        }
+    });
     $("#submit-photo").on("click", async function(){
         let id = $("tbody > tr.selected").children('td').eq(1).text();
         const temp = await upload_photos(id);
         window.location.reload();
     });
     $(".table-wrapper").hide().fadeIn(400);
-    $("#history,#submit-photo, #delete, #relocate, #send_to_trash, #add_photo, #remont").prop('disabled', true);
     $("#add_photo").on("click", function () {
         $("#add-photo-popup").fadeIn(200);
     });
@@ -204,6 +215,7 @@ async function update_geo(data) {
             }
         });
         const json = await response.json();
+        response.
         console.log('Успех:', JSON.stringify(json));
         $("#new-geo-popup").fadeOut(200);
     } catch (error) {
@@ -316,6 +328,22 @@ async function upload_photos(mat_id) {
         }
     }
 }
+
+async function move_to_trash(id){
+    try {
+        const response = await fetch(host+"/geolocation/add_to_trash?material_id="+id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + access_token
+            }
+        });
+        const text = await response.text();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 
 async function delete_user(username){
     try {

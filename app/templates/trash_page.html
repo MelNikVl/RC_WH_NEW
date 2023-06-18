@@ -118,7 +118,7 @@
                     }),
                 ]
             });
-            $("tbody tr").each(function(index, elem){ 
+            $("tbody tr").each(function (index, elem) {
                 let tableRow = new docx.TableRow({
                     children: [
                         new docx.TableCell({
@@ -137,7 +137,6 @@
             const doc = new docx.Document({
                 sections: [
                     {
-                        properties: {},
                         children: [
                             new docx.Paragraph({
                                 children: [
@@ -168,8 +167,15 @@
                     }
                 ]
             });
-            docx.Packer.toBlob(doc).then((blob) => {
-                saveAs(blob, "Накладная.docx");
+            saveDocumentToFile(doc, "Накладная.docx")
+        }
+        function saveDocumentToFile(doc, fileName) {
+            // const packer = new docx.Packer();
+            const mimeType =
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            docx.Packer.toBlob(doc).then(blob => {
+                const docblob = blob.slice(0, blob.size, mimeType);
+                saveAs(docblob, fileName);
             });
         }
     </script>
