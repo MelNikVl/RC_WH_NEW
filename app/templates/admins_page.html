@@ -50,11 +50,12 @@
             <button id="logs" onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'
                 class="button_admins_page">Перейти в логи</button>
             <button id="swagger" class="button_admins_page" onclick="window.location.href = '/docs'">Swagger</button>
-            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'
-                class="button_admins_page">Вернуться в приложение</button>
+
         </div>
         <div class="admins_table">
             <button id="go_out" onclick="window.location.href = '/app/auth'" class="button_admins_page">Выйти</button>
+            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'
+                class="button_admins_page">Вернуться в приложение</button>
         </div>
     </div>
     <div style="display: none;" id="new-user-popup" class="popup-wrapper">
@@ -72,7 +73,9 @@
     <script>
         $(document).ready(function () {
             $("#make_admin").on("click", function () {
-                make_admin($("tbody > tr.selected td:nth-child(4)").text())
+                if (confirm('Вы уверены?')) {
+                    make_admin($("tbody > tr.selected td:nth-child(4)").text())
+                    };
             });
             $("#create_new_user").on("click", function () {
                 $("#new-user-popup").fadeIn(300);
