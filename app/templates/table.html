@@ -36,9 +36,9 @@
             <button id="new">Завести актив</button>
             <button id="delete">Удалить актив</button>
             <button id="relocate">Переместить актив</button>
-            <button id="history">Посмотреть перемещения актив</button>
+            <button id="history">Посмотреть перемещения актива</button>
             <button id="add_photo">Добавить фото</button>
-            <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Списание</button>
+            <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
             <button id="move_to_trash">Отправить на списание</button>
             {% if data.role == True %}
                 <button id="for_admins" class="other_buttons" onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Администрирование</button>
