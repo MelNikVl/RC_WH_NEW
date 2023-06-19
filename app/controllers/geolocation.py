@@ -1,13 +1,17 @@
 import datetime
 import json
+import os
+import shutil
 from typing import Dict
 
-from fastapi import Depends, Request
+import fastapi
+from fastapi import Depends, Request, UploadFile, File
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from crud.geolocation import GeoLocationCRUD
 from payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
+from starlette import status
 from starlette.responses import FileResponse
 from utils.utils import response
 
@@ -90,6 +94,10 @@ class GeoLocationController:
                          t: str = None  # jwt токен
                          ):
 
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
         out: Dict = {}
 
         get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
@@ -114,9 +122,23 @@ class GeoLocationController:
 
     @staticmethod
     async def send_to_trash_finally(db: Session = Depends(get_db),
+                                    invoce: UploadFile = File(...),
+                                    photos: UploadFile = File(...),
                                     user: User = Depends(AuthUtil.decode_jwt)):
+        # сделать папку списания в папке \\fs - mo\ADMINS\Photo_warehouse\archive_after_utilization\
+        # (сгенерировать ее называние по дате и количеству товаров на списание)
+
+        # положить туда накладную подгруженную
+        # создать там папку для фоток самой утилизации
+        # создать папку для папок где хранятся фото списанной техники. (и копировать туда их)
+        # отправить письмо на 2 адреса с накладной и ссылкой на папку списания
+        # все это дело залогировать
+
+        # считаем количество товаров + записываем их в materials_for_trash
+
         get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
         materials_for_trash = []
+        count_for_trash = 0
         for i in get_materials_for_trash:
             flag = False
             if db.query(Material).filter(Material.id == i.material_id).first():
@@ -126,21 +148,36 @@ class GeoLocationController:
                         break
                 if not flag:
                     materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
+                    count_for_trash += 1
 
+        # Путь к папке назначения на сервере
+        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization\\",
+                                          str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_"
+                                              + str(count_for_trash)))
+
+        # Проверяем, существует ли папка назначения, и создаем ее при необходимости
+        os.makedirs(destination_folder, exist_ok=True)
+
+        # Сохранить файл на диск
+        with open(destination_folder, "wb") as buffer:
+            shutil.copyfileobj(invoce.file, buffer)
+        invoce.file.close()
+
+        # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
+        # так же перемещаем папки с фото в папку списания
         for y in materials_for_trash:
             moving = []
-
+            id_for_logging = []
             material_moving = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
             for m in material_moving:
-                # moving.append(f'--- место: {m.place}, ответственный: {m.client_mail}, дата перемещения: {m.date_time}')
                 moving.append({"место": m.place, "ответственный": m.client_mail, "дата перемещения": m.date_time})
+                id_for_logging.append(m.material_id)
 
             create_new_trash_archive = Trash(user_id=user.get("username"),
                                              material_id=y.id,
                                              category=y.category,
                                              title=y.title,
                                              description=y.description,
-                                             # moving=json.dumps(moving, ensure_ascii=False),
                                              moving=str(jsonable_encoder(moving)),
                                              date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                             )
@@ -154,4 +191,18 @@ class GeoLocationController:
 
             db.commit()
 
-            return response(data=f'активы {materials_for_trash} списаны')
+        # логируем
+        create_geo_event = LogItem(kind_table="Списание",
+                                   user_id=user["username"],
+                                   passive_id=0000000,
+                                   modified_cols="перемещение в архив списания",
+                                   values_of_change=f'активы: {str(jsonable_encoder(id_for_logging))} были списаны, '
+                                                    f'записи об их местоположении теперь находятся в таблице архива. '
+                                                    f'Фото данной техники перемещены в '
+                                                    f'папку - {destination_folder}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+        db.add(create_geo_event)
+        db.commit()
+
+        return response(data=f'активы списаны')
