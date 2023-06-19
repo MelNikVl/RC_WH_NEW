@@ -29,13 +29,23 @@ body {
 .input-wrapper {
     /* position: sticky; */
     top: 0px;
-    /* background: #fff; */
-    justify-content: space-between;
-    display: flex;
-    align-items: center;
+    background: #fff;
+    display: block;
     flex-wrap: wrap;
     margin: 1em;
-    max-width: 630px;
+}
+.select-wrapper{
+    position: relative;
+}
+.filter{
+    font-size: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.308);
+    padding: 5px 10px;
+    margin-left: 10px;
 }
 
 thead {
@@ -152,15 +162,7 @@ textarea{
     overflow: scroll;
     height: 64vh;
 }
-.filter{
-    font-size: 16px;
-    appearance: none;
-    -webkit-appearance: none;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.308);
-    padding: 5px 10px;
-}
+
 
 
 .title_1 {
@@ -228,10 +230,12 @@ form{
     align-items: center;
 }
 .select{
+    z-index: 1;
     position: absolute;
     width: 100%;
     display: none;
     background-color: #fff;
+    left: 0;
 }
 .new-wrapper{
     width: 45%;
@@ -242,10 +246,13 @@ form{
 .select-result{
     border: none;
     cursor: pointer;
+    border-width: 0;
+    appearance: none;
 }
 .option{
     padding: 6px 30px;
     cursor: pointer;
+    height: 1em;
 }
 .option:hover{
     background-color: #9fb5f7;

@@ -62,9 +62,11 @@ $(document).ready(function () {
     });
     $(".select-wrapper .option").on("click", function(){
         $(this).closest(".select-wrapper").find(".select-result").val($(this).find("span").html());
+        $(this).closest(".select-wrapper").find(".select-result").trigger("change");
         $(this).parent().fadeOut(300);
 
     });
+
     $("tbody > tr").on("click", function () {
         invert_selection(this);
     });
@@ -261,12 +263,12 @@ async function del(uri, id) {
 }
 
 //============================== FILTERS
-$('#id-filter, #category-filter, #date-filter').keyup(function (e) {
+let apply_filters = function(){
     let text0 = $('#id-filter').val();
     let text2 = $('#category-filter').val();
     let text5 = $('#date-filter').val();
+    let text8 = $('#status-filter').val();
     // if (e.keyCode == 13 || e.keyCode == 8) { //Раскоментировать эту
-    e.preventDefault();
     $("tbody tr").show();
     $("tbody tr").each(function (index) {
         if (text0)
@@ -278,9 +280,19 @@ $('#id-filter, #category-filter, #date-filter').keyup(function (e) {
         if (text5)
             if (!$(this).children('td').eq(6).text().includes(text5))
                 $(this).hide();
+        if (text8)
+            if (!$(this).children('td').eq(8).text().includes(text8))
+                $(this).hide();
     });
 
     // } //и эту строку, если активов много
+}
+$("#status-filter").change(function(){
+    apply_filters();
+});
+$('#id-filter, #category-filter, #date-filter').on("input", function (e) {
+    e.preventDefault();
+    apply_filters();
 });
 
 // КОД ДЛЯ ЗАГРУЗКИ ФОТО
