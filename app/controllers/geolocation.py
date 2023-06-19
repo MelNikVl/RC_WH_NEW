@@ -127,6 +127,7 @@ class GeoLocationController:
         old_photo_folder = os.path.join(destination_folder, "material_photos")
         os.makedirs(destination_folder, exist_ok=True)
         os.makedirs(photo_folder, exist_ok=True)
+        os.makedirs(old_photo_folder, exist_ok=True)
         out_filename = os.path.join(destination_folder, invoice.filename)
 
         with open(out_filename, "wb") as buffer:
@@ -135,10 +136,13 @@ class GeoLocationController:
             out_photo_path = os.path.join(photo_folder, photo.filename)
             with open(out_photo_path, "wb") as buffer:
                 buffer.write(await photo.read())
+
         for i in materials_for_trash:
             folder_to_move = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(i.id))
-
-
+            destination = os.path.join(old_photo_folder,str(i.id))
+            os.makedirs(destination, exist_ok=True)
+            shutil.copytree(folder_to_move, destination, dirs_exist_ok=True)
+            shutil.rmtree(folder_to_move)
 
 
         # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
