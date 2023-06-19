@@ -36,6 +36,20 @@ class GeoLocationCRUD:
             return parse_obj_as(GeoLocationUploadResponse, geolocation)
 
     @staticmethod
+    async def get_materials_for_trash(db) -> List[Material]:
+        all_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
+        materials_for_trash = []
+        for i in all_materials_for_trash:
+            flag = False
+            if db.query(Material).filter(Material.id == i.material_id).first():
+                for j in materials_for_trash:
+                    if (j.id == i.material_id):
+                        flag = True
+                        break
+                if not flag:
+                    materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
+        return materials_for_trash
+    @staticmethod
     async def get_by_id(material_id: int, db):
         material = db.query(Material).filter(Material.id == material_id).all()
         if len(material) == 0:

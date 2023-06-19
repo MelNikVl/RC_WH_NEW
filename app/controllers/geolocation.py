@@ -2,14 +2,14 @@ import datetime
 import json
 import os
 import shutil
-from typing import Dict
+from typing import Dict, List
 
 import fastapi
 from fastapi import Depends, Request, UploadFile, File
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from crud.geolocation import GeoLocationCRUD
+from app.crud.geolocation import GeoLocationCRUD
 from payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
 from starlette import status
 from starlette.responses import FileResponse
@@ -99,35 +99,18 @@ class GeoLocationController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
         out: Dict = {}
-
-        get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
-        materials_for_trash = []
-        count_for_trash = 0
-        for i in get_materials_for_trash:
-            flag = False
-            if db.query(Material).filter(Material.id == i.material_id).first():
-                for j in materials_for_trash:
-                    if (j.id == i.material_id):
-                        flag = True
-                        break
-                if not flag:
-                    materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
-                    count_for_trash += 1
-
+        materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
         out[0] = materials_for_trash
         out["token"] = t
-        out["count_for_trash"] = count_for_trash
+        out["count_for_trash"] = len(materials_for_trash)
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
 
     @staticmethod
-    async def send_to_trash_finally(db: Session = Depends(get_db),
-                                    invoce: UploadFile = File(...),
-                                    photos: UploadFile = File(...),
+    async def send_to_trash_finally(photos: List[UploadFile],
+                                    db: Session = Depends(get_db),
+                                    invoice: UploadFile = File(...),
                                     user: User = Depends(AuthUtil.decode_jwt)):
-        # сделать папку списания в папке \\fs - mo\ADMINS\Photo_warehouse\archive_after_utilization\
-        # (сгенерировать ее называние по дате и количеству товаров на списание)
-
         # положить туда накладную подгруженную
         # создать там папку для фоток самой утилизации
         # создать папку для папок где хранятся фото списанной техники. (и копировать туда их)
@@ -136,32 +119,27 @@ class GeoLocationController:
 
         # считаем количество товаров + записываем их в materials_for_trash
 
-        get_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
-        materials_for_trash = []
-        count_for_trash = 0
-        for i in get_materials_for_trash:
-            flag = False
-            if db.query(Material).filter(Material.id == i.material_id).first():
-                for j in materials_for_trash:
-                    if (j.id == i.material_id):
-                        flag = True
-                        break
-                if not flag:
-                    materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
-                    count_for_trash += 1
+        materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
 
-        # Путь к папке назначения на сервере
-        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization\\",
-                                          str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_"
-                                              + str(count_for_trash)))
-
-        # Проверяем, существует ли папка назначения, и создаем ее при необходимости
+        timestamp = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
+        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization", timestamp)
+        photo_folder = os.path.join(destination_folder, "photos")
+        old_photo_folder = os.path.join(destination_folder, "material_photos")
         os.makedirs(destination_folder, exist_ok=True)
+        os.makedirs(photo_folder, exist_ok=True)
+        out_filename = os.path.join(destination_folder, invoice.filename)
 
-        # Сохранить файл на диск
-        with open(destination_folder, "wb") as buffer:
-            shutil.copyfileobj(invoce.file, buffer)
-        invoce.file.close()
+        with open(out_filename, "wb") as buffer:
+            buffer.write(await invoice.read())
+        for photo in photos:
+            out_photo_path = os.path.join(photo_folder, photo.filename)
+            with open(out_photo_path, "wb") as buffer:
+                buffer.write(await photo.read())
+        for i in materials_for_trash:
+            folder_to_move = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(i.id))
+
+
+
 
         # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
         # так же перемещаем папки с фото в папку списания
