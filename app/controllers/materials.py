@@ -158,11 +158,7 @@ class MaterialsController:
                            user: User = Depends(AuthUtil.decode_jwt)):
 
         # Путь к папке назначения на сервере
-        destination_folder = ""
-        if (platform.system() == "Windows"):
-            destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id))
-        else:
-            destination_folder = os.path.join("photos", str(material_id))
+        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id))
 
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
         os.makedirs(destination_folder, exist_ok=True)
