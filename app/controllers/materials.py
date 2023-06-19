@@ -20,13 +20,10 @@ from payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialU
 from models.models import Material, GeoLocation, LogItem
 from models.models import User, Material
 
-
-
 logging.basicConfig(level=logging.INFO,
                     filename="log.log",
                     filemode="w",
                     format="%(asctime)s - %(levelname)s - %(message)s")
-
 
 
 class MaterialsController:
@@ -38,27 +35,6 @@ class MaterialsController:
                      db: Session = Depends(get_db)):
 
         logging.info(f"username: , data: {body}")
-
-        # if body.place is not None and body.client_mail is None:
-        #     raise HTTPException(status_code=403, detail="Вы ввели место, но не ввели почту нового ответственного")
-        # if body.place is None and body.client_mail is not None:
-        #     raise HTTPException(status_code=403, detail="Вы ввели почту, но не ввели место расположения актива")
-        # if body.place is not None and body.client_mail is not None:
-        #     material = Material(id=body.id, user_id=user.get("id"), category=body.category, title=body.title,
-        #                         description=body.description, date_time=datetime.datetime.now())
-        #     db.add(material)
-        #     db.commit()
-        #     geolocation = GeoLocation(material_id=material.id, place=body.place, client_mail=body.client_mail,
-        #                               date_time=datetime.datetime.now())
-        #     db.add(geolocation)
-        #     db.commit()
-        #     material.geolocation_id = geolocation.id
-        #     db.commit()
-        # else:
-        #     material = Material(id=body.id, user_id=user.get("id"), category=body.category, title=body.title,
-        #                         description=body.description, date_time=datetime.datetime.now())
-        #     db.add(material)
-        #     db.commit()
 
         material = Material(id=body.id, user_id=user.get("username"), category=body.category, title=body.title,
                             description=body.description, date_time=datetime.datetime.now())
@@ -72,8 +48,6 @@ class MaterialsController:
         db.commit()
 
         return parse_obj_as(MaterialUploadResponse, material)
-
-
 
     # получение карточки по айди
     @staticmethod
@@ -109,7 +83,6 @@ class MaterialsController:
                 return "такого активана нет"
         else:
             return "Недостаточно прав"
-
 
     # выводим список активов
     @staticmethod
@@ -165,7 +138,6 @@ class MaterialsController:
         else:
             return "Недостаточно прав"
 
-
     @staticmethod
     async def get_last_update(user: User = Depends(AuthUtil.decode_jwt)):
         if user.get("role"):
@@ -179,7 +151,6 @@ class MaterialsController:
         else:
             return "You don't have permission"
 
-
     @staticmethod
     async def upload_photo(material_id,
                            file: UploadFile = File(...),
@@ -189,10 +160,9 @@ class MaterialsController:
         # Путь к папке назначения на сервере
         destination_folder = ""
         if (platform.system() == "Windows"):
-            destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos",str(material_id))
+            destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id))
         else:
-            destination_folder = os.path.join("photos",str(material_id))
-        # Подставьте путь к папке назначения на сервере
+            destination_folder = os.path.join("photos", str(material_id))
 
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
         os.makedirs(destination_folder, exist_ok=True)
@@ -219,4 +189,3 @@ class MaterialsController:
         db.commit()
 
         return {"message": f'Photo successfully added'}
-
