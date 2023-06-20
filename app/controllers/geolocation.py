@@ -119,46 +119,57 @@ class GeoLocationController:
         materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
 
         # создаем имена для папок
-        timestamp = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
+        timestamp = str(
+            datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
         destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization", timestamp)
 
-        photo_folder = os.path.join(destination_folder, "photos")
-        old_photo_folder = os.path.join(destination_folder, "material_photos")
+        photo_folder = os.path.join(destination_folder, "trashing_photos")
+        old_photo_folder = os.path.join(destination_folder, "material_old_photos")
 
         # создаем папки если их нет
         os.makedirs(destination_folder, exist_ok=True)
+        print(f'соаздана папка нового архива техники - {destination_folder}')
         os.makedirs(photo_folder, exist_ok=True)
+        print(f'в папке {destination_folder} создана папка photos -- для фотографий списания')
         os.makedirs(old_photo_folder, exist_ok=True)
+        print(f'в папке {destination_folder} создана папка material_photos для копирования папок с фото техники')
         out_filename = os.path.join(destination_folder, invoice.filename)
 
         # кладем накладную в папку списания
         with open(out_filename, "wb") as buffer:
             buffer.write(await invoice.read())
+            print("накладная скопирована")
 
         # кладем фотки списания в папку списания
         for photo in photos:
             out_photo_path = os.path.join(photo_folder, photo.filename)
             with open(out_photo_path, "wb") as buffer:
                 buffer.write(await photo.read())
+        print("фото списания добавлены")
+
+        # id_for_logging - для записи в таблицу логов айдишников техники, которая списана
+        id_for_logging = []
 
         # перемещаем папки с фото в архив
         for i in materials_for_trash:
             folder_to_move = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(i.id))
-            destination = os.path.join(old_photo_folder,str(i.id))
+            id_for_logging.append(i.id)  # добавим айдишник каждой техники к списку
+            destination = os.path.join(old_photo_folder, str(i.id))
             os.makedirs(destination, exist_ok=True)
             shutil.copytree(folder_to_move, destination, dirs_exist_ok=True)
             shutil.rmtree(folder_to_move)
-            print(f'папка фото актива {i.id} перемещена в архив после списания')
 
+            print(f'папка фото актива {i.id} перемещена в архив после списания')
 
         # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
         for y in materials_for_trash:
             moving = []
-            id_for_logging = []
+
             material_moving = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
             for m in material_moving:
                 moving.append({"место": m.place, "ответственный": m.client_mail, "дата перемещения": m.date_time})
-                id_for_logging.append(m.material_id)
+
+                print(f'история перемещений актива {m.material_id} перемещена')
 
             create_new_trash_archive = Trash(user_id=user.get("username"),
                                              material_id=y.id,
@@ -168,16 +179,20 @@ class GeoLocationController:
                                              moving=str(jsonable_encoder(moving)),
                                              date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                              folder_name=timestamp
-                                            )
+                                             )
             db.add(create_new_trash_archive)
+            print(f'активы скопированы в таблицу Trash')
 
             material_for_delete = db.query(Material).filter(Material.id == y.id).first()
             db.delete(material_for_delete)
+            print(f'активы удалены из таблицы Material')
 
             geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).first()
             db.delete(geo_for_delete)
+            print(f'история передвижений активов удалена из таблицы Гео')
 
             db.commit()
+            print(f'данные записаны в новые таблицы и подтверждены')
 
         # логируем
         create_geo_event = LogItem(kind_table="Списание",
@@ -192,6 +207,7 @@ class GeoLocationController:
                                    )
         db.add(create_geo_event)
         db.commit()
+        print(f'логирование произведено')
 
         return response(data=f'активы списаны, фото списания '
                              f'и накладная загружены, папки с фото техники перемещены в архив,'
