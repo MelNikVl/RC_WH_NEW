@@ -17,12 +17,13 @@
     <div class="title_1">Main office IT warehouse tracker</div>
     <div class="button_exit">
         <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
-            Как пользоваться прилоежением</button>
+            Как пользоваться приложением</button>
         <button id="go_to_auth" class="other_buttons"
             onclick="window.location.href = '/app/auth'">Выйти</button>
     </div>
     <div class="clear"></div>
 
+    <div class="welcome">
     <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
     {% if data.role == True %}
     <p class="hello_2">у тебя <b>административный</b> доступ</p>
@@ -30,8 +31,17 @@
     {% if data.role == False %}
     <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
     {% endif %}
+    </div>
 
-    <p>Активов на списание: {{ data.count_for_trash }}</p>
+    <div class="counts">
+        <p class="p_for_count">Всего: {{ data.count_all }} </p>
+        <p class="p_for_count">Списание: {{ data.count_for_trash }}</p>
+        <p class="p_for_count">Ремонт: 0</p>
+        <p class="p_for_count">Хранение: {{ data.count_warehouse }}</p>
+        <p class="p_for_count">Выдано: {{ data.count_in_work }}</p>
+    </div>
+
+     <div class="clear"></div>
 
     <div class="table-wrapper">
         <div class="button-wrapper">

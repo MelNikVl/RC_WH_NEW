@@ -50,6 +50,36 @@ class GeoLocationCRUD:
                     materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
         return materials_for_trash
 
+    @staticmethod
+    async def get_materials_in_work(db) -> List[Material]:
+        all_materials_in_work = db.query(GeoLocation).filter(GeoLocation.status == "Выдан").all()
+        materials_in_work = []
+        for i in all_materials_in_work:
+            flag = False
+            if db.query(Material).filter(Material.id == i.material_id).first():
+                for j in materials_in_work:
+                    if (j.id == i.material_id):
+                        flag = True
+                        break
+                if not flag:
+                    materials_in_work.append(db.query(Material).filter(Material.id == i.material_id).first())
+        return materials_in_work
+
+    @staticmethod
+    async def get_materials_at_warehouses(db) -> List[Material]:
+        all_materials_at_warehouses = db.query(GeoLocation).filter(GeoLocation.status == "хранение").all()
+        materials_at_warehouses = []
+        for i in all_materials_at_warehouses:
+            flag = False
+            if db.query(Material).filter(Material.id == i.material_id).first():
+                for j in materials_at_warehouses:
+                    if (j.id == i.material_id):
+                        flag = True
+                        break
+                if not flag:
+                    materials_at_warehouses.append(db.query(Material).filter(Material.id == i.material_id).first())
+        return materials_at_warehouses
+
 
     @staticmethod
     async def get_by_id(material_id: int, db):
