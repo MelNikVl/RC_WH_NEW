@@ -27,6 +27,8 @@
     <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
     {% if data.role == True %}
     <p class="hello_2">у тебя <b>административный</b> доступ</p>
+    <button id="for_admins" class="other_buttons"
+            onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель администратора</button>
     {% endif %}
     {% if data.role == False %}
     <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
@@ -36,7 +38,7 @@
     <div class="counts">
         <p class="p_for_count">Всего: {{ data.count_all }} </p>
         <p class="p_for_count">Списание: {{ data.count_for_trash }}</p>
-        <p class="p_for_count">Ремонт: 0</p>
+<!--        <p class="p_for_count">Ремонт: 0</p>-->
         <p class="p_for_count">Хранение: {{ data.count_warehouse }}</p>
         <p class="p_for_count">Выдано: {{ data.count_in_work }}</p>
     </div>
@@ -50,11 +52,11 @@
             <button id="relocate">Переместить актив</button>
             <button id="history">Посмотреть перемещения актива</button>
             <button id="add_photo">Добавить фото</button>
-            <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
+            <div>|||</div>
             <button id="move_to_trash">Отправить на списание</button>
-            {% if data.role == True %}
-                <button id="for_admins" class="other_buttons" onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Администрирование</button>
-            {% endif %}
+            <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
+
+
 
         </div>
         <!--  фильтры -->
