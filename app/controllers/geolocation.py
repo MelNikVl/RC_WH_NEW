@@ -51,13 +51,13 @@ class GeoLocationController:
         db.add(create_geo_event)
         db.commit()
 
-        return response(data=geolocation)
+        return response(data=geolocation, status=True)
 
     @staticmethod
     async def get_by_id(body: GeoLocationGetByIdRequest, db: Session = Depends(get_db),
                         user: User = Depends(AuthUtil.decode_jwt)):
         geolocation = await GeoLocationCRUD.get_by_id(material_id=body.material_id, db=db)
-        return response(data=geolocation)
+        return response(data=geolocation, status=True)
 
     @staticmethod
     async def add_to_trash(material_id,
@@ -78,7 +78,7 @@ class GeoLocationController:
         db.add(create_geo_event)
         db.commit()
 
-        return response(data=f'актив {material_id} добавлен в список на списание')
+        return response(data=f'актив {material_id} добавлен в список на списание', status=True)
 
     @staticmethod
     async def download_file_for_trash():
@@ -194,7 +194,8 @@ class GeoLocationController:
         db.commit()
 
         return response(data=f'активы списаны, фото списания '
-                             f'и накладная загружены, папки с фото техники перемещены в архив, логирование произведено')
+                             f'и накладная загружены, папки с фото техники перемещены в архив,'
+                             f' логирование произведено', status=True)
 
     @staticmethod
     async def archive_trash_page(db: Session = Depends(get_db),
