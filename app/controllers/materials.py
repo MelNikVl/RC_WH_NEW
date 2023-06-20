@@ -80,9 +80,9 @@ class MaterialsController:
                 db.commit()
                 return response(data=f'Актив {id_of_material} изменен. Новый тайтл - {title}', status=True)
             except:
-                return response(data=f'Такого актива нет', status=True)
+                return response(data=f'Такого актива нет', status=False)
         else:
-            return response(data=f'Недостаточно прав', status=True)
+            return response(data=f'Недостаточно прав', status=False)
 
     # выводим список активов
     @staticmethod
