@@ -39,7 +39,7 @@ $(document).ready(function () {
     $("#history,#submit-photo, #delete, #relocate, #send_to_trash, #add_photo, #remont, #move_to_trash").prop('disabled', true);
 
     $("#move_to_trash").on("click", function(){
-        if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы?')) {
+        if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы? Это действие будет уже не отменить')) {
             $("tbody > tr.selected").each(async function(index){
                 let id = $(this).children("td").eq(1).text();
                 await move_to_trash(id);

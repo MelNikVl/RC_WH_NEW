@@ -164,11 +164,9 @@ class GeoLocationController:
         # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
         for y in materials_for_trash:
             moving = []
-
             material_moving = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
             for m in material_moving:
                 moving.append({"место": m.place, "ответственный": m.client_mail, "дата перемещения": m.date_time})
-
                 print(f'история перемещений актива {m.material_id} перемещена')
 
             create_new_trash_archive = Trash(user_id=user.get("username"),
@@ -181,23 +179,23 @@ class GeoLocationController:
                                              folder_name=timestamp
                                              )
             db.add(create_new_trash_archive)
-            print(f'активы скопированы в таблицу Trash')
+            print(f'актив {y.id} скопирован в таблицу Trash')
 
             material_for_delete = db.query(Material).filter(Material.id == y.id).first()
             db.delete(material_for_delete)
-            print(f'активы удалены из таблицы Material')
+            print(f'актив {y.id} удален из таблицы Material')
 
-            geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).first()
+            geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
             db.delete(geo_for_delete)
-            print(f'история передвижений активов удалена из таблицы Гео')
+            print(f'история передвижений актива {y.id} удалена из таблицы Гео')
 
             db.commit()
-            print(f'данные записаны в новые таблицы и подтверждены')
+            print(f'данные актива {y.id} записаны в новые таблицы и подтверждены')
 
         # логируем
         create_geo_event = LogItem(kind_table="Списание",
                                    user_id=user["username"],
-                                   passive_id=0000000,
+                                   passive_id=0,
                                    modified_cols="перемещение в архив списания",
                                    values_of_change=f'активы: {str(jsonable_encoder(id_for_logging))} были списаны, '
                                                     f'записи об их местоположении теперь находятся в таблице архива. '

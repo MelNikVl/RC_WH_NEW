@@ -21,8 +21,8 @@
         <button id="go_to_auth" class="other_buttons"
             onclick="window.location.href = '/app/auth'">Выйти</button>
     </div>
-
     <div class="clear"></div>
+
     <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
     {% if data.role == True %}
     <p class="hello_2">у тебя <b>административный</b> доступ</p>
@@ -30,6 +30,8 @@
     {% if data.role == False %}
     <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
     {% endif %}
+
+    <p>Активов на списание: {{ data.count_for_trash }}</p>
 
     <div class="table-wrapper">
         <div class="button-wrapper">
