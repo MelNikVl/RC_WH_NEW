@@ -16,19 +16,15 @@
 </head>
 
 <body>
-    <div class="title_1">Main office IT warehouse tracker (TRASH)</div>
+    <div class="title_1">Main office IT warehouse tracker (ARCHIVE OF TRASH)</div>
     <div class="button_exit"><button id="go_to_auth" class="other_buttons"
             onclick="window.location.href = '/app/auth'">Выйти</button></div>
     <div class="clear"></div>
 
-    <div class="count_for_trash">товаров на списание - {{ data.count_for_trash }}</div>
     <div class="table-wrapper">
         <div class="button-wrapper">
-            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>гоушки в
-                приложение</button>
-            <button id="send_to_trash">Списать активы</button>
-            <button id="form_file">Выгрузить список в файл</button>
-            <button id="go_to_archive" onclick='window.location.href = "/geolocation/archive_trash_page?t="+"{{ data.token }}"'>перейти в архив</button>
+            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>в приложение</button>
+            <button id="go_to_trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>к списку на списание</button>
         </div>
 
         <!--  заголовок таблицы -->
@@ -36,13 +32,14 @@
             <thead>
                 <tr>
                     <th><input type="checkbox" id="select-all"></th>
-                    <th>ID актив</th>
-                    <th>Кто завел</th>
+                    <th>ID актива</th>
+                    <th>Кто списывал</th>
                     <th>Категория</th>
                     <th>Номер (тайтл)</th>
                     <th>Описание (характеристики)</th>
-                    <th>Дата ввода</th>
-                    <th>Ссылка на фото</th>
+                    <th>Прошедшие перемещения</th>
+                    <th>Дата списания</th>
+                    <th>Ссылка на документацию</th>
                 </tr>
             </thead>
             <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
@@ -55,8 +52,9 @@
                     <td>{{ item.category }}</td>
                     <td>{{ item.title }}</td>
                     <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
+                    <td>{{ item.moving }}</td>
                     <td>{{ item.date_time }}</td>
-                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>
+                    <td>\\fs-mo\ADMINS\Photo_warehouse\archive_after_utilization\{{ item.folder_name }}</td>
                 </tr>
                 {% endfor %}
             <tbody>

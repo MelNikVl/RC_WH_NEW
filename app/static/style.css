@@ -96,7 +96,7 @@ button {
     padding: 10px 20px;
     background: #a7d2e7;
     font-size: 16px;
-    margin: 0 0 5px 10px;
+    margin: 0 0 5px 20px;
     border-radius: 1em;
 }
 .popup-wrapper{
@@ -349,3 +349,23 @@ tbody input[type='checkbox'] {
 .instruction_1 {
     margin: 1em 0 1em 0.5em;font-size: x-large;
 }
+
+.welcome {
+    margin: 1em;
+    font-size: inherit;
+    float: left;
+    background: whitesmoke;
+    border-radius: 1em;
+    padding: 0 0 1.7em 0;
+}
+
+.counts {
+    margin: 1em;
+    font-size: inherit;
+    background: whitesmoke;
+    border-radius: 1em;
+    float: left;
+    padding: 1em;
+}
+
+.p_for_count {margin: 1em;font-size: inherit;background: whitesmoke;}

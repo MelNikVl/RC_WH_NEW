@@ -51,13 +51,13 @@ class GeoLocationController:
         db.add(create_geo_event)
         db.commit()
 
-        return response(data=geolocation)
+        return response(data=geolocation, status=True)
 
     @staticmethod
     async def get_by_id(body: GeoLocationGetByIdRequest, db: Session = Depends(get_db),
                         user: User = Depends(AuthUtil.decode_jwt)):
         geolocation = await GeoLocationCRUD.get_by_id(material_id=body.material_id, db=db)
-        return response(data=geolocation)
+        return response(data=geolocation, status=True)
 
     @staticmethod
     async def add_to_trash(material_id,
@@ -78,7 +78,7 @@ class GeoLocationController:
         db.add(create_geo_event)
         db.commit()
 
-        return response(data=f'актив {material_id} добавлен в список на списание')
+        return response(data=f'актив {material_id} добавлен в список на списание', status=True)
 
     @staticmethod
     async def download_file_for_trash():
@@ -94,6 +94,7 @@ class GeoLocationController:
                          t: str = None  # jwt токен
                          ):
 
+        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
@@ -111,49 +112,62 @@ class GeoLocationController:
                                     db: Session = Depends(get_db),
                                     invoice: UploadFile = File(...),
                                     user: User = Depends(AuthUtil.decode_jwt)):
-        # положить туда накладную подгруженную
-        # создать там папку для фоток самой утилизации
-        # создать папку для папок где хранятся фото списанной техники. (и копировать туда их)
+
         # отправить письмо на 2 адреса с накладной и ссылкой на папку списания
-        # все это дело залогировать
 
-        # считаем количество товаров + записываем их в materials_for_trash
-
+        # получаем список товаров на списание
         materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
 
-        timestamp = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
+        # создаем имена для папок
+        timestamp = str(
+            datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
         destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization", timestamp)
-        photo_folder = os.path.join(destination_folder, "photos")
-        old_photo_folder = os.path.join(destination_folder, "material_photos")
+
+        photo_folder = os.path.join(destination_folder, "trashing_photos")
+        old_photo_folder = os.path.join(destination_folder, "material_old_photos")
+
+        # создаем папки если их нет
         os.makedirs(destination_folder, exist_ok=True)
+        print(f'соаздана папка нового архива техники - {destination_folder}')
         os.makedirs(photo_folder, exist_ok=True)
+        print(f'в папке {destination_folder} создана папка photos -- для фотографий списания')
         os.makedirs(old_photo_folder, exist_ok=True)
+        print(f'в папке {destination_folder} создана папка material_photos для копирования папок с фото техники')
         out_filename = os.path.join(destination_folder, invoice.filename)
 
+        # кладем накладную в папку списания
         with open(out_filename, "wb") as buffer:
             buffer.write(await invoice.read())
+            print("накладная скопирована")
+
+        # кладем фотки списания в папку списания
         for photo in photos:
             out_photo_path = os.path.join(photo_folder, photo.filename)
             with open(out_photo_path, "wb") as buffer:
                 buffer.write(await photo.read())
+        print("фото списания добавлены")
 
+        # id_for_logging - для записи в таблицу логов айдишников техники, которая списана
+        id_for_logging = []
+
+        # перемещаем папки с фото в архив
         for i in materials_for_trash:
             folder_to_move = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(i.id))
-            destination = os.path.join(old_photo_folder,str(i.id))
+            id_for_logging.append(i.id)  # добавим айдишник каждой техники к списку
+            destination = os.path.join(old_photo_folder, str(i.id))
             os.makedirs(destination, exist_ok=True)
             shutil.copytree(folder_to_move, destination, dirs_exist_ok=True)
             shutil.rmtree(folder_to_move)
 
+            print(f'папка фото актива {i.id} перемещена в архив после списания')
 
         # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
-        # так же перемещаем папки с фото в папку списания
         for y in materials_for_trash:
             moving = []
-            id_for_logging = []
             material_moving = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
             for m in material_moving:
                 moving.append({"место": m.place, "ответственный": m.client_mail, "дата перемещения": m.date_time})
-                id_for_logging.append(m.material_id)
+                print(f'история перемещений актива {m.material_id} перемещена')
 
             create_new_trash_archive = Trash(user_id=user.get("username"),
                                              material_id=y.id,
@@ -161,22 +175,27 @@ class GeoLocationController:
                                              title=y.title,
                                              description=y.description,
                                              moving=str(jsonable_encoder(moving)),
-                                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                            )
+                                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                             folder_name=timestamp
+                                             )
             db.add(create_new_trash_archive)
+            print(f'актив {y.id} скопирован в таблицу Trash')
 
             material_for_delete = db.query(Material).filter(Material.id == y.id).first()
             db.delete(material_for_delete)
+            print(f'актив {y.id} удален из таблицы Material')
 
-            geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).first()
+            geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
             db.delete(geo_for_delete)
+            print(f'история передвижений актива {y.id} удалена из таблицы Гео')
 
             db.commit()
+            print(f'данные актива {y.id} записаны в новые таблицы и подтверждены')
 
         # логируем
         create_geo_event = LogItem(kind_table="Списание",
                                    user_id=user["username"],
-                                   passive_id=0000000,
+                                   passive_id=0,
                                    modified_cols="перемещение в архив списания",
                                    values_of_change=f'активы: {str(jsonable_encoder(id_for_logging))} были списаны, '
                                                     f'записи об их местоположении теперь находятся в таблице архива. '
@@ -186,5 +205,26 @@ class GeoLocationController:
                                    )
         db.add(create_geo_event)
         db.commit()
+        print(f'логирование произведено')
 
-        return response(data=f'активы списаны')
+        return response(data=f'активы списаны, фото списания '
+                             f'и накладная загружены, папки с фото техники перемещены в архив,'
+                             f' логирование произведено', status=True)
+
+    @staticmethod
+    async def archive_trash_page(db: Session = Depends(get_db),
+                                 request: Request = None,
+                                 t: str = None  # jwt токен
+                                 ):
+        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        out: Dict = {}
+        materials_for_archive_trash = db.query(Trash).all()
+        out[0] = materials_for_archive_trash
+        out["token"] = t
+
+        return templates.TemplateResponse("archive_trash_page.html", {"request": request, "data": out})

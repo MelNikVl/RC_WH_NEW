@@ -55,7 +55,7 @@ class MaterialsController:
                   db: Session = Depends(get_db),
                   user: User = Depends(AuthUtil.decode_jwt)):
         material = await MaterialCRUD.get(id=body.id, db=db)
-        return response(data=material)
+        return response(data=material, status=True)
 
     # обновление описания карточки
     @staticmethod
@@ -64,7 +64,7 @@ class MaterialsController:
                                  user: User = Depends(AuthUtil.decode_jwt)):
         logging.info(f"username: , data: {body}")
         material = await MaterialCRUD.update_description(id=body.id, description=body.description, db=db)
-        return response(data=material)
+        return response(data=material, status=True)
 
     @staticmethod
     async def update_title(title: str,
@@ -78,18 +78,18 @@ class MaterialsController:
                 stmt = update(Material).where(Material.id == id_of_material).values(title=title)
                 db.execute(stmt)
                 db.commit()
-                return f'Актив {id_of_material} изменен. Новый тайтл - {title}'
+                return response(data=f'Актив {id_of_material} изменен. Новый тайтл - {title}', status=True)
             except:
-                return "такого активана нет"
+                return response(data=f'Такого актива нет', status=False)
         else:
-            return "Недостаточно прав"
+            return response(data=f'Недостаточно прав', status=False)
 
     # выводим список активов
     @staticmethod
     async def list_of_materials(db: Session = Depends(get_db),
                                 user: User = Depends(AuthUtil.decode_jwt)):
         materials = await MaterialCRUD.list_of_materials(db=db)
-        return response(data=materials)
+        return response(data=materials, status=True)
 
     # удаление актива
     @staticmethod
@@ -134,10 +134,12 @@ class MaterialsController:
                 db.add(create_geo_event)
                 db.commit()
 
-            return response(data={"INFO": f'Актив с ID {id_for_delete} удален успешно'})
+            return response(data={"INFO": f'Актив с ID {id_for_delete} удален успешно'}, status=True)
         else:
-            return "Недостаточно прав"
+            return response(data="Недостаточно прав", status=False)
 
+
+    # эта ебота написана для записи логов просто в файл. Стирать жалко. Может пригодится
     @staticmethod
     async def get_last_update(user: User = Depends(AuthUtil.decode_jwt)):
         if user.get("role"):
@@ -157,7 +159,7 @@ class MaterialsController:
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt)):
 
-        # Путь к папке назначения на сервере
+        # Путь к папке назначения на сервер
         destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id))
 
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
@@ -184,4 +186,5 @@ class MaterialsController:
         db.add(autorisation_event)
         db.commit()
 
-        return {"message": f'Photo successfully added'}
+        return response(data={"message": f'Photo successfully added'}, status=True)
+

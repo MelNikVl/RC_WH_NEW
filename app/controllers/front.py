@@ -20,7 +20,7 @@ from utils.utils import response
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User
+from models.models import User, GeoLocation
 
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
@@ -40,9 +40,9 @@ class FrontMainController:
     @staticmethod
     async def ping(user: user_dependency):
         return Response("ok", media_type="text/plain")
-    
+
     @staticmethod
-    async def generate_invoice(materials: InvoiceCreateRequest) -> FileResponse:
+    async def generate_invoice(materials: InvoiceCreateRequest) -> FileResponse:   # генерируем ворд файл из таблицы списания
         directory = "invoices"
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -84,9 +84,19 @@ class FrontMainController:
 
     @staticmethod
     async def index(db: Session = Depends(get_db), request: Request = None, t: str = None):
-        materials = await MaterialCRUD.list_of_materials(db=db)
+
         out: Dict = {}
+        materials = await MaterialCRUD.list_of_materials(db=db)
         out[0] = jsonable_encoder(materials)
+        materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
+        material_in_work = await GeoLocationCRUD.get_materials_in_work(db=db)
+        material_at_warehouses = await GeoLocationCRUD.get_materials_at_warehouses(db=db)
+
+        out["count_for_trash"] = len(materials_for_trash)
+        out["count_all"] = len(materials)
+        out["count_warehouse"] = len(material_at_warehouses)
+        out["count_in_work"] = len(material_in_work)
+
         try:
             result = await AuthUtil.decode_jwt(t)
             out["username"] = result["username"]
@@ -136,9 +146,9 @@ class FrontMainController:
 
     @staticmethod
     async def instructions(db: Session = Depends(get_db),
-                          request: Request = None,
-                          t: str = None  # jwt токен
-                          ):
+                           request: Request = None,
+                           t: str = None  # jwt токен
+                           ):
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:

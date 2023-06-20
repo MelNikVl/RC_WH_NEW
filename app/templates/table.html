@@ -17,19 +17,33 @@
     <div class="title_1">Main office IT warehouse tracker</div>
     <div class="button_exit">
         <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
-            Как пользоваться прилоежением</button>
+            Как пользоваться приложением</button>
         <button id="go_to_auth" class="other_buttons"
             onclick="window.location.href = '/app/auth'">Выйти</button>
     </div>
-
     <div class="clear"></div>
+
+    <div class="welcome">
     <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
     {% if data.role == True %}
     <p class="hello_2">у тебя <b>административный</b> доступ</p>
+    <button id="for_admins" class="other_buttons"
+            onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель администратора</button>
     {% endif %}
     {% if data.role == False %}
     <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
     {% endif %}
+    </div>
+
+    <div class="counts">
+        <p class="p_for_count">Всего активов: {{ data.count_all }} </p>
+        <p class="p_for_count">Списание: {{ data.count_for_trash }}</p>
+<!--        <p class="p_for_count">Ремонт: 0</p>-->
+        <p class="p_for_count">Хранение: {{ data.count_warehouse }}</p>
+        <p class="p_for_count">Выдано: {{ data.count_in_work }}</p>
+    </div>
+
+     <div class="clear"></div>
 
     <div class="table-wrapper">
         <div class="button-wrapper">
@@ -38,12 +52,9 @@
             <button id="relocate">Переместить актив</button>
             <button id="history">Посмотреть перемещения актива</button>
             <button id="add_photo">Добавить фото</button>
-            <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
+            <div>|||</div>
             <button id="move_to_trash">Отправить на списание</button>
-            {% if data.role == True %}
-                <button id="for_admins" class="other_buttons" onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Администрирование</button>
-            {% endif %}
-
+            <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
         </div>
         <!--  фильтры -->
         <div class="input-wrapper">
@@ -63,7 +74,7 @@
                         <span>хранение</span>
                     </div>
                     <div class="option">
-                        <span>В работе</span>
+                        <span>Выдан</span>
                     </div>
                     <div class="option">
                         <span>на списание</span>
@@ -197,7 +208,7 @@
                         <span>хранение</span>
                     </div>
                     <div class="option">
-                        <span>В работе</span>
+                        <span>Выдан</span>
                     </div>
                 </div>
             </div>

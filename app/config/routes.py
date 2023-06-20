@@ -56,6 +56,7 @@ geolocation.put('/add_to_trash')(GeoLocationController.add_to_trash)
 geolocation.get("/download_file_for_trash")(GeoLocationController.download_file_for_trash)
 geolocation.get("/trash_page")(GeoLocationController.trash_page)
 geolocation.post("/send_to_trash_finally")(GeoLocationController.send_to_trash_finally)
+geolocation.get("/archive_trash_page")(GeoLocationController.archive_trash_page)
 
 auth.post("/token")(AuthController.token)
 auth.post("/create_new_user")(AuthController.create_new_user)
