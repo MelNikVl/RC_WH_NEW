@@ -55,7 +55,7 @@ class MaterialsController:
                   db: Session = Depends(get_db),
                   user: User = Depends(AuthUtil.decode_jwt)):
         material = await MaterialCRUD.get(id=body.id, db=db)
-        return response(data=material)
+        return response(data=material, status=True)
 
     # обновление описания карточки
     @staticmethod
@@ -64,7 +64,7 @@ class MaterialsController:
                                  user: User = Depends(AuthUtil.decode_jwt)):
         logging.info(f"username: , data: {body}")
         material = await MaterialCRUD.update_description(id=body.id, description=body.description, db=db)
-        return response(data=material)
+        return response(data=material, status=True)
 
     @staticmethod
     async def update_title(title: str,
@@ -89,7 +89,7 @@ class MaterialsController:
     async def list_of_materials(db: Session = Depends(get_db),
                                 user: User = Depends(AuthUtil.decode_jwt)):
         materials = await MaterialCRUD.list_of_materials(db=db)
-        return response(data=materials)
+        return response(data=materials, status=True)
 
     # удаление актива
     @staticmethod
@@ -134,7 +134,7 @@ class MaterialsController:
                 db.add(create_geo_event)
                 db.commit()
 
-            return response(data={"INFO": f'Актив с ID {id_for_delete} удален успешно'})
+            return response(data={"INFO": f'Актив с ID {id_for_delete} удален успешно'}, status=True)
         else:
             return response(data="Недостаточно прав", status=False)
 
