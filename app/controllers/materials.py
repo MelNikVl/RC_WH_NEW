@@ -136,7 +136,7 @@ class MaterialsController:
 
             return response(data={"INFO": f'Актив с ID {id_for_delete} удален успешно'})
         else:
-            return "Недостаточно прав"
+            return response(data="Недостаточно прав", status=False)
 
     @staticmethod
     async def get_last_update(user: User = Depends(AuthUtil.decode_jwt)):
@@ -157,7 +157,7 @@ class MaterialsController:
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt)):
 
-        # Путь к папке назначения на сервере
+        # Путь к папке назначения на сервер
         destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id))
 
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
