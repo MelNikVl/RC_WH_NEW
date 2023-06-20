@@ -112,42 +112,46 @@ class GeoLocationController:
                                     db: Session = Depends(get_db),
                                     invoice: UploadFile = File(...),
                                     user: User = Depends(AuthUtil.decode_jwt)):
-        # положить туда накладную подгруженную
-        # создать там папку для фоток самой утилизации
-        # создать папку для папок где хранятся фото списанной техники. (и копировать туда их)
+
         # отправить письмо на 2 адреса с накладной и ссылкой на папку списания
-        # все это дело залогировать
 
-        # считаем количество товаров + записываем их в materials_for_trash
-
+        # получаем список товаров на списание
         materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
 
+        # создаем имена для папок
         timestamp = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
         destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization", timestamp)
+
         photo_folder = os.path.join(destination_folder, "photos")
         old_photo_folder = os.path.join(destination_folder, "material_photos")
+
+        # создаем папки если их нет
         os.makedirs(destination_folder, exist_ok=True)
         os.makedirs(photo_folder, exist_ok=True)
         os.makedirs(old_photo_folder, exist_ok=True)
         out_filename = os.path.join(destination_folder, invoice.filename)
 
+        # кладем накладную в папку списания
         with open(out_filename, "wb") as buffer:
             buffer.write(await invoice.read())
+
+        # кладем фотки списания в папку списания
         for photo in photos:
             out_photo_path = os.path.join(photo_folder, photo.filename)
             with open(out_photo_path, "wb") as buffer:
                 buffer.write(await photo.read())
 
+        # перемещаем папки с фото в архив
         for i in materials_for_trash:
             folder_to_move = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(i.id))
             destination = os.path.join(old_photo_folder,str(i.id))
             os.makedirs(destination, exist_ok=True)
             shutil.copytree(folder_to_move, destination, dirs_exist_ok=True)
             shutil.rmtree(folder_to_move)
+            print(f'папка фото актива {i.id} перемещена в архив после списания')
 
 
         # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
-        # так же перемещаем папки с фото в папку списания
         for y in materials_for_trash:
             moving = []
             id_for_logging = []
@@ -162,7 +166,8 @@ class GeoLocationController:
                                              title=y.title,
                                              description=y.description,
                                              moving=str(jsonable_encoder(moving)),
-                                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                             folder_name=timestamp
                                             )
             db.add(create_new_trash_archive)
 
@@ -188,7 +193,8 @@ class GeoLocationController:
         db.add(create_geo_event)
         db.commit()
 
-        return response(data=f'активы списаны')
+        return response(data=f'активы списаны, фото списания '
+                             f'и накладная загружены, папки с фото техники перемещены в архив, логирование произведено')
 
     @staticmethod
     async def archive_trash_page(db: Session = Depends(get_db),

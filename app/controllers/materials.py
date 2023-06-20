@@ -78,11 +78,11 @@ class MaterialsController:
                 stmt = update(Material).where(Material.id == id_of_material).values(title=title)
                 db.execute(stmt)
                 db.commit()
-                return f'Актив {id_of_material} изменен. Новый тайтл - {title}'
+                return response(data=f'Актив {id_of_material} изменен. Новый тайтл - {title}', status=True)
             except:
-                return "такого активана нет"
+                return response(data=f'Такого актива нет', status=True)
         else:
-            return "Недостаточно прав"
+            return response(data=f'Недостаточно прав', status=True)
 
     # выводим список активов
     @staticmethod
@@ -138,6 +138,8 @@ class MaterialsController:
         else:
             return response(data="Недостаточно прав", status=False)
 
+
+    # эта ебота написана для записи логов просто в файл. Стирать жалко. Может пригодится
     @staticmethod
     async def get_last_update(user: User = Depends(AuthUtil.decode_jwt)):
         if user.get("role"):
@@ -184,4 +186,5 @@ class MaterialsController:
         db.add(autorisation_event)
         db.commit()
 
-        return {"message": f'Photo successfully added'}
+        return response(data={"message": f'Photo successfully added'}, status=True)
+

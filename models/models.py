@@ -41,6 +41,7 @@ class Trash(Base):
     description: str = Column(String)
     moving: str = Column(String)
     date_time: str = Column(String)
+    folder_name: str = Column(String)
 
 
 class GeoLocation(Base):
