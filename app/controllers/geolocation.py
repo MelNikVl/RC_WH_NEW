@@ -94,6 +94,7 @@ class GeoLocationController:
                          t: str = None  # jwt токен
                          ):
 
+        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
@@ -188,3 +189,21 @@ class GeoLocationController:
         db.commit()
 
         return response(data=f'активы списаны')
+
+    @staticmethod
+    async def archive_trash_page(db: Session = Depends(get_db),
+                                 request: Request = None,
+                                 t: str = None  # jwt токен
+                                 ):
+        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        out: Dict = {}
+        materials_for_archive_trash = db.query(Trash).all()
+        out[0] = materials_for_archive_trash
+        out["token"] = t
+
+        return templates.TemplateResponse("archive_trash_page.html", {"request": request, "data": out})

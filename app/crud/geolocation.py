@@ -8,7 +8,7 @@ import datetime
 
 from fastapi import HTTPException
 from pydantic import parse_obj_as
-from models.models import Material, GeoLocation
+from models.models import Material, GeoLocation, Trash
 from payload.response import GeoLocationUploadResponse
 
 # from app.payload.response import GeoLocationUploadResponse
@@ -49,6 +49,8 @@ class GeoLocationCRUD:
                 if not flag:
                     materials_for_trash.append(db.query(Material).filter(Material.id == i.material_id).first())
         return materials_for_trash
+
+
     @staticmethod
     async def get_by_id(material_id: int, db):
         material = db.query(Material).filter(Material.id == material_id).all()
