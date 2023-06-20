@@ -36,7 +36,7 @@
     </div>
 
     <div class="counts">
-        <p class="p_for_count">Всего: {{ data.count_all }} </p>
+        <p class="p_for_count">Всего активов: {{ data.count_all }} </p>
         <p class="p_for_count">Списание: {{ data.count_for_trash }}</p>
 <!--        <p class="p_for_count">Ремонт: 0</p>-->
         <p class="p_for_count">Хранение: {{ data.count_warehouse }}</p>
@@ -55,9 +55,6 @@
             <div>|||</div>
             <button id="move_to_trash">Отправить на списание</button>
             <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
-
-
-
         </div>
         <!--  фильтры -->
         <div class="input-wrapper">
