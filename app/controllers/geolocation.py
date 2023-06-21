@@ -185,8 +185,9 @@ class GeoLocationController:
             db.delete(material_for_delete)
             print(f'актив {y.id} удален из таблицы Material')
 
-            geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
-            db.delete(geo_for_delete)
+            # geo_for_delete = 
+            db.query(GeoLocation).filter(GeoLocation.material_id == y.id).delete()
+            # db.delete(geo_for_delete)
             print(f'история передвижений актива {y.id} удалена из таблицы Гео')
 
             db.commit()
