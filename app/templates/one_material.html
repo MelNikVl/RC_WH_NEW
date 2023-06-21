@@ -30,6 +30,7 @@
     <div class="clear"></div>
 
     <div class="card_of_material">
+        <h3>Информация о активе</h3>
         <div>Описание:  {{ data.one_material.description }}</div>
         <div>Категория:  {{ data.one_material.category }}</div>
         <div>Кто завел:  {{ data.one_material.user_id }}</div>
@@ -38,6 +39,7 @@
     </div>
 
     <div class="card_of_material">
+        <h3>Перемещения</h3>
         {% for item in data.geo_material %}
             <div class="geo_material_one">Место: {{ item.place }},
                 ответственный: {{ item.client_mail }},
@@ -47,9 +49,10 @@
             <div class="geo_material_one">-------</div>
         {% endfor %}
     </div>
+    <div class="clear"></div>
 
     <div class="card_of_material">
-        Ремонты:
+        <h3>Ремонты:    </h3>
     </div>
     <div class="clear"></div>
 
