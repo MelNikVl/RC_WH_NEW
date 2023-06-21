@@ -344,7 +344,7 @@ async function upload_photos(mat_id) {
 async function move_to_trash(id){
     try {
         const response = await fetch(host+"/geolocation/add_to_trash?material_id="+id, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + access_token

@@ -7,6 +7,7 @@ from typing import Dict, List
 import fastapi
 from fastapi import Depends, Request, UploadFile, File
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.crud.geolocation import GeoLocationCRUD
@@ -63,7 +64,10 @@ class GeoLocationController:
     async def add_to_trash(material_id,
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
-        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all()[-1]
+        # add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).first()
+        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
+            desc(GeoLocation.date_time)).all()[0]
+        print(add_to_trash)
 
         send_to_trash_01 = GeoLocation(material_id=material_id,
                                        place=add_to_trash.place,
