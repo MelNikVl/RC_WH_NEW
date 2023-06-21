@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $("#send-to-trash-finally").prop("disabled", true);
     $("#send-to-trash-finally").on("click", async function () {
-        if (confirm("Вы действительно хотите списать все активы из списка?")) {
+        if (confirm("Все активы из данной таблицы будут списаны. Продолжить?")) {
             let form_data = new FormData();
             $.each($("#upload-trashing-photos")[0].files, function (key, input) {
                 form_data.append('photos', input);
