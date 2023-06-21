@@ -389,3 +389,7 @@ tbody input[type='checkbox'] {
     margin: 0;
     transition: background-color 0.2s;
 }
+
+.card_of_material {border: 1px solid;background: whitesmoke;border-radius: 1em;padding: 1em;margin: 1em;width: 30%;font-size: inherit;float: left;}
+
+.geo_material_one {padding: 0 1em 1em;font-size: inherit;}
