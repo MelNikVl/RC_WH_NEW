@@ -37,9 +37,10 @@ router.get("")(FrontMainController.index)
 router.get("/auth")(FrontMainController.user_auth)
 router.get("/ping")(FrontMainController.ping)
 router.get("/instructions")(FrontMainController.instructions)
+router.get("/admins_page")(FrontMainController.admins_page)
 router.get("/{material_id}")(FrontMainController.only_one_card)
 
-router.get("/admins_page")(FrontMainController.admins_page)
+
 
 materials.post("/invoice")(FrontMainController.generate_invoice)
 materials.post("/create")(MaterialsController.create)
