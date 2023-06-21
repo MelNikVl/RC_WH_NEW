@@ -17,27 +17,32 @@
 <body>
 <div class="title_1">Main office IT warehouse tracker --- one material</div>
     <div class="button_exit">
-        <button id="instructions">
-            Как пользоваться приложением</button>
+        <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'
+                class="button_go_to_app_in_one_card">Вернуться в приложение</button>
         <button id="go_to_auth" class="other_buttons"
             onclick="window.location.href = '/app/auth'">Выйти</button>
     </div>
     <div class="clear"></div>
-    <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'
-                class="button_admins_page">Вернуться в приложение</button>
+
+    <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
+    <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
+    <div class="clear"></div>
 
     <div class="card_of_material">
-        <div>ID актива:  {{ data.one_material.id }}</div>
-        <div>Номер:  {{ data.one_material.title }}</div>
         <div>Описание:  {{ data.one_material.description }}</div>
         <div>Категория:  {{ data.one_material.category }}</div>
         <div>Кто завел:  {{ data.one_material.user_id }}</div>
         <div>Дата ввода в эксплуатацию:  {{ data.one_material.date_time }}</div>
-
     </div>
+
     <div class="card_of_material">
         {% for item in data.geo_material %}
-            <div class="geo_material_one">Где он:  {{ item }}</div>
+            <div class="geo_material_one">Место: {{ item.place }},
+                ответственный: {{ item.client_mail }},
+                статус: {{ item.status }},
+                дата перемещения: {{ item.date_time }}
+            </div>
+            <div class="geo_material_one">-------</div>
         {% endfor %}
     </div>
     <div class="clear"></div>
