@@ -53,7 +53,7 @@ materials.post("/update_title")(MaterialsController.update_title)
 
 geolocation.post("/create")(GeoLocationController.create)
 geolocation.post("/get-by-id")(GeoLocationController.get_by_id)
-geolocation.put('/add_to_trash')(GeoLocationController.add_to_trash)
+geolocation.post('/add_to_trash')(GeoLocationController.add_to_trash)
 geolocation.get("/download_file_for_trash")(GeoLocationController.download_file_for_trash)
 geolocation.get("/trash_page")(GeoLocationController.trash_page)
 geolocation.post("/send_to_trash_finally")(GeoLocationController.send_to_trash_finally)

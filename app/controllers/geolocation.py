@@ -64,8 +64,13 @@ class GeoLocationController:
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
         add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all()[-1]
-        add_to_trash.status = "на списание"
-        db.commit()
+
+        send_to_trash_01 = GeoLocation(material_id=material_id,
+                                       place=add_to_trash.place,
+                                       client_mail=user.get("username"),
+                                       status="на списание",
+                                       date_time=datetime.datetime.now()
+                                       )
 
         # логируем
         create_geo_event = LogItem(kind_table="Расположение активов",
@@ -75,6 +80,8 @@ class GeoLocationController:
                                    values_of_change="актив добавлен к списанию",
                                    date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                    )
+
+        db.add(send_to_trash_01)
         db.add(create_geo_event)
         db.commit()
 
