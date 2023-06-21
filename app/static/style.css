@@ -396,4 +396,4 @@ tbody input[type='checkbox'] {
 
 .button_go_to_app_in_one_card {padding: 0.7em;font-size: inherit;}
 
-.title_one_card {padding: 0 1em 1em;font-size: xx-large;font-weight: bold;float: left;}
+.title_one_card {padding: 0 1em 1em 0.5em;font-size: xx-large;font-weight: bold;float: left;}

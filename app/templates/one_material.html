@@ -26,6 +26,7 @@
 
     <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
     <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
+    <div class="title_one_card">Статус:  {{ data.geo_material[-1].status }}</div>
     <div class="clear"></div>
 
     <div class="card_of_material">
@@ -45,6 +46,10 @@
             </div>
             <div class="geo_material_one">-------</div>
         {% endfor %}
+    </div>
+
+    <div class="card_of_material">
+        Ремонты:
     </div>
     <div class="clear"></div>
 
