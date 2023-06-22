@@ -77,4 +77,6 @@ class Repair(Base):
     user_whose_technique: str = Column(String)
     date_time: str = Column(String)
     repair_number: int = Column(Integer)
+    repair_status: str = Column(String)
+    repair_unique_id: str = Column(String)
 

@@ -3,6 +3,8 @@ import json
 import os
 import shutil
 from typing import Dict, List
+import random
+import string
 
 import fastapi
 from fastapi import Depends, Request, UploadFile, File
@@ -268,12 +270,19 @@ class GeoLocationController:
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
 
+        def generate_alphanum_random_string(length):
+            letters_and_digits = string.ascii_letters + string.digits
+            rand_string = ''.join(random.sample(letters_and_digits, length))
+            return rand_string
+
         new_repair = Repair(material_id=material_id_to_repair,
                             responsible_it_dept_user=user.get("username"),
                             problem_description=whats_problem_is,
                             user_whose_technique=who_gave_it_away,
                             repair_number=rapair_count_last + 1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status="взят в ремонт",
+                            repair_unique_id=generate_alphanum_random_string(20)
                             )
 
         new_repair_event = LogItem(kind_table="Ремонт",
@@ -293,14 +302,14 @@ class GeoLocationController:
 
     @staticmethod
     async def move_from_repair(material_id_to_repair,
-                                 solved_description: str,
-                                 who_was_given_to: str,
-                                 dept: str,
-                                 status: str,
-                                 db: Session = Depends(get_db),
-                                 user: User = Depends(AuthUtil.decode_jwt),
-                                 t: str = None,  # jwt токен
-                                 ):
+                               solved_description: str,
+                               who_was_given_to: str,
+                               dept: str,
+                               status: str,
+                               db: Session = Depends(get_db),
+                               user: User = Depends(AuthUtil.decode_jwt),
+                               t: str = None,  # jwt токен
+                               ):
 
         try:
             result = await AuthUtil.decode_jwt(t)
@@ -319,14 +328,17 @@ class GeoLocationController:
 
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+        un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
 
-        new_repair = Repair(material_id=material_id_to_repair,
-                            responsible_it_dept_user=user.get("username"),
-                            problem_description=solved_description,
-                            user_whose_technique=who_was_given_to,
-                            repair_number=rapair_count_last + 1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                            )
+        get_out_repair = Repair(material_id=material_id_to_repair,
+                                responsible_it_dept_user=user.get("username"),
+                                problem_description=solved_description,
+                                user_whose_technique=who_was_given_to,
+                                repair_number=rapair_count_last + 1,
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                repair_status="выдан из ремонта",
+                                repair_unique_id=un_number_of_repair
+                                )
 
         new_repair_event = LogItem(kind_table="Ремонт",
                                    user_id=user["username"],
@@ -336,7 +348,7 @@ class GeoLocationController:
                                                     f' технику забрал {who_was_given_to}',
                                    date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                    )
-        db.add(new_repair)
+        db.add(get_out_repair)
         db.add(new_location)
         db.add(new_repair_event)
         db.commit()
