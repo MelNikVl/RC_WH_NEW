@@ -20,7 +20,7 @@ from utils.utils import response
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User, GeoLocation, Material
+from models.models import User, GeoLocation, Material, Repair
 
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
@@ -174,6 +174,7 @@ class FrontMainController:
 
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
         material_geo = jsonable_encoder(db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all())
+        repairs = jsonable_encoder(db.query(Repair).filter(Repair.material_id == material_id).all())
         list_for_geo = []
         for i in material_geo:
             list_for_geo.append(i)
@@ -184,5 +185,6 @@ class FrontMainController:
         out["token"] = t
         out["one_material"] = material_card
         out["geo_material"] = material_geo
+        out["repairs"] = repairs
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
