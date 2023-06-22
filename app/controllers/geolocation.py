@@ -7,6 +7,7 @@ from typing import Dict, List
 import fastapi
 from fastapi import Depends, Request, UploadFile, File
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.crud.geolocation import GeoLocationCRUD
@@ -63,9 +64,17 @@ class GeoLocationController:
     async def add_to_trash(material_id,
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
-        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all()[-1]
-        add_to_trash.status = "на списание"
-        db.commit()
+        # add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).first()
+        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
+            desc(GeoLocation.date_time)).all()[0]
+        print(add_to_trash)
+
+        send_to_trash_01 = GeoLocation(material_id=material_id,
+                                       place=add_to_trash.place,
+                                       client_mail=user.get("username"),
+                                       status="на списание",
+                                       date_time=datetime.datetime.now()
+                                       )
 
         # логируем
         create_geo_event = LogItem(kind_table="Расположение активов",
@@ -75,6 +84,8 @@ class GeoLocationController:
                                    values_of_change="актив добавлен к списанию",
                                    date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                    )
+
+        db.add(send_to_trash_01)
         db.add(create_geo_event)
         db.commit()
 
@@ -185,8 +196,9 @@ class GeoLocationController:
             db.delete(material_for_delete)
             print(f'актив {y.id} удален из таблицы Material')
 
-            geo_for_delete = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
-            db.delete(geo_for_delete)
+            # geo_for_delete = 
+            db.query(GeoLocation).filter(GeoLocation.material_id == y.id).delete()
+            # db.delete(geo_for_delete)
             print(f'история передвижений актива {y.id} удалена из таблицы Гео')
 
             db.commit()

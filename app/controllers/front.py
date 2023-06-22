@@ -20,7 +20,7 @@ from utils.utils import response
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User, GeoLocation
+from models.models import User, GeoLocation, Material
 
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
@@ -42,7 +42,7 @@ class FrontMainController:
         return Response("ok", media_type="text/plain")
 
     @staticmethod
-    async def generate_invoice(materials: InvoiceCreateRequest) -> FileResponse:   # генерируем ворд файл из таблицы списания
+    async def generate_invoice(materials: InvoiceCreateRequest) -> FileResponse:  # генерируем ворд файл из таблицы списания
         directory = "invoices"
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -160,3 +160,29 @@ class FrontMainController:
         out["role"] = result["role"]
 
         return templates.TemplateResponse("instructions.html", {"request": request, "data": out})
+
+    @staticmethod
+    async def only_one_card(material_id,
+                            request: Request = None,
+                            t: str = None,  # jwt токен
+                            db: Session = Depends(get_db)):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
+        material_geo = jsonable_encoder(db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all())
+        list_for_geo = []
+        for i in material_geo:
+            list_for_geo.append(i)
+
+        print(material_geo)
+
+        out: Dict = {}
+        out["token"] = t
+        out["one_material"] = material_card
+        out["geo_material"] = material_geo
+
+        return templates.TemplateResponse("one_material.html", {"request": request, "data": out})

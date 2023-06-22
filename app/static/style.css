@@ -135,7 +135,7 @@ button {
 }
 h1{
     display: block;
-    margin: 2em 0;
+    margin: 2ex 0;
     /* text-align: center; */
 }
 .popup input[type="text"]{
@@ -327,7 +327,7 @@ tbody input[type='checkbox'] {
 
 .hello_2 {margin: 1em 20px;font-size: revert;}
 
-.peremescheniye p {
+#history-block p {
       background-color: #8080803d;
       padding: 1em;
     }
@@ -369,3 +369,31 @@ tbody input[type='checkbox'] {
 }
 
 .p_for_count {margin: 1em;font-size: inherit;background: whitesmoke;}
+.file-label{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    font-size: 14px;
+    vertical-align: middle;
+    color: rgb(255 255 255);
+    text-align: center;
+    border-radius: 4px;
+    background-color: #419152;
+    line-height: 22px;
+    height: 40px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border: none;
+    margin: 0;
+    transition: background-color 0.2s;
+}
+
+.card_of_material {border: 1px solid #c3c3c3;background: #e3f2f58f;border-radius: 1em;padding: 1em;margin: 1em;width: 30%;font-size: inherit;float: left;}
+
+.geo_material_one {padding: 0 1em 1em;font-size: inherit;}
+
+.button_go_to_app_in_one_card {padding: 0.7em;font-size: inherit;}
+
+.title_one_card {padding: 0 1em 1em 0.5em;font-size: xx-large;font-weight: bold;float: left;}

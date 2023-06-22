@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <script type="text/javascript" src="/static/jquery-3.6.4.min.js"></script>
+    <!--  линк на стили -->
+    <link rel="stylesheet" href="/static/style.css">
+    <!--  добавляем фавконку -->
+    <link rel="icon" href="/static/w.jpg" type="image/x-icon">
+    <script src="/static/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script src="/static/main.js"></script>
+</head>
+<body>
+<div class="title_1">Main office IT warehouse tracker --- one material</div>
+    <div class="button_exit">
+        <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'
+                class="button_go_to_app_in_one_card">Вернуться в приложение</button>
+        <button id="go_to_auth" class="other_buttons"
+            onclick="window.location.href = '/app/auth'">Выйти</button>
+    </div>
+    <div class="clear"></div>
+
+    <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
+    <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
+    <div class="title_one_card">Статус:  {{ data.geo_material[-1].status }}</div>
+    <div class="clear"></div>
+
+    <div class="card_of_material">
+        <h3>Информация о активе</h3>
+        <div>Описание:  {{ data.one_material.description }}</div>
+        <div>Категория:  {{ data.one_material.category }}</div>
+        <div>Кто завел:  {{ data.one_material.user_id }}</div>
+        <div>Дата ввода в эксплуатацию:  {{ data.one_material.date_time }}</div>
+        <h4>Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</h4>
+    </div>
+
+    <div class="card_of_material">
+        <h3>Перемещения</h3>
+        {% for item in data.geo_material %}
+            <div class="geo_material_one">Место: {{ item.place }},
+                ответственный: {{ item.client_mail }},
+                статус: {{ item.status }},
+                дата перемещения: {{ item.date_time }}
+            </div>
+            <div class="geo_material_one">-------</div>
+        {% endfor %}
+    </div>
+    <div class="clear"></div>
+
+    <div class="card_of_material">
+        <h3>Ремонты:    </h3>
+    </div>
+    <div class="clear"></div>
+
+
+</body>
+</html>

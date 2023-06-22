@@ -36,9 +36,8 @@
     </div>
 
     <div class="counts">
-        <p class="p_for_count">Всего активов: {{ data.count_all }} </p>
+        <p class="p_for_count"><b>Всего активов: {{ data.count_all }} </b></p>
         <p class="p_for_count">Списание: {{ data.count_for_trash }}</p>
-<!--        <p class="p_for_count">Ремонт: 0</p>-->
         <p class="p_for_count">Хранение: {{ data.count_warehouse }}</p>
         <p class="p_for_count">Выдано: {{ data.count_in_work }}</p>
     </div>
@@ -58,6 +57,7 @@
         </div>
         <!--  фильтры -->
         <div class="input-wrapper">
+            <div>Фильтры</div>
             <input class="filter" type="text" placeholder="ID" id="id-filter" style="width: 60px;">
             <input class="filter" type="text" placeholder="Категория" id="category-filter">
             <input class="filter" type="text" placeholder="Дата-Время" id="date-filter">
@@ -96,7 +96,7 @@
                     <th>Дата ввода</th>
                     <th>Расположение</th>
                     <th>Cтатус</th>
-                    <th>Ссылка на фото</th>
+                    <th>Инфо</th>
                 </tr>
             </thead>
             <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
@@ -112,7 +112,9 @@
                     <td>{{ item.date_time }}</td>
                     <td>{{ item["geolocation_place"] }}</td>
                     <td>{{ item["geolocation_status"] }}</td>
-                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>
+<!--                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>-->
+                    <td><a href="/app/{{ item.id }}?t={{ data.token }}">подробнее</a></td>
+
                 </tr>
                 {% endfor %}
             <tbody>
@@ -148,7 +150,7 @@
             <div class="new-wrapper">
                 <input type="text" placeholder="ID актива с наклейки">
                 <div class="select-wrapper">
-                    <input class="select-result" value="компьютер" type="text" style="border-width: 0;appearance: none;"
+                    <input class="select-result" value="Компьютер" type="text" style="border-width: 0;appearance: none;"
                         readonly placeholder="категория">
                     <div class="select">
                         <div class="option">
@@ -222,7 +224,7 @@
                 <img src="static/close.svg" alt="close">
             </div>
             <h1>История местоположений актива</h1>
-            <div id="history-block" class="peremescheniye"></div>
+            <div id="history-block"></div>
 
         </div>
     </div>

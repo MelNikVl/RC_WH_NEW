@@ -17,11 +17,11 @@ function invert_selection(elem){
     // здесь мы прописываем какие кнопки активны после выбора товара или товаров
     switch ($('tbody > tr.selected').length) {
         case 0:
-            $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash, #move_to_trash").prop('disabled', true);
+            $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash").prop('disabled', true);
             $("#delete_user, #make_admin").addClass("disabled-btn");
             break;
         case 1:
-            $("#history, #delete, #relocate, #add_photo, #remont, #send_to_trash, #move_to_trash").prop('disabled', false);
+            $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash").prop('disabled', false);
             $("#delete_user, #make_admin").removeClass("disabled-btn");
             break;
         default:
@@ -36,7 +36,7 @@ function invert_selection(elem){
 $(document).ready(function () {
     //Деактивация кнопок при старте страницы
     $("#delete_user, #make_admin").addClass("disabled-btn");
-    $("#history,#submit-photo, #delete, #relocate, #send_to_trash, #add_photo, #remont, #move_to_trash").prop('disabled', true);
+    $("#history,#submit-photo, #delete, #relocate, #add_photo, #remont, #move_to_trash").prop('disabled', true);
 
     $("#move_to_trash").on("click", function(){
         if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы? Это действие будет уже не отменить')) {
@@ -344,7 +344,7 @@ async function upload_photos(mat_id) {
 async function move_to_trash(id){
     try {
         const response = await fetch(host+"/geolocation/add_to_trash?material_id="+id, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + access_token
