@@ -298,7 +298,7 @@ class GeoLocationController:
         db.add(new_repair_event)
         db.commit()
 
-        return "взяли на ремонт"
+        return response(data="взяли на ремонт", status=True)
 
     @staticmethod
     async def move_from_repair(material_id_to_repair,
@@ -353,4 +353,46 @@ class GeoLocationController:
         db.add(new_repair_event)
         db.commit()
 
-        return "отдали с ремонта"
+        return response(data="отдали с ремонта", status=True)
+
+
+    @staticmethod
+    async def add_details_to_repair(material_id_to_repair,
+                                   details: str,
+                                   db: Session = Depends(get_db),
+                                   user: User = Depends(AuthUtil.decode_jwt),
+                                   t: str = None,  # jwt токен
+                                   ):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
+        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+        un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+        user_01 = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+
+        add_repair = Repair(material_id=material_id_to_repair,
+                            responsible_it_dept_user=user.get("username"),
+                            problem_description=details,
+                            user_whose_technique=user_01,
+                            repair_number=rapair_count_last + 1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status="добавление информации",
+                            repair_unique_id=un_number_of_repair
+                            )
+
+        new_repair_event = LogItem(kind_table="Ремонт",
+                                   user_id=user["username"],
+                                   passive_id=material_id_to_repair,
+                                   modified_cols="добавление информации",
+                                   values_of_change=f'что добавлено: {details}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+        db.add(add_repair)
+        db.add(new_repair_event)
+        db.commit()
+
+        return response(data="добавлена информация о ремонте", status=True)
