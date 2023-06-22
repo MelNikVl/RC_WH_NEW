@@ -1,7 +1,12 @@
 import datetime
 import json
 import os
+import smtplib, ssl
 import shutil
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from os.path import basename
 from typing import Dict, List
 import random
 import string
@@ -13,15 +18,48 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.crud.geolocation import GeoLocationCRUD
-from payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
+from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
 from starlette import status
 from starlette.responses import FileResponse
-from utils.utils import response
+from app.utils.utils import response
 
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
 from models.models import User, LogItem, GeoLocation, Material, Trash, Repair
+
+gmail_login = "testpython20231@gmail.com"
+gmail_pass = "seprtpqgzfwgcsvs"
+
+addresses = ["shumerrr@yandex.ru", "dklsgj@gmail.com", "raven10maxtgc@gmail.com"]
+
+
+def send_email(invoice):
+    message = MIMEMultipart("")
+    message["Subject"] = "Списание акивов"
+    message["From"] = gmail_login
+    message['To'] = ", ".join(addresses)
+    html = """\
+    <html>
+      <body>
+        <p>Накладная по списанию: </p>
+      </body>
+    </html>
+    """
+    part2 = MIMEText(html, "html")
+    message.attach(part2)
+
+    with open(invoice, "rb") as file:
+        part = MIMEApplication(file.read(), Name=basename(invoice))
+        part['Content-Disposition'] = 'attachment; filename="%s"' % basename(invoice)
+        message.attach(part)
+
+    serv = smtplib.SMTP("smtp.gmail.com", 587)
+    # smtp_server.ehlo()
+    serv.starttls()
+    serv.login(gmail_login, gmail_pass)
+    serv.sendmail(gmail_login, addresses, message.as_string())
+
 
 """
 контроллер 
@@ -106,7 +144,6 @@ class GeoLocationController:
                          request: Request = None,
                          t: str = None  # jwt токен
                          ):
-
         # проверка токена на валидность и если он не вализный - переадресация на авторизацию
         try:
             result = await AuthUtil.decode_jwt(t)
@@ -219,7 +256,8 @@ class GeoLocationController:
                                    )
         db.add(create_geo_event)
         db.commit()
-        print(f'логирование произведено')
+
+        send_email(out_filename)
 
         return response(data=f'активы списаны, фото списания '
                              f'и накладная загружены, папки с фото техники перемещены в архив,'
