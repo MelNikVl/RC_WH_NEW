@@ -290,3 +290,55 @@ class GeoLocationController:
         db.commit()
 
         return "взяли на ремонт"
+
+    @staticmethod
+    async def move_from_repair(material_id_to_repair,
+                                 solved_description: str,
+                                 who_was_given_to: str,
+                                 dept: str,
+                                 status: str,
+                                 db: Session = Depends(get_db),
+                                 user: User = Depends(AuthUtil.decode_jwt),
+                                 t: str = None,  # jwt токен
+                                 ):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id_to_repair).order_by(
+            desc(GeoLocation.date_time)).all()[0]
+
+        new_location = GeoLocation(material_id=material_id_to_repair,
+                                   place=dept,
+                                   client_mail=who_was_given_to,
+                                   status=status,
+                                   date_time=datetime.datetime.now()
+                                   )
+
+        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
+        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+
+        new_repair = Repair(material_id=material_id_to_repair,
+                            responsible_it_dept_user=user.get("username"),
+                            problem_description=solved_description,
+                            user_whose_technique=who_was_given_to,
+                            repair_number=rapair_count_last + 1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            )
+
+        new_repair_event = LogItem(kind_table="Ремонт",
+                                   user_id=user["username"],
+                                   passive_id=material_id_to_repair,
+                                   modified_cols="актив выдан из ремонта",
+                                   values_of_change=f'решение: {solved_description},'
+                                                    f' технику забрал {who_was_given_to}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+        db.add(new_repair)
+        db.add(new_location)
+        db.add(new_repair_event)
+        db.commit()
+
+        return "отдали с ремонта"

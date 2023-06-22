@@ -57,10 +57,10 @@
         {% for item in data.repairs %}
             <div class="geo_material_one">
                 <div>Дата: {{ item.date_time }},</div>
-                <div>ответственный: {{ item.responsible_it_dept_user }},</div>
-                <div>кто сдал: {{ item.user_whose_technique }},</div>
-                <div>проблема: {{ item.problem_description }},</div>
-                <div>дата перемещения: {{ item.date_time }}</div>
+                <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
+                <div>Кто сдал: {{ item.user_whose_technique }},</div>
+                <div>Проблема / решение: {{ item.problem_description }},</div>
+                <div>Дата перемещения: {{ item.date_time }}</div>
             </div>
             <div> </div>
         {% endfor %}
