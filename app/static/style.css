@@ -503,3 +503,9 @@ tbody input[type='checkbox'] {
     border-radius: 1em;
     padding: 1em;
 }
+
+.status_000{
+    background: #a0ef914d;
+    /* border-radius: 1em; */
+    /* padding: 1em; */
+}
