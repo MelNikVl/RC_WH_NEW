@@ -6,6 +6,7 @@ from typing import List, Dict
 import fastapi
 from fastapi import Depends, FastAPI, Request, Response
 from pydantic import parse_obj_as
+from sqlalchemy import distinct
 from sqlalchemy.orm import Session
 
 from fastapi.templating import Jinja2Templates
@@ -42,7 +43,8 @@ class FrontMainController:
         return Response("ok", media_type="text/plain")
 
     @staticmethod
-    async def generate_invoice(materials: InvoiceCreateRequest) -> FileResponse:  # генерируем ворд файл из таблицы списания
+    async def generate_invoice(
+            materials: InvoiceCreateRequest) -> FileResponse:  # генерируем ворд файл из таблицы списания
         directory = "invoices"
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -174,17 +176,15 @@ class FrontMainController:
 
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
         material_geo = jsonable_encoder(db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all())
-        repairs = jsonable_encoder(db.query(Repair).filter(Repair.material_id == material_id).all())
+
         list_for_geo = []
         for i in material_geo:
             list_for_geo.append(i)
-
-        print(material_geo)
 
         out: Dict = {}
         out["token"] = t
         out["one_material"] = material_card
         out["geo_material"] = material_geo
-        out["repairs"] = repairs
+        out["repairs"] = GeoLocationCRUD.list_of_repair(material_id, db)
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})

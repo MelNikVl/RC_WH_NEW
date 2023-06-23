@@ -465,6 +465,11 @@ tbody input[type='checkbox'] {
 .geo_material_one {
     padding: 0 1em 1em;
     font-size: inherit;
+    border: 1px solid #4c88af;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 1em;
+    background: #f1f1f178;
 }
 
 .button_go_to_app_in_one_card {
@@ -485,4 +490,16 @@ tbody input[type='checkbox'] {
     z-index: 20;
     background: #fff;
     flex-direction: column;
+}
+
+.geo_material_one_dial {
+    background: #dcfdfa;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+.repair_stile{
+    background: #dcfdfa;
+    border-radius: 1em;
+    padding: 1em;
 }

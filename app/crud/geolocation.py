@@ -1,15 +1,16 @@
 import sys
 from typing import List
 
-from sqlalchemy import desc
+from sqlalchemy import desc, distinct
 
 sys.path.append("..")
 import datetime
 
 from fastapi import HTTPException
 from pydantic import parse_obj_as
-from models.models import Material, GeoLocation, Trash
+from models.models import Material, GeoLocation, Trash, Repair
 from payload.response import GeoLocationUploadResponse
+from fastapi.encoders import jsonable_encoder
 
 # from app.payload.response import GeoLocationUploadResponse
 
@@ -102,3 +103,23 @@ class GeoLocationCRUD:
                 return None
             else:
                 return parse_obj_as(GeoLocationUploadResponse, geolocation[0])
+
+
+    @staticmethod
+    def list_of_repair(material_id, db):
+        all_rep_unique_id = db.query(distinct(Repair.repair_unique_id)).filter(Repair.material_id == material_id).all()
+        unique_ids = [item[0] for item in all_rep_unique_id]
+        # uniq_id_val = {}
+        uniq_id_val = []
+        for i in unique_ids:
+            # rt = 1
+            last = []
+            for ie in db.query(Repair).filter(Repair.repair_unique_id == i).all():
+                rrrr = jsonable_encoder(ie)
+                print(ie)
+                last.append(rrrr)
+            uniq_id_val.append(last)
+            # uniq_id_val[rt] = last
+            # rt += 1
+        print(uniq_id_val)
+        return uniq_id_val

@@ -52,17 +52,23 @@
     </div>
     <div class="clear"></div>
 
-    <div class="card_of_material">
+    <div class="repair_stile">
         <h3>Ремонты:    </h3>
-        {% for item in data.repairs %}
+
+         {% for item in data.repairs %}
             <div class="geo_material_one">
-                <div>Дата: {{ item.date_time }},</div>
-                <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
-                <div>Кто сдал: {{ item.user_whose_technique }},</div>
-                <div>Проблема / решение: {{ item.problem_description }},</div>
-                <div>Дата перемещения: {{ item.date_time }}</div>
+
+                {% for item in item %}
+                    <div class="geo_material_one_dial">
+                        <div>Дата: {{ item.date_time }},</div>
+                        <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
+                        <div>Кто сдал: {{ item.user_whose_technique }},</div>
+                        <div>Проблема / решение: {{ item.problem_description }},</div>
+                        <div>Дата перемещения: {{ item.date_time }}</div>
+                        </div>
+                {% endfor %}
+
             </div>
-            <div> </div>
         {% endfor %}
     </div>
     <div class="clear"></div>
