@@ -509,3 +509,9 @@ tbody input[type='checkbox'] {
     /* border-radius: 1em; */
     /* padding: 1em; */
 }
+
+.filters{
+    float: left;
+    font-size: x-large;
+    margin: 0 1em 0 0;
+}
