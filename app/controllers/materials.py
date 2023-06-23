@@ -17,7 +17,7 @@ from db import db
 from db.db import get_db
 from payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest, \
     MaterialDeleteRequest
-from models.models import Material, GeoLocation, LogItem
+from models.models import Material, GeoLocation, LogItem, Repair
 from models.models import User, Material
 
 logging.basicConfig(level=logging.INFO,
@@ -38,7 +38,14 @@ class MaterialsController:
 
         material = Material(id=body.id, user_id=user.get("username"), category=body.category, title=body.title,
                             description=body.description, date_time=datetime.datetime.now())
+        new_repair = Repair(material_id=body.id,
+                            responsible_it_dept_user=user.get("username"),
+                            problem_description="создание карточки актива",
+                            repair_number=1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            )
         db.add(material)
+        db.add(new_repair)
         db.commit()
         geolocation = GeoLocation(material_id=material.id, place=body.place, client_mail=user.get("username"),
                                   status="хранение", date_time=datetime.datetime.now())

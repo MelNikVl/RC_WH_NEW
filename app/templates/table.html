@@ -46,13 +46,15 @@
 
     <div class="table-wrapper">
         <div class="button-wrapper">
-            <button id="new">Завести актив</button>
-            <button id="delete">Удалить актив</button>
-            <button id="relocate">Переместить актив</button>
-            <button id="history">Посмотреть перемещения актива</button>
-            <button id="add_photo">Добавить фото</button>
-            <div>|||</div>
-            <button id="move_to_trash">Отправить на списание</button>
+            <button id="open_actions">Действия с активами</button>
+            <div class="action-buttons" style="display: none;">
+                <button id="new">Завести актив</button>
+                <button id="delete">Удалить актив</button>
+                <button id="relocate">Переместить актив</button>
+                <button id="history">Посмотреть перемещения актива</button>
+                <button id="add_photo">Добавить фото или файлы</button>
+                <button id="move_to_trash">Отправить на списание</button>
+            </div>
             <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
         </div>
         <!--  фильтры -->

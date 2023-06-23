@@ -65,3 +65,18 @@ class LogItem(Base):
     modified_cols: str = Column(String)
     values_of_change: str = Column(String)
     date_time: str = Column(String)
+
+
+class Repair(Base):
+    __tablename__ = "repair"
+
+    id: int = Column(Integer, primary_key=True, index=True)
+    material_id: int = Column(Integer)
+    responsible_it_dept_user: str = Column(String)
+    problem_description: str = Column(String)
+    user_whose_technique: str = Column(String)
+    date_time: str = Column(String)
+    repair_number: int = Column(Integer)
+    repair_status: str = Column(String)
+    repair_unique_id: str = Column(String)
+

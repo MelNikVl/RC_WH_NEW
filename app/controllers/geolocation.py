@@ -1,8 +1,15 @@
 import datetime
 import json
 import os
+import smtplib, ssl
 import shutil
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from os.path import basename
 from typing import Dict, List
+import random
+import string
 
 import fastapi
 from fastapi import Depends, Request, UploadFile, File
@@ -11,15 +18,48 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.crud.geolocation import GeoLocationCRUD
-from payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
+from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
 from starlette import status
 from starlette.responses import FileResponse
-from utils.utils import response
+from app.utils.utils import response
 
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User, LogItem, GeoLocation, Material, Trash
+from models.models import User, LogItem, GeoLocation, Material, Trash, Repair
+
+gmail_login = "testpython20231@gmail.com"
+gmail_pass = "seprtpqgzfwgcsvs"
+
+addresses = ["shumerrr@yandex.ru", "dklsgj@gmail.com", "raven10maxtgc@gmail.com"]
+
+
+def send_email(invoice):
+    message = MIMEMultipart("")
+    message["Subject"] = "Списание акивов"
+    message["From"] = gmail_login
+    message['To'] = ", ".join(addresses)
+    html = """\
+    <html>
+      <body>
+        <p>Накладная по списанию: </p>
+      </body>
+    </html>
+    """
+    part2 = MIMEText(html, "html")
+    message.attach(part2)
+
+    with open(invoice, "rb") as file:
+        part = MIMEApplication(file.read(), Name=basename(invoice))
+        part['Content-Disposition'] = 'attachment; filename="%s"' % basename(invoice)
+        message.attach(part)
+
+    serv = smtplib.SMTP("smtp.gmail.com", 587)
+    # smtp_server.ehlo()
+    serv.starttls()
+    serv.login(gmail_login, gmail_pass)
+    serv.sendmail(gmail_login, addresses, message.as_string())
+
 
 """
 контроллер 
@@ -104,7 +144,6 @@ class GeoLocationController:
                          request: Request = None,
                          t: str = None  # jwt токен
                          ):
-
         # проверка токена на валидность и если он не вализный - переадресация на авторизацию
         try:
             result = await AuthUtil.decode_jwt(t)
@@ -217,7 +256,8 @@ class GeoLocationController:
                                    )
         db.add(create_geo_event)
         db.commit()
-        print(f'логирование произведено')
+
+        send_email(out_filename)
 
         return response(data=f'активы списаны, фото списания '
                              f'и накладная загружены, папки с фото техники перемещены в архив,'
@@ -240,3 +280,158 @@ class GeoLocationController:
         out["token"] = t
 
         return templates.TemplateResponse("archive_trash_page.html", {"request": request, "data": out})
+
+    @staticmethod
+    async def move_to_repair(material_id_to_repair,
+                             whats_problem_is: str,
+                             who_gave_it_away: str,
+                             db: Session = Depends(get_db),
+                             user: User = Depends(AuthUtil.decode_jwt),
+                             t: str = None,  # jwt токен
+                             ):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id_to_repair).order_by(
+            desc(GeoLocation.date_time)).all()[0]
+
+        new_location = GeoLocation(material_id=material_id_to_repair,
+                                   place="IT отдел",
+                                   client_mail=who_gave_it_away,
+                                   status="ремонт",
+                                   date_time=datetime.datetime.now()
+                                   )
+
+        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
+        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+
+        def generate_alphanum_random_string(length):
+            letters_and_digits = string.ascii_letters + string.digits
+            rand_string = ''.join(random.sample(letters_and_digits, length))
+            return rand_string
+
+        new_repair = Repair(material_id=material_id_to_repair,
+                            responsible_it_dept_user=user.get("username"),
+                            problem_description=whats_problem_is,
+                            user_whose_technique=who_gave_it_away,
+                            repair_number=rapair_count_last + 1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status="взят в ремонт",
+                            repair_unique_id=generate_alphanum_random_string(20)
+                            )
+
+        new_repair_event = LogItem(kind_table="Ремонт",
+                                   user_id=user["username"],
+                                   passive_id=material_id_to_repair,
+                                   modified_cols="актив взят в ремонт",
+                                   values_of_change=f'проблема: {whats_problem_is},'
+                                                    f' технику сдал {who_gave_it_away}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+        db.add(new_repair)
+        db.add(new_location)
+        db.add(new_repair_event)
+        db.commit()
+
+        return response(data="взяли на ремонт", status=True)
+
+    @staticmethod
+    async def move_from_repair(material_id_to_repair,
+                               solved_description: str,
+                               who_was_given_to: str,
+                               dept: str,
+                               status: str,
+                               db: Session = Depends(get_db),
+                               user: User = Depends(AuthUtil.decode_jwt),
+                               t: str = None,  # jwt токен
+                               ):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id_to_repair).order_by(
+            desc(GeoLocation.date_time)).all()[0]
+
+        new_location = GeoLocation(material_id=material_id_to_repair,
+                                   place=dept,
+                                   client_mail=who_was_given_to,
+                                   status=status,
+                                   date_time=datetime.datetime.now()
+                                   )
+
+        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
+        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+        un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+
+        get_out_repair = Repair(material_id=material_id_to_repair,
+                                responsible_it_dept_user=user.get("username"),
+                                problem_description=solved_description,
+                                user_whose_technique=who_was_given_to,
+                                repair_number=rapair_count_last + 1,
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                repair_status="выдан из ремонта",
+                                repair_unique_id=un_number_of_repair
+                                )
+
+        new_repair_event = LogItem(kind_table="Ремонт",
+                                   user_id=user["username"],
+                                   passive_id=material_id_to_repair,
+                                   modified_cols="актив выдан из ремонта",
+                                   values_of_change=f'решение: {solved_description},'
+                                                    f' технику забрал {who_was_given_to}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+        db.add(get_out_repair)
+        db.add(new_location)
+        db.add(new_repair_event)
+        db.commit()
+
+        return response(data="отдали с ремонта", status=True)
+
+
+    @staticmethod
+    async def add_details_to_repair(material_id_to_repair,
+                                   details: str,
+                                   invoice: UploadFile = File(...),
+                                   db: Session = Depends(get_db),
+                                   user: User = Depends(AuthUtil.decode_jwt),
+                                   t: str = None,  # jwt токен
+                                   ):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
+        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+        un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+        user_01 = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+
+        add_repair = Repair(material_id=material_id_to_repair,
+                            responsible_it_dept_user=user.get("username"),
+                            problem_description=details,
+                            user_whose_technique=user_01,
+                            repair_number=rapair_count_last + 1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status="добавление информации",
+                            repair_unique_id=un_number_of_repair
+                            )
+
+        new_repair_event = LogItem(kind_table="Ремонт",
+                                   user_id=user["username"],
+                                   passive_id=material_id_to_repair,
+                                   modified_cols="добавление информации",
+                                   values_of_change=f'что добавлено: {details}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+        db.add(add_repair)
+        db.add(new_repair_event)
+        db.commit()
+
+        return response(data="добавлена информация о ремонте", status=True)

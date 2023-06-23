@@ -1,13 +1,15 @@
 $(document).ready(function () {
+    $("#loader").hide();
     $("#send-to-trash-finally").prop("disabled", true);
     $("#send-to-trash-finally").on("click", async function () {
         if (confirm("Все активы из данной таблицы будут списаны. Продолжить?")) {
+            $("#loader").fadeIn(100);
             let form_data = new FormData();
             $.each($("#upload-trashing-photos")[0].files, function (key, input) {
                 form_data.append('photos', input);
             });
             form_data.append('invoice', $("#upload-invoice")[0].files[0]);
-            send_to_trash_finally(form_data);
+            await send_to_trash_finally(form_data);
         }
     });
     let form_changed = function () {
@@ -72,12 +74,13 @@ async function send_to_trash_finally(form_data) {
         const json_response = await response.json();
         if (json_response["status"] == true) {
             alert("Активы были успешно списаны!");
+            window.location.reload();
         } else {
             alert("Произошла ошибка!");
 
         }
-        window.location.reload();
     } catch (error) {
         alert("Произошла ошибка!");
     }
+    $("#loader").hide();
 }

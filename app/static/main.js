@@ -34,6 +34,15 @@ function invert_selection(elem){
 
 // активность кнопок (доступна она или нет)
 $(document).ready(function () {
+    //Скрыть действия с активами при любом клике в окне
+    $(window).click(function() {
+        $(".action-buttons").fadeOut(300);
+    });
+    //При клике по кнопке показать действия с активами
+    $("#open_actions").on("click", function(e){
+        e.stopPropagation(); //Прекратить распространение события клика на дальнейшие элементы
+        $(".action-buttons").fadeToggle(300);
+    });
     //Деактивация кнопок при старте страницы
     $("#delete_user, #make_admin").addClass("disabled-btn");
     $("#history,#submit-photo, #delete, #relocate, #add_photo, #remont, #move_to_trash").prop('disabled', true);
