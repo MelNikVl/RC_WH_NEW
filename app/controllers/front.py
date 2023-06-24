@@ -119,8 +119,6 @@ class FrontMainController:
                         ):
         return templates.TemplateResponse("auth.html", {"request": request})
 
-    # test 2345
-
     @staticmethod
     async def admins_page(db: Session = Depends(get_db),
                           request: Request = None,

@@ -311,7 +311,6 @@ tbody input[type='checkbox'] {
 
 .filter_count {
     margin: 1em 20px;
-    /* background-color: #9999993b; */
     font-size: x-large;
 }
 
@@ -347,16 +346,12 @@ tbody input[type='checkbox'] {
 }
 
 .other_buttons {
-    /* margin: 1em 20px; */
     font-size: inherit;
-    /* float: left; */
     background-color: #92d7c7;
 }
 
 .disabled-btn {
-    /* margin: 1em 20px; */
     font-size: inherit;
-    /* float: left; */
     background-color: #a4d5bd;
     pointer-events: none;
 }
@@ -377,7 +372,6 @@ tbody input[type='checkbox'] {
 }
 
 .button_exit {
-    /* background-color: #8080803d; */
     padding: 2.5em 0 0 0;
     text-align: right;
     margin: 1em;
@@ -385,15 +379,11 @@ tbody input[type='checkbox'] {
 }
 
 .clear {
-    /* background: #000; */
     clear: both;
 }
 
 .for_logs_1 {
-    /* padding: 2.5em 0 0 0; */
-    /* text-align: right; */
     margin: 0 0 0 1.2em;
-    /* width: 78.7%; */
 }
 
 .count_for_trash {

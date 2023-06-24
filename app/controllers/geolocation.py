@@ -61,13 +61,6 @@ def send_email(invoice):
     serv.sendmail(gmail_login, addresses, message.as_string())
 
 
-"""
-контроллер 
-то класс который принимает в себя параметры из эндпоинта, котоыре передаются ему по опредленному юрл
-который указан в роутс
-"""
-
-
 class GeoLocationController:
     @staticmethod
     async def create(body: GeoLocationCreateRequest,
@@ -104,7 +97,6 @@ class GeoLocationController:
     async def add_to_trash(material_id,
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
-        # add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).first()
         add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
             desc(GeoLocation.date_time)).all()[0]
         print(add_to_trash)
@@ -132,14 +124,6 @@ class GeoLocationController:
         return response(data=f'актив {material_id} добавлен в список на списание', status=True)
 
     @staticmethod
-    async def download_file_for_trash():
-        # Укажите путь и имя файла, который нужно скачать
-        file_path = "llll.xlsx"
-
-        # Верните объект FileResponse для скачивания файла
-        return FileResponse(file_path, filename="имя_файла_при_скачивании")
-
-    @staticmethod
     async def trash_page(db: Session = Depends(get_db),
                          request: Request = None,
                          t: str = None  # jwt токен
@@ -162,8 +146,6 @@ class GeoLocationController:
                                     db: Session = Depends(get_db),
                                     invoice: UploadFile = File(...),
                                     user: User = Depends(AuthUtil.decode_jwt)):
-
-        # отправить письмо на 2 адреса с накладной и ссылкой на папку списания
 
         # получаем список товаров на списание
         materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
@@ -235,9 +217,7 @@ class GeoLocationController:
             db.delete(material_for_delete)
             print(f'актив {y.id} удален из таблицы Material')
 
-            # geo_for_delete = 
             db.query(GeoLocation).filter(GeoLocation.material_id == y.id).delete()
-            # db.delete(geo_for_delete)
             print(f'история передвижений актива {y.id} удалена из таблицы Гео')
 
             db.commit()
