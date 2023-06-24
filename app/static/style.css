@@ -350,7 +350,7 @@ tbody input[type='checkbox'] {
     /* margin: 1em 20px; */
     font-size: inherit;
     /* float: left; */
-    background-color: #a4d5bd;
+    background-color: #92d7c7;
 }
 
 .disabled-btn {
@@ -413,6 +413,7 @@ tbody input[type='checkbox'] {
     background: whitesmoke;
     border-radius: 1em;
     padding: 0 0 1.7em 0;
+    height: 200px;
 }
 
 .counts {
@@ -422,6 +423,7 @@ tbody input[type='checkbox'] {
     border-radius: 1em;
     float: left;
     padding: 1em;
+    height: 200px;
 }
 
 .p_for_count {
@@ -505,9 +507,7 @@ tbody input[type='checkbox'] {
 }
 
 .status_000{
-    background: #a0ef914d;
-    /* border-radius: 1em; */
-    /* padding: 1em; */
+    background: #92d7c7;
 }
 
 .filters{
@@ -515,3 +515,5 @@ tbody input[type='checkbox'] {
     font-size: x-large;
     margin: 0 1em 0 0;
 }
+
+.admin_but {/* font-size: x-large; */margin: 1em;background: #92d7c7;}

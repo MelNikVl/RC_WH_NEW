@@ -1,7 +1,7 @@
 import sys
-from typing import List
+from typing import List, Dict
 
-from sqlalchemy import desc, distinct
+from sqlalchemy import desc, distinct, func
 
 sys.path.append("..")
 import datetime
@@ -38,7 +38,7 @@ class GeoLocationCRUD:
 
     @staticmethod
     async def get_materials_for_trash(db) -> List[Material]:
-        all_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "на списание").all()
+        all_materials_for_trash = db.query(GeoLocation).filter(GeoLocation.status == "списание").all()
         materials_for_trash = []
         for i in all_materials_for_trash:
             flag = False
@@ -52,34 +52,40 @@ class GeoLocationCRUD:
         return materials_for_trash
 
     @staticmethod
-    async def get_materials_in_work(db) -> List[Material]:
-        all_materials_in_work = db.query(GeoLocation).filter(GeoLocation.status == "Выдан").all()
-        materials_in_work = []
-        for i in all_materials_in_work:
-            flag = False
-            if db.query(Material).filter(Material.id == i.material_id).first():
-                for j in materials_in_work:
-                    if (j.id == i.material_id):
-                        flag = True
-                        break
-                if not flag:
-                    materials_in_work.append(db.query(Material).filter(Material.id == i.material_id).first())
-        return materials_in_work
+    async def get_materials_at_warehouses(db):
 
-    @staticmethod
-    async def get_materials_at_warehouses(db) -> List[Material]:
-        all_materials_at_warehouses = db.query(GeoLocation).filter(GeoLocation.status == "хранение").all()
-        materials_at_warehouses = []
-        for i in all_materials_at_warehouses:
-            flag = False
-            if db.query(Material).filter(Material.id == i.material_id).first():
-                for j in materials_at_warehouses:
-                    if (j.id == i.material_id):
-                        flag = True
-                        break
-                if not flag:
-                    materials_at_warehouses.append(db.query(Material).filter(Material.id == i.material_id).first())
-        return materials_at_warehouses
+        # Запрос для нахождения последних перемещений каждого товара
+        subquery = db.query(GeoLocation.material_id, func.max(GeoLocation.date_time).label('max_date_time')). \
+            group_by(GeoLocation.material_id).subquery()
+        query = db.query(GeoLocation).join(subquery, GeoLocation.material_id == subquery.c.material_id). \
+            filter(GeoLocation.date_time == subquery.c.max_date_time)
+
+        latest_movements = query.all()
+
+        out: Dict = {}
+        warehouse_count = 0
+        get_out_count = 0
+        repair_count = 0
+        trash_count = 0
+
+        for i in latest_movements:
+            if i.status == "хранение":
+                warehouse_count += 1
+            elif i.status == "выдан":
+                get_out_count += 1
+            elif i.status == "ремонт":
+                repair_count += 1
+            elif i.status == "списание":
+                trash_count += 1
+
+        all_count = warehouse_count + get_out_count + repair_count + trash_count
+        out["all_count"] = all_count
+        out["warehouse_count"] = warehouse_count
+        out["get_out_count"] = get_out_count
+        out["repair_count"] = repair_count
+        out["trash_count"] = trash_count
+
+        return out
 
 
     @staticmethod
@@ -116,10 +122,8 @@ class GeoLocationCRUD:
             last = []
             for ie in db.query(Repair).filter(Repair.repair_unique_id == i).all():
                 rrrr = jsonable_encoder(ie)
-                print(ie)
                 last.append(rrrr)
             uniq_id_val.append(last)
             # uniq_id_val[rt] = last
             # rt += 1
-        print(uniq_id_val)
         return uniq_id_val

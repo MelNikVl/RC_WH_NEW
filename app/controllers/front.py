@@ -90,14 +90,9 @@ class FrontMainController:
         out: Dict = {}
         materials = await MaterialCRUD.list_of_materials(db=db)
         out[0] = jsonable_encoder(materials)
-        materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
-        material_in_work = await GeoLocationCRUD.get_materials_in_work(db=db)
-        material_at_warehouses = await GeoLocationCRUD.get_materials_at_warehouses(db=db)
 
-        out["count_for_trash"] = len(materials_for_trash)
-        out["count_all"] = len(materials)
-        out["count_warehouse"] = len(material_at_warehouses)
-        out["count_in_work"] = len(material_in_work)
+        # подсчет активов
+        out["count_warehouse"] = await GeoLocationCRUD.get_materials_at_warehouses(db=db)
 
         try:
             result = await AuthUtil.decode_jwt(t)

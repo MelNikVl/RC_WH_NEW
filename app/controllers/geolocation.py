@@ -112,7 +112,7 @@ class GeoLocationController:
         send_to_trash_01 = GeoLocation(material_id=material_id,
                                        place=add_to_trash.place,
                                        client_mail=user.get("username"),
-                                       status="на списание",
+                                       status="списание",
                                        date_time=datetime.datetime.now()
                                        )
 
