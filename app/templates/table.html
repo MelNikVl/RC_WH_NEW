@@ -27,7 +27,7 @@
     <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
     {% if data.role == True %}
     <p class="hello_2">у тебя <b>административный</b> доступ</p>
-    <button id="for_admins" class="other_buttons"
+    <button id="for_admins" class="admin_but"
             onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель администратора</button>
     {% endif %}
     {% if data.role == False %}
@@ -36,10 +36,11 @@
     </div>
 
     <div class="counts">
-        <p class="p_for_count"><b>Всего активов: {{ data.count_all }} </b></p>
-        <p class="p_for_count">Списание: ** в разработке</p>
-        <p class="p_for_count">Хранение: ** в разработке</p>
-        <p class="p_for_count">Выдано: ** в разработке</p>
+        <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
+        <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
+        <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
+        <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
+        <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
     </div>
 
      <div class="clear"></div>
@@ -76,10 +77,10 @@
                         <span>хранение</span>
                     </div>
                     <div class="option">
-                        <span>Выдан</span>
+                        <span>выдан</span>
                     </div>
                     <div class="option">
-                        <span>на списание</span>
+                        <span>списание</span>
                     </div>
                 </div>
             </div>
@@ -212,7 +213,7 @@
                         <span>хранение</span>
                     </div>
                     <div class="option">
-                        <span>Выдан</span>
+                        <span>выдан</span>
                     </div>
                 </div>
             </div>
