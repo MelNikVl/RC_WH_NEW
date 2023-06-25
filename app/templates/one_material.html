@@ -24,20 +24,21 @@
     </div>
     <div class="clear"></div>
 
-
-
     <div class="card_of_material_main">
         <div class="card_of_material_main_1">
             <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
             <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
             <div class="title_one_card status_000">Статус:  {{ data.geo_material[-1].status }}</div>
-            <p>Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
+
+            <p>Где сейчас: {{ data.geo_material[-1].place }}</p>
+            <p>Ответственный сейчас: {{ data.geo_material[-1].client_mail }}</p>
         </div>
         <div class="card_of_material_main_1">
             <div class="desc_09">Описание:  {{ data.one_material.description }}</div>
             <div class="desc_09">Категория:  {{ data.one_material.category }}</div>
             <div class="desc_09">Кто завел:  {{ data.one_material.user_id }}</div>
             <div class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</div>
+            <p>Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
         </div>
         <div class="clear"></div>
     </div>
