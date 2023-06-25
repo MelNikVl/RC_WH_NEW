@@ -61,6 +61,12 @@ def send_email(invoice):
     serv.sendmail(gmail_login, addresses, message.as_string())
 
 
+def generate_alphanum_random_string(length):
+    letters_and_digits = string.ascii_letters + string.digits
+    rand_string = ''.join(random.sample(letters_and_digits, length))
+    return rand_string
+
+
 class GeoLocationController:
     @staticmethod
     async def create(body: GeoLocationCreateRequest,
@@ -288,11 +294,6 @@ class GeoLocationController:
 
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
-
-        def generate_alphanum_random_string(length):
-            letters_and_digits = string.ascii_letters + string.digits
-            rand_string = ''.join(random.sample(letters_and_digits, length))
-            return rand_string
 
         new_repair = Repair(material_id=material_id_to_repair,
                             responsible_it_dept_user=user.get("username"),

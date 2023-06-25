@@ -496,6 +496,7 @@ tbody input[type='checkbox'] {
     padding: 1em;
     float: left;
     border: 1px solid #c3c3c3;
+    width: 45%;
 }
 
 .status_000{
@@ -508,7 +509,7 @@ tbody input[type='checkbox'] {
     margin: 0 1em 0 0;
 }
 
-.admin_but {/* font-size: x-large; */margin: 1em;background: #92d7c7;}
+.admin_but {margin: 1em;background: #92d7c7;}
 
 .card_of_material_main {font-size: x-large;/* margin: 0 1em 0 0; */background: #f9f9f9;border-radius: 1em;margin: 0 0 1em;}
 

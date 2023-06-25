@@ -1,7 +1,9 @@
 import datetime
 import logging
 import os, platform
+import random
 import shutil
+import string
 from typing import Annotated
 import uuid
 from fastapi import Depends, File, UploadFile, HTTPException
@@ -11,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from crud.materials import MaterialCRUD
 from utils.utils import response
+
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
 from db import db
@@ -24,6 +27,11 @@ logging.basicConfig(level=logging.INFO,
                     filename="log.log",
                     filemode="w",
                     format="%(asctime)s - %(levelname)s - %(message)s")
+
+def generate_alphanum_random_string(length):
+    letters_and_digits = string.ascii_letters + string.digits
+    rand_string = ''.join(random.sample(letters_and_digits, length))
+    return rand_string
 
 
 class MaterialsController:
@@ -42,7 +50,9 @@ class MaterialsController:
                             responsible_it_dept_user=user.get("username"),
                             problem_description="создание карточки актива",
                             repair_number=1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status="взят в ремонт",
+                            repair_unique_id=generate_alphanum_random_string(20)
                             )
         db.add(material)
         db.add(new_repair)
@@ -110,6 +120,10 @@ class MaterialsController:
             geo_material = db.query(GeoLocation).filter(GeoLocation.material_id == id_for_delete).all()
             for i in geo_material:
                 db.delete(i)
+
+            repair_material = db.query(Material).filter(Material.material_id == id_for_delete).all()
+            for y in repair_material:
+                db.delete(y)
 
             db.commit()
 
