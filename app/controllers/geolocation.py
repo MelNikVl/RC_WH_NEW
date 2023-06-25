@@ -374,7 +374,7 @@ class GeoLocationController:
     @staticmethod
     async def add_details_to_repair(material_id_to_repair,
                                    details: str,
-                                   invoice: UploadFile = File(...),
+                                   invoice: UploadFile = None,
                                    db: Session = Depends(get_db),
                                    user: User = Depends(AuthUtil.decode_jwt),
                                    t: str = None,  # jwt токен

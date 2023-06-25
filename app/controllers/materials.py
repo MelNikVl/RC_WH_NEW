@@ -46,7 +46,7 @@ class MaterialsController:
                             problem_description="создание карточки актива",
                             repair_number=1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            repair_status="взят в ремонт",
+                            repair_status="уведомление не для обработки",
                             repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
         db.add(material)
