@@ -449,7 +449,7 @@ tbody input[type='checkbox'] {
     border-radius: 1em;
     padding: 1em;
     margin: 0 1em;
-    width: 40%;
+    width: 45%;
     font-size: inherit;
     float: left;
 }
@@ -510,11 +510,8 @@ tbody input[type='checkbox'] {
 
 .admin_but {/* font-size: x-large; */margin: 1em;background: #92d7c7;}
 
-.card_of_material_main {
-font-size: x-large;
-    margin: 0 1em 0 0;
-}
+.card_of_material_main {font-size: x-large;/* margin: 0 1em 0 0; */background: #f9f9f9;border-radius: 1em;margin: 0 0 1em;}
 
-.card_of_material_main_1 {width: 40%;float: left;margin: 1em;}
+.card_of_material_main_1 {width: 45%;float: left;margin: 1em;}
 
 .desc_09 {padding: 0.15em;}
