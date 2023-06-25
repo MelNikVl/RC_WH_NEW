@@ -186,3 +186,18 @@ class FrontMainController:
         out["date_time_f"] = formatted_date_time
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
+
+    @staticmethod
+    async def repairs_page(request: Request = None,
+                            t: str = None,  # jwt токен
+                            db: Session = Depends(get_db)):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        out: Dict = {}
+        out["token"] = t
+
+        return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})

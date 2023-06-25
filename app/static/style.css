@@ -56,7 +56,7 @@ thead {
 table {
     font-family: Arial, sans-serif;
     text-align: left !important;
-    width: 80%;
+    /* width: 80%; */
     /* border-collapse: collapse; */
     margin: 0 0 0 1em;
 }
@@ -375,7 +375,7 @@ tbody input[type='checkbox'] {
     padding: 2.5em 0 0 0;
     text-align: right;
     margin: 1em;
-    width: 92%;
+    width: 80%;
 }
 
 .clear {
