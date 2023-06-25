@@ -393,12 +393,12 @@ class GeoLocationController:
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
         un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
-        user_01 = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+
 
         add_repair = Repair(material_id=material_id_to_repair,
                             responsible_it_dept_user=user.get("username"),
                             problem_description=details,
-                            user_whose_technique=user_01,
+                            user_whose_technique="доработать пользователя",
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             repair_status="добавление информации",
