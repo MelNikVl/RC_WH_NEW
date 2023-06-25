@@ -70,6 +70,7 @@ class GeoLocationController:
                                                    place=body.place,
                                                    client_mail=body.client_mail,
                                                    status=body.status,
+                                                   initiator=user.get("username"),
                                                    db=db)
 
         # логируем

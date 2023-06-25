@@ -12,24 +12,17 @@ from models.models import Material, GeoLocation, Trash, Repair
 from payload.response import GeoLocationUploadResponse
 from fastapi.encoders import jsonable_encoder
 
-# from app.payload.response import GeoLocationUploadResponse
-
-'''
-класс CRUD - create read update delete
-это класс в котором хранятся методы, котоыре мы вызываем внутри контроллера, котоыре выполняют бизнес логику
-'''
-
 
 class GeoLocationCRUD:
 
     @staticmethod
-    async def create(material_id: int, place: str, client_mail: str, status: str, db):
+    async def create(material_id: int, place: str, client_mail: str, status: str, initiator: str, db):
         material = db.query(Material).filter(Material.id == material_id).all()
         if len(material) == 0:
             raise HTTPException(status_code=404, detail="Карточки актива с таким айди не найдено")
         else:
             geolocation = GeoLocation(material_id=material_id, place=place, client_mail=client_mail,
-                                      status=status, date_time=datetime.datetime.now())
+                                      status=status, date_time=datetime.datetime.now(), initiator=initiator)
             db.add(geolocation)
             db.commit()
             material[0].geolocation_id = geolocation.id

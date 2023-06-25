@@ -52,6 +52,7 @@ class GeoLocation(Base):
     place: str = Column(String)
     client_mail: str = Column(String)
     status: str = Column(String)
+    initiator: str = Column(String)
     date_time: datetime = Column(DateTime)
 
 

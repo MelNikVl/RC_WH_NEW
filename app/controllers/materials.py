@@ -48,7 +48,7 @@ class MaterialsController:
         db.add(new_repair)
         db.commit()
         geolocation = GeoLocation(material_id=material.id, place=body.place, client_mail=user.get("username"),
-                                  status="хранение", date_time=datetime.datetime.now())
+                                  status="хранение", date_time=datetime.datetime.now(), initiator=user.get("username"))
         db.add(geolocation)
         db.commit()
         material.geolocation_id = geolocation.id
