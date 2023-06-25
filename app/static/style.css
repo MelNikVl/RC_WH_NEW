@@ -516,3 +516,5 @@ tbody input[type='checkbox'] {
 .card_of_material_main_1 {width: 45%;float: left;margin: 1em;}
 
 .desc_09 {padding: 0.15em;}
+
+.link_to {/* padding: 0.15em; *//* float: left; */display: block;margin: 1em 0 0 0;}

@@ -43,6 +43,11 @@
         <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
     </div>
 
+    <div class="counts">
+        <button id="trash" class="link_to" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
+        <button id="repair" class="link_to" onclick='window.location.href = "/app/repairs_page?t="+"{{ data.token }}"'>Список техники в ремонте</button>
+    </div>
+
      <div class="clear"></div>
 
     <div class="table-wrapper">
@@ -56,10 +61,6 @@
                 <button id="add_photo">Добавить фото или файлы</button>
                 <button id="move_to_trash">Отправить на списание</button>
             </div>
-            <button id="trash" onclick='window.location.href = "/geolocation/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
-            <button id="repair" onclick='window.location.href = "/app/repairs_page?t="+"{{ data.token }}"'>Список техники в ремонте</button>
-
-
         </div>
         <!--  фильтры -->
         <div class="input-wrapper">
