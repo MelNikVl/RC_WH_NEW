@@ -448,8 +448,8 @@ tbody input[type='checkbox'] {
     background: #e3f2f58f;
     border-radius: 1em;
     padding: 1em;
-    margin: 1em;
-    width: 30%;
+    margin: 0 1em;
+    width: 40%;
     font-size: inherit;
     float: left;
 }
@@ -470,10 +470,10 @@ tbody input[type='checkbox'] {
 }
 
 .title_one_card {
-    padding: 0 1em 1em 0.5em;
-    font-size: xx-large;
+    /* padding: 0 1em 1em 0.5em; */
+    /* font-size: xx-large; */
     font-weight: bold;
-    float: left;
+    /* float: left; */
 }
 .action-buttons{
     display: inline-flex;
@@ -485,15 +485,17 @@ tbody input[type='checkbox'] {
 }
 
 .geo_material_one_dial {
-    background: #dcfdfa;
+    /* background: #f1fffe; */
     border-radius: 1em;
     padding: 1em;
 }
 
 .repair_stile{
-    background: #dcfdfa;
+    background: #eefffd;
     border-radius: 1em;
     padding: 1em;
+    float: left;
+    border: 1px solid #c3c3c3;
 }
 
 .status_000{
@@ -507,3 +509,12 @@ tbody input[type='checkbox'] {
 }
 
 .admin_but {/* font-size: x-large; */margin: 1em;background: #92d7c7;}
+
+.card_of_material_main {
+font-size: x-large;
+    margin: 0 1em 0 0;
+}
+
+.card_of_material_main_1 {width: 40%;float: left;margin: 1em;}
+
+.desc_09 {padding: 0.15em;}
