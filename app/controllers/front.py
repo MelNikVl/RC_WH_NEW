@@ -170,6 +170,12 @@ class FrontMainController:
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
         material_geo = jsonable_encoder(db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all())
 
+        date_time = material_card['date_time']
+        datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
+        formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
+        print(formatted_date_time)
+
+
         list_for_geo = []
         for i in material_geo:
             list_for_geo.append(i)
@@ -179,5 +185,6 @@ class FrontMainController:
         out["one_material"] = material_card
         out["geo_material"] = material_geo
         out["repairs"] = GeoLocationCRUD.list_of_repair(material_id, db)
+        out["date_time_f"] = formatted_date_time
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
