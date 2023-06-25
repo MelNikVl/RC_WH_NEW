@@ -55,6 +55,8 @@ class GeoLocationCRUD:
 
         latest_movements = query.all()
 
+        material_all = db.query(Material).count()
+
         out: Dict = {}
         warehouse_count = 0
         get_out_count = 0
@@ -72,7 +74,7 @@ class GeoLocationCRUD:
                 trash_count += 1
 
         all_count = warehouse_count + get_out_count + repair_count + trash_count
-        out["all_count"] = all_count
+        out["all_count"] = material_all
         out["warehouse_count"] = warehouse_count
         out["get_out_count"] = get_out_count
         out["repair_count"] = repair_count
