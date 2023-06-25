@@ -20,8 +20,12 @@
 
 <body>
     <div class="title_1">Main office IT warehouse tracker (Repair)</div>
-    <div class="button_exit"><button id="go_to_auth" class="other_buttons"
-            onclick="window.location.href = '/app/auth'">Выйти</button></div>
+    <div class="button_exit">
+        <button class="button_go_to_app" id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>в
+                приложение</button>
+        <button id="go_to_auth" class="other_buttons"
+            onclick="window.location.href = '/app/auth'">Выйти</button>
+    </div>
     <div class="clear"></div>
 
 <table class="fl-table" id="table">
@@ -29,17 +33,26 @@
                 <tr>
                     <th><input type="checkbox" id="select-all"></th>
                     <th>ID актив</th>
-                    <th>Кто завел</th>
-                    <th>Категория</th>
-                    <th>Номер (тайтл)</th>
-                    <th>Описание (характеристики)</th>
-                    <th>Дата ввода</th>
-                    <th>Расположение</th>
-                    <th>Cтатус</th>
-                    <th>Инфо</th>
+                    <th>Ответственный</th>
+                    <th>Проблема - решение</th>
+                    <th>Чья техника</th>
+                    <th>Дата изменений</th>
+                    <th>Номер ремонта</th>
+                    <th>Статус</th>
                 </tr>
-            </thead>
-
+            <tbody>
+                {% for item in data.actives_in_repair %}
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>{{ item.material_id }}</td>
+                    <td>{{ item.responsible_it_dept_user }}</td>
+                    <td>{{ item.problem_description }}</td>
+                    <td>{{ item.user_whose_technique }}</td>
+                    <td>{{ item.date_time }}</td>
+                    <td>{{ item.repair_number }}</td>
+                    <td>{{ item.repair_status }}</td>
+                </tr>
+                {% endfor %}
             <tbody>
 
             <tbody>

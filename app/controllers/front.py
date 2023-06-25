@@ -197,7 +197,10 @@ class FrontMainController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
+        actives_in_repair = db.query(Repair).all()
+
         out: Dict = {}
         out["token"] = t
+        out["actives_in_repair"] = actives_in_repair
 
         return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})
