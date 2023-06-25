@@ -173,8 +173,6 @@ class FrontMainController:
         date_time = material_card['date_time']
         datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
         formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
-        print(formatted_date_time)
-
 
         list_for_geo = []
         for i in material_geo:
