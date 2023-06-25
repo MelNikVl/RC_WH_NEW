@@ -73,7 +73,6 @@ class GeoLocationCRUD:
             elif i.status == "списание":
                 trash_count += 1
 
-        all_count = warehouse_count + get_out_count + repair_count + trash_count
         out["all_count"] = material_all
         out["warehouse_count"] = warehouse_count
         out["get_out_count"] = get_out_count
