@@ -18,9 +18,9 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.crud.geolocation import GeoLocationCRUD
+from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
 from starlette import status
-from starlette.responses import FileResponse
 from app.utils.utils import response
 
 from app.controllers.front import templates
@@ -60,11 +60,6 @@ def send_email(invoice):
     serv.login(gmail_login, gmail_pass)
     serv.sendmail(gmail_login, addresses, message.as_string())
 
-
-def generate_alphanum_random_string(length):
-    letters_and_digits = string.ascii_letters + string.digits
-    rand_string = ''.join(random.sample(letters_and_digits, length))
-    return rand_string
 
 
 class GeoLocationController:
@@ -302,7 +297,7 @@ class GeoLocationController:
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             repair_status="взят в ремонт",
-                            repair_unique_id=generate_alphanum_random_string(20)
+                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
 
         new_repair_event = LogItem(kind_table="Ремонт",
@@ -393,12 +388,12 @@ class GeoLocationController:
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
         un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
-
+        user_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].user_whose_technique
 
         add_repair = Repair(material_id=material_id_to_repair,
                             responsible_it_dept_user=user.get("username"),
                             problem_description=details,
-                            user_whose_technique="доработать пользователя",
+                            user_whose_technique=user_repair,
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             repair_status="добавление информации",

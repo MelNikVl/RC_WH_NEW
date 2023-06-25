@@ -28,12 +28,6 @@ logging.basicConfig(level=logging.INFO,
                     filemode="w",
                     format="%(asctime)s - %(levelname)s - %(message)s")
 
-def generate_alphanum_random_string(length):
-    letters_and_digits = string.ascii_letters + string.digits
-    rand_string = ''.join(random.sample(letters_and_digits, length))
-    return rand_string
-
-
 class MaterialsController:
 
     # создание карточки актива
@@ -46,13 +40,14 @@ class MaterialsController:
 
         material = Material(id=body.id, user_id=user.get("username"), category=body.category, title=body.title,
                             description=body.description, date_time=datetime.datetime.now())
+
         new_repair = Repair(material_id=body.id,
                             responsible_it_dept_user=user.get("username"),
                             problem_description="создание карточки актива",
                             repair_number=1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             repair_status="взят в ремонт",
-                            repair_unique_id=generate_alphanum_random_string(20)
+                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
         db.add(material)
         db.add(new_repair)
