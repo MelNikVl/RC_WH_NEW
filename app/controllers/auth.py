@@ -5,7 +5,6 @@ from fastapi import Depends, HTTPException, status, Response
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import update
 from sqlalchemy.orm import Session
-
 from app.payload.request import UserAuth
 from db.db import get_db
 from app.utils.auth import AuthUtil

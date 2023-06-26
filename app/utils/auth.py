@@ -1,11 +1,9 @@
-from typing import Annotated
-
+import time
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
-import time
+from typing import Annotated
 from sqlalchemy.orm import Session
-
 from db.db import get_db
 from models.models import User
 

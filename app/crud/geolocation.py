@@ -1,17 +1,15 @@
 import os
 import sys
-from typing import List, Dict
-
-from sqlalchemy import desc, distinct, func
-
-sys.path.append("..")
 import datetime
-
+from typing import List, Dict
+from sqlalchemy import desc, distinct, func
 from fastapi import HTTPException
 from pydantic import parse_obj_as
-from models.models import Material, GeoLocation, Trash, Repair
-from payload.response import GeoLocationUploadResponse
+from models.models import Material, GeoLocation, Repair
+from app.payload.response import GeoLocationUploadResponse
 from fastapi.encoders import jsonable_encoder
+
+sys.path.append("..")
 
 
 class GeoLocationCRUD:

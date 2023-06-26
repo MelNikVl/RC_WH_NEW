@@ -1,28 +1,19 @@
-import datetime
-import json
-import os
-import smtplib, ssl
-import shutil
+import datetime, os, smtplib, ssl, shutil, fastapi
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
 from typing import Dict, List
-import random
-import string
 
-import fastapi
 from fastapi import Depends, Request, UploadFile, File
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
-
 from app.crud.geolocation import GeoLocationCRUD
 from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
 from starlette import status
 from app.utils.utils import response
-
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
@@ -403,7 +394,7 @@ class GeoLocationController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         # загружаем файл
-        GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
+        await GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
 
 
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
@@ -450,7 +441,7 @@ class GeoLocationController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         # загружаем файл
-        GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
+        await GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
 
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
