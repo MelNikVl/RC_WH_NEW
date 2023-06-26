@@ -10,23 +10,20 @@ from fastapi import Depends, File, UploadFile, HTTPException
 from pydantic import parse_obj_as
 from sqlalchemy import update
 from sqlalchemy.orm import Session
-
 from crud.materials import MaterialCRUD
-from utils.utils import response
-
+from app.utils.utils import response
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
-from db import db
 from db.db import get_db
-from payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest, \
-    MaterialDeleteRequest
-from models.models import Material, GeoLocation, LogItem, Repair
+from app.payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest
+from models.models import GeoLocation, LogItem, Repair
 from models.models import User, Material
 
 logging.basicConfig(level=logging.INFO,
                     filename="log.log",
                     filemode="w",
                     format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 class MaterialsController:
 
@@ -154,7 +151,6 @@ class MaterialsController:
         else:
             return response(data="Недостаточно прав", status=False)
 
-
     # эта ебота написана для записи логов просто в файл. Стирать жалко. Может пригодится
     @staticmethod
     async def get_last_update(user: User = Depends(AuthUtil.decode_jwt)):
@@ -203,4 +199,3 @@ class MaterialsController:
         db.commit()
 
         return response(data={"message": f'Photo successfully added'}, status=True)
-
