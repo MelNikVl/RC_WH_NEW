@@ -3,15 +3,11 @@ import string
 import sys
 
 sys.path.append("..")
-import datetime
-
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException
 from pydantic import parse_obj_as
-from typing import List, Optional, Annotated
-
+from typing import List
 from payload.response import MaterialUploadResponse
-from models.models import Material, GeoLocation
-from app.utils.auth import AuthUtil
+from models.models import Material
 
 
 '''
