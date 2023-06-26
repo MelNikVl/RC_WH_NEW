@@ -197,6 +197,7 @@ class GeoLocationController:
 
         # копируем перемещения и данные об активах в таблицу треша и потом удаляем все из таблиц где они были.
         for y in materials_for_trash:
+            # созраняем перемещения
             moving = []
             material_moving = db.query(GeoLocation).filter(GeoLocation.material_id == y.id).all()
             for m in material_moving:
@@ -205,6 +206,7 @@ class GeoLocationController:
 
             print(f'история перемещений актива {tr.material_id} создана')
 
+            # созраняем ремонты
             repairs = []
             repairs_moving = db.query(Repair).filter(Repair.material_id == y.id).all()
             for tr in repairs_moving:
@@ -213,7 +215,6 @@ class GeoLocationController:
                                 "чья была техника": tr.user_whose_technique,
                                 "дата": tr.responsible_it_dept_user})
             print(f'история ремонта актива {tr.material_id} создана')
-
 
             create_new_trash_archive = Trash(user_id=user.get("username"),
                                              material_id=y.id,
@@ -234,6 +235,9 @@ class GeoLocationController:
 
             db.query(GeoLocation).filter(GeoLocation.material_id == y.id).delete()
             print(f'история передвижений актива {y.id} удалена из таблицы Гео')
+
+            db.query(Repair).filter(Repair.material_id == y.id).all()
+            print(f'история ремонтов актива {y.id} удалена из таблицы ретомнтов')
 
             db.commit()
             print(f'данные актива {y.id} записаны в новые таблицы и подтверждены')
