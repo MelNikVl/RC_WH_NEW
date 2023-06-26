@@ -53,3 +53,8 @@ class UserAuth(BaseModel):
     #     description='описание пароля'
     # )
     is_admin: bool = False
+
+class RepairCreateRequest(BaseModel):
+    material_id: int
+    problem: str
+    customer: str

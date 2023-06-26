@@ -17,15 +17,15 @@ function invert_selection(elem){
     // здесь мы прописываем какие кнопки активны после выбора товара или товаров
     switch ($('tbody > tr.selected').length) {
         case 0:
-            $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash").prop('disabled', true);
+            $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash, #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', true);
             $("#delete_user, #make_admin").addClass("disabled-btn");
             break;
         case 1:
-            $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash").prop('disabled', false);
+            $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash,  #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', false);
             $("#delete_user, #make_admin").removeClass("disabled-btn");
             break;
         default:
-            $("#history, #add_photo, #remont").prop('disabled', true);
+            $("#history, #add_photo, #remont, #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', true);
             $("#delete").prop('disabled', false);
             $("#make_admin").addClass("disabled-btn");
             break;
@@ -45,7 +45,7 @@ $(document).ready(function () {
     });
     //Деактивация кнопок при старте страницы
     $("#delete_user, #make_admin").addClass("disabled-btn");
-    $("#history,#submit-photo, #delete, #relocate, #add_photo, #remont, #move_to_trash").prop('disabled', true);
+    $("#history, #submit-photo, #delete, #relocate, #add_photo, #remont, #move_to_trash, #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', true);
 
     $("#move_to_trash").on("click", function(){
         if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы? Это действие будет уже не отменить')) {
@@ -142,7 +142,7 @@ $(document).ready(function () {
     $('textarea').on('click', function (event) {
         event.stopPropagation();
     });
-    $("textarea").keypress(function (e) {
+    $("tbody textarea").keypress(function (e) {
         if (e.key == "Escape") {
             $('textarea').blur();
         }

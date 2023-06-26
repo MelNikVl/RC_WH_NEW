@@ -166,10 +166,15 @@ h1 {
 }
 
 textarea {
+    border-radius: 5px;
+    box-shadow: #00000042 1px 1px 10px;
+    font-size: 1em;
+    border: none;
     appearance: none;
     -webkit-appearance: none;
     border: none;
     resize: none;
+    margin-bottom: 15px;
 }
 
 #history-block {

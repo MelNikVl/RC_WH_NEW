@@ -11,7 +11,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from app.crud.geolocation import GeoLocationCRUD
 from app.crud.materials import MaterialCRUD
-from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
+from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest
 from starlette import status
 from app.utils.utils import response
 from app.controllers.front import templates
@@ -272,36 +272,28 @@ class GeoLocationController:
         return templates.TemplateResponse("archive_trash_page.html", {"request": request, "data": out})
 
     @staticmethod
-    async def move_to_repair(material_id_to_repair,
-                             whats_problem_is: str,
-                             who_gave_it_away: str,
+    async def move_to_repair(data: RepairCreateRequest,
                              db: Session = Depends(get_db),
                              user: User = Depends(AuthUtil.decode_jwt),
-                             t: str = None,  # jwt токен
                              ):
 
-        try:
-            result = await AuthUtil.decode_jwt(t)
-        except Exception as e:
-            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
-
-        geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id_to_repair).order_by(
+        geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == data.material_id).order_by(
             desc(GeoLocation.date_time)).all()[0]
 
-        new_location = GeoLocation(material_id=material_id_to_repair,
+        new_location = GeoLocation(material_id=data.material_id,
                                    place="IT отдел",
-                                   client_mail=who_gave_it_away,
+                                   client_mail=data.customer,
                                    status="ремонт",
                                    date_time=datetime.datetime.now()
                                    )
 
-        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
+        find_repair = db.query(Repair).filter(Repair.material_id == data.material_id)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
 
-        new_repair = Repair(material_id=material_id_to_repair,
+        new_repair = Repair(material_id=data.material_id,
                             responsible_it_dept_user=user.get("username"),
-                            problem_description=whats_problem_is,
-                            user_whose_technique=who_gave_it_away,
+                            problem_description=data.problem,
+                            user_whose_technique=data.customer,
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             repair_status=True,
@@ -310,10 +302,10 @@ class GeoLocationController:
 
         new_repair_event = LogItem(kind_table="Ремонт",
                                    user_id=user["username"],
-                                   passive_id=material_id_to_repair,
+                                   passive_id=data.material_id,
                                    modified_cols="актив взят в ремонт",
-                                   values_of_change=f'проблема: {whats_problem_is},'
-                                                    f' технику сдал {who_gave_it_away}',
+                                   values_of_change=f'проблема: {data.problem},'
+                                                    f' технику сдал {data.customer}',
                                    date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                    )
         db.add(new_repair)
