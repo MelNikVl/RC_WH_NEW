@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import List, Dict
 
@@ -123,3 +124,16 @@ class GeoLocationCRUD:
             # uniq_id_val[rt] = last
             # rt += 1
         return uniq_id_val
+
+    @staticmethod
+    async def upload_file_to_repair(material_id_to_repair, file):
+        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id_to_repair))
+        destination_folder1 = os.path.join(destination_folder, "Repairs")
+        os.makedirs(destination_folder1, exist_ok=True)
+
+        # Создаем путь для сохранения файла в папке назначения
+        destination_path = os.path.join(destination_folder1, str(datetime.datetime.now()))
+
+        # Загружаем файл в папку назначения
+        with open(destination_path, "wb") as buffer:
+            buffer.write(await file.read())

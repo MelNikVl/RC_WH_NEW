@@ -391,7 +391,7 @@ class GeoLocationController:
     @staticmethod
     async def add_details_to_repair(material_id_to_repair,
                                    details: str,
-                                   invoice: UploadFile = None,
+                                   file: UploadFile = None,
                                    db: Session = Depends(get_db),
                                    user: User = Depends(AuthUtil.decode_jwt),
                                    t: str = None,  # jwt токен
@@ -401,6 +401,10 @@ class GeoLocationController:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        # загружаем файл
+        GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
+
 
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
@@ -434,6 +438,7 @@ class GeoLocationController:
     async def short_repair(material_id_to_repair,
                            whats_problem_is: str,
                            who_gave_it_away: str,
+                           file: UploadFile = None,
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt),
                            t: str = None,  # jwt токен
@@ -443,6 +448,9 @@ class GeoLocationController:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        # загружаем файл
+        GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
 
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
