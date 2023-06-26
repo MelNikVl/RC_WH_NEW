@@ -109,7 +109,7 @@
             <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
             <tbody>
                 {% for item in data[0] %}
-                <tr>
+                <tr {% if item["geolocation_status"] == "списание" %} class="inactive" {% endif %}>
                     <td><input type="checkbox"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.user_id }}</td>

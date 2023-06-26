@@ -522,3 +522,10 @@ tbody input[type='checkbox'] {
 .button_go_to_app {/* padding: 0.15em; */}
 
 .subs {/* display: block; */margin: 1em;}
+
+.inactive {
+    opacity: 0.5;
+}
+.inactive textarea{
+    pointer-events: none;
+}

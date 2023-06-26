@@ -77,7 +77,8 @@ $(document).ready(function () {
     });
 
     $("tbody > tr").on("click", function () {
-        invert_selection(this);
+        if ($(this).children("td").eq(8).text() != "списание")
+            invert_selection(this);
     });
     $("#new").on("click", function () {
         $("#new-popup").fadeIn(200);
