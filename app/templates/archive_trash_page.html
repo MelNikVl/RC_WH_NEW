@@ -38,6 +38,7 @@
                     <th>Номер (тайтл)</th>
                     <th>Описание (характеристики)</th>
                     <th>Прошедшие перемещения</th>
+                    <th>Прошедшие ремонты</th>
                     <th>Дата списания</th>
                     <th>Ссылка на документацию</th>
                 </tr>
@@ -53,6 +54,7 @@
                     <td>{{ item.title }}</td>
                     <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
                     <td>{{ item.moving }}</td>
+                    <td>{{ item.repairs }}</td>
                     <td>{{ item.date_time }}</td>
                     <td>\\fs-mo\ADMINS\Photo_warehouse\archive_after_utilization\{{ item.folder_name }}</td>
                 </tr>

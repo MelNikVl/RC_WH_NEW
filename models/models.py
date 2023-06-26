@@ -40,6 +40,7 @@ class Trash(Base):
     title: str = Column(String)
     description: str = Column(String)
     moving: str = Column(String)
+    repairs: str = Column(String)
     date_time: str = Column(String)
     folder_name: str = Column(String)
 
