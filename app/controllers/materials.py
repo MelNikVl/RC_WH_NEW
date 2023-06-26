@@ -46,7 +46,7 @@ class MaterialsController:
                             problem_description="создание карточки актива",
                             repair_number=1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            repair_status="уведомление не для обработки",
+                            repair_status=False,
                             repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
         db.add(material)
@@ -116,7 +116,7 @@ class MaterialsController:
             for i in geo_material:
                 db.delete(i)
 
-            repair_material = db.query(Material).filter(Material.material_id == id_for_delete).all()
+            repair_material = db.query(Material).filter(Material.id == id_for_delete).all()
             for y in repair_material:
                 db.delete(y)
 

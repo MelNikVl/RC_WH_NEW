@@ -38,7 +38,6 @@
                     <th>Чья техника</th>
                     <th>Дата изменений</th>
                     <th>Номер ремонта</th>
-                    <th>Статус</th>
                 </tr>
             <tbody>
                 {% for item in data.actives_in_repair %}
@@ -50,7 +49,6 @@
                     <td>{{ item.user_whose_technique }}</td>
                     <td>{{ item.date_time }}</td>
                     <td>{{ item.repair_number }}</td>
-                    <td>{{ item.repair_status }}</td>
                 </tr>
                 {% endfor %}
             <tbody>

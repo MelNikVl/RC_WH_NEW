@@ -296,7 +296,7 @@ class GeoLocationController:
                             user_whose_technique=who_gave_it_away,
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            repair_status="взят в ремонт",
+                            repair_status=True,
                             repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
 
@@ -351,7 +351,7 @@ class GeoLocationController:
                                 user_whose_technique=who_was_given_to,
                                 repair_number=rapair_count_last + 1,
                                 date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                repair_status="выдан из ремонта",
+                                repair_status=False,
                                 repair_unique_id=un_number_of_repair
                                 )
 
@@ -396,7 +396,7 @@ class GeoLocationController:
                             user_whose_technique=user_repair,
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            repair_status="добавление информации",
+                            repair_status=True,
                             repair_unique_id=un_number_of_repair
                             )
 
