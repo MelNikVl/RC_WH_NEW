@@ -20,6 +20,7 @@
 
 <body>
     <div class="title_1">Main office IT warehouse tracker (Repair)</div>
+
     <div class="button_exit">
         <button class="button_go_to_app" id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>в
                 приложение</button>
@@ -27,7 +28,7 @@
             onclick="window.location.href = '/app/auth'">Выйти</button>
     </div>
     <div class="clear"></div>
-
+<h3 class="subs">Техники в ремонте: {{ data.count_repair }}</h3>
 <table class="fl-table" id="table">
             <thead>
                 <tr>
@@ -37,7 +38,6 @@
                     <th>Проблема - решение</th>
                     <th>Чья техника</th>
                     <th>Дата изменений</th>
-                    <th>Номер ремонта</th>
                 </tr>
             <tbody>
                 {% for item in data.actives_in_repair %}
@@ -48,7 +48,6 @@
                     <td>{{ item.problem_description }}</td>
                     <td>{{ item.user_whose_technique }}</td>
                     <td>{{ item.date_time }}</td>
-                    <td>{{ item.repair_number }}</td>
                 </tr>
                 {% endfor %}
             <tbody>

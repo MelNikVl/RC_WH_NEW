@@ -198,9 +198,11 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         actives_in_repair = db.query(Repair).filter(Repair.repair_status == True).all()
+        count_repair = db.query(Repair).filter(Repair.repair_status == True).count()
 
         out: Dict = {}
         out["token"] = t
         out["actives_in_repair"] = actives_in_repair
+        out["count_repair"] = count_repair
 
         return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})
