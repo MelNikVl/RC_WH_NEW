@@ -61,6 +61,7 @@ geolocation.get("/archive_trash_page")(GeoLocationController.archive_trash_page)
 geolocation.post("/move_to_repair")(GeoLocationController.move_to_repair)
 geolocation.post("/move_from_repair")(GeoLocationController.move_from_repair)
 geolocation.post("/add_details_to_repair")(GeoLocationController.add_details_to_repair)
+geolocation.post("/short_repair")(GeoLocationController.short_repair)
 
 
 auth.post("/token")(AuthController.token)

@@ -429,3 +429,44 @@ class GeoLocationController:
         db.commit()
 
         return response(data="добавлена информация о ремонте", status=True)
+
+    @staticmethod
+    async def short_repair(material_id_to_repair,
+                           whats_problem_is: str,
+                           who_gave_it_away: str,
+                           db: Session = Depends(get_db),
+                           user: User = Depends(AuthUtil.decode_jwt),
+                           t: str = None,  # jwt токен
+                           ):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
+        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+
+        new_repair = Repair(material_id=material_id_to_repair,
+                            responsible_it_dept_user=user.get("username"),
+                            problem_description=whats_problem_is,
+                            user_whose_technique=who_gave_it_away,
+                            repair_number=rapair_count_last + 1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status=False,
+                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                            )
+
+        new_repair_event = LogItem(kind_table="Ремонт",
+                                   user_id=user["username"],
+                                   passive_id=material_id_to_repair,
+                                   modified_cols="быстрый ремонт на месте",
+                                   values_of_change=f'проблема: {whats_problem_is},'
+                                                    f' техника у {who_gave_it_away}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+        db.add(new_repair)
+        db.add(new_repair_event)
+        db.commit()
+
+        return response(data="быстрый ремонт произвден", status=True)
