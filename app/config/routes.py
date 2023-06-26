@@ -1,9 +1,7 @@
 from fastapi import APIRouter
-
 from controllers.materials import MaterialsController
 from controllers.geolocation import GeoLocationController
 from controllers.front import FrontMainController
-
 from app.controllers.auth import AuthController
 from app.controllers.logs import LogsController
 
@@ -28,9 +26,6 @@ logs = APIRouter(prefix='/logs',
 for_admins = APIRouter(prefix='/for_admins',
                        tags=['for_admins'])
 
-"""
-указываем энпоинты
-"""
 
 # здесь указываем эндпоинты
 router.get("")(FrontMainController.index)
