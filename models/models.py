@@ -1,7 +1,6 @@
 from datetime import datetime
-from typing import List
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, ForeignKey, String, DateTime, Boolean, TIMESTAMP
+from sqlalchemy import Column, Integer, ForeignKey, String, DateTime, Boolean
 
 
 # здесь находятся модели для создания таблиц в базе данных - каждый класс - отдельная таблица

@@ -1,12 +1,7 @@
-from typing import List
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import parse_obj_as
-from requests import Session
-
-
 from config.routes import router, materials, geolocation, auth, logs
-from db.db import engine, get_db
+from db.db import engine
 from models.models import Base
 from fastapi.staticfiles import StaticFiles
 
