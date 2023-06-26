@@ -1,7 +1,9 @@
 import datetime
 import logging
 import os, platform
+import random
 import shutil
+import string
 from typing import Annotated
 import uuid
 from fastapi import Depends, File, UploadFile, HTTPException
@@ -11,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from crud.materials import MaterialCRUD
 from utils.utils import response
+
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
 from db import db
@@ -25,7 +28,6 @@ logging.basicConfig(level=logging.INFO,
                     filemode="w",
                     format="%(asctime)s - %(levelname)s - %(message)s")
 
-
 class MaterialsController:
 
     # создание карточки актива
@@ -38,17 +40,20 @@ class MaterialsController:
 
         material = Material(id=body.id, user_id=user.get("username"), category=body.category, title=body.title,
                             description=body.description, date_time=datetime.datetime.now())
+
         new_repair = Repair(material_id=body.id,
                             responsible_it_dept_user=user.get("username"),
                             problem_description="создание карточки актива",
                             repair_number=1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status="уведомление не для обработки",
+                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
         db.add(material)
         db.add(new_repair)
         db.commit()
         geolocation = GeoLocation(material_id=material.id, place=body.place, client_mail=user.get("username"),
-                                  status="хранение", date_time=datetime.datetime.now())
+                                  status="хранение", date_time=datetime.datetime.now(), initiator=user.get("username"))
         db.add(geolocation)
         db.commit()
         material.geolocation_id = geolocation.id
@@ -110,6 +115,10 @@ class MaterialsController:
             geo_material = db.query(GeoLocation).filter(GeoLocation.material_id == id_for_delete).all()
             for i in geo_material:
                 db.delete(i)
+
+            repair_material = db.query(Material).filter(Material.material_id == id_for_delete).all()
+            for y in repair_material:
+                db.delete(y)
 
             db.commit()
 

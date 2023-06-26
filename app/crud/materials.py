@@ -1,3 +1,5 @@
+import random
+import string
 import sys
 
 sys.path.append("..")
@@ -18,9 +20,6 @@ from app.utils.auth import AuthUtil
 '''
 
 class MaterialCRUD:
-
-
-
     # Получение карточки по айди
     @staticmethod
     async def get(db, id: int):
@@ -46,5 +45,11 @@ class MaterialCRUD:
     async def list_of_materials(db):
         materials = db.query(Material).all()
         return parse_obj_as(List[MaterialUploadResponse], materials)  # засовывывает в шаблон данные
+
+    @staticmethod
+    def generate_alphanum_random_string(length):
+        letters_and_digits = string.ascii_letters + string.digits
+        rand_string = ''.join(random.sample(letters_and_digits, length))
+        return rand_string
 
 

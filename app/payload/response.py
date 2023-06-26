@@ -34,6 +34,7 @@ class GeoLocationUploadResponse(BaseModel):
     place: Optional[str]
     client_mail: str
     status: Optional[str]
+    initiator: Optional[str]
     date_time: datetime.date
 
     class Config:

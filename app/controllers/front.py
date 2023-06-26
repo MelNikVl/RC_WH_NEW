@@ -119,8 +119,6 @@ class FrontMainController:
                         ):
         return templates.TemplateResponse("auth.html", {"request": request})
 
-    # test 2345
-
     @staticmethod
     async def admins_page(db: Session = Depends(get_db),
                           request: Request = None,
@@ -172,6 +170,10 @@ class FrontMainController:
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
         material_geo = jsonable_encoder(db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all())
 
+        date_time = material_card['date_time']
+        datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
+        formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
+
         list_for_geo = []
         for i in material_geo:
             list_for_geo.append(i)
@@ -181,5 +183,24 @@ class FrontMainController:
         out["one_material"] = material_card
         out["geo_material"] = material_geo
         out["repairs"] = GeoLocationCRUD.list_of_repair(material_id, db)
+        out["date_time_f"] = formatted_date_time
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
+
+    @staticmethod
+    async def repairs_page(request: Request = None,
+                            t: str = None,  # jwt токен
+                            db: Session = Depends(get_db)):
+
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        actives_in_repair = db.query(Repair).all()
+
+        out: Dict = {}
+        out["token"] = t
+        out["actives_in_repair"] = actives_in_repair
+
+        return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})

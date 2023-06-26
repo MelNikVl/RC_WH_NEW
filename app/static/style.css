@@ -56,7 +56,7 @@ thead {
 table {
     font-family: Arial, sans-serif;
     text-align: left !important;
-    width: 80%;
+    /* width: 80%; */
     /* border-collapse: collapse; */
     margin: 0 0 0 1em;
 }
@@ -311,7 +311,6 @@ tbody input[type='checkbox'] {
 
 .filter_count {
     margin: 1em 20px;
-    /* background-color: #9999993b; */
     font-size: x-large;
 }
 
@@ -347,16 +346,12 @@ tbody input[type='checkbox'] {
 }
 
 .other_buttons {
-    /* margin: 1em 20px; */
     font-size: inherit;
-    /* float: left; */
     background-color: #92d7c7;
 }
 
 .disabled-btn {
-    /* margin: 1em 20px; */
     font-size: inherit;
-    /* float: left; */
     background-color: #a4d5bd;
     pointer-events: none;
 }
@@ -377,23 +372,18 @@ tbody input[type='checkbox'] {
 }
 
 .button_exit {
-    /* background-color: #8080803d; */
     padding: 2.5em 0 0 0;
     text-align: right;
     margin: 1em;
-    width: 78.7%;
+    width: 80%;
 }
 
 .clear {
-    /* background: #000; */
     clear: both;
 }
 
 .for_logs_1 {
-    /* padding: 2.5em 0 0 0; */
-    /* text-align: right; */
     margin: 0 0 0 1.2em;
-    /* width: 78.7%; */
 }
 
 .count_for_trash {
@@ -458,8 +448,8 @@ tbody input[type='checkbox'] {
     background: #e3f2f58f;
     border-radius: 1em;
     padding: 1em;
-    margin: 1em;
-    width: 30%;
+    margin: 0 1em;
+    width: 45%;
     font-size: inherit;
     float: left;
 }
@@ -480,10 +470,10 @@ tbody input[type='checkbox'] {
 }
 
 .title_one_card {
-    padding: 0 1em 1em 0.5em;
-    font-size: xx-large;
+    /* padding: 0 1em 1em 0.5em; */
+    /* font-size: xx-large; */
     font-weight: bold;
-    float: left;
+    /* float: left; */
 }
 .action-buttons{
     display: inline-flex;
@@ -495,15 +485,18 @@ tbody input[type='checkbox'] {
 }
 
 .geo_material_one_dial {
-    background: #dcfdfa;
+    /* background: #f1fffe; */
     border-radius: 1em;
     padding: 1em;
 }
 
 .repair_stile{
-    background: #dcfdfa;
+    background: #eefffd;
     border-radius: 1em;
     padding: 1em;
+    float: left;
+    border: 1px solid #c3c3c3;
+    width: 45%;
 }
 
 .status_000{
@@ -516,4 +509,14 @@ tbody input[type='checkbox'] {
     margin: 0 1em 0 0;
 }
 
-.admin_but {/* font-size: x-large; */margin: 1em;background: #92d7c7;}
+.admin_but {margin: 1em;background: #92d7c7;}
+
+.card_of_material_main {font-size: x-large;/* margin: 0 1em 0 0; */background: #f9f9f9;border-radius: 1em;margin: 0 0 1em;}
+
+.card_of_material_main_1 {width: 45%;float: left;margin: 1em;}
+
+.desc_09 {padding: 0.15em;}
+
+.link_to {/* padding: 0.15em; *//* float: left; */display: block;margin: 1em 0 0 0;}
+
+.button_go_to_app {/* padding: 0.15em; */}

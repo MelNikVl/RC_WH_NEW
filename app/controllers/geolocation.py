@@ -18,9 +18,9 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.crud.geolocation import GeoLocationCRUD
+from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest
 from starlette import status
-from starlette.responses import FileResponse
 from app.utils.utils import response
 
 from app.controllers.front import templates
@@ -61,12 +61,6 @@ def send_email(invoice):
     serv.sendmail(gmail_login, addresses, message.as_string())
 
 
-"""
-контроллер 
-то класс который принимает в себя параметры из эндпоинта, котоыре передаются ему по опредленному юрл
-который указан в роутс
-"""
-
 
 class GeoLocationController:
     @staticmethod
@@ -77,6 +71,7 @@ class GeoLocationController:
                                                    place=body.place,
                                                    client_mail=body.client_mail,
                                                    status=body.status,
+                                                   initiator=user.get("username"),
                                                    db=db)
 
         # логируем
@@ -104,7 +99,6 @@ class GeoLocationController:
     async def add_to_trash(material_id,
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
-        # add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).first()
         add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
             desc(GeoLocation.date_time)).all()[0]
         print(add_to_trash)
@@ -132,14 +126,6 @@ class GeoLocationController:
         return response(data=f'актив {material_id} добавлен в список на списание', status=True)
 
     @staticmethod
-    async def download_file_for_trash():
-        # Укажите путь и имя файла, который нужно скачать
-        file_path = "llll.xlsx"
-
-        # Верните объект FileResponse для скачивания файла
-        return FileResponse(file_path, filename="имя_файла_при_скачивании")
-
-    @staticmethod
     async def trash_page(db: Session = Depends(get_db),
                          request: Request = None,
                          t: str = None  # jwt токен
@@ -162,8 +148,6 @@ class GeoLocationController:
                                     db: Session = Depends(get_db),
                                     invoice: UploadFile = File(...),
                                     user: User = Depends(AuthUtil.decode_jwt)):
-
-        # отправить письмо на 2 адреса с накладной и ссылкой на папку списания
 
         # получаем список товаров на списание
         materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
@@ -235,9 +219,7 @@ class GeoLocationController:
             db.delete(material_for_delete)
             print(f'актив {y.id} удален из таблицы Material')
 
-            # geo_for_delete = 
             db.query(GeoLocation).filter(GeoLocation.material_id == y.id).delete()
-            # db.delete(geo_for_delete)
             print(f'история передвижений актива {y.id} удалена из таблицы Гео')
 
             db.commit()
@@ -308,11 +290,6 @@ class GeoLocationController:
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
 
-        def generate_alphanum_random_string(length):
-            letters_and_digits = string.ascii_letters + string.digits
-            rand_string = ''.join(random.sample(letters_and_digits, length))
-            return rand_string
-
         new_repair = Repair(material_id=material_id_to_repair,
                             responsible_it_dept_user=user.get("username"),
                             problem_description=whats_problem_is,
@@ -320,7 +297,7 @@ class GeoLocationController:
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             repair_status="взят в ремонт",
-                            repair_unique_id=generate_alphanum_random_string(20)
+                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
 
         new_repair_event = LogItem(kind_table="Ремонт",
@@ -397,7 +374,7 @@ class GeoLocationController:
     @staticmethod
     async def add_details_to_repair(material_id_to_repair,
                                    details: str,
-                                   invoice: UploadFile = File(...),
+                                   invoice: UploadFile = None,
                                    db: Session = Depends(get_db),
                                    user: User = Depends(AuthUtil.decode_jwt),
                                    t: str = None,  # jwt токен
@@ -411,12 +388,12 @@ class GeoLocationController:
         find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
         rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
         un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
-        user_01 = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+        user_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].user_whose_technique
 
         add_repair = Repair(material_id=material_id_to_repair,
                             responsible_it_dept_user=user.get("username"),
                             problem_description=details,
-                            user_whose_technique=user_01,
+                            user_whose_technique=user_repair,
                             repair_number=rapair_count_last + 1,
                             date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             repair_status="добавление информации",

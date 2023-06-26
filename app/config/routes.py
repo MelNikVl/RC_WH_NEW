@@ -38,8 +38,8 @@ router.get("/auth")(FrontMainController.user_auth)
 router.get("/ping")(FrontMainController.ping)
 router.get("/instructions")(FrontMainController.instructions)
 router.get("/admins_page")(FrontMainController.admins_page)
+router.get("/repairs_page")(FrontMainController.repairs_page)
 router.get("/{material_id}")(FrontMainController.only_one_card)
-
 
 
 materials.post("/invoice")(FrontMainController.generate_invoice)
@@ -55,7 +55,6 @@ materials.post("/update_title")(MaterialsController.update_title)
 geolocation.post("/create")(GeoLocationController.create)
 geolocation.post("/get-by-id")(GeoLocationController.get_by_id)
 geolocation.post('/add_to_trash')(GeoLocationController.add_to_trash)
-geolocation.get("/download_file_for_trash")(GeoLocationController.download_file_for_trash)
 geolocation.get("/trash_page")(GeoLocationController.trash_page)
 geolocation.post("/send_to_trash_finally")(GeoLocationController.send_to_trash_finally)
 geolocation.get("/archive_trash_page")(GeoLocationController.archive_trash_page)

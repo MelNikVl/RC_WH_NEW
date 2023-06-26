@@ -24,33 +24,39 @@
     </div>
     <div class="clear"></div>
 
-    <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
-    <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
-    <div class="title_one_card status_000">Статус:  {{ data.geo_material[-1].status }}</div>
-    <div class="clear"></div>
+    <div class="card_of_material_main">
+        <div class="card_of_material_main_1">
+            <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
+            <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
+            <div class="title_one_card status_000">Статус:  {{ data.geo_material[-1].status }}</div>
 
-    <div class="card_of_material">
-        <h3>Информация о активе</h3>
-        <div>Описание:  {{ data.one_material.description }}</div>
-        <div>Категория:  {{ data.one_material.category }}</div>
-        <div>Кто завел:  {{ data.one_material.user_id }}</div>
-        <div>Дата ввода в эксплуатацию:  {{ data.one_material.date_time }}</div>
-        <h4>Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</h4>
+            <p>Где сейчас: {{ data.geo_material[-1].place }}</p>
+            <p>Ответственный сейчас: {{ data.geo_material[-1].client_mail }}</p>
+        </div>
+        <div class="card_of_material_main_1">
+            <div class="desc_09">Описание:  {{ data.one_material.description }}</div>
+            <div class="desc_09">Категория:  {{ data.one_material.category }}</div>
+            <div class="desc_09">Кто завел:  {{ data.one_material.user_id }}</div>
+            <div class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</div>
+            <p>Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
+        </div>
+        <div class="clear"></div>
     </div>
+
 
     <div class="card_of_material">
         <h3>Перемещения</h3>
         {% for item in data.geo_material %}
             <div class="geo_material_one">
+                <div>Дата перемещения: {{ item.date_time }}</div>
                 <div>Место: {{ item.place }},</div>
-                <div>ответственный: {{ item.client_mail }},</div>
-                <div>статус: {{ item.status }},</div>
-                <div>дата перемещения: {{ item.date_time }}</div>
+                <div>Ответственный: {{ item.client_mail }},</div>
+                <div>Статус: {{ item.status }},</div>
+                <div>Иницатор: {{ item.initiator }},</div>
             </div>
             <div> </div>
         {% endfor %}
     </div>
-    <div class="clear"></div>
 
     <div class="repair_stile">
         <h3>Ремонты: (в разработке)   </h3>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <script type="text/javascript" src="/static/jquery-3.6.4.min.js"></script>
+    <!--  линк на стили -->
+    <link rel="stylesheet" href="/static/style.css">
+    <!--  добавляем фавконку -->
+    <link rel="icon" href="/static/w.jpg" type="image/x-icon">
+    <script src="/static/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script src="/static/main.js"></script>
+    <link rel="stylesheet" href="/static/loader.css">
+    <!-- https://codepen.io/nobuakihonma/pen/dYbqLQ -->
+</head>
+
+<body>
+    <div class="title_1">Main office IT warehouse tracker (Repair)</div>
+    <div class="button_exit">
+        <button class="button_go_to_app" id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>в
+                приложение</button>
+        <button id="go_to_auth" class="other_buttons"
+            onclick="window.location.href = '/app/auth'">Выйти</button>
+    </div>
+    <div class="clear"></div>
+
+<table class="fl-table" id="table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>ID актив</th>
+                    <th>Ответственный</th>
+                    <th>Проблема - решение</th>
+                    <th>Чья техника</th>
+                    <th>Дата изменений</th>
+                    <th>Номер ремонта</th>
+                    <th>Статус</th>
+                </tr>
+            <tbody>
+                {% for item in data.actives_in_repair %}
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>{{ item.material_id }}</td>
+                    <td>{{ item.responsible_it_dept_user }}</td>
+                    <td>{{ item.problem_description }}</td>
+                    <td>{{ item.user_whose_technique }}</td>
+                    <td>{{ item.date_time }}</td>
+                    <td>{{ item.repair_number }}</td>
+                    <td>{{ item.repair_status }}</td>
+                </tr>
+                {% endfor %}
+            <tbody>
+
+            <tbody>
+        </table>
+
+</body>
+
+</html>
