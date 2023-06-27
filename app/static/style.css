@@ -482,11 +482,14 @@ tbody input[type='checkbox'] {
 }
 .action-buttons{
     display: inline-flex;
-    width: 320px;
+    width: 60%;
     position: absolute;
     z-index: 20;
     background: #fff;
     flex-direction: column;
+    border: 1px solid #a7a7a7;
+    border-radius: 1em;
+    background: #f8fffe;
 }
 
 .geo_material_one_dial {
@@ -513,6 +516,8 @@ tbody input[type='checkbox'] {
     font-size: x-large;
     margin: 0 1em 0 0;
 }
+
+.action-column {/* font-size: revert; */margin: 1em;float: left;}
 
 .admin_but {margin: 1em;background: #92d7c7;}
 

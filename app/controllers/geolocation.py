@@ -122,24 +122,6 @@ class GeoLocationController:
         return response(data=f'актив {material_id} добавлен в список на списание', status=True)
 
     @staticmethod
-    async def trash_page(db: Session = Depends(get_db),
-                         request: Request = None,
-                         t: str = None  # jwt токен
-                         ):
-        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
-        try:
-            result = await AuthUtil.decode_jwt(t)
-        except Exception as e:
-            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
-        out: Dict = {}
-        materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
-        out[0] = materials_for_trash
-        out["token"] = t
-        out["count_for_trash"] = len(materials_for_trash)
-
-        return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
-
-    @staticmethod
     async def send_to_trash_finally(photos: List[UploadFile],
                                     db: Session = Depends(get_db),
                                     invoice: UploadFile = File(...),
