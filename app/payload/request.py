@@ -54,7 +54,16 @@ class UserAuth(BaseModel):
     # )
     is_admin: bool = False
 
+
 class RepairCreateRequest(BaseModel):
     material_id: int
     problem: str
     customer: str
+
+
+class RepairStopRequest(BaseModel):
+    material_id: int
+    decision: str
+    customer: str
+    dept: str
+    status: str

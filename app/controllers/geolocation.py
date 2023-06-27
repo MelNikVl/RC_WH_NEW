@@ -11,7 +11,8 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from app.crud.geolocation import GeoLocationCRUD
 from app.crud.materials import MaterialCRUD
-from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest
+from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
+    RepairStopRequest
 from starlette import status
 from app.utils.utils import response
 from app.controllers.front import templates
@@ -318,11 +319,7 @@ class GeoLocationController:
 
 
     @staticmethod
-    async def move_from_repair(material_id_to_repair,
-                               solved_description: str,
-                               who_was_given_to: str,
-                               dept: str,
-                               status: str,
+    async def move_from_repair(body: RepairStopRequest,
                                db: Session = Depends(get_db),
                                user: User = Depends(AuthUtil.decode_jwt),
                                t: str = None,  # jwt токен
@@ -333,44 +330,45 @@ class GeoLocationController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
-        geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id_to_repair).order_by(
-            desc(GeoLocation.date_time)).all()[0]
+        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
+            new_location = GeoLocation(material_id=body.material_id,
+                                       place=body.dept,
+                                       client_mail=body.customer,
+                                       status=status,
+                                       initiator=user.get("username"),
+                                       date_time=datetime.datetime.now()
+                                       )
 
-        new_location = GeoLocation(material_id=material_id_to_repair,
-                                   place=dept,
-                                   client_mail=who_was_given_to,
-                                   status=status,
-                                   date_time=datetime.datetime.now()
-                                   )
+            find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
+            rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+            un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
 
-        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
-        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
-        un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+            get_out_repair = Repair(material_id=body.material_id,
+                                    responsible_it_dept_user=user.get("username"),
+                                    problem_description=body.decision,
+                                    user_whose_technique=body.customer,
+                                    repair_number=rapair_count_last + 1,
+                                    date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                    repair_status=False,
+                                    repair_unique_id=un_number_of_repair
+                                    )
 
-        get_out_repair = Repair(material_id=material_id_to_repair,
-                                responsible_it_dept_user=user.get("username"),
-                                problem_description=solved_description,
-                                user_whose_technique=who_was_given_to,
-                                repair_number=rapair_count_last + 1,
-                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                repair_status=False,
-                                repair_unique_id=un_number_of_repair
-                                )
+            new_repair_event = LogItem(kind_table="Ремонт",
+                                       user_id=user["username"],
+                                       passive_id=body.material_id,
+                                       modified_cols="актив выдан из ремонта",
+                                       values_of_change=f'решение: {body.decision},'
+                                                        f' технику забрал {body.customer}',
+                                       date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                       )
+            db.add(get_out_repair)
+            db.add(new_location)
+            db.add(new_repair_event)
+            db.commit()
 
-        new_repair_event = LogItem(kind_table="Ремонт",
-                                   user_id=user["username"],
-                                   passive_id=material_id_to_repair,
-                                   modified_cols="актив выдан из ремонта",
-                                   values_of_change=f'решение: {solved_description},'
-                                                    f' технику забрал {who_was_given_to}',
-                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                   )
-        db.add(get_out_repair)
-        db.add(new_location)
-        db.add(new_repair_event)
-        db.commit()
-
-        return response(data="отдали с ремонта", status=True)
+            return response(data="отдали с ремонта", status=True)
+        else:
+            return response(data="актив не в ремонте", status=False)
 
 
     @staticmethod
