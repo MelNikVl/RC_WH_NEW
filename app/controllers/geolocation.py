@@ -412,13 +412,7 @@ class GeoLocationController:
                            file: UploadFile = None,
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt),
-                           t: str = None,  # jwt токен
                            ):
-
-        try:
-            result = await AuthUtil.decode_jwt(t)
-        except Exception as e:
-            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
 
