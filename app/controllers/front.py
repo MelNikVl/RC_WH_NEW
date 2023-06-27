@@ -218,6 +218,11 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
         out: Dict = {}
         materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
+
+        for item in materials_for_trash:
+            item.date_time = item.date_time.strftime("%Y-%m-%d")
+
+
         out[0] = materials_for_trash
         out["token"] = t
         out["count_for_trash"] = len(materials_for_trash)
