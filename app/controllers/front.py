@@ -204,6 +204,7 @@ class FrontMainController:
         out["actives_in_repair"] = actives_in_repair
         out["count_repair"] = count_repair
 
+
         return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})
 
     @staticmethod
