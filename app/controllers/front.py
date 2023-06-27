@@ -6,7 +6,7 @@ from typing import List, Dict
 import fastapi
 from fastapi import Depends, FastAPI, Request, Response
 from pydantic import parse_obj_as
-from sqlalchemy import distinct
+from sqlalchemy import distinct, desc
 from sqlalchemy.orm import Session
 
 from fastapi.templating import Jinja2Templates
@@ -168,15 +168,15 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
-        material_geo = jsonable_encoder(db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all())
+        material_geo = jsonable_encoder(db.query(GeoLocation)
+                                        .filter(GeoLocation.material_id == material_id)
+                                        .order_by(desc(GeoLocation.date_time)).all())
 
         date_time = material_card['date_time']
         datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
         formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
 
-        list_for_geo = []
-        for i in material_geo:
-            list_for_geo.append(i)
+
 
         out: Dict = {}
         out["token"] = t

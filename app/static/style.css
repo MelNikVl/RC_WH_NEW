@@ -544,3 +544,5 @@ tbody input[type='checkbox'] {
 }
 
 .description_problem {/* padding: 0.15em; */width: 100%;}
+
+.date_one_card {width: 45%;float: left;/* margin: 1em; */font-size: x-large;}

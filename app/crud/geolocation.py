@@ -106,9 +106,12 @@ class GeoLocationCRUD:
 
     @staticmethod
     def list_of_repair(material_id, db):
-        # формируем список уникальных айди ремонтов 1 товара
-        all_rep_unique_id = db.query(distinct(Repair.repair_unique_id)).filter(Repair.material_id == material_id).all()
-        print(all_rep_unique_id)
+        # формируем список уникальных айди ремонтов 1 товара - сначала последние
+        all_rep_unique_id = db.query(distinct(Repair.repair_unique_id)) \
+            .filter(Repair.material_id == material_id) \
+            .order_by(desc(Repair.date_time)) \
+            .all()
+
         unique_ids = [item[0] for item in all_rep_unique_id]
         # uniq_id_val = {}
         uniq_id_val = []

@@ -45,10 +45,10 @@
 
 
     <div class="card_of_material">
-        <h3>Перемещения</h3>
+        <h3>Перемещения (сначала новые):</h3>
         {% for item in data.geo_material %}
             <div class="geo_material_one">
-                <div>Дата перемещения: {{ item.date_time }}</div>
+                <div class="date_one_card">Дата перемещения: {{ item.date_time }}</div>
                 <div>Место: {{ item.place }},</div>
                 <div>Ответственный: {{ item.client_mail }},</div>
                 <div>Статус: {{ item.status }},</div>
@@ -59,7 +59,7 @@
     </div>
 
     <div class="repair_stile">
-        <h3>Ремонты: (в разработке)   </h3>
+        <h3>Ремонты (сначала новые):</h3>
 
          {% for item in data.repairs %}
             <div class="geo_material_one">
