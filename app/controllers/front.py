@@ -29,7 +29,7 @@ from fastapi.responses import FileResponse
 
 """
 выдаем на фронт OUT 
-Session = Depends(get_db) - единораазовые обращения к таблицам
+Session = Depends(get_db) - единораазовые обращения к бд
 """
 
 templates = Jinja2Templates(directory="templates")

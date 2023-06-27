@@ -277,43 +277,45 @@ class GeoLocationController:
                              user: User = Depends(AuthUtil.decode_jwt),
                              ):
 
-        geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == data.material_id).order_by(
-            desc(GeoLocation.date_time)).all()[0]
+        if db.query(Repair).filter(Repair.material_id == data.material_id).all()[-1] == False:
+            print("в 1 усолвии")
+            new_location = GeoLocation(material_id=data.material_id,
+                                       place="IT отдел",
+                                       client_mail=data.customer,
+                                       status="ремонт",
+                                       date_time=datetime.datetime.now()
+                                       )
 
-        new_location = GeoLocation(material_id=data.material_id,
-                                   place="IT отдел",
-                                   client_mail=data.customer,
-                                   status="ремонт",
-                                   date_time=datetime.datetime.now()
-                                   )
+            find_repair = db.query(Repair).filter(Repair.material_id == data.material_id)
+            rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
 
-        find_repair = db.query(Repair).filter(Repair.material_id == data.material_id)
-        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+            new_repair = Repair(material_id=data.material_id,
+                                responsible_it_dept_user=user.get("username"),
+                                problem_description=data.problem,
+                                user_whose_technique=data.customer,
+                                repair_number=rapair_count_last + 1,
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                repair_status=True,
+                                repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                                )
 
-        new_repair = Repair(material_id=data.material_id,
-                            responsible_it_dept_user=user.get("username"),
-                            problem_description=data.problem,
-                            user_whose_technique=data.customer,
-                            repair_number=rapair_count_last + 1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            repair_status=True,
-                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
-                            )
+            new_repair_event = LogItem(kind_table="Ремонт",
+                                       user_id=user["username"],
+                                       passive_id=data.material_id,
+                                       modified_cols="актив взят в ремонт",
+                                       values_of_change=f'проблема: {data.problem},'
+                                                        f' технику сдал {data.customer}',
+                                       date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                       )
+            db.add(new_repair)
+            db.add(new_location)
+            db.add(new_repair_event)
+            db.commit()
+            return response(data="взяли на ремонт", status=True)
+        else:
+            print("в 2 усолвии")
+            return response(data="актив уже в ремонте", status=False)
 
-        new_repair_event = LogItem(kind_table="Ремонт",
-                                   user_id=user["username"],
-                                   passive_id=data.material_id,
-                                   modified_cols="актив взят в ремонт",
-                                   values_of_change=f'проблема: {data.problem},'
-                                                    f' технику сдал {data.customer}',
-                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                   )
-        db.add(new_repair)
-        db.add(new_location)
-        db.add(new_repair_event)
-        db.commit()
-
-        return response(data="взяли на ремонт", status=True)
 
     @staticmethod
     async def move_from_repair(material_id_to_repair,
