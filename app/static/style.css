@@ -21,16 +21,19 @@ body {
     position: sticky;
     top: 0px;
     background: #fff;
-    margin-bottom: 18px;
+    /* margin-bottom: 18px; */
+    float: left;
+    margin: 1em 1em 1em 0;
 }
 
 .input-wrapper {
-    /* position: sticky; */
+    position: sticky;
     top: 0px;
     background: #fff;
     display: block;
     flex-wrap: wrap;
-    margin: 1em;
+    margin: 1.3em;
+    float: left;
 }
 
 .select-wrapper {
@@ -482,8 +485,8 @@ tbody input[type='checkbox'] {
 }
 .action-buttons{
     display: inline-flex;
-    width: 60%;
-    position: absolute;
+    /* width: 60%; */
+    /* position: absolute; */
     z-index: 20;
     background: #fff;
     flex-direction: column;
@@ -539,3 +542,5 @@ tbody input[type='checkbox'] {
 .inactive textarea{
     pointer-events: none;
 }
+
+.description_problem {/* padding: 0.15em; */width: 100%;}
