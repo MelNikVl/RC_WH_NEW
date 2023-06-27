@@ -69,5 +69,5 @@ class RepairStopRequest(BaseModel):
     status: str
 
 class RepairDetailsRequest(BaseModel):
-    material_id: str
+    material_id: int
     details: str

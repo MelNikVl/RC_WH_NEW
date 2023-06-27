@@ -59,27 +59,31 @@ class GeoLocationController:
     async def create(body: GeoLocationCreateRequest,
                      db: Session = Depends(get_db),
                      user: User = Depends(AuthUtil.decode_jwt)):
-        geolocation = await GeoLocationCRUD.create(material_id=body.material_id,
-                                                   place=body.place,
-                                                   client_mail=body.client_mail,
-                                                   status=body.status,
-                                                   initiator=user.get("username"),
-                                                   db=db)
 
-        # логируем
-        create_geo_event = LogItem(kind_table="Расположение активов",
-                                   user_id=user["username"],
-                                   passive_id=body.material_id,
-                                   modified_cols="новое расположение",
-                                   values_of_change=f'новое место: {body.place},'
-                                                    f' новый статус: {body.status},'
-                                                    f' новый ответственный: {body.client_mail}',
-                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                   )
-        db.add(create_geo_event)
-        db.commit()
+        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
+            geolocation = await GeoLocationCRUD.create(material_id=body.material_id,
+                                                       place=body.place,
+                                                       client_mail=body.client_mail,
+                                                       status=body.status,
+                                                       initiator=user.get("username"),
+                                                       db=db)
 
-        return response(data=geolocation, status=True)
+            # логируем
+            create_geo_event = LogItem(kind_table="Расположение активов",
+                                       user_id=user["username"],
+                                       passive_id=body.material_id,
+                                       modified_cols="новое расположение",
+                                       values_of_change=f'новое место: {body.place},'
+                                                        f' новый статус: {body.status},'
+                                                        f' новый ответственный: {body.client_mail}',
+                                       date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                       )
+            db.add(create_geo_event)
+            db.commit()
+
+            return response(data=geolocation, status=True)
+        else:
+            return response(data="актив в ремонте и не подлежит перемещению", status=False)
 
     @staticmethod
     async def get_by_id(body: GeoLocationGetByIdRequest, db: Session = Depends(get_db),
@@ -328,7 +332,7 @@ class GeoLocationController:
             new_location = GeoLocation(material_id=body.material_id,
                                        place=body.dept,
                                        client_mail=body.customer,
-                                       status=status,
+                                       status=body.status,
                                        initiator=user.get("username"),
                                        date_time=datetime.datetime.now()
                                        )
