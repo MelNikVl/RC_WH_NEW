@@ -363,7 +363,7 @@ class GeoLocationController:
             await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
 
 
-            find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
+            find_repair = db.query(Repair).filter(Repair.material_id == body.material_id).all()
             rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
             un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
             user_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].user_whose_technique

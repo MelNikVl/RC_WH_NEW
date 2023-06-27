@@ -48,13 +48,15 @@
         <h3>Перемещения (сначала новые):</h3>
         {% for item in data.geo_material %}
             <div class="geo_material_one">
-                <div class="date_one_card">Дата перемещения: {{ item.date_time }}</div>
-                <div>Место: {{ item.place }},</div>
-                <div>Ответственный: {{ item.client_mail }},</div>
-                <div>Статус: {{ item.status }},</div>
-                <div>Иницатор: {{ item.initiator }},</div>
+                <div class="date_one_card">Дата: {{ item.date_time }}</div>
+                <div class="desc_one_card">
+                    <div>Место: {{ item.place }},</div>
+                    <div>Ответственный: {{ item.client_mail }},</div>
+                    <div>Статус: {{ item.status }},</div>
+                    <div>Иницатор: {{ item.initiator }},</div>
+                    </div>
             </div>
-            <div> </div>
+             <div class="clear"></div>
         {% endfor %}
     </div>
 
@@ -66,14 +68,16 @@
 
                 {% for item in item %}
                     <div class="geo_material_one_dial">
-                        <div>Дата: {{ item.date_time }},</div>
+                        <div class="date_one_card">Дата: {{ item.date_time }},</div>
+                        <div class="desc_one_card">
                         <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
                         <div>Кто сдал: {{ item.user_whose_technique }},</div>
                         <div>Проблема / решение: {{ item.problem_description }},</div>
                         <div>Дата перемещения: {{ item.date_time }}</div>
                         </div>
+                        </div>
                 {% endfor %}
-
+                <div class="clear">-----</div>
             </div>
         {% endfor %}
     </div>

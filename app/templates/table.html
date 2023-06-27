@@ -51,54 +51,56 @@
      <div class="clear"></div>
 
     <div class="table-wrapper">
-        <div class="button-wrapper">
-            <button id="open_actions">Действия с активами</button>
-            <div class="action-buttons" style="display: none;">
-                <div class="action-column">
-                    <button id="new">Завести актив</button>
-                    <button id="delete">Удалить</button>
-                    <button id="relocate">Переместить</button>
-                    <button id="history">Посмотреть перемещения 1 актива</button>
-                    <button id="add_photo">Добавить фото или файлы</button>
-                    <button id="move_to_trash">Отправить на списание</button>
-                </div>
-                <div class="action-column">
-                    <button id="fast_repair">Быстрый ремонт</button>
-                    <button id="send_to_repair">Взять в ремонт</button>
-                    <button id="add_repair_info">Добавить к ремонту</button>
-                    <button id="end_repair">Закончить ремонт</button>
-                </div>
-            </div>
-        </div>
-        <!--  фильтры -->
-        <div class="input-wrapper">
-            <div class="filters">Фильтры</div>
-            <input class="filter" type="text" placeholder="ID" id="id-filter" style="width: 60px;">
-            <input class="filter" type="text" placeholder="Категория" id="category-filter">
-            <input class="filter" type="text" placeholder="Дата-Время" id="date-filter">
-            <!-- <input class="filter" type="text" placeholder="Статус" id="status-filter"> -->
-            <div class="select-wrapper filter" style="display: inline-block;">
-                <input id="status-filter" class="select-result" value="" type="text" style="border-width: 0;appearance: none;"
-                    readonly placeholder="Статус">
-                <div class="select">
-                    <div class="option">
-                        <span></span>
-                        <a>---</a>
+        <div class="verh"></div>
+            <div class="button-wrapper">
+                <button id="open_actions">Действия с активами</button>
+                <div class="action-buttons" style="display: none;">
+                    <div class="action-column">
+                        <button id="new">Завести актив</button>
+                        <button id="delete">Удалить</button>
+                        <button id="relocate">Переместить</button>
+                        <button id="history">Посмотреть перемещения 1 актива</button>
+                        <button id="add_photo">Добавить фото или файлы</button>
+                        <button id="move_to_trash">Отправить на списание</button>
                     </div>
-                    <div class="option">
-                        <span>хранение</span>
-                    </div>
-                    <div class="option">
-                        <span>выдан</span>
-                    </div>
-                    <div class="option">
-                        <span>списание</span>
+                    <div class="action-column">
+                        <button id="fast_repair">Быстрый ремонт</button>
+                        <button id="send_to_repair">Взять в ремонт</button>
+                        <button id="add_repair_info">Добавить к ремонту</button>
+                        <button id="end_repair">Закончить ремонт</button>
                     </div>
                 </div>
             </div>
-        </div>
+            <!--  фильтры -->
+            <div class="input-wrapper">
+                <div class="filters">Фильтры</div>
+                <input class="filter" type="text" placeholder="ID" id="id-filter" style="width: 60px;">
+                <input class="filter" type="text" placeholder="Категория" id="category-filter">
+                <input class="filter" type="text" placeholder="Дата-Время" id="date-filter">
+                <!-- <input class="filter" type="text" placeholder="Статус" id="status-filter"> -->
+                <div class="select-wrapper filter" style="display: inline-block;">
+                    <input id="status-filter" class="select-result" value="" type="text" style="border-width: 0;appearance: none;"
+                        readonly placeholder="Статус">
+                    <div class="select">
+                        <div class="option">
+                            <span></span>
+                            <a>---</a>
+                        </div>
+                        <div class="option">
+                            <span>хранение</span>
+                        </div>
+                        <div class="option">
+                            <span>выдан</span>
+                        </div>
+                        <div class="option">
+                            <span>списание</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="clear"></div>
+            <div class="clear"></div>
+        </div>
 
         <!--  заголовок таблицы -->
         <table class="fl-table" id="table">
