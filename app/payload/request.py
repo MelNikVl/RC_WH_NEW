@@ -67,3 +67,7 @@ class RepairStopRequest(BaseModel):
     customer: str
     dept: str
     status: str
+
+class RepairDetailsRequest(BaseModel):
+    material_id: str
+    details: str

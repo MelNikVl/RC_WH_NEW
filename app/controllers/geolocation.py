@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from app.crud.geolocation import GeoLocationCRUD
 from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
-    RepairStopRequest
+    RepairStopRequest, RepairDetailsRequest
 from starlette import status
 from app.utils.utils import response
 from app.controllers.front import templates
@@ -322,13 +322,7 @@ class GeoLocationController:
     async def move_from_repair(body: RepairStopRequest,
                                db: Session = Depends(get_db),
                                user: User = Depends(AuthUtil.decode_jwt),
-                               t: str = None,  # jwt токен
                                ):
-
-        try:
-            result = await AuthUtil.decode_jwt(t)
-        except Exception as e:
-            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
             new_location = GeoLocation(material_id=body.material_id,
@@ -372,55 +366,49 @@ class GeoLocationController:
 
 
     @staticmethod
-    async def add_details_to_repair(material_id_to_repair,
-                                   details: str,
-                                   file: UploadFile = None,
-                                   db: Session = Depends(get_db),
-                                   user: User = Depends(AuthUtil.decode_jwt),
-                                   t: str = None,  # jwt токен
-                                   ):
+    async def add_details_to_repair(body: RepairDetailsRequest,
+                                    file: UploadFile = None,
+                                    db: Session = Depends(get_db),
+                                    user: User = Depends(AuthUtil.decode_jwt),
+                                    ):
 
-        try:
-            result = await AuthUtil.decode_jwt(t)
-        except Exception as e:
-            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
-
-        # загружаем файл
-        await GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
+        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
+            # загружаем файл
+            await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
 
 
-        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
-        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
-        un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
-        user_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].user_whose_technique
+            find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
+            rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+            un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
+            user_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].user_whose_technique
 
-        add_repair = Repair(material_id=material_id_to_repair,
-                            responsible_it_dept_user=user.get("username"),
-                            problem_description=details,
-                            user_whose_technique=user_repair,
-                            repair_number=rapair_count_last + 1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            repair_status=True,
-                            repair_unique_id=un_number_of_repair
-                            )
+            add_repair = Repair(material_id=body.material_id,
+                                responsible_it_dept_user=user.get("username"),
+                                problem_description=body.details,
+                                user_whose_technique=user_repair,
+                                repair_number=rapair_count_last + 1,
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                repair_status=True,
+                                repair_unique_id=un_number_of_repair
+                                )
 
-        new_repair_event = LogItem(kind_table="Ремонт",
-                                   user_id=user["username"],
-                                   passive_id=material_id_to_repair,
-                                   modified_cols="добавление информации",
-                                   values_of_change=f'что добавлено: {details}',
-                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                   )
-        db.add(add_repair)
-        db.add(new_repair_event)
-        db.commit()
+            new_repair_event = LogItem(kind_table="Ремонт",
+                                       user_id=user["username"],
+                                       passive_id=body.material_id,
+                                       modified_cols="добавление информации",
+                                       values_of_change=f'что добавлено: {body.details}',
+                                       date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                       )
+            db.add(add_repair)
+            db.add(new_repair_event)
+            db.commit()
 
-        return response(data="добавлена информация о ремонте", status=True)
+            return response(data="добавлена информация о ремонте", status=True)
+        else:
+            return response(data="Актив не в ремонте. К нему нельзя добавить данные", status=False)
 
     @staticmethod
-    async def short_repair(material_id_to_repair,
-                           whats_problem_is: str,
-                           who_gave_it_away: str,
+    async def short_repair(body: RepairCreateRequest,
                            file: UploadFile = None,
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt),
@@ -432,32 +420,36 @@ class GeoLocationController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
-        # загружаем файл
-        await GeoLocationCRUD.upload_file_to_repair(material_id_to_repair, file)
+        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
 
-        find_repair = db.query(Repair).filter(Repair.material_id == material_id_to_repair)
-        rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+            # загружаем файл
+            await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
 
-        new_repair = Repair(material_id=material_id_to_repair,
-                            responsible_it_dept_user=user.get("username"),
-                            problem_description=whats_problem_is,
-                            user_whose_technique=who_gave_it_away,
-                            repair_number=rapair_count_last + 1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            repair_status=False,
-                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
-                            )
+            find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
+            rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
 
-        new_repair_event = LogItem(kind_table="Ремонт",
-                                   user_id=user["username"],
-                                   passive_id=material_id_to_repair,
-                                   modified_cols="быстрый ремонт на месте",
-                                   values_of_change=f'проблема: {whats_problem_is},'
-                                                    f' техника у {who_gave_it_away}',
-                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                   )
-        db.add(new_repair)
-        db.add(new_repair_event)
-        db.commit()
+            new_repair = Repair(material_id=body.material_id,
+                                responsible_it_dept_user=user.get("username"),
+                                problem_description=body.problem,
+                                user_whose_technique=body.customer,
+                                repair_number=rapair_count_last + 1,
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                repair_status=False,
+                                repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                                )
 
-        return response(data="быстрый ремонт произвден", status=True)
+            new_repair_event = LogItem(kind_table="Ремонт",
+                                       user_id=user["username"],
+                                       passive_id=body.material_id,
+                                       modified_cols="быстрый ремонт на месте",
+                                       values_of_change=f'проблема: {body.problem},'
+                                                        f' техника у {body.customer}',
+                                       date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                       )
+            db.add(new_repair)
+            db.add(new_repair_event)
+            db.commit()
+
+            return response(data="быстрый ремонт произвден", status=True)
+        else:
+            return response(data="актив уже в ремонте", status=False)
