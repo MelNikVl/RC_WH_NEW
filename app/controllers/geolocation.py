@@ -3,7 +3,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from fastapi import Depends, Request, UploadFile, File
 from fastapi.encoders import jsonable_encoder
@@ -53,7 +53,6 @@ def send_email(invoice):
     serv.sendmail(gmail_login, addresses, message.as_string())
 
 
-
 class GeoLocationController:
     @staticmethod
     async def create(body: GeoLocationCreateRequest,
@@ -95,31 +94,70 @@ class GeoLocationController:
     async def add_to_trash(material_id,
                            user: User = Depends(AuthUtil.decode_jwt),
                            db: Session = Depends(get_db)):
-        add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
-            desc(GeoLocation.date_time)).all()[0]
-        print(add_to_trash)
 
-        send_to_trash_01 = GeoLocation(material_id=material_id,
-                                       place=add_to_trash.place,
-                                       client_mail=user.get("username"),
-                                       status="списание",
-                                       date_time=datetime.datetime.now()
+        if db.query(Repair).filter(Repair.material_id == material_id).all()[-1].repair_status == False:
+            add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
+                desc(GeoLocation.date_time)).all()[0]
+
+            send_to_trash_01 = GeoLocation(material_id=material_id,
+                                           place=add_to_trash.place,
+                                           client_mail=user.get("username"),
+                                           status="списание",
+                                           date_time=datetime.datetime.now()
+                                           )
+
+            # логируем
+            create_geo_event = LogItem(kind_table="Расположение активов",
+                                       user_id=user["username"],
+                                       passive_id=material_id,
+                                       modified_cols="status",
+                                       values_of_change="актив добавлен к списанию",
+                                       date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                        )
 
-        # логируем
-        create_geo_event = LogItem(kind_table="Расположение активов",
-                                   user_id=user["username"],
-                                   passive_id=material_id,
-                                   modified_cols="status",
-                                   values_of_change="актив добавлен к списанию",
-                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                   )
+            db.add(send_to_trash_01)
+            db.add(create_geo_event)
+            db.commit()
 
-        db.add(send_to_trash_01)
-        db.add(create_geo_event)
-        db.commit()
+            return response(data=f'актив {material_id} добавлен в список на списание', status=True)
+        else:
+            add_to_trash = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
+                desc(GeoLocation.date_time)).all()[0]
+            find_repair = db.query(Repair).filter(Repair.material_id == material_id)
+            rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
 
-        return response(data=f'актив {material_id} добавлен в список на списание', status=True)
+            last_repair = Repair(material_id=material_id,
+                                 responsible_it_dept_user=user.get("username"),
+                                 problem_description="отправлен на списание из ремонта",
+                                 user_whose_technique=user.get("username"),
+                                 repair_number=rapair_count_last + 1,
+                                 date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                 repair_status=True,
+                                 repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                                 )
+
+            send_to_trash_01 = GeoLocation(material_id=material_id,
+                                           place=add_to_trash.place,
+                                           client_mail=user.get("username"),
+                                           status="списание",
+                                           date_time=datetime.datetime.now()
+                                           )
+
+            # логируем
+            create_geo_event = LogItem(kind_table="Расположение активов",
+                                       user_id=user["username"],
+                                       passive_id=material_id,
+                                       modified_cols="status",
+                                       values_of_change="актив добавлен к списанию из ремонта",
+                                       date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                       )
+
+            db.add(last_repair)
+            db.add(send_to_trash_01)
+            db.add(create_geo_event)
+            db.commit()
+
+            return response(data=f'актив {material_id} добавлен в список на списание из ремонта', status=True)
 
     @staticmethod
     async def send_to_trash_finally(photos: List[UploadFile],
@@ -303,7 +341,6 @@ class GeoLocationController:
             print("в 2 усолвии")
             return response(data="актив уже в ремонте", status=False)
 
-
     @staticmethod
     async def move_from_repair(body: RepairStopRequest,
                                db: Session = Depends(get_db),
@@ -350,7 +387,6 @@ class GeoLocationController:
         else:
             return response(data="актив не в ремонте", status=False)
 
-
     @staticmethod
     async def add_details_to_repair(body: RepairDetailsRequest,
                                     file: UploadFile = None,
@@ -359,9 +395,9 @@ class GeoLocationController:
                                     ):
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
+
             # загружаем файл
             await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
-
 
             find_repair = db.query(Repair).filter(Repair.material_id == body.material_id).all()
             rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
@@ -395,22 +431,24 @@ class GeoLocationController:
 
     @staticmethod
     async def short_repair(body: RepairCreateRequest,
-                           file: UploadFile = None,
+                           # file: Optional[UploadFile] = None,
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt),
                            ):
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
 
+            print("fjsldkjf")
+
             # загружаем файл
-            await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
+            # await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
 
             find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
             rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
 
             new_repair = Repair(material_id=body.material_id,
                                 responsible_it_dept_user=user.get("username"),
-                                problem_description=body.problem,
+                                problem_description=str("быстрый ремонт -- " + body.problem),
                                 user_whose_technique=body.customer,
                                 repair_number=rapair_count_last + 1,
                                 date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
