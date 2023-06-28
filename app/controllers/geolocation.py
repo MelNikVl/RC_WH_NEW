@@ -132,7 +132,7 @@ class GeoLocationController:
                                  user_whose_technique=user.get("username"),
                                  repair_number=rapair_count_last + 1,
                                  date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                 repair_status=True,
+                                 repair_status=False,
                                  repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                                  )
 

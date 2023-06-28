@@ -80,7 +80,6 @@ class GeoLocationCRUD:
 
         return out
 
-
     @staticmethod
     async def get_by_id(material_id: int, db):
         material = db.query(Material).filter(Material.id == material_id).all()
@@ -90,19 +89,18 @@ class GeoLocationCRUD:
             geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).all()
             return parse_obj_as(List[GeoLocationUploadResponse], geolocation)
 
-
     @staticmethod
     async def current_place(material_id: int, db):
         material = db.query(Material).filter(Material.id == material_id).all()
         if len(material) == 0:
             raise HTTPException(status_code=404, detail="Карточки актива с таким айди не найдено")
         else:
-            geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(desc(GeoLocation.date_time)).all()
+            geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
+                desc(GeoLocation.date_time)).all()
             if len(geolocation) == 0:
                 return None
             else:
                 return parse_obj_as(GeoLocationUploadResponse, geolocation[0])
-
 
     @staticmethod
     def list_of_repair(material_id, db):
@@ -125,6 +123,21 @@ class GeoLocationCRUD:
             # uniq_id_val[rt] = last
             # rt += 1
         return uniq_id_val
+
+    @staticmethod
+    def list_of_active_repair(db):
+        # Получение последнего идентификатора обращения для каждого уникального material_id
+        last_ids = db.query(Repair.material_id, func.max(Repair.id), Repair.repair_status).group_by(
+            Repair.material_id).all()
+
+        list_active_repairs = []
+
+        # Вывод последнего идентификатора обращения для каждого material_id
+        for material_id, last_id, repair_status in last_ids:
+            if repair_status:
+                list_active_repairs.append(last_id)
+
+        return list_active_repairs
 
     @staticmethod
     async def upload_file_to_repair(material_id_to_repair, file):

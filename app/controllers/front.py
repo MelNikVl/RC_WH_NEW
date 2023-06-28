@@ -196,14 +196,12 @@ class FrontMainController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
-        actives_in_repair = db.query(Repair).filter(Repair.repair_status == True).all()
-        count_repair = db.query(Repair).filter(Repair.repair_status == True).count()
+        products = db.query(Repair).filter(Repair.id.in_(GeoLocationCRUD.list_of_active_repair(db))).all()
 
         out: Dict = {}
         out["token"] = t
-        out["actives_in_repair"] = actives_in_repair
-        out["count_repair"] = count_repair
-
+        out["actives_in_repair"] = products
+        out["count_repair"] = len(products)
 
         return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})
 
