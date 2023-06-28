@@ -56,19 +56,43 @@ class AccessoriesController:
                                   responsible=user.get("username"),
                                   place=body.place,
                                   date_time=datetime.datetime.now())
+
+        new_acc_event = LogItem(kind_table="Комплектующие",
+                                   user_id=user["username"],
+                                   passive_id=body.title,
+                                   modified_cols="добавление комплектующих",
+                                   values_of_change=f'категория: {body.category},'
+                                                    f' количество {body.count}',
+                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                   )
+
+        db.add(new_acc_event)
         db.add(accessories)
         db.commit()
 
         return response(data="комплектующие добавлены", status=True)
 
     @staticmethod
-    async def change_count(title, count, db: Session = Depends(get_db)):
+    async def change_count(title, count,
+                           user: user_dependency,
+                           db: Session = Depends(get_db),
+                           ):
         repair = db.query(Accessories).filter(Accessories.title == title).first()
 
         if repair.count == 0:
             return response(data="этих комплектующих нет", status=False)
         else:
             repair.count = repair.count - count
+
+            new_acc_event = LogItem(kind_table="Комплектующие",
+                                    user_id=user["username"],
+                                    passive_id=title,
+                                    modified_cols="изменения количества комплектующих",
+                                    values_of_change=f'новое количество: {count}',
+                                    date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                    )
+
+            db.add(new_acc_event)
             db.commit()
 
             return response(data="комплектующие взяты", status=True)

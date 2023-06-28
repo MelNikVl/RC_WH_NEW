@@ -347,7 +347,7 @@ class GeoLocationController:
                                user: User = Depends(AuthUtil.decode_jwt),
                                ):
 
-        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
+        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True: # это просто проверка что бы нельзя было вытащить из ремонта товар который не в ремонте
             new_location = GeoLocation(material_id=body.material_id,
                                        place=body.dept,
                                        client_mail=body.customer,
