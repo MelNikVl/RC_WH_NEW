@@ -303,11 +303,11 @@ class GeoLocationController:
                              ):
 
         if db.query(Repair).filter(Repair.material_id == data.material_id).all()[-1].repair_status == False:
-            print("в 1 усолвии")
             new_location = GeoLocation(material_id=data.material_id,
                                        place="IT отдел",
                                        client_mail=data.customer,
                                        status="ремонт",
+                                       initiator=user.get("username"),
                                        date_time=datetime.datetime.now()
                                        )
 
@@ -338,7 +338,6 @@ class GeoLocationController:
             db.commit()
             return response(data="взяли на ремонт", status=True)
         else:
-            print("в 2 усолвии")
             return response(data="актив уже в ремонте", status=False)
 
     @staticmethod
