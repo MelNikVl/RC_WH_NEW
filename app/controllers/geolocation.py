@@ -103,6 +103,7 @@ class GeoLocationController:
                                            place=add_to_trash.place,
                                            client_mail=user.get("username"),
                                            status="списание",
+                                           initiator=user.get("username"),
                                            date_time=datetime.datetime.now()
                                            )
 

@@ -81,6 +81,13 @@ class FrontMainController:
             row_cells[3].text = item[3]
             row_cells[4].text = item[4]
             row_cells[5].text = item[5]
+
+        par = document.add_paragraph()
+        par = document.add_paragraph()
+        par = document.add_paragraph()
+        par.add_run('Подпись руководителя IT отдела _______________________________').bold = True
+        par.alignment = 1
+
         document.save(out_name)
         return FileResponse(out_name)
 
