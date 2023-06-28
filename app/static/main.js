@@ -188,8 +188,8 @@ async function get_history(id) {
         const json = await response.json();
         let temp = "";
         for (i in json["data"]) {
-            temp += `<p>${json["data"][i]["place"]} ||| ${json["data"][i]["client_mail"]} |||
-             ${json["data"][i]["date_time"]} ||| ${json["data"][i]["status"]}, </p>`
+            temp += `<p>${json["data"][i]["place"]}  |||  ${json["data"][i]["client_mail"]}  |||
+             ${json["data"][i]["date_time"]}  |||  ${json["data"][i]["status"]}, </p>`
         }
         $("#history-block").html(temp);
     } catch (error) {
