@@ -557,3 +557,6 @@ width: 65%;float: left;font-size: unset;
 }
 
 .verh {background: #fff;position: sticky;top: 80px;}
+
+.main_title {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 1em;}
+.main_title2 {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 30em;}
