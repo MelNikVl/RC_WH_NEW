@@ -388,7 +388,7 @@ class GeoLocationController:
 
     @staticmethod
     async def add_details_to_repair(body: RepairDetailsRequest,
-                                    file: UploadFile = None,
+                                    # file: UploadFile = None,
                                     db: Session = Depends(get_db),
                                     user: User = Depends(AuthUtil.decode_jwt),
                                     ):
@@ -396,9 +396,9 @@ class GeoLocationController:
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
 
             # загружаем файл
-            await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
+            # await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
 
-            find_repair = db.query(Repair).filter(Repair.material_id == body.material_id).all()
+            find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
             rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
             un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
             user_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].user_whose_technique
