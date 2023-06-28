@@ -35,6 +35,7 @@ router.get("/instructions")(FrontMainController.instructions)
 router.get("/admins_page")(FrontMainController.admins_page)
 router.get("/repairs_page")(FrontMainController.repairs_page)
 router.get("/trash_page")(FrontMainController.trash_page)
+router.get("/accessories_page")(FrontMainController.accessories_page)
 router.get("/{material_id}")(FrontMainController.only_one_card)
 
 

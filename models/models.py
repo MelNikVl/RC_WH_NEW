@@ -2,11 +2,11 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, ForeignKey, String, DateTime, Boolean
 
-
 # здесь находятся модели для создания таблиц в базе данных - каждый класс - отдельная таблица
 
 # вид базы данных
 Base = declarative_base()
+
 
 class User(Base):
     __tablename__ = "user"
@@ -28,6 +28,7 @@ class Material(Base):
     description: str = Column(String)
     date_time: datetime = Column(DateTime)
     geolocation_id: int = Column(Integer, ForeignKey('geolocation.id'))
+
 
 class Trash(Base):
     __tablename__ = "trash"
@@ -81,3 +82,14 @@ class Repair(Base):
     repair_status: bool = Column(Boolean)
     repair_unique_id: str = Column(String)
 
+
+class Accessories(Base):
+    __tablename__ = "accessories"
+
+    id: int = Column(Integer, primary_key=True, index=True)
+    category: str = Column(String)
+    title: int = Column(Integer)
+    count: str = Column(String)
+    responsible: str = Column(String)
+    place: str = Column(String)
+    date_time: datetime = Column(DateTime)

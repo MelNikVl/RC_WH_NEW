@@ -21,7 +21,7 @@ from utils.utils import response
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User, GeoLocation, Material, Repair
+from models.models import User, GeoLocation, Material, Repair, Accessories
 
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
@@ -234,3 +234,24 @@ class FrontMainController:
         out["count_for_trash"] = len(materials_for_trash)
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
+
+    @staticmethod
+    async def accessories_page(db: Session = Depends(get_db),
+                               request: Request = None,
+                               t: str = None  # jwt токен
+                                 ):
+        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        out: Dict = {}
+
+        accessories = db.query(Accessories).all()
+
+        out[0] = accessories
+        out["token"] = t
+        out["count_accessories"] = len(accessories)
+
+        return templates.TemplateResponse("accessories_page.html", {"request": request, "data": out})
