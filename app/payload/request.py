@@ -71,3 +71,9 @@ class RepairStopRequest(BaseModel):
 class RepairDetailsRequest(BaseModel):
     material_id: int
     details: str
+
+class AccessoriesRequest(BaseModel):
+    category: str
+    title: str
+    count: int
+    place: str

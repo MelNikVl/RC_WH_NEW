@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from controllers.materials import MaterialsController
 from controllers.geolocation import GeoLocationController
 from controllers.front import FrontMainController
+
+from app.controllers.accessories import AccessoriesController
 from app.controllers.auth import AuthController
 from app.controllers.logs import LogsController
 
@@ -26,6 +28,9 @@ logs = APIRouter(prefix='/logs',
 for_admins = APIRouter(prefix='/for_admins',
                        tags=['for_admins'])
 
+accessories = APIRouter(prefix='/accessories',
+                        tags=['accessories'])
+
 
 # здесь указываем эндпоинты
 router.get("")(FrontMainController.index)
@@ -34,10 +39,9 @@ router.get("/ping")(FrontMainController.ping)
 router.get("/instructions")(FrontMainController.instructions)
 router.get("/admins_page")(FrontMainController.admins_page)
 router.get("/repairs_page")(FrontMainController.repairs_page)
-router.get("/trash_page")(FrontMainController.trash_page)
-router.get("/accessories_page")(FrontMainController.accessories_page)
-router.get("/{material_id}")(FrontMainController.only_one_card)
 
+router.get("/trash_page")(FrontMainController.trash_page)
+router.get("/{material_id}")(FrontMainController.only_one_card)
 
 materials.post("/invoice")(FrontMainController.generate_invoice)
 materials.post("/create")(MaterialsController.create)
@@ -59,7 +63,6 @@ geolocation.post("/move_from_repair")(GeoLocationController.move_from_repair)
 geolocation.post("/add_details_to_repair")(GeoLocationController.add_details_to_repair)
 geolocation.post("/short_repair")(GeoLocationController.short_repair)
 
-
 auth.post("/token")(AuthController.token)
 auth.post("/create_new_user")(AuthController.create_new_user)
 auth.put("/make-admin")(AuthController.make_admin)
@@ -70,3 +73,8 @@ auth.get("/get_admins")(AuthController.get_admins)
 auth.post("/add_telegramm_id")(AuthController.add_telegramm_id)
 
 logs.get("/get_all")(LogsController.logs)
+
+accessories.post("/create")(AccessoriesController.create)
+accessories.put("/change_count")(AccessoriesController.change_count)
+accessories.get("")(AccessoriesController.accessories_page)
+
