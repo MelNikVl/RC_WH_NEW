@@ -562,3 +562,7 @@ width: 65%;float: left;font-size: unset;
 .main_title {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 1em;}
 .main_title2 {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 30em;}
 .body_body{width: 75%;margin: 0 0 0 1em;border-radius: 1em;box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);}
+
+.body_inst {margin: 0 0 0 1em;}
+
+.input_label {/* width: 75%; *//* margin: 0 0 0 1em; *//* padding: 1em; */margin: 1em 0;display: flex;align-items: center;/* justify-content: center; */}

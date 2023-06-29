@@ -19,7 +19,7 @@
         <div class="title_1">Main office IT warehouse tracker (ADMIN page)</div>
         <div class="button_exit">
             <button class="button_go_to_app" id="go_to_app"
-                    onclick='window.location.href = "/app?t="+"{{ data.token }}"'>в приложение</button>
+                    onclick='window.location.href = "/app?t="+"{{ data.token }}"'>На главную страницу</button>
             <button id="go_to_auth" class="other_buttons"
                 onclick="window.location.href = '/app/auth'">Выйти</button>
         </div>
@@ -69,7 +69,7 @@
                 <input type="text" id="username" placeholder="Имя пользователя">
                 <input type="text" id="password" placeholder="Пароль">
                 <input type="text" id="chat_id" placeholder="Telegram ID">
-                <label for="input"><input type="checkbox" name="" id="is_admin">Admin</label>
+                <label for="input" class="input_label"><input type="checkbox" name="" id="is_admin">Admin</label>
                 <input type="button" value="Create" class="button_admins_page" id="submit-new-user">
             </div>
         </div>

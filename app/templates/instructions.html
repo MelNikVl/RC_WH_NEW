@@ -14,18 +14,24 @@
 </head>
 
 <body>
-    <div class="title_1">Main office IT warehouse tracker (INSTRUCTIONS)</div>
-    <div class="clear"></div>
-    <button id="go_to_app" onclick='window.location.href = "/app?t={{ data["token"] }}"'>Обратно в приложение</button>
-    <div class="instruction_1">
-<p>Программа разработана для учета активов IT отдела.</p>
-<p>Она позволяет:</p>
-<ul>
-  <li>Вести учет активов на складах</li>
-  <li>Следить за перемещениями активов</li>
-</ul>
+<div class="body_body">
+    <div class="body_inst">
+    <div class="title_1">Main office IT warehouse tracker (Intructions)</div>
 
-<h2>WEB TERMINAL (<code>http://{адрес_сервера}/app:9000</code>)</h2>
+    <div class="button_exit">
+        <button class="button_go_to_app" id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>На главную страницу</button>
+        <button id="go_to_auth" class="other_buttons"
+            onclick="window.location.href = '/app/auth'">Выйти</button>
+    </div>
+    <div class="clear"></div>
+    <p>Программа разработана для учета активов IT отдела.</p>
+    <p>Она позволяет:</p>
+    <ul>
+      <li>Вести учет активов на складах</li>
+      <li>Следить за перемещениями активов</li>
+    </ul>
+
+    <h2>WEB TERMINAL (<code>http://{адрес_сервера}/app:9000</code>)</h2>
         <h3>Работа с активами</h3>
         <h3>Создание (новой карточки для техники)</h3>
         <img  width="800" height="500" src="../static/instructions_files/create material.gif" alt="Описание картинки">
@@ -118,5 +124,7 @@
             <p>Все действия пишутся в отдельную таблицу базы данных - Logs, и выводятся на веб по 100 пунктов с пагинацией.</p>
             </div>
         {% endif %}
+    </div>
+    </div>
 </body>
 </html>
