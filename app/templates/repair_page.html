@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<div class="body_body">
     <div class="title_1">Main office IT warehouse tracker (Repair)</div>
 
     <div class="button_exit">
@@ -28,12 +29,12 @@
             onclick="window.location.href = '/app/auth'">Выйти</button>
     </div>
     <div class="clear"></div>
-<h3 class="subs">Техники в ремонте: {{ data.count_repair }}</h3>
-<table class="fl-table" id="table">
+    <h3 class="subs">Техники в ремонте: {{ data.count_repair }}</h3>
+    <table class="fl-table" id="table">
             <thead>
                 <tr>
                     <th><input type="checkbox" id="select-all"></th>
-                    <th>ID актив</th>
+                    <th>ID актива</th>
                     <th>Ответственный</th>
                     <th>Проблема - решение</th>
                     <th>Чья техника</th>
@@ -54,7 +55,7 @@
 
             <tbody>
         </table>
-
+</div>
 </body>
 
 </html>

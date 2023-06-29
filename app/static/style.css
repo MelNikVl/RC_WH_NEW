@@ -62,9 +62,10 @@ thead {
 table {
     font-family: Arial, sans-serif;
     text-align: left !important;
+    width: 100%;
     /* width: 80%; */
     /* border-collapse: collapse; */
-    margin: 0 0 0 1em;
+    /* margin: 0 0 0 1em; */
 }
 
 th {
@@ -386,7 +387,7 @@ tbody input[type='checkbox'] {
     padding: 2.5em 0 0 0;
     text-align: right;
     margin: 1em;
-    width: 63%;
+    /* width: 63%; */
 }
 
 .clear {
@@ -560,3 +561,4 @@ width: 65%;float: left;font-size: unset;
 
 .main_title {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 1em;}
 .main_title2 {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 30em;}
+.body_body{width: 75%;margin: 0 0 0 1em;border-radius: 1em;box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);}
