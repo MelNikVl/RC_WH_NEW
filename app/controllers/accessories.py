@@ -37,6 +37,8 @@ class AccessoriesController:
         out: Dict = {}
 
         accessories = db.query(Accessories).all()
+        for item in accessories:
+            item.date_time = item.date_time.strftime("%Y-%m-%d %H:%M")
 
         out[0] = accessories
         out["token"] = t

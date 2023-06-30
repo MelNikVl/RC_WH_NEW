@@ -50,7 +50,7 @@ async def move_object_handler(bot, message):
         await bot.send_message(message.chat.id, 'техника не найдена')
     else:
         geolocation = GeoLocation(material_id=object_id, place=object_location, client_mail=client_mail,
-                                  status="здесь надо добавить кнопки для выбора статуса",
+                                  status="хранение",
                                   initiator=message.chat.id,
                                   date_time=datetime.datetime.now())
         session.add(geolocation)

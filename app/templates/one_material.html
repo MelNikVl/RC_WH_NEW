@@ -17,6 +17,8 @@
 <body>
 <div class="body_body">
 <div class="title_1">Main office IT warehouse tracker (Asset card)</div>
+<!--    <div class="tooltip" title="Это подсказка">Наведите курсор для просмотра подсказки</div>-->
+
     <div class="button_exit">
         <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'
                 class="button_go_to_app_in_one_card">На главную страницу</button>
@@ -40,8 +42,8 @@
         <div class="card_of_material_main_1">
             <p class="desc_09">Категория:  {{ data.one_material.category }}</p>
             <p class="desc_09">Описание:  {{ data.one_material.description }}</p>
-            <p class="desc_09">Где сейчас: {{ data.geo_material[-1].place }}</p>
-            <p class="desc_09">Ответственный сейчас: {{ data.geo_material[-1].client_mail }}</p>
+            <p class="desc_09">Где сейчас: {{ data.current_place }}</p>
+            <p class="desc_09">Ответственный сейчас: {{ data.current_user }}</p>
             <p class="desc_09">Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
         </div>
         <div class="clear"></div>
