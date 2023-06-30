@@ -221,17 +221,17 @@ class GeoLocationController:
                 moving.append({"место": m.place, "ответственный": m.client_mail, "дата перемещения": m.date_time})
                 print(f'история перемещений актива {m.material_id} перемещена')
 
-            print(f'история перемещений актива {tr.material_id} создана')
+            print(f'история перемещений актива {m.material_id} создана')
 
             # созраняем ремонты
             repairs = []
             repairs_moving = db.query(Repair).filter(Repair.material_id == y.id).all()
-            for tr in repairs_moving:
-                repairs.append({"ответственный": tr.responsible_it_dept_user,
-                                "проблема или решение": tr.problem_description,
-                                "чья была техника": tr.user_whose_technique,
-                                "дата": tr.responsible_it_dept_user})
-            print(f'история ремонта актива {tr.material_id} создана')
+            for rep in repairs_moving:
+                repairs.append({"ответственный": rep.responsible_it_dept_user,
+                                "проблема или решение": rep.problem_description,
+                                "чья была техника": rep.user_whose_technique,
+                                "дата": rep.responsible_it_dept_user})
+            print(f'история ремонта актива {rep.material_id} создана')
 
             create_new_trash_archive = Trash(user_id=user.get("username"),
                                              material_id=y.id,
