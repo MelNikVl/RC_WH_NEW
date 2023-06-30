@@ -78,11 +78,10 @@ class AccessoriesController:
                            db: Session = Depends(get_db),
                            ):
         repair = db.query(Accessories).filter(Accessories.title == title).first()
-
         if repair.count == 0:
             return response(data="этих комплектующих нет", status=False)
         else:
-            repair.count = repair.count - count
+            repair.count = repair.count - int(count)
 
             new_acc_event = LogItem(kind_table="Комплектующие",
                                     user_id=user["username"],

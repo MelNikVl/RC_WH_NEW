@@ -21,22 +21,21 @@ body {
 
 .button-wrapper {
     z-index: 1;
-    position: sticky;
-    top: 0px;
     background: #fff;
     /* margin-bottom: 18px; */
-    float: left;
+    display: inline-block;
+    /* float: left; */
     margin: 1em 1em 1em 0;
 }
 
 .input-wrapper {
-    position: sticky;
+    /* position: sticky; */
     top: 0px;
     background: #fff;
-    display: block;
+    display: inline-block;
     flex-wrap: wrap;
     margin: 1.3em;
-    float: left;
+    /* float: left; */
 }
 
 .select-wrapper {
@@ -57,6 +56,7 @@ body {
 thead {
     position: sticky;
     top: 68px;
+    z-index: 0;
 }
 
 table {
@@ -108,7 +108,8 @@ button {
     border-radius: 1em;
     margin-bottom: 6px;
 }
-.button-wrapper > *{
+
+.button-wrapper>* {
     margin-left: 20px;
 }
 
@@ -488,10 +489,11 @@ tbody input[type='checkbox'] {
     font-weight: bold;
     /* float: left; */
 }
-.action-buttons{
+
+.action-buttons {
     display: inline-flex;
     /* width: 60%; */
-    /* position: absolute; */
+    position: absolute;
     z-index: 20;
     background: #fff;
     flex-direction: column;
@@ -506,7 +508,7 @@ tbody input[type='checkbox'] {
     padding: 1em;
 }
 
-.repair_stile{
+.repair_stile {
     background: #eefffd;
     border-radius: 1em;
     padding: 1em;
@@ -515,54 +517,126 @@ tbody input[type='checkbox'] {
     width: 45%;
 }
 
-.status_000{
+.status_000 {
     background: #92d7c7;
 }
 
-.filters{
+.filters {
     float: left;
     font-size: x-large;
     margin: 0 1em 0 0;
 }
 
-.action-column {/* font-size: revert; */margin: 1em;float: left;}
+.action-column {
+    /* font-size: revert; */
+    margin: 1em;
+    float: left;
+}
 
-.admin_but {margin: 1em;background: #92d7c7;}
+.admin_but {
+    margin: 1em;
+    background: #92d7c7;
+}
 
-.card_of_material_main {font-size: x-large;/* margin: 0 1em 0 0; */background: #f9f9f9;border-radius: 1em;margin: 0 0 1em;}
+.card_of_material_main {
+    font-size: x-large;
+    /* margin: 0 1em 0 0; */
+    background: #f9f9f9;
+    border-radius: 1em;
+    margin: 0 0 1em;
+}
 
-.card_of_material_main_1 {width: 45%;float: left;margin: 1em;}
+.card_of_material_main_1 {
+    width: 45%;
+    float: left;
+    margin: 1em;
+}
 
-.desc_09 {padding: 0.15em;}
+.desc_09 {
+    padding: 0.15em;
+}
 
-.link_to {/* padding: 0.15em; *//* float: left; */display: block;margin: 1em 0 0 0;}
+.link_to {
+    /* padding: 0.15em; */
+    /* float: left; */
+    display: block;
+    margin: 1em 0 0 0;
+}
 
-.button_go_to_app {/* padding: 0.15em; */}
+.button_go_to_app {
+    /* padding: 0.15em; */
+}
 
-.subs {/* display: block; */margin: 1em;}
+.subs {
+    /* display: block; */
+    margin: 1em;
+}
 
 .inactive {
     opacity: 1;
 }
 
-.inactive textarea{
+.inactive textarea {
     pointer-events: none;
 }
 
-.description_problem {/* padding: 0.15em; */width: 100%;}
-
-.date_one_card {width: 35%;float: left;font-size: unset;}
-
-.desc_one_card {
-width: 65%;float: left;font-size: unset;
+.description_problem {
+    /* padding: 0.15em; */
+    width: 100%;
 }
 
-.verh {background: #fff;position: sticky;top: 80px;}
+.date_one_card {
+    width: 35%;
+    float: left;
+    font-size: unset;
+}
 
-.main_title {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 1em;}
-.main_title2 {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 30em;}
-.body_body{width: 75%;margin: 0 0 0 1em;border-radius: 1em;box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);}
+.desc_one_card {
+    width: 65%;
+    float: left;
+    font-size: unset;
+}
 
-.body_inst {margin: 0 0 0 1em;}
+.top-panel {
+    background: #fff;
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+}
 
-.input_label {/* width: 75%; *//* margin: 0 0 0 1em; *//* padding: 1em; */margin: 1em 0;display: flex;align-items: center;/* justify-content: center; */}
+.main_title {
+    /* background: #fff; */
+    /* position: sticky; */
+    /* top: 80px; */
+    float: left;
+    margin: 0 0 0 1em;
+}
+
+.main_title2 {
+    /* background: #fff; */
+    /* position: sticky; */
+    /* top: 80px; */
+    float: left;
+    margin: 0 0 0 30em;
+}
+
+.body_body {
+    width: 75%;
+    margin: 0 0 0 1em;
+    border-radius: 1em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
+}
+
+.body_inst {
+    margin: 0 0 0 1em;
+}
+
+.input_label {
+    /* width: 75%; */
+    /* margin: 0 0 0 1em; */
+    /* padding: 1em; */
+    margin: 1em 0;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}

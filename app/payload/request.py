@@ -63,9 +63,9 @@ class RepairCreateRequest(BaseModel):
 
 class RepairStopRequest(BaseModel):
     material_id: int
-    decision: str
+    solution: str
     customer: str
-    dept: str
+    place: str
     status: str
 
 class RepairDetailsRequest(BaseModel):
