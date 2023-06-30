@@ -40,7 +40,7 @@
                             <th>ID телеграмма</th>
                         </tr>
                     </thead>
-                    <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
+
                     <tbody>
                         {% for item in data.users %}
                         <tr>
@@ -61,6 +61,7 @@
 
             </div>
         </div>
+    </div>
         <div style="display: none;" id="new-user-popup" class="popup-wrapper">
             <div class="popup">
                 <div class="close-btn">
@@ -73,7 +74,7 @@
                 <input type="button" value="Create" class="button_admins_page" id="submit-new-user">
             </div>
         </div>
-    </div>
+    
     <script>
         $(document).ready(function () {
             $("#make_admin").on("click", function () {

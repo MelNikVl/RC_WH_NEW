@@ -271,6 +271,7 @@ form {
     display: none;
     background-color: #fff;
     left: 0;
+    border: 1px solid #bbbbbb;
 }
 
 .new-wrapper {
@@ -461,10 +462,10 @@ tbody input[type='checkbox'] {
     background: #e3f2f58f;
     border-radius: 1em;
     padding: 1em;
-    margin: 0 1em;
+    margin: 1em;
     width: 45%;
     font-size: inherit;
-    float: left;
+    /* float: left; */
 }
 
 .geo_material_one {
@@ -513,6 +514,7 @@ tbody input[type='checkbox'] {
     border-radius: 1em;
     padding: 1em;
     float: left;
+    margin: 1em;
     border: 1px solid #c3c3c3;
     width: 45%;
 }
@@ -554,6 +556,7 @@ tbody input[type='checkbox'] {
 
 .desc_09 {
     padding: 0.15em;
+    font-size: smaller;
 }
 
 .link_to {
@@ -602,6 +605,7 @@ tbody input[type='checkbox'] {
     position: sticky;
     top: 0px;
     z-index: 2;
+    border-bottom: 1px solid;
 }
 
 .main_title {
@@ -625,6 +629,7 @@ tbody input[type='checkbox'] {
     margin: 0 0 0 1em;
     border-radius: 1em;
     box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
+    height: 100vh;
 }
 
 .body_inst {
@@ -639,4 +644,22 @@ tbody input[type='checkbox'] {
     display: flex;
     align-items: center;
     /* justify-content: center; */
+}
+
+
+
+/* Скрытие стандартной стрелки у элемента summary */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Стилизация заголовка */
+summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Скрытие содержимого при инициализации */
+details:not([open]) > *:not(summary) {
+  display: none;
 }

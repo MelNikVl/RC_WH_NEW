@@ -15,7 +15,8 @@
     <script src="/static/main.js"></script>
 </head>
 <body>
-<div class="title_1">Main office IT warehouse tracker --- one material</div>
+<div class="body_body">
+<div class="title_1">Main office IT warehouse tracker (Asset card)</div>
     <div class="button_exit">
         <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'
                 class="button_go_to_app_in_one_card">На главную страницу</button>
@@ -29,23 +30,28 @@
             <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
             <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
             <div class="title_one_card status_000">Статус:  {{ data.geo_material[-1].status }}</div>
-
-            <p>Где сейчас: {{ data.geo_material[-1].place }}</p>
-            <p>Ответственный сейчас: {{ data.geo_material[-1].client_mail }}</p>
+            <p class="desc_09"></p>
+            <details>
+                <summary>дополнительная информация</summary>
+                <p class="desc_09">Кто завел:  {{ data.one_material.user_id }}</p>
+                <p class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</p>
+            </details>
         </div>
         <div class="card_of_material_main_1">
-            <div class="desc_09">Описание:  {{ data.one_material.description }}</div>
-            <div class="desc_09">Категория:  {{ data.one_material.category }}</div>
-            <div class="desc_09">Кто завел:  {{ data.one_material.user_id }}</div>
-            <div class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</div>
-            <p>Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
+            <p class="desc_09">Категория:  {{ data.one_material.category }}</p>
+            <p class="desc_09">Описание:  {{ data.one_material.description }}</p>
+            <p class="desc_09">Где сейчас: {{ data.geo_material[-1].place }}</p>
+            <p class="desc_09">Ответственный сейчас: {{ data.geo_material[-1].client_mail }}</p>
+            <p class="desc_09">Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
         </div>
         <div class="clear"></div>
     </div>
 
-
     <div class="card_of_material">
-        <h3>Перемещения (сначала новые):</h3>
+        <details>
+          <summary>ПЕРЕМЕЩЕНИЯ</summary>
+            <h5>*(сначала новые):</h5>
+
         {% for item in data.geo_material %}
             <div class="geo_material_one">
                 <div class="date_one_card">Дата: {{ item.date_time }}</div>
@@ -58,10 +64,15 @@
             </div>
              <div class="clear"></div>
         {% endfor %}
+            </details>
     </div>
 
+
+
     <div class="repair_stile">
-        <h3>Ремонты (сначала новые):</h3>
+        <details>
+          <summary>РЕМОНТЫ</summary>
+        <h5>*(сначала новые):</h5>
 
          {% for item in data.repairs %}
             <div class="geo_material_one">
@@ -80,8 +91,10 @@
                 <div class="clear">-----</div>
             </div>
         {% endfor %}
+            </details>
     </div>
     <div class="clear"></div>
+    </div>
 
 
 </body>
