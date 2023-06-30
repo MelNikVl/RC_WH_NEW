@@ -21,22 +21,21 @@ body {
 
 .button-wrapper {
     z-index: 1;
-    position: sticky;
-    top: 0px;
     background: #fff;
     /* margin-bottom: 18px; */
-    float: left;
+    display: inline-block;
+    /* float: left; */
     margin: 1em 1em 1em 0;
 }
 
 .input-wrapper {
-    position: sticky;
+    /* position: sticky; */
     top: 0px;
     background: #fff;
-    display: block;
+    display: inline-block;
     flex-wrap: wrap;
     margin: 1.3em;
-    float: left;
+    /* float: left; */
 }
 
 .select-wrapper {
@@ -57,14 +56,16 @@ body {
 thead {
     position: sticky;
     top: 68px;
+    z-index: 0;
 }
 
 table {
     font-family: Arial, sans-serif;
     text-align: left !important;
+    width: 100%;
     /* width: 80%; */
     /* border-collapse: collapse; */
-    margin: 0 0 0 1em;
+    /* margin: 0 0 0 1em; */
 }
 
 th {
@@ -107,7 +108,8 @@ button {
     border-radius: 1em;
     margin-bottom: 6px;
 }
-.button-wrapper > *{
+
+.button-wrapper>* {
     margin-left: 20px;
 }
 
@@ -269,6 +271,7 @@ form {
     display: none;
     background-color: #fff;
     left: 0;
+    border: 1px solid #bbbbbb;
 }
 
 .new-wrapper {
@@ -386,7 +389,7 @@ tbody input[type='checkbox'] {
     padding: 2.5em 0 0 0;
     text-align: right;
     margin: 1em;
-    width: 63%;
+    /* width: 63%; */
 }
 
 .clear {
@@ -459,10 +462,10 @@ tbody input[type='checkbox'] {
     background: #e3f2f58f;
     border-radius: 1em;
     padding: 1em;
-    margin: 0 1em;
+    margin: 1em;
     width: 45%;
     font-size: inherit;
-    float: left;
+    /* float: left; */
 }
 
 .geo_material_one {
@@ -487,10 +490,11 @@ tbody input[type='checkbox'] {
     font-weight: bold;
     /* float: left; */
 }
-.action-buttons{
+
+.action-buttons {
     display: inline-flex;
     /* width: 60%; */
-    /* position: absolute; */
+    position: absolute;
     z-index: 20;
     background: #fff;
     flex-direction: column;
@@ -505,58 +509,185 @@ tbody input[type='checkbox'] {
     padding: 1em;
 }
 
-.repair_stile{
+.repair_stile {
     background: #eefffd;
     border-radius: 1em;
     padding: 1em;
     float: left;
+    margin: 1em;
     border: 1px solid #c3c3c3;
     width: 45%;
 }
 
-.status_000{
+.status_000 {
     background: #92d7c7;
 }
 
-.filters{
+.filters {
     float: left;
     font-size: x-large;
     margin: 0 1em 0 0;
 }
 
-.action-column {/* font-size: revert; */margin: 1em;float: left;}
+.action-column {
+    /* font-size: revert; */
+    margin: 1em;
+    float: left;
+}
 
-.admin_but {margin: 1em;background: #92d7c7;}
+.admin_but {
+    margin: 1em;
+    background: #92d7c7;
+}
 
-.card_of_material_main {font-size: x-large;/* margin: 0 1em 0 0; */background: #f9f9f9;border-radius: 1em;margin: 0 0 1em;}
+.card_of_material_main {
+    font-size: x-large;
+    /* margin: 0 1em 0 0; */
+    background: #f9f9f9;
+    border-radius: 1em;
+    margin: 0 0 1em;
+}
 
-.card_of_material_main_1 {width: 45%;float: left;margin: 1em;}
+.card_of_material_main_1 {
+    width: 45%;
+    float: left;
+    margin: 1em;
+}
 
-.desc_09 {padding: 0.15em;}
+.desc_09 {
+    padding: 0.15em;
+    font-size: smaller;
+}
 
-.link_to {/* padding: 0.15em; *//* float: left; */display: block;margin: 1em 0 0 0;}
+.link_to {
+    /* padding: 0.15em; */
+    /* float: left; */
+    display: block;
+    margin: 1em 0 0 0;
+}
 
-.button_go_to_app {/* padding: 0.15em; */}
+.button_go_to_app {
+    /* padding: 0.15em; */
+}
 
-.subs {/* display: block; */margin: 1em;}
+.subs {
+    /* display: block; */
+    margin: 1em;
+}
 
 .inactive {
     opacity: 1;
 }
 
-.inactive textarea{
+.inactive textarea {
     pointer-events: none;
 }
 
-.description_problem {/* padding: 0.15em; */width: 100%;}
-
-.date_one_card {width: 35%;float: left;font-size: unset;}
-
-.desc_one_card {
-width: 65%;float: left;font-size: unset;
+.description_problem {
+    /* padding: 0.15em; */
+    width: 100%;
 }
 
-.verh {background: #fff;position: sticky;top: 80px;}
+.date_one_card {
+    width: 35%;
+    float: left;
+    font-size: unset;
+}
 
-.main_title {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 1em;}
-.main_title2 {/* background: #fff; *//* position: sticky; *//* top: 80px; */float: left;margin: 0 0 0 30em;}
+.desc_one_card {
+    width: 65%;
+    float: left;
+    font-size: unset;
+}
+
+.top-panel {
+    background: #fff;
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+    border-bottom: 1px solid;
+}
+
+.main_title {
+    /* background: #fff; */
+    /* position: sticky; */
+    /* top: 80px; */
+    float: left;
+    margin: 0 0 0 1em;
+}
+
+.main_title2 {
+    /* background: #fff; */
+    /* position: sticky; */
+    /* top: 80px; */
+    float: left;
+    margin: 0 0 0 30em;
+}
+
+.body_body {
+    width: 75%;
+    margin: 0 0 0 1em;
+    border-radius: 1em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
+    height: 100vh;
+}
+
+.body_inst {
+    margin: 0 0 0 1em;
+}
+
+.input_label {
+    /* width: 75%; */
+    /* margin: 0 0 0 1em; */
+    /* padding: 1em; */
+    margin: 1em 0;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+
+
+/* Скрытие стандартной стрелки у элемента summary */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Стилизация заголовка */
+summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Скрытие содержимого при инициализации */
+details:not([open]) > *:not(summary) {
+  display: none;
+}
+
+
+/* for test
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.02s, visibility 0.02s;
+}
+
+
+.tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
