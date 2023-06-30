@@ -21,7 +21,7 @@ from utils.utils import response
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from db.db import get_db
-from models.models import User, GeoLocation, Material, Repair
+from models.models import User, GeoLocation, Material, Repair, Accessories
 
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
@@ -234,3 +234,5 @@ class FrontMainController:
         out["count_for_trash"] = len(materials_for_trash)
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
+
+

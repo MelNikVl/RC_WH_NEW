@@ -14,130 +14,136 @@
 </head>
 
 <body>
-    <div class="title_1">Main office IT warehouse tracker</div>
-    <div class="button_exit">
-        <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
-            Как пользоваться приложением</button>
-        <button id="go_to_auth" class="other_buttons"
-            onclick="window.location.href = '/app/auth'">Выйти</button>
-    </div>
-    <div class="clear"></div>
+    <div class="body_body">
+        <div class="title_1">Main office IT warehouse tracker</div>
+        <div class="button_exit">
+            <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
+                Как пользоваться приложением</button>
+            <button id="go_to_auth" class="other_buttons" onclick="window.location.href = '/app/auth'">Выйти</button>
+        </div>
+        <div class="clear"></div>
 
-    <div class="welcome">
-    <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
-    {% if data.role == True %}
-    <p class="hello_2">у тебя <b>административный</b> доступ</p>
-    <button id="for_admins" class="admin_but"
-            onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель администратора</button>
-    {% endif %}
-    {% if data.role == False %}
-    <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
-    {% endif %}
-    </div>
-
-    <div class="counts">
-        <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
-        <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
-        <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
-        <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
-        <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
-    </div>
-
-    <div class="counts">
-        <button id="trash" class="link_to" onclick='window.location.href = "/app/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
-        <button id="repair" class="link_to" onclick='window.location.href = "/app/repairs_page?t="+"{{ data.token }}"'>Список техники в ремонте</button>
-    </div>
-
-     <div class="clear"></div>
-
-    <div class="table-wrapper">
-        <div class="verh"></div>
-            <div class="button-wrapper">
-                <button id="open_actions">Действия с активами</button>
-                <div class="action-buttons" style="display: none;">
-                    <div class="action-column">
-                        <button id="new">Завести актив</button>
-                        <button id="delete">Удалить</button>
-                        <button id="relocate">Переместить</button>
-                        <button id="history">Посмотреть перемещения 1 актива</button>
-                        <button id="add_photo">Добавить фото или файлы</button>
-                        <button id="move_to_trash">Отправить на списание</button>
-                    </div>
-                    <div class="action-column">
-                        <button id="fast_repair">Быстрый ремонт</button>
-                        <button id="send_to_repair">Взять в ремонт</button>
-                        <button id="add_repair_info">Добавить к ремонту</button>
-                        <button id="end_repair">Закончить ремонт</button>
-                    </div>
-                </div>
-            </div>
-            <!--  фильтры -->
-            <div class="input-wrapper">
-                <div class="filters">Фильтры</div>
-                <input class="filter" type="text" placeholder="ID" id="id-filter" style="width: 60px;">
-                <input class="filter" type="text" placeholder="Категория" id="category-filter">
-                <input class="filter" type="text" placeholder="Дата-Время" id="date-filter">
-                <!-- <input class="filter" type="text" placeholder="Статус" id="status-filter"> -->
-                <div class="select-wrapper filter" style="display: inline-block;">
-                    <input id="status-filter" class="select-result" value="" type="text" style="border-width: 0;appearance: none;"
-                        readonly placeholder="Статус">
-                    <div class="select">
-                        <div class="option">
-                            <span></span>
-                            <a>---</a>
-                        </div>
-                        <div class="option">
-                            <span>хранение</span>
-                        </div>
-                        <div class="option">
-                            <span>выдан</span>
-                        </div>
-                        <div class="option">
-                            <span>списание</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="clear"></div>
+        <div class="welcome">
+            <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
+            {% if data.role == True %}
+            <p class="hello_2">у тебя <b>административный</b> доступ</p>
+            <button id="for_admins" class="admin_but"
+                onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель
+                администратора</button>
+            {% endif %}
+            {% if data.role == False %}
+            <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
+            {% endif %}
         </div>
 
-        <!--  заголовок таблицы -->
-        <table class="fl-table" id="table">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" id="select-all"></th>
-                    <th>ID актив</th>
-                    <th>Кто завел</th>
-                    <th>Категория</th>
-                    <th>Номер (тайтл)</th>
-                    <th>Описание (характеристики)</th>
-                    <th>Дата ввода</th>
-                    <th>Расположение</th>
-                    <th>Cтатус</th>
-                    <th>Инфо</th>
-                </tr>
-            </thead>
-            <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
-            <tbody>
-                {% for item in data[0] %}
-                <tr {% if item["geolocation_status"] == "списание" %} class="inactive" {% endif %}>
-                    <td><input type="checkbox"></td>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.user_id }}</td>
-                    <td>{{ item.category }}</td>
-                    <td>{{ item.title }}</td>
-                    <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
-                    <td>{{ item.date_time }}</td>
-                    <td>{{ item["geolocation_place"] }}</td>
-                    <td>{{ item["geolocation_status"] }}</td>
-<!--                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>-->
-                    <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
+        <div class="counts">
+            <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
+            <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
+            <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
+            <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
+            <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
+        </div>
 
-                </tr>
-                {% endfor %}
-            <tbody>
-        </table>
+        <div class="counts">
+            <button id="trash" class="link_to"
+                onclick='window.location.href = "/app/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
+            <button id="repair" class="link_to"
+                onclick='window.location.href = "/app/repairs_page?t="+"{{ data.token }}"'>Список техники в
+                ремонте</button>
+            <button id="accessories" class="link_to"
+                onclick='window.location.href = "/accessories?t="+"{{ data.token }}"'>Список комплектующих</button>
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="table-wrapper">
+            <div class="top-panel">
+                <div class="button-wrapper">
+                    <button id="open_actions">Действия с активами</button>
+                    <div class="action-buttons" style="display: none;">
+                        <div class="action-column">
+                            <button id="new">Завести актив</button>
+                            <button id="delete">Удалить</button>
+                            <button id="relocate">Переместить</button>
+                            <button id="history">Посмотреть перемещения 1 актива</button>
+                            <button id="add_photo">Добавить фото или файлы</button>
+                            <button id="move_to_trash">Отправить на списание</button>
+                        </div>
+                        <div class="action-column">
+                            <button id="fast_repair">Быстрый ремонт</button>
+                            <button id="send_to_repair">Взять в ремонт</button>
+                            <button id="add_repair_info">Добавить к ремонту</button>
+                            <button id="end_repair">Закончить ремонт</button>
+                        </div>
+                    </div>
+                </div>
+                <!--  фильтры -->
+                <div class="input-wrapper">
+                    <div class="filters">Фильтры</div>
+                    <input class="filter" type="text" placeholder="ID" id="id-filter" style="width: 60px;">
+                    <input class="filter" type="text" placeholder="Категория" id="category-filter">
+                    <input class="filter" type="text" placeholder="Дата-Время" id="date-filter">
+                    <!-- <input class="filter" type="text" placeholder="Статус" id="status-filter"> -->
+                    <div class="select-wrapper filter" style="display: inline-block;">
+                        <input id="status-filter" class="select-result" value="" type="text"
+                            style="border-width: 0;appearance: none;" readonly placeholder="Статус">
+                        <div class="select">
+                            <div class="option">
+                                <span></span>
+                                <a>---</a>
+                            </div>
+                            <div class="option">
+                                <span>хранение</span>
+                            </div>
+                            <div class="option">
+                                <span>выдан</span>
+                            </div>
+                            <div class="option">
+                                <span>списание</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="clear"></div>
+            <table class="fl-table" id="table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all"></th>
+                        <th>ID актива</th>
+                        <th>Кто завел</th>
+                        <th>Категория</th>
+                        <th>Номер (тайтл)</th>
+                        <th>Описание (характеристики)</th>
+                        <th>Дата ввода</th>
+                        <th>Расположение</th>
+                        <th>Cтатус</th>
+                        <th>Инфо</th>
+                    </tr>
+                </thead>
+                <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
+                <tbody>
+                    {% for item in data[0] %}
+                    <tr {% if item["geolocation_status"]=="списание" %} class="inactive" {% endif %}>
+                        <td><input type="checkbox"></td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.user_id }}</td>
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.title }}</td>
+                        <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
+                        <td>{{ item.date_time }}</td>
+                        <td>{{ item["geolocation_place"] }}</td>
+                        <td>{{ item["geolocation_status"] }}</td>
+                        <!--                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>-->
+                        <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
+    
+                    </tr>
+                    {% endfor %}
+                <tbody>
+            </table>
+        </div>
     </div>
 
     <!--  попапы -->
@@ -259,8 +265,62 @@
             <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
         </div>
     </div>
+    <div style="display: none;" id="repair-details-popup" class="popup-wrapper">
+        <div class="popup">
+            <div class="close-btn">
+                <img src="static/close.svg" alt="close">
+            </div>
+            <h1>Добавить информацию к ремонту</h1>
+            <textarea class="description_problem" placeholder="Опишите, что именно добавляется" name="" cols="30" rows="5"></textarea>
+            <button style="bottom: 10px; right: 10px;" id="submit-repair-details">Добавить</button>
+            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+        </div>
+    </div>
+    <div style="display: none;" id="repair-end-popup" class="popup-wrapper">
+        <div class="popup">
+            <div class="close-btn">
+                <img src="static/close.svg" alt="close">
+            </div>
+            <h1>Завершить ремонт</h1>
+            <textarea class="description_problem" placeholder="Опишите решение проблемы" name="" cols="30" rows="5"></textarea>
+            <input type="text" placeholder="Кому отдана техника">
+            <input type="text" placeholder="Местоположение">
+            <div class="select-wrapper">
+                <input class="select-result" value="хранение" type="text" style="border-width: 0;appearance: none;"
+                    readonly placeholder="Статус">
+                <div class="select">
+                    <div class="option">
+                        <span>хранение</span>
+                    </div>
+                    <div class="option">
+                        <span>выдан</span>
+                    </div>
+                    <div class="option">
+                        <span>списание</span>
+                    </div>
+                </div>
+            </div>
+            <button style="bottom: 10px; right: 10px;" id="submit-repair-end">Завершить</button>
+            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+        </div>
+    </div>
+
+    <div style="display: none;" id="fast-repair-popup" class="popup-wrapper">
+        <div class="popup">
+            <div class="close-btn">
+                <img src="static/close.svg" alt="close">
+            </div>
+            <h1>Взять актив в ремонт</h1>
+            <textarea class="description_problem" placeholder="Опишите проблему и решение" name="" cols="30" rows="5"></textarea>
+            <input type="text" placeholder="Заказчик ремонта">
+            <button style="bottom: 10px; right: 10px;" id="submit-short-repair">Завершить ремонт</button>
+            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+        </div>
+    </div>
+
     <script src="static/main.js"></script>
     <script src="static/repair.js"></script>
+
 </body>
 
 </html>

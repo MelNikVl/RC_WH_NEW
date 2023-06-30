@@ -3,9 +3,9 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union, Annotated
 
-from fastapi import Depends, Request, UploadFile, File
+from fastapi import Depends, Request, UploadFile, File, Form
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
@@ -221,17 +221,17 @@ class GeoLocationController:
                 moving.append({"место": m.place, "ответственный": m.client_mail, "дата перемещения": m.date_time})
                 print(f'история перемещений актива {m.material_id} перемещена')
 
-            print(f'история перемещений актива {tr.material_id} создана')
+            print(f'история перемещений актива {m.material_id} создана')
 
             # созраняем ремонты
             repairs = []
             repairs_moving = db.query(Repair).filter(Repair.material_id == y.id).all()
-            for tr in repairs_moving:
-                repairs.append({"ответственный": tr.responsible_it_dept_user,
-                                "проблема или решение": tr.problem_description,
-                                "чья была техника": tr.user_whose_technique,
-                                "дата": tr.responsible_it_dept_user})
-            print(f'история ремонта актива {tr.material_id} создана')
+            for rep in repairs_moving:
+                repairs.append({"ответственный": rep.responsible_it_dept_user,
+                                "проблема или решение": rep.problem_description,
+                                "чья была техника": rep.user_whose_technique,
+                                "дата": rep.responsible_it_dept_user})
+            print(f'история ремонта актива {rep.material_id} создана')
 
             create_new_trash_archive = Trash(user_id=user.get("username"),
                                              material_id=y.id,
@@ -347,9 +347,9 @@ class GeoLocationController:
                                user: User = Depends(AuthUtil.decode_jwt),
                                ):
 
-        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
+        if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True: # это просто проверка что бы нельзя было вытащить из ремонта товар который не в ремонте
             new_location = GeoLocation(material_id=body.material_id,
-                                       place=body.dept,
+                                       place=body.place,
                                        client_mail=body.customer,
                                        status=body.status,
                                        initiator=user.get("username"),
@@ -362,7 +362,7 @@ class GeoLocationController:
 
             get_out_repair = Repair(material_id=body.material_id,
                                     responsible_it_dept_user=user.get("username"),
-                                    problem_description=body.decision,
+                                    problem_description=body.solution,
                                     user_whose_technique=body.customer,
                                     repair_number=rapair_count_last + 1,
                                     date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -374,7 +374,7 @@ class GeoLocationController:
                                        user_id=user["username"],
                                        passive_id=body.material_id,
                                        modified_cols="актив выдан из ремонта",
-                                       values_of_change=f'решение: {body.decision},'
+                                       values_of_change=f'решение: {body.solution},'
                                                         f' технику забрал {body.customer}',
                                        date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                        )
@@ -389,15 +389,14 @@ class GeoLocationController:
 
     @staticmethod
     async def add_details_to_repair(body: RepairDetailsRequest,
-                                    # file: UploadFile = None,
+                                    # file: Union[UploadFile, None] = None,
                                     db: Session = Depends(get_db),
                                     user: User = Depends(AuthUtil.decode_jwt),
                                     ):
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
-
-            # загружаем файл
-            # await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
+        #     if (file):
+        #         await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
 
             find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
             rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
