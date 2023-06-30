@@ -686,6 +686,7 @@ details:not([open]) > *:not(summary) {
   transition: opacity 0.02s, visibility 0.02s;
 }
 
+
 .tooltip:hover::after {
   opacity: 1;
   visibility: visible;

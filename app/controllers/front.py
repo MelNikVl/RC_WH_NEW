@@ -177,6 +177,9 @@ class FrontMainController:
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
         material_geo1 = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(desc(GeoLocation.date_time)).all()
 
+        current_geo = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
+            desc(GeoLocation.date_time)).all()[0]
+
         for item in material_geo1:
             item.date_time = item.date_time.strftime("%Y-%m-%d")
 
@@ -190,6 +193,9 @@ class FrontMainController:
         out["geo_material"] = material_geo1
         out["repairs"] = GeoLocationCRUD.list_of_repair(material_id, db)
         out["date_time_f"] = formatted_date_time
+        out["current_place"] = current_geo.place
+        out["current_user"] = current_geo.client_mail
+        out["current_status"] = current_geo.status
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 
@@ -204,6 +210,21 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         products = db.query(Repair).filter(Repair.id.in_(GeoLocationCRUD.list_of_active_repair(db))).all()
+
+        print(jsonable_encoder(products))
+
+        # list_rep = []
+        # for i in products:
+        #     for u in db.query(Repair).filter(Repair.repair_unique_id == i.repair_unique_id).all():
+        #         list_rep.append(u.problem_description)
+        # print(list_rep)
+
+        # for i in jsonable_encoder(products):
+        #     for u in db.query(Repair).filter(Repair.repair_unique_id == i.repair_unique_id).all():
+        #         print(u)
+        #         # products[3][i].update({i: u.problem_description})
+
+
 
         out: Dict = {}
         out["token"] = t
@@ -234,5 +255,3 @@ class FrontMainController:
         out["count_for_trash"] = len(materials_for_trash)
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
-
-
