@@ -130,6 +130,9 @@
                 alert("Не все поля заполнены!")
             }
         });
+        $(".close-btn").on("click", function () {
+            $(this).closest(".popup-wrapper").fadeOut(200);
+        });
         $("#submit-add").on("click", async function () {
             let children = $(this).parent().children("input");
             let quantity = parseInt(children.eq(2).val());
