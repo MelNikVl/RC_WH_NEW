@@ -93,7 +93,7 @@ class AccessoriesController:
 
             new_acc_event = LogItem(kind_table="Комплектующие",
                                     user_id=user["username"],
-                                    passive_id="выдача",
+                                    passive_id=title,
                                     modified_cols=f'новое количество: {repair.count}',
                                     values_of_change=f'{user["username"]} выдал пользователю {resp_user} '
                                                      f'{title} в количестве {count} шт, осталось {repair.count}',
