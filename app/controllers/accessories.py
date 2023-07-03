@@ -36,6 +36,9 @@ class AccessoriesController:
 
         out: Dict = {}
 
+        top_info = db.query(LogItem).filter(LogItem.kind_table == "Комплектующие").\
+            filter(LogItem.passive_id == "выдача").order_by(LogItem.id.desc()).limit(5).all()
+
         accessories = db.query(Accessories).all()
         for item in accessories:
             item.date_time = item.date_time.strftime("%Y-%m-%d %H:%M")
@@ -43,6 +46,7 @@ class AccessoriesController:
         out[0] = accessories
         out["token"] = t
         out["count_accessories"] = len(accessories)
+        out["top_info"] = top_info
 
         return templates.TemplateResponse("accessories_page.html", {"request": request, "data": out})
 
@@ -75,7 +79,9 @@ class AccessoriesController:
         return response(data="комплектующие добавлены", status=True)
 
     @staticmethod
-    async def change_count(title, count,
+    async def change_count(title,
+                           count,
+                           resp_user: str,
                            user: user_dependency,
                            db: Session = Depends(get_db),
                            ):
@@ -87,13 +93,36 @@ class AccessoriesController:
 
             new_acc_event = LogItem(kind_table="Комплектующие",
                                     user_id=user["username"],
-                                    passive_id=title,
-                                    modified_cols="изменения количества комплектующих",
-                                    values_of_change=f'новое количество: {count}',
+                                    passive_id="выдача",
+                                    modified_cols=f'новое количество: {repair.count}',
+                                    values_of_change=f'{user["username"]} выдал пользователю {resp_user} '
+                                                     f'{title} в количестве {count} шт, осталось {repair.count}',
                                     date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                     )
 
             db.add(new_acc_event)
             db.commit()
 
-            return response(data="комплектующие взяты", status=True)
+            return response(data="комплектующие отданы", status=True)
+
+    @staticmethod
+    async def change_count_plus(title,
+                                count,
+                                user: user_dependency,
+                                db: Session = Depends(get_db),
+                                ):
+        repair = db.query(Accessories).filter(Accessories.title == title).first()
+        repair.count = repair.count + int(count)
+
+        new_acc_event = LogItem(kind_table="Комплектующие",
+                                user_id=user["username"],
+                                passive_id=title,
+                                modified_cols="изменения количества комплектующих",
+                                values_of_change=f'новое количество: {count}',
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                )
+
+        db.add(new_acc_event)
+        db.commit()
+
+        return response(data="комплектующие добавлены", status=True)
