@@ -594,6 +594,7 @@ tbody input[type='checkbox'] {
     width: 65%;
     float: left;
     font-size: unset;
+    margin: 1em;
 }
 
 .top-panel {

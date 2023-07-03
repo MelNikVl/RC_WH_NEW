@@ -57,9 +57,9 @@
 
         {% for item in data.geo_material %}
             <div class="geo_material_one">
-                <div class="date_one_card">Дата: {{ item.date_time }}</div>
+<!--                <div class="date_one_card">Дата: {{ item.date_time }}</div>-->
                 <details>
-                    <summary>подробнее</summary>
+                    <summary>Перемещение от {{ item.date_time }}</summary>
                         <div class="desc_one_card">
                             <div>Место: {{ item.place }},</div>
                             <div>Ответственный: {{ item.client_mail }},</div>
@@ -80,7 +80,7 @@
          {% for item in data.repairs %}
             <div class="geo_material_one">
                 <details>
-                    <summary>подробнее</summary>
+                    <summary>Ремонт от {{ item[0].date_time }}</summary>
                     {% for item in item %}
                         <div class="geo_material_one_dial">
                             <div class="date_one_card">Дата: {{ item.date_time }},</div>
@@ -90,7 +90,7 @@
                             <div>Проблема / решение: {{ item.problem_description }},</div>
                             <div>Дата перемещения: {{ item.date_time }}</div>
                             </div>
-                            </div>
+                            <div class="clear"></div>
                     {% endfor %}
 <!--                        <div class="clear">-&#45;&#45;&#45;&#45;</div>-->
                 </details>
