@@ -27,73 +27,77 @@
     </div>
     <div class="clear"></div>
 
-    <div class="card_of_material_main">
-        <div class="card_of_material_main_1">
+
+        <div class="card_of_material_main_2">
             <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
             <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
             <div class="title_one_card status_000">Статус:  {{ data.current_status }}</div>
-            <p class="desc_09"></p>
-            <details>
-                <summary>дополнительная информация</summary>
-                <p class="desc_09">Кто завел:  {{ data.one_material.user_id }}</p>
-                <p class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</p>
-            </details>
         </div>
+    <div class="clear"></div>
+<div class="card_of_material_main">
+
         <div class="card_of_material_main_1">
             <p class="desc_09">Категория:  {{ data.one_material.category }}</p>
             <p class="desc_09">Описание:  {{ data.one_material.description }}</p>
             <p class="desc_09">Где сейчас: {{ data.current_place }}</p>
             <p class="desc_09">Ответственный сейчас: {{ data.current_user }}</p>
+        </div>
+    <div class="card_of_material_main_1">
+<!--            <p class="desc_09"></p>-->
+            <p class="desc_09">Кто завел:  {{ data.one_material.user_id }}</p>
+            <p class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</p>
             <p class="desc_09">Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
         </div>
         <div class="clear"></div>
     </div>
 
     <div class="card_of_material">
-        <details>
-          <summary>ПЕРЕМЕЩЕНИЯ</summary>
+
+          <h3>ПЕРЕМЕЩЕНИЯ</h3>
             <h5>*(сначала новые):</h5>
 
         {% for item in data.geo_material %}
             <div class="geo_material_one">
                 <div class="date_one_card">Дата: {{ item.date_time }}</div>
-                <div class="desc_one_card">
-                    <div>Место: {{ item.place }},</div>
-                    <div>Ответственный: {{ item.client_mail }},</div>
-                    <div>Статус: {{ item.status }},</div>
-                    <div>Иницатор: {{ item.initiator }},</div>
-                    </div>
-            </div>
+                <details>
+                    <summary>подробнее</summary>
+                        <div class="desc_one_card">
+                            <div>Место: {{ item.place }},</div>
+                            <div>Ответственный: {{ item.client_mail }},</div>
+                            <div>Статус: {{ item.status }},</div>
+                            <div>Иницатор: {{ item.initiator }},</div>
+                            </div>
+                        </div>
+                </details>
              <div class="clear"></div>
         {% endfor %}
-            </details>
     </div>
 
-
-
     <div class="repair_stile">
-        <details>
-          <summary>РЕМОНТЫ</summary>
+
+          <h3>РЕМОНТЫ</h3>
         <h5>*(сначала новые):</h5>
 
          {% for item in data.repairs %}
             <div class="geo_material_one">
-
-                {% for item in item %}
-                    <div class="geo_material_one_dial">
-                        <div class="date_one_card">Дата: {{ item.date_time }},</div>
-                        <div class="desc_one_card">
-                        <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
-                        <div>Кто сдал: {{ item.user_whose_technique }},</div>
-                        <div>Проблема / решение: {{ item.problem_description }},</div>
-                        <div>Дата перемещения: {{ item.date_time }}</div>
-                        </div>
-                        </div>
-                {% endfor %}
-                <div class="clear">-----</div>
+                <details>
+                    <summary>подробнее</summary>
+                    {% for item in item %}
+                        <div class="geo_material_one_dial">
+                            <div class="date_one_card">Дата: {{ item.date_time }},</div>
+                            <div class="desc_one_card">
+                            <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
+                            <div>Кто сдал: {{ item.user_whose_technique }},</div>
+                            <div>Проблема / решение: {{ item.problem_description }},</div>
+                            <div>Дата перемещения: {{ item.date_time }}</div>
+                            </div>
+                            </div>
+                    {% endfor %}
+<!--                        <div class="clear">-&#45;&#45;&#45;&#45;</div>-->
+                </details>
             </div>
         {% endfor %}
-            </details>
+
     </div>
     <div class="clear"></div>
     </div>
