@@ -277,6 +277,7 @@ async function del(uri, id) {
 let apply_filters = function(){
     let text0 = $('#id-filter').val();
     let text2 = $('#category-filter').val();
+    let text4 = $('#description-filter').val();
     let text5 = $('#date-filter').val();
     let text8 = $('#status-filter').val();
     // if (e.keyCode == 13 || e.keyCode == 8) { //Раскоментировать эту
@@ -289,10 +290,13 @@ let apply_filters = function(){
             if (!$(this).children('td').eq(3).text().includes(text2))
                 $(this).hide();
         if (text5)
-            if (!$(this).children('td').eq(6).text().includes(text5))
+            if (!$(this).children('td').eq(5).text().includes(text5))
                 $(this).hide();
         if (text8)
-            if (!$(this).children('td').eq(8).text().includes(text8))
+            if (!$(this).children('td').eq(7).text().includes(text8))
+                $(this).hide();
+        if (text4)
+            if (!$(this).find('td textarea').text().includes(text4))
                 $(this).hide();
     });
 
@@ -301,7 +305,7 @@ let apply_filters = function(){
 $("#status-filter").change(function(){
     apply_filters();
 });
-$('#id-filter, #category-filter, #date-filter').on("input", function (e) {
+$('#id-filter, #category-filter, #date-filter, #description-filter').on("input", function (e) {
     e.preventDefault();
     apply_filters();
 });
@@ -327,6 +331,7 @@ $('.input-file span').mousedown(function (e) {
         e.preventDefault();
         files_to_upload = [];
         $(this).html("Выбрать фото");
+        $('.input-file input[type=file]').val("");
         $("#submit-photo").prop("disabled", true);
     }
 });
