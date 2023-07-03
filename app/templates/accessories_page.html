@@ -13,6 +13,7 @@
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
     <link rel="stylesheet" href="/static/loader.css">
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">-->
     <!-- https://codepen.io/nobuakihonma/pen/dYbqLQ -->
 </head>
 
@@ -25,6 +26,23 @@
                 onclick='window.location.href = "/app?t="+"{{ data.token }}"'>На главную страницу</button>
             <button id="go_to_auth" class="other_buttons" onclick="window.location.href = '/app/auth'">Выйти</button>
         </div>
+        <div class="clear"></div>
+
+        <details>
+            <summary class="ml-4">показать последние 5 выдач</summary>
+                <div class="menu_accessories">
+
+                    {% for item in data.top_info %}
+                            <div class="menu_accessories_1">
+                                <tr>
+                                    <td>{{ item.date_time }} -- </td>
+                                    <td>{{ item.values_of_change }}</td>
+                                </tr>
+                                </div>
+                            {% endfor %}
+
+                    </div>
+             </details>
         <div class="clear"></div>
 
         <div class="button-wrapper">
