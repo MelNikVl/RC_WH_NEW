@@ -56,7 +56,7 @@ body {
 thead {
     position: sticky;
     top: 68px;
-    z-index: 0;
+    z-index: 1;
 }
 
 table {
@@ -572,7 +572,7 @@ tbody input[type='checkbox'] {
 }
 
 .inactive {
-    opacity: 1;
+    opacity: 0.65;
 }
 
 .inactive textarea {

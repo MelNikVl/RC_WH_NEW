@@ -46,9 +46,9 @@
         <div class="clear"></div>
 
         <div class="button-wrapper">
-            <button id="add">Добавить новые</button>
+            <button id="create">Добавить новые</button>
             <button id="issue">Отдать</button>
-            <button id="add_ald">Добавить к имеющимся</button>
+            <button id="add">Добавить к имеющимся</button>
         </div>
         <div class="clear"></div>
 
@@ -80,7 +80,7 @@
                 <tbody>
             </table>
         </div>
-        <div style="display: none;" id="add-popup" class="popup-wrapper">
+        <div style="display: none;" id="create-popup" class="popup-wrapper">
             <div class="popup">
                 <div class="close-btn">
                     <img src="static/close.svg" alt="close">
@@ -90,7 +90,7 @@
                 <input type="text" placeholder="Наименование">
                 <input type="text" placeholder="Количество">
                 <input type="text" placeholder="Местоположение">
-                <button style="bottom: 10px; right: 10px;" id="submit-add">Добавить</button>
+                <button style="bottom: 10px; right: 10px;" id="submit-create">Добавить</button>
             </div>
         </div>
         <div style="display: none;" id="issue-popup" class="popup-wrapper">
@@ -100,7 +100,18 @@
                 </div>
                 <h1>Выдать комлпектующие</h1>
                 <input type="text" placeholder="Количество">
+                <input type="text" placeholder="Ответственный">
                 <button style="bottom: 10px; right: 10px;" id="submit-issue">Выдать</button>
+            </div>
+        </div>
+        <div style="display: none;" id="add-popup" class="popup-wrapper">
+            <div class="popup">
+                <div class="close-btn">
+                    <img src="static/close.svg" alt="close">
+                </div>
+                <h1>Добавить комлпектующие</h1>
+                <input type="text" placeholder="Количество">
+                <button style="bottom: 10px; right: 10px;" id="submit-add">Выдать</button>
             </div>
         </div>
     </div>
@@ -108,7 +119,7 @@
         const params = new URLSearchParams(window.location.search)
         const access_token = params.get("t");
         var host = document.location.origin;
-        $("#issue").prop("disabled", true);
+        $("#issue, #add").prop("disabled", true);
         function invert_selection(elem) {
             if ($(elem).hasClass("selected")) {
                 $(elem).removeClass("selected");
@@ -120,22 +131,32 @@
 
             }
             if ($('tbody > tr.selected').length)
-                $("#issue").prop("disabled", false);
+                $("#issue, #add").prop("disabled", false);
             else
-                $("#issue").prop("disabled", true);
+                $("#issue, #add").prop("disabled", true);
         }
 
         $("tbody > tr").on("click", function () {
             if ($(this).children("td").eq(8).text() != "списание")
                 invert_selection(this);
         });
-        $("#add").on("click", function () {
-            $("#add-popup").fadeIn(300);
+        $(".close-btn").on("click", function () {
+            $(this).closest(".popup-wrapper").fadeOut(200);
+        });
+
+        //Открытие попапов
+        $("#create").on("click", function () {
+            $("#create-popup").fadeIn(300);
         });
         $("#issue").on("click", function () {
             $("#issue-popup").fadeIn(300);
         });
-        $("#submit-issue").on("click", async function () {
+        $("#add").on("click", function () {
+            $("#add-popup").fadeIn(300);
+        });
+
+        //Отправка форм
+        $("#submit-add").on("click", async function () {
             let title = $('tbody > tr.selected').eq(0).children("td").eq(1).text();
             let qelem = $(this).parent().children("input").eq(0);
             let quantity = parseInt(qelem.val());
@@ -144,15 +165,27 @@
             else
                 qelem.val("");
             if (title && quantity) {
-                await issue(title, quantity);
+                await add(title, quantity);
             } else {
                 alert("Не все поля заполнены!")
             }
         });
-        $(".close-btn").on("click", function () {
-            $(this).closest(".popup-wrapper").fadeOut(200);
+        $("#submit-issue").on("click", async function () {
+            let title = $('tbody > tr.selected').eq(0).children("td").eq(1).text();
+            let qelem = $(this).parent().children("input").eq(0);
+            let quantity = parseInt(qelem.val());
+            let resp_user = $(this).parent().children("input").eq(1).val();
+            if (quantity)
+                qelem.val(quantity);
+            else
+                qelem.val("");
+            if (title && quantity && resp_user) {
+                await issue(title, quantity, resp_user);
+            } else {
+                alert("Не все поля заполнены!")
+            }
         });
-        $("#submit-add").on("click", async function () {
+        $("#submit-create").on("click", async function () {
             let children = $(this).parent().children("input");
             let quantity = parseInt(children.eq(2).val());
             if (quantity)
@@ -169,12 +202,14 @@
                     "count": quantity,
                     "place": place
                 }
-                await add(data);
+                await create(data);
             } else {
                 alert("Не все поля заполнены!")
             }
         });
-        async function add(data) {
+
+
+        async function create(data) {
             try {
                 const response = await fetch(host + "/accessories/create", {
                     method: 'POST',
@@ -193,9 +228,27 @@
                 console.error(error);
             }
         }
-        async function issue(title, quantity) {
+        async function issue(title, quantity, resp_user) {
             try {
-                const response = await fetch(host + "/accessories/change_count?title=" + title + "&count=" + quantity, {
+                const response = await fetch(host + "/accessories/change_count?title=" + title + "&count=" + quantity + "&resp_user=" + resp_user, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + access_token
+                    }
+                });
+                const resp = await response.json();
+                if (resp["status"] != true) {
+                    alert("Произошла ошибка! Для получения дополнительной информации зайдите в терминал программы");
+                };
+                window.location.reload();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        async function add(title, quantity) {
+            try {
+                const response = await fetch(host + "/accessories/add_accessories?title=" + title + "&count=" + quantity, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

@@ -93,7 +93,7 @@ class AccessoriesController:
 
             new_acc_event = LogItem(kind_table="Комплектующие",
                                     user_id=user["username"],
-                                    passive_id=title,
+                                    passive_id="выдача",
                                     modified_cols=f'новое количество: {repair.count}',
                                     values_of_change=f'{user["username"]} выдал пользователю {resp_user} '
                                                      f'{title} в количестве {count} шт, осталось {repair.count}',
@@ -106,11 +106,11 @@ class AccessoriesController:
             return response(data="комплектующие отданы", status=True)
 
     @staticmethod
-    async def change_count_plus(title,
-                                count,
-                                user: user_dependency,
-                                db: Session = Depends(get_db),
-                                ):
+    async def add_accessories(title,
+                              count,
+                              user: user_dependency,
+                              db: Session = Depends(get_db),
+                              ):
         repair = db.query(Accessories).filter(Accessories.title == title).first()
         repair.count = repair.count + int(count)
 
