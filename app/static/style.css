@@ -73,6 +73,10 @@ th {
     background: #92d7c7;
 }
 
+th:nth-child(8){
+    width: 9%;
+}
+
 td {
     padding: 8px 12px;
 }
@@ -180,6 +184,7 @@ textarea {
     border: none;
     appearance: none;
     -webkit-appearance: none;
+    width: 100%;
     border: none;
     resize: none;
     margin-bottom: 15px;
