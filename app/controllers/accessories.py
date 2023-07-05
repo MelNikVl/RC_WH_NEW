@@ -89,7 +89,7 @@ class AccessoriesController:
         if repair.count == 0:
             return response(data="этих комплектующих нет", status=False)
         else:
-            repair.count = repair.count - int(count)
+            repair.count = int(repair.count) - int(count)
 
             new_acc_event = LogItem(kind_table="Комплектующие",
                                     user_id=user["username"],
