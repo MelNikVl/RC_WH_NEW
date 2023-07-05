@@ -4,7 +4,7 @@ const access_token = params.get("t");
 var host = document.location.origin;
 var files_to_upload = [];
 
-function invert_selection(elem){
+function invert_selection(elem) {
     if ($(elem).hasClass("selected")) {
         $(elem).removeClass("selected");
         $(elem).find('input[type="checkbox"]').prop("checked", false);
@@ -23,6 +23,13 @@ function invert_selection(elem){
         case 1:
             $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash,  #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', false);
             $("#delete_user, #make_admin").removeClass("disabled-btn");
+            if ($('tbody > tr.selected').children("td").eq(7).text() == "ремонт"){
+                $("#fast_repair, #send_to_repair").prop("disabled", true);
+                $("#add_repair_info, #end_repair").prop("disabled", false);
+            } else{
+                $("#fast_repair, #send_to_repair").prop("disabled", false);
+                $("#add_repair_info, #end_repair").prop("disabled", true);
+            }
             break;
         default:
             $("#history, #add_photo, #remont, #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', true);
@@ -35,11 +42,11 @@ function invert_selection(elem){
 // активность кнопок (доступна она или нет)
 $(document).ready(function () {
     //Скрыть действия с активами при любом клике в окне
-    $(window).click(function() {
+    $(window).click(function () {
         $(".action-buttons").fadeOut(300);
     });
     //При клике по кнопке показать действия с активами
-    $("#open_actions").on("click", function(e){
+    $("#open_actions").on("click", function (e) {
         e.stopPropagation(); //Прекратить распространение события клика на дальнейшие элементы
         $(".action-buttons").fadeToggle(300);
     });
@@ -47,16 +54,16 @@ $(document).ready(function () {
     $("#delete_user, #make_admin").addClass("disabled-btn");
     $("#history, #submit-photo, #delete, #relocate, #add_photo, #remont, #move_to_trash, #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', true);
 
-    $("#move_to_trash").on("click", function(){
+    $("#move_to_trash").on("click", function () {
         if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы? Это действие будет уже не отменить')) {
-            $("tbody > tr.selected").each(async function(index){
+            $("tbody > tr.selected").each(async function (index) {
                 let id = $(this).children("td").eq(1).text();
                 await move_to_trash(id);
             });
             window.location.reload();
         }
     });
-    $("#submit-photo").on("click", async function(){
+    $("#submit-photo").on("click", async function () {
         let id = $("tbody > tr.selected").children('td').eq(1).text();
         const temp = await upload_photos(id);
         window.location.reload();
@@ -65,11 +72,11 @@ $(document).ready(function () {
     $("#add_photo").on("click", function () {
         $("#add-photo-popup").fadeIn(200);
     });
-    $(".select-result").on("click", function (){
+    $(".select-result").on("click", function () {
         $(this).parent().find(".select").fadeToggle(300);
 
     });
-    $(".select-wrapper .option").on("click", function(){
+    $(".select-wrapper .option").on("click", function () {
         $(this).closest(".select-wrapper").find(".select-result").val($(this).find("span").html());
         $(this).closest(".select-wrapper").find(".select-result").trigger("change");
         $(this).parent().fadeOut(300);
@@ -77,7 +84,7 @@ $(document).ready(function () {
     });
 
     $("tbody > tr").on("click", function () {
-        if ($(this).children("td").eq(8).text() != "списание")
+        if (!$(this).hasClass("inactive"))
             invert_selection(this);
     });
     $("#new").on("click", function () {
@@ -101,7 +108,7 @@ $(document).ready(function () {
     });
 
     $("#submit-geo").on("click", function () {
-        $("tbody > tr.selected").each(async function(index){
+        $("tbody > tr.selected").each(async function (index) {
             let id = $(this).children("td").eq(1).text();
             await update_geo({
                 "material_id": id,
@@ -115,14 +122,14 @@ $(document).ready(function () {
 
 
     $("#submit-delete").on("click", function () {
-        $("tbody > tr.selected").each(function(index){
+        $("tbody > tr.selected").each(function (index) {
             let id = $(this).children('td').eq(1).text();
             del("/materials/delete", id);
         });
     });
 
     $("#submit-new").on("click", function () {
-        if (files_to_upload.length<1){
+        if (files_to_upload.length < 1) {
             alert("Выберите хотя бы 1 фото");
             return;
         }
@@ -132,11 +139,10 @@ $(document).ready(function () {
             "title": $('#new-popup input[type="text"]').eq(2).val(),
             "description": $('#new-popup input[type="text"]').eq(3).val(),
             "place": $('#new-popup input[type="text"]').eq(4).val(),
-//            "client_mail": $('#new-popup input[type="text"]').eq(5).val()
+            //            "client_mail": $('#new-popup input[type="text"]').eq(5).val()
         }
         post("/materials/create", data);
     });
-
 
 
     $('textarea').on('click', function (event) {
@@ -154,15 +160,15 @@ $(document).ready(function () {
             update_desc({ "id": id, "description": desc });
         }
     });
-    $("#select-all").change(function(){
-        if (!$(this).prop("checked")){
-            $('tbody > tr.selected').each(function(index){
+    $("#select-all").change(function () {
+        if (!$(this).prop("checked")) {
+            $('tbody > tr.selected').each(function (index) {
                 invert_selection(this);
             });
 
         }
-        else{
-            $('tbody > tr').not(".selected").each(function(index){
+        else {
+            $('tbody > tr').not(".selected").each(function (index) {
                 invert_selection(this);
             });
         }
@@ -229,7 +235,7 @@ async function update_geo(data) {
         });
         const json = await response.json();
         response.
-        console.log('Успех:', JSON.stringify(json));
+            console.log('Успех:', JSON.stringify(json));
         $("#new-geo-popup").fadeOut(200);
     } catch (error) {
         console.log(error);
@@ -258,7 +264,7 @@ async function update_desc(data) {
 async function del(uri, id) {
 
     try {
-        const response = await fetch(host + uri+"?id_for_delete="+id, {
+        const response = await fetch(host + uri + "?id_for_delete=" + id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -274,7 +280,7 @@ async function del(uri, id) {
 }
 
 //============================== FILTERS
-let apply_filters = function(){
+let apply_filters = function () {
     let text0 = $('#id-filter').val();
     let text2 = $('#category-filter').val();
     let text4 = $('#description-filter').val();
@@ -302,7 +308,7 @@ let apply_filters = function(){
 
     // } //и эту строку, если активов много
 }
-$("#status-filter").change(function(){
+$("#status-filter").change(function () {
     apply_filters();
 });
 $('#id-filter, #category-filter, #date-filter, #description-filter').on("input", function (e) {
@@ -314,16 +320,16 @@ $('#id-filter, #category-filter, #date-filter, #description-filter').on("input",
 
 $('.input-file input[type=file]').on('change', function () {
     files_to_upload = [];
-    if(this.files.length>0){
+    if (this.files.length > 0) {
         files_to_upload = this.files;
         $(this).next().html("Выбрано " + files_to_upload.length + " фото");
         $("#submit-photo").prop("disabled", false);
-    }else{
+    } else {
         $(this).next().html("Выбрать фото");
         $("#submit-photo").prop("disabled", true);
     }
 });
-$('.input-file span').contextmenu(function() {
+$('.input-file span').contextmenu(function () {
     return false;
 });
 $('.input-file span').mousedown(function (e) {
@@ -337,11 +343,11 @@ $('.input-file span').mousedown(function (e) {
 });
 
 async function upload_photos(mat_id) {
-    for (let i=0; i<files_to_upload.length; i++){
+    for (let i = 0; i < files_to_upload.length; i++) {
         let photo = new FormData();
         photo.append('file', files_to_upload[i]);
         try {
-            const response = await fetch(host + "/materials/upload_photo?material_id="+mat_id, {
+            const response = await fetch(host + "/materials/upload_photo?material_id=" + mat_id, {
                 method: 'POST',
                 body: photo,
                 headers: {
@@ -357,9 +363,9 @@ async function upload_photos(mat_id) {
     }
 }
 
-async function move_to_trash(id){
+async function move_to_trash(id) {
     try {
-        const response = await fetch(host+"/geolocation/add_to_trash?material_id="+id, {
+        const response = await fetch(host + "/geolocation/add_to_trash?material_id=" + id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -373,9 +379,9 @@ async function move_to_trash(id){
 }
 
 
-async function delete_user(username){
+async function delete_user(username) {
     try {
-        const response = await fetch(host+"/auth/delete_user"+"?user_for_delete="+username, {
+        const response = await fetch(host + "/auth/delete_user" + "?user_for_delete=" + username, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -390,9 +396,9 @@ async function delete_user(username){
 }
 
 // пинг приложения для проверки валидности токена
-async function ping(){
+async function ping() {
     try {
-        const response = await fetch(host+"/app/ping", {
+        const response = await fetch(host + "/app/ping", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -400,7 +406,7 @@ async function ping(){
             }
         });
         const text = await response.text();
-        if (text != "ok"){
+        if (text != "ok") {
             window.location.reload();
         }
     } catch (error) {

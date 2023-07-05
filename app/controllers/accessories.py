@@ -106,11 +106,11 @@ class AccessoriesController:
             return response(data="комплектующие отданы", status=True)
 
     @staticmethod
-    async def change_count_plus(title,
-                                count,
-                                user: user_dependency,
-                                db: Session = Depends(get_db),
-                                ):
+    async def add_accessories(title,
+                              count,
+                              user: user_dependency,
+                              db: Session = Depends(get_db),
+                              ):
         repair = db.query(Accessories).filter(Accessories.title == title).first()
         repair.count = repair.count + int(count)
 

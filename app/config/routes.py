@@ -76,5 +76,6 @@ logs.get("/get_all")(LogsController.logs)
 
 accessories.post("/create")(AccessoriesController.create)
 accessories.put("/change_count")(AccessoriesController.change_count)
+accessories.put("/add_accessories")(AccessoriesController.add_accessories)
 accessories.get("")(AccessoriesController.accessories_page)
 

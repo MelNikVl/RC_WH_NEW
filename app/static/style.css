@@ -56,7 +56,7 @@ body {
 thead {
     position: sticky;
     top: 68px;
-    z-index: 0;
+    z-index: 1;
 }
 
 table {
@@ -71,6 +71,10 @@ table {
 th {
     padding: 20px 10px 20px 10px;
     background: #92d7c7;
+}
+
+th:nth-child(8){
+    width: 9%;
 }
 
 td {
@@ -180,6 +184,7 @@ textarea {
     border: none;
     appearance: none;
     -webkit-appearance: none;
+    width: 100%;
     border: none;
     resize: none;
     margin-bottom: 15px;
@@ -572,7 +577,7 @@ tbody input[type='checkbox'] {
 }
 
 .inactive {
-    opacity: 1;
+    opacity: 0.65;
 }
 
 .inactive textarea {
@@ -622,7 +627,7 @@ tbody input[type='checkbox'] {
 }
 
 .body_body {
-    width: 75%;
+    width: 1400px;
     margin: 0 0 0 1em;
     border-radius: 1em;
     box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
