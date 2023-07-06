@@ -1,7 +1,6 @@
 import datetime
 
 from db.db import session
-from keyboards.keyboards import geolocation_keyboard
 from models.models import User, Material, GeoLocation, LogItem
 
 
@@ -20,8 +19,8 @@ async def add_description_handler(bot, message, state):
     session.add(material)
     # записываем данные в бд
     session.commit()
-    await bot.send_message(message.chat.id, "Хотели бы вы указать расположение актива?",
-                           reply_markup=geolocation_keyboard())
+    state[message.chat.id]["state"] = "add_geolocation"
+    await bot.send_message(message.chat.id, "Введите местоположение")
 
 
 # получание местоположение по айди
@@ -107,21 +106,76 @@ async def add_id_handler(bot, message, state):
 
 
 # добавление местоположения товара
-async def add_geolocation_handler(bot, message, state):
-    geolocation = GeoLocation(client_mail=message.text, place=state[message.chat.id]['place'],
-                              status="добавить кнопки для выбора статуса",
-                              material_id=state[message.chat.id]['technic_id'], date_time=datetime.datetime.now())
-    session.add(geolocation)
-    session.commit()
-    material = session.query(Material).filter(Material.id == state[message.chat.id]['technic_id']).one()
-    material.geolocation_id = geolocation.id
-    session.flush()
-    session.commit()
-    await bot.send_message(message.chat.id,
-                           f'Карточка актива создана.\n'
-                           f'ID: {state[message.chat.id]["technic_id"]}\n'
-                           f'Категория: {state[message.chat.id]["category"]}\n'
-                           f'Номер: {state[message.chat.id]["model"]}\n'
-                           f'Фото лежат тут - "fs-mo\ADMINS\Photo_warehouse\photos\{state[message.chat.id]["technic_id"]}"\n'
-                           f'Toвар распологается в {geolocation.place}, ответсвенный - {geolocation.client_mail}'
-                           )
+async def add_geolocation_handler(bot, state, message=None, call_back=None):
+    if message is not None:
+        user = session.query(User).filter(User.chat_id == message.chat.id).one()
+        geolocation = GeoLocation(client_mail=message.text,
+                                  place=state[message.chat.id]['place'],
+                                  status="выдан",
+                                  material_id=state[message.chat.id]['technic_id'],
+                                  initiator=user.username,
+                                  date_time=datetime.datetime.now())
+        session.add(geolocation)
+        session.commit()
+        material = session.query(Material).filter(Material.id == state[message.chat.id]['technic_id']).one()
+        material.geolocation_id = geolocation.id
+        session.flush()
+        session.commit()
+        await bot.send_message(message.chat.id,
+                               f'Карточка актива создана.\n'
+                               f'ID: {state[message.chat.id]["technic_id"]}\n'
+                               f'Категория: {state[message.chat.id]["category"]}\n'
+                               f'Номер: {state[message.chat.id]["model"]}\n'
+                               f'Статус: "выдан"\n'
+                               f'Фото - "fs-mo\ADMINS\Photo_warehouse\photos\{state[message.chat.id]["technic_id"]}"\n'
+                               f'Toвар распологается в {geolocation.place}, ответсвенный - {geolocation.client_mail}'
+                               )
+        create_material_from_bot = LogItem(kind_table="Активы",
+                                           user_id=user.username,
+                                           passive_id=state[message.chat.id]["technic_id"],
+                                           modified_cols="создание актива из бота",
+                                           values_of_change=f'Категория: {state[message.chat.id]["category"]}\n'
+                                                            f'Номер: {state[message.chat.id]["model"]}\n'
+                                                            f'Статус: "выдан"\n'
+                                                            f'Toвар распологается в {geolocation.place},'
+                                                            f' ответсвенный - {geolocation.client_mail}',
+                                           date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                           )
+        session.add(create_material_from_bot)
+        session.commit()
+    else:
+        user = session.query(User).filter(User.chat_id == call_back.message.chat.id).one()
+        geolocation = GeoLocation(client_mail="nomail",
+                                  place=state[call_back.message.chat.id]['place'],
+                                  status="хранение",
+                                  material_id=state[call_back.message.chat.id]['technic_id'],
+                                  initiator=user.username,
+                                  date_time=datetime.datetime.now())
+        session.add(geolocation)
+        session.commit()
+        material = session.query(Material).filter(Material.id == state[call_back.message.chat.id]['technic_id']).one()
+        material.geolocation_id = geolocation.id
+        session.flush()
+        session.commit()
+        print(user.chat_id)
+        await bot.send_message(call_back.message.chat.id,
+                               f'Карточка актива создана.\n'
+                               f'ID: {state[call_back.message.chat.id]["technic_id"]}\n'
+                               f'Категория: {state[call_back.message.chat.id]["category"]}\n'
+                               f'Номер: {state[call_back.message.chat.id]["model"]}\n'
+                               f'Статус: "хранение"\n'
+                               f'Фото - "fs-mo\ADMINS\Photo_warehouse\photos\{state[call_back.message.chat.id]["technic_id"]}"\n'
+                               )
+
+        create_material_from_bot = LogItem(kind_table="Активы",
+                                           user_id=user.username,
+                                           passive_id=state[call_back.message.chat.id]["technic_id"],
+                                           modified_cols="создание актива из бота",
+                                           values_of_change=f'Категория: {state[call_back.message.chat.id]["category"]}\n'
+                                                            f'Номер: {state[call_back.message.chat.id]["model"]}\n'
+                                                            f'Статус: "хранение"\n',
+                                           date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                           )
+        print(user.username)
+        session.add(create_material_from_bot)
+        session.commit()

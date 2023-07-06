@@ -7,7 +7,7 @@ from db import db
 from db.db import engine, session
 from handlers.handlers import add_description_handler, get_by_id_handler, move_object_handler, \
     show_object_moving_handler, add_id_handler, add_geolocation_handler
-from keyboards.keyboards import add_technic_keyboard, geolocation_keyboard
+from keyboards.keyboards import add_technic_keyboard, status_keyboard
 from models.models import User, Base, LogItem
 from utils.set_bot_commands import check_if_admin
 
@@ -68,23 +68,18 @@ async def add_server(call_back: CallbackQuery):
     await bot.send_message(call_back.message.chat.id, "Введи ID")
 
 
-@dispatcher.callback_query_handler(text='yes')
-async def yes(call_back: CallbackQuery):
-    state[call_back.message.chat.id]['state'] = 'add_geolocation'
-    await bot.send_message(call_back.message.chat.id, "Введи расположение актива")
+@dispatcher.callback_query_handler(text='given')
+async def given(call_back: CallbackQuery):
+    state[call_back.message.chat.id]['state'] = 'add_contact_mail'
+    await bot.send_message(call_back.message.chat.id, "Введите почту ответственного")
 
 
 # диспетчер который ловит команду - нет. после вопроса о желании добавить местоположение
 # если пользователь нажал нет - то, ему просто выдастся информация о заведенном актива
-@dispatcher.callback_query_handler(text='no')
-async def no(call_back: CallbackQuery):
-    await bot.send_message(call_back.message.chat.id,
-                           f'Карточка актива создана.\n'
-                           f'ID: {state[call_back.message.chat.id]["technic_id"]}\n'
-                           f'Категория: {state[call_back.message.chat.id]["category"]}\n'
-                           f'Номер: {state[call_back.message.chat.id]["model"]}\n'
-                           f'Фото лежат тут - "fs-mo\ADMINS\Photo_warehouse\photos\{state[call_back.message.chat.id]["technic_id"]}"\n',
-                           )
+@dispatcher.callback_query_handler(text='hold')
+async def hold(call_back: CallbackQuery):
+    await add_geolocation_handler(bot, state, call_back=call_back)
+
 
 
 @dispatcher.callback_query_handler(text='add_other')
@@ -160,6 +155,9 @@ async def show_object_moving(message: Message):
 @dispatcher.message_handler()
 async def handlers(message: Message):
     if message.chat.id in state.keys():
+        if state[message.chat.id]['state'] == 'add_geolocation':
+            state[message.chat.id]['place'] = message.text
+            await bot.send_message(message.chat.id, "выберите статус", reply_markup=status_keyboard())
         if state[message.chat.id]['state'] == 'send_id':
             await add_id_handler(bot, message, state)
         if state[message.chat.id]['state'] == 'add_description':
@@ -175,13 +173,8 @@ async def handlers(message: Message):
         if state[message.chat.id]['state'] == 'show_object_moving':
             await show_object_moving_handler(bot, message)
         if state[message.chat.id]['state'] == 'add_contact_mail':
-            await add_geolocation_handler(bot, message, state)
-        if state[message.chat.id]['state'] == 'add_geolocation':
-            state[message.chat.id]['place'] = message.text
-            state[message.chat.id]['state'] = "add_contact_mail"
-            await bot.send_message(message.chat.id, "укажите свою почту")
+            await add_geolocation_handler(bot, state, message=message)
     else:
         await bot.send_message(message.chat.id, "я не понимаю")
-
 
 executor.start_polling(dispatcher)

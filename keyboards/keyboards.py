@@ -14,9 +14,9 @@ def add_technic_keyboard():
     return keyboard
 
 
-def geolocation_keyboard():
-    button1 = InlineKeyboardButton(text='Да', callback_data='yes')
-    button2 = InlineKeyboardButton(text='Нет', callback_data='no')
+def status_keyboard():
+    button1 = InlineKeyboardButton(text='хранение', callback_data='hold')
+    button2 = InlineKeyboardButton(text='выдан', callback_data='given')
     keyboard = InlineKeyboardMarkup()
     keyboard.add(button1)
     keyboard.add(button2)

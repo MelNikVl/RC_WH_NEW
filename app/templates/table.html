@@ -13,6 +13,8 @@
 <!--    &lt;!&ndash; Include stylesheet &ndash;&gt;-->
 <!--<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">-->
 
+    <script src="https://cdn.tiny.cloud/1/jul304ml46zqfwjprm7bswkwqipb0ypknsuu2ry3r2x1r9qe/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
 
     <!--  линк на стили -->
     <link rel="stylesheet" href="static/style.css">
@@ -198,7 +200,7 @@
                     </div>
                 </div>
                 <input type="text" placeholder="номер техники (pc1000)">
-                <input type="text" placeholder="базовые характеристики">
+                <input type="text" id="custom-input"  placeholder="базовые характеристики">
                 <input type="text" placeholder="местоположение актива">
             </div>
             <form>
@@ -328,6 +330,20 @@
 
     <script src="static/main.js"></script>
     <script src="static/repair.js"></script>
+
+
+
+
+
+<script>
+  tinymce.init({
+    selector: '#custom-input',
+    toolbar: false,
+    menubar: false,
+    plugins: [],
+    // Другие опции конфигурации...
+  });
+</script>
 
 <!-- Initialize Quill editor -->
 <!--<script>-->
