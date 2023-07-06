@@ -13,11 +13,12 @@
 <!--    &lt;!&ndash; Include stylesheet &ndash;&gt;-->
 <!--<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">-->
 
-    <script src="https://cdn.tiny.cloud/1/jul304ml46zqfwjprm7bswkwqipb0ypknsuu2ry3r2x1r9qe/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<!--    <script src="https://cdn.tiny.cloud/1/jul304ml46zqfwjprm7bswkwqipb0ypknsuu2ry3r2x1r9qe/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>-->
 
 
     <!--  линк на стили -->
     <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/loader.css">
     <!--  добавляем фавконку -->
     <link rel="icon" href="static/w.jpg" type="image/x-icon">
 </head>
@@ -142,7 +143,11 @@
 <!--                        <td>{{ item.user_id }}</td>-->
                         <td>{{ item.category }}</td>
                         <td>{{ item.title }}</td>
-                        <td><textarea cols="20" rows="5">{{ item.description }}</textarea></td>
+                        <td>
+                            <textarea cols="20" rows="5">
+                            {{ item.description }}
+                            </textarea>
+                        </td>
                         <td>{{ item.date_time }}</td>
                         <td>{{ item["geolocation_place"] }}</td>
                         <td>{{ item["geolocation_status"] }}</td>
@@ -200,7 +205,11 @@
                     </div>
                 </div>
                 <input type="text" placeholder="номер техники (pc1000)">
-                <input type="text" id="custom-input"  placeholder="базовые характеристики">
+                <textarea name="" cols="20" rows="4" placeholder="базовые характеристики">
+производитель: 
+процессор: 
+оперативная память: 
+                </textarea>
                 <input type="text" placeholder="местоположение актива">
             </div>
             <form>
@@ -211,7 +220,7 @@
             </form>
 
             <div class="upload-btns">
-                <button id="submit-new">Создать карточку актива</button>
+                <button id="submit-new">Создать карточку актива</button> <div style="display: none;" class="loader loader-1 center"><span></span></div>
             </div>
             <h5>* можно выбрать несколько фото, для очистки списка фото для загрузки кликнуть ПКМ по кнопке</h5>
         </div>

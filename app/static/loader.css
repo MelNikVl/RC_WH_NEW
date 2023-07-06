@@ -1,7 +1,6 @@
 *, ::after, ::before { -webkit-box-sizing: border-box; box-sizing: border-box; }
 .loader-1 {
     display: inline-block;
-    top: 10px;
     position: relative;
     left: 15px;
 	height: 32px;

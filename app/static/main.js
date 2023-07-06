@@ -137,10 +137,12 @@ $(document).ready(function () {
             "id": $('#new-popup input[type="text"]').eq(0).val(),
             "category": $('#new-popup input[type="text"]').eq(1).val(),
             "title": $('#new-popup input[type="text"]').eq(2).val(),
-            "description": $('#new-popup input[type="text"]').eq(3).val(),
-            "place": $('#new-popup input[type="text"]').eq(4).val(),
+            "description": $('#new-popup textarea').val(),
+            "place": $('#new-popup input[type="text"]').eq(3).val(),
             //            "client_mail": $('#new-popup input[type="text"]').eq(5).val()
         }
+        $("#submit-new").prop("disabled", true);
+        $(".loader").fadeIn(100);
         post("/materials/create", data);
     });
 
