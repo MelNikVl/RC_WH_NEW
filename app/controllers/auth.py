@@ -1,7 +1,7 @@
 import datetime
 import logging
 
-from fastapi import Depends, HTTPException, status, Response
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import update
 from sqlalchemy.orm import Session
@@ -9,7 +9,6 @@ from app.payload.request import UserAuth
 from db.db import get_db
 from app.utils.auth import AuthUtil, bcrypt_context
 from models.models import User, LogItem
-from passlib.context import CryptContext
 
 
 #   хеш для пароля - 123 - $2b$12$LHizNG913MQ.FlcjXS9eGufsJK2yp5xdbt6dvCGzOnMQbCSrLna2.

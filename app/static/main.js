@@ -76,6 +76,27 @@ $(document).ready(function () {
         $(this).parent().find(".select").fadeToggle(300);
 
     });
+    $("#new-popup-select").on("change", function () {
+        let comp_template = `производитель: ____\nпроцессор: ____\nоперативная память: ____`;
+        let other_template = `процессор:  ____\nоперативная память: ____`;
+        let other_template1 = `test:  ____\nоперативная память: ____`;
+
+        switch ($(this).val()) {
+            case "Другое":
+                $("#new-popup textarea").val(other_template);
+                break;
+            case "Компьютер":
+                $("#new-popup textarea").val(comp_template);
+                break;
+            case "test":
+                $("#new-popup textarea").val(other_template1);
+                break;
+            default:
+                $("#new-popup textarea").val(comp_template);
+                break;
+        }
+
+    });
     $(".select-wrapper .option").on("click", function () {
         $(this).closest(".select-wrapper").find(".select-result").val($(this).find("span").html());
         $(this).closest(".select-wrapper").find(".select-result").trigger("change");
