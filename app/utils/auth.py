@@ -3,9 +3,12 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from typing import Annotated
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from db.db import get_db
 from models.models import User
+
+bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 SECRET_KEY = 'e5403b2e10d566848d1d8a3b6909348f'
 ALGORITHM = 'HS256'
@@ -42,7 +45,7 @@ class AuthUtil:
         user = db.query(User).filter(User.username == username).first()
         if not user:
             raise HTTPException(status_code=401, detail="пользователь не совпадает")
-        if user.password != password:
+        if not bcrypt_context.verify(password, user.password):
             raise HTTPException(status_code=401, detail="пароль не совпадает")
         return user
 

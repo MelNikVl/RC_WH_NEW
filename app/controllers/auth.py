@@ -7,13 +7,12 @@ from sqlalchemy import update
 from sqlalchemy.orm import Session
 from app.payload.request import UserAuth
 from db.db import get_db
-from app.utils.auth import AuthUtil
+from app.utils.auth import AuthUtil, bcrypt_context
 from models.models import User, LogItem
 from passlib.context import CryptContext
 
-bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
-
+#   хеш для пароля - 123 - $2b$12$LHizNG913MQ.FlcjXS9eGufsJK2yp5xdbt6dvCGzOnMQbCSrLna2.
 class AuthController:
 
     @staticmethod
@@ -51,7 +50,7 @@ class AuthController:
                 return "такой пользователь уже есть"
             else:
                 user = User(chat_id=body.chat_id_from_tg, username=body.username,
-                            password=body.password, is_admin=body.is_admin)
+                            password=bcrypt_context.hash(body.password), is_admin=body.is_admin)
                 db.add(user)
                 db.commit()
                 return {"success": "success",
