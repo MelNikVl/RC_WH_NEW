@@ -15,7 +15,7 @@ from crud.geolocation import GeoLocationCRUD
 
 from crud.materials import MaterialCRUD
 from starlette import status
-from app.utils.auth import AuthUtil, user_dependency
+from app.utils.auth import AuthUtil, user_dependency, bcrypt_context
 from utils.utils import response
 
 from app.controllers.materials import user_dependency
@@ -124,6 +124,8 @@ class FrontMainController:
     async def user_auth(db: Session = Depends(get_db),
                         request: Request = None,
                         ):
+        # popo = "123"
+        # print(bcrypt_context.hash(popo))
         return templates.TemplateResponse("auth.html", {"request": request})
 
     @staticmethod
@@ -211,21 +213,6 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         products = db.query(Repair).filter(Repair.id.in_(GeoLocationCRUD.list_of_active_repair(db))).all()
-
-        print(jsonable_encoder(products))
-
-        # list_rep = []
-        # for i in products:
-        #     for u in db.query(Repair).filter(Repair.repair_unique_id == i.repair_unique_id).all():
-        #         list_rep.append(u.problem_description)
-        # print(list_rep)
-
-        # for i in jsonable_encoder(products):
-        #     for u in db.query(Repair).filter(Repair.repair_unique_id == i.repair_unique_id).all():
-        #         print(u)
-        #         # products[3][i].update({i: u.problem_description})
-
-
 
         out: Dict = {}
         out["token"] = t

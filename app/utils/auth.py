@@ -21,11 +21,13 @@ class AuthUtil:
     def create_access_token(username: str,
                             user_id: int,
                             user_role: bool):
-        expire = time.time() + 36000 # если что это 10 часов действия токена )
+
+        expire = time.time() + 36000 # если что это 10 часов действия токена
         post_jwt = {'sub': username,
                     'role': user_role,
                     'id': user_id,
-                    'exp': expire}
+                    'exp': expire
+                    }
         return jwt.encode(post_jwt, SECRET_KEY, algorithm=ALGORITHM)
 
     @staticmethod
