@@ -37,7 +37,6 @@
         <table class="fl-table" id="table">
             <thead>
                 <tr>
-                    <th><input type="checkbox" id="select-all"></th>
                     <th>ID актива</th>
                     <th>Кто списывал</th>
                     <th>Категория</th>
@@ -53,7 +52,6 @@
             <tbody>
                 {% for item in data[0] %}
                 <tr>
-                    <td><input type="checkbox"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.user_id }}</td>
                     <td>{{ item.category }}</td>
