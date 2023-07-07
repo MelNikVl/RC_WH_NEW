@@ -610,11 +610,10 @@ tbody input[type='checkbox'] {
 }
 
 .body_body {
-    width: 1400px;
+    width: 1500px;
     margin: 0 0 0 1em;
     border-radius: 1em;
     box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
-    /* height: 100vh; */
     height: max-content;
 }
 

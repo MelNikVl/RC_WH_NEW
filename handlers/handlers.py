@@ -1,23 +1,20 @@
 import datetime
 
+from app.crud.materials import MaterialCRUD
 from db.db import session
-from models.models import User, Material, GeoLocation, LogItem
+from models.models import User, Material, GeoLocation, LogItem, Repair
 
 
 # добавление описания
 async def add_description_handler(bot, message, state):
-    # присваиваем переменной user значение из БД равное айди пользователя в чате
     user = session.query(User).filter(User.chat_id == message.chat.id).one()
-    # присваиваем переменной material значения для записи в бд
     material = Material(id=state[message.chat.id]["technic_id"],
                         title=state[message.chat.id]["model"],
                         category=state[message.chat.id]["category"],
                         date_time=datetime.datetime.now(),
                         user_id=user.id,
                         description=message.text)
-    # добавляем данные в бд
     session.add(material)
-    # записываем данные в бд
     session.commit()
     state[message.chat.id]["state"] = "add_geolocation"
     await bot.send_message(message.chat.id, "Введите местоположение")
@@ -115,6 +112,17 @@ async def add_geolocation_handler(bot, state, message=None, call_back=None):
                                   material_id=state[message.chat.id]['technic_id'],
                                   initiator=user.username,
                                   date_time=datetime.datetime.now())
+
+        new_repair = Repair(material_id=state[message.chat.id]['technic_id'],
+                            responsible_it_dept_user=user.username,
+                            problem_description="создание карточки актива",
+                            repair_number=1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status=False,
+                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                            )
+
+        session.add(new_repair)
         session.add(geolocation)
         session.commit()
         material = session.query(Material).filter(Material.id == state[message.chat.id]['technic_id']).one()
@@ -151,6 +159,17 @@ async def add_geolocation_handler(bot, state, message=None, call_back=None):
                                   material_id=state[call_back.message.chat.id]['technic_id'],
                                   initiator=user.username,
                                   date_time=datetime.datetime.now())
+
+        new_repair = Repair(material_id=state[call_back.message.chat.id]['technic_id'],
+                            responsible_it_dept_user=user.username,
+                            problem_description="создание карточки актива",
+                            repair_number=1,
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            repair_status=False,
+                            repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                            )
+
+        session.add(new_repair)
         session.add(geolocation)
         session.commit()
         material = session.query(Material).filter(Material.id == state[call_back.message.chat.id]['technic_id']).one()

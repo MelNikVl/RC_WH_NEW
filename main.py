@@ -81,7 +81,6 @@ async def hold(call_back: CallbackQuery):
     await add_geolocation_handler(bot, state, call_back=call_back)
 
 
-
 @dispatcher.callback_query_handler(text='add_other')
 async def add_other(call_back: CallbackQuery):
     state[call_back.message.chat.id] = {'state': 'send_id', "category": 'другое'}

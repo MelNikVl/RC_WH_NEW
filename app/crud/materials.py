@@ -6,7 +6,7 @@ sys.path.append("..")
 from fastapi import HTTPException
 from pydantic import parse_obj_as
 from typing import List
-from payload.response import MaterialUploadResponse
+from app.payload.response import MaterialUploadResponse
 from models.models import Material
 
 
