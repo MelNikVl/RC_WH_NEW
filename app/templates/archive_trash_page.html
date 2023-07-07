@@ -38,7 +38,8 @@
         <div class="trash_p_2">
             {% for item in data.repairs %}
                 <details class="trash_p_3">
-                    <summary>Списание от {{ item[0].date_time }}</summary>
+                    <summary>Списание от {{ item[0].date_time }} ---- документация:
+                        \\fs-mo\ADMINS\Photo_warehouse\archive_after_utilization\{{ item[0].folder_name }}</summary>
                             <table class="fl-table" id="table">
                                 <thead>
                                     <tr>
@@ -50,7 +51,7 @@
                                         <th style="width: 30%;">Прошедшие перемещения</th>
                                         <th style="width: 30%;">Прошедшие ремонты</th>
                                         <th>Дата списания</th>
-                                        <th style="width: 10%;">Ссылка на документацию</th>
+                                        <th style="width: 10%;">Ссылка на документацию актива</th>
                                     </tr>
                                 </thead>
                                 {% for item in item %}
@@ -74,7 +75,8 @@
                                                 </details>
                                             </td>
                                             <td>{{ item.date_time }}</td>
-                                            <td>\\fs-mo\ADMINS\Photo_warehouse\archive_after_utilization\{{ item.folder_name }}</td>
+                                            <td>\\fs-mo\ADMINS\Photo_warehouse\archive_after_utilization\
+                                                {{ item.folder_name }}\material_old_photos\{{ item.material_id }}</td>
                                         </tr>
                                     <tbody>
                                 {% endfor %}

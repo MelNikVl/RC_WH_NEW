@@ -22,10 +22,8 @@ body {
 .button-wrapper {
     z-index: 1;
     background: #fff;
-    /* margin-bottom: 18px; */
     display: inline-block;
-    /* float: left; */
-    margin: 1em 1em 1em 0;
+    margin: 1em;
 }
 
 .input-wrapper {
@@ -696,7 +694,7 @@ margin: 1em 0;
 
 .trash_p_2 {background: #ffffff;margin: 1em 0 0 2em;}
 
-.trash_p_3 {/* background: #ffffff; */margin: 1em 0 0;/* font-size: x-large; */}
+.trash_p_3 {margin: 1em 0 0;background: #f5f5f563;padding: 1em;border: 1px solid black;border-radius: 1em;}
 
 .tooltip:hover::after {
   opacity: 1;
