@@ -16,56 +16,73 @@
 </head>
 
 <body>
-    <div class="main_title">
-    <div class="title_1">Main office IT warehouse tracker (ARCHIVE OF TRASH)</div>
-     <h2>список уже утилизированных активов</h2>
+<div class="body_body">
+    <div class="title_1">Main office IT warehouse tracker (Utilization archive)</div>
+
+        <div class="button_exit">
+            <button class="button_go_to_app" id="go_to_app"
+                onclick='window.location.href = "/app?t="+"{{ data.token }}"'>На главную страницу</button>
+            <button id="go_to_auth" class="other_buttons" onclick="window.location.href = '/app/auth'">Выйти</button>
         </div>
-    <div class="main_title2">
-    <div class="button_exit"><button id="go_to_auth" class="other_buttons"
-            onclick="window.location.href = '/app/auth'">Выйти</button></div>
-        </div>
-    <div class="clear"></div>
+        <div class="clear"></div>
+
+    <div class="trash_p_1">список уже утилизированных активов</div>
 
     <div class="table-wrapper">
         <div class="button-wrapper">
-            <button id="go_to_app" onclick='window.location.href = "/app?t="+"{{ data.token }}"'>На главную страницу</button>
+
             <button id="go_to_trash" onclick='window.location.href = "/app/trash_page?t="+"{{ data.token }}"'>к списку на списание</button>
         </div>
         <div class="clear"></div>
 
-        <!--  заголовок таблицы -->
-        <table class="fl-table" id="table">
-            <thead>
-                <tr>
-                    <th>ID актива</th>
-                    <th>Кто списывал</th>
-                    <th>Категория</th>
-                    <th>Номер (тайтл)</th>
-                    <th>Описание (характеристики)</th>
-                    <th>Прошедшие перемещения</th>
-                    <th>Прошедшие ремонты</th>
-                    <th>Дата списания</th>
-                    <th>Ссылка на документацию</th>
-                </tr>
-            </thead>
-            <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
-            <tbody>
-                {% for item in data[0] %}
-                <tr>
-                    <td>{{ item.material_id }}</td>
-                    <td>{{ item.user_id }}</td>
-                    <td>{{ item.category }}</td>
-                    <td>{{ item.title }}</td>
-                    <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
-                    <td>{{ item.moving }}</td>
-                    <td>{{ item.repairs }}</td>
-                    <td>{{ item.date_time }}</td>
-                    <td>\\fs-mo\ADMINS\Photo_warehouse\archive_after_utilization\{{ item.folder_name }}</td>
-                </tr>
-                {% endfor %}
-            <tbody>
-        </table>
-    </div>
+        <div class="trash_p_2">
+            {% for item in data.repairs %}
+                <details class="trash_p_3">
+                    <summary>Списание от {{ item[0].date_time }}</summary>
+                            <table class="fl-table" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID актива</th>
+                                        <th>Кто списывал</th>
+                                        <th>Категория</th>
+                                        <th>Номер (тайтл)</th>
+                                        <th>Описание (характеристики)</th>
+                                        <th style="width: 30%;">Прошедшие перемещения</th>
+                                        <th style="width: 30%;">Прошедшие ремонты</th>
+                                        <th>Дата списания</th>
+                                        <th style="width: 10%;">Ссылка на документацию</th>
+                                    </tr>
+                                </thead>
+                                {% for item in item %}
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ item.material_id }}</td>
+                                            <td>{{ item.user_id }}</td>
+                                            <td>{{ item.category }}</td>
+                                            <td>{{ item.title }}</td>
+                                            <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
+                                            <td>
+                                                <details>
+                                                    <summary>показать</summary>
+                                                    <p>{{ item.moving }}</p>
+                                                </details>
+                                            </td>
+                                            <td>
+                                                 <details>
+                                                    <summary>показать</summary>
+                                                    <p>{{ item.repairs }}</p>
+                                                </details>
+                                            </td>
+                                            <td>{{ item.date_time }}</td>
+                                            <td>\\fs-mo\ADMINS\Photo_warehouse\archive_after_utilization\{{ item.folder_name }}</td>
+                                        </tr>
+                                    <tbody>
+                                {% endfor %}
+                            </table>
+                    </details>
+            {% endfor %}
+        </div>
+
     <script>
         $("#form_file").on("click", function () {
             let data = { "data": [] };
@@ -100,6 +117,7 @@
             }
         }
     </script>
+    </div>
 </body>
 
 </html>

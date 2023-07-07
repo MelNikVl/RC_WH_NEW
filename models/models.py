@@ -43,6 +43,7 @@ class Trash(Base):
     repairs: str = Column(String)
     date_time: str = Column(String)
     folder_name: str = Column(String)
+    trash_unique_id: str = Column(String)
 
 
 class GeoLocation(Base):

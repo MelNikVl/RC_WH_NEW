@@ -5,7 +5,7 @@ from typing import List, Dict
 from sqlalchemy import desc, distinct, func
 from fastapi import HTTPException
 from pydantic import parse_obj_as
-from models.models import Material, GeoLocation, Repair
+from models.models import Material, GeoLocation, Repair, Trash
 from app.payload.response import GeoLocationUploadResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -109,19 +109,29 @@ class GeoLocationCRUD:
             .filter(Repair.material_id == material_id) \
             .order_by(desc(Repair.date_time)) \
             .all()
-
         unique_ids = [item[0] for item in all_rep_unique_id]
-        # uniq_id_val = {}
         uniq_id_val = []
         for i in unique_ids:
-            # rt = 1
             last = []
             for ie in db.query(Repair).filter(Repair.repair_unique_id == i).all():
                 rrrr = jsonable_encoder(ie)
                 last.append(rrrr)
             uniq_id_val.append(last)
-            # uniq_id_val[rt] = last
-            # rt += 1
+        print(uniq_id_val)
+        return uniq_id_val
+
+    @staticmethod
+    def list_of_arch_trash(db):
+        # формируем список уникальных айди ремонтов 1 товара - сначала последние
+        all_trash_unique_id = db.query(distinct(Trash.trash_unique_id)).order_by(desc(Trash.date_time)).all()
+        uniq_id_val = []
+        for i in all_trash_unique_id:
+            List = []
+            for i in db.query(Trash).filter(Trash.trash_unique_id == i[0]).all():
+                List.append(i)
+            uniq_id_val.append(List)
+
+        print(uniq_id_val)
         return uniq_id_val
 
     @staticmethod

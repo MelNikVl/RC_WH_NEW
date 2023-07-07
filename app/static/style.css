@@ -692,6 +692,11 @@ margin: 1em 0;
 
 .yell_button {background: #f5edb3;}
 
+.trash_p_1 {/* background: #f5edb3; */margin: 1em 0 1em 1.5em;font-size: 1.5em;}
+
+.trash_p_2 {background: #ffffff;margin: 1em 0 0 2em;}
+
+.trash_p_3 {/* background: #ffffff; */margin: 1em 0 0;/* font-size: x-large; */}
 
 .tooltip:hover::after {
   opacity: 1;

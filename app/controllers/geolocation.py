@@ -241,7 +241,8 @@ class GeoLocationController:
                                              moving=str(jsonable_encoder(moving)),
                                              repairs=str(jsonable_encoder(repairs)),
                                              date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                             folder_name=timestamp
+                                             folder_name=timestamp,
+                                             trash_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                                              )
             db.add(create_new_trash_archive)
             db.commit()
@@ -295,6 +296,8 @@ class GeoLocationController:
         materials_for_archive_trash = db.query(Trash).all()
         out[0] = materials_for_archive_trash
         out["token"] = t
+        out["repairs"] = GeoLocationCRUD.list_of_arch_trash(db)
+        # print(out["repairs"])
 
         return templates.TemplateResponse("archive_trash_page.html", {"request": request, "data": out})
 
