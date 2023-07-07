@@ -705,6 +705,10 @@ margin: 1em 0;
   transition: opacity 0.02s, visibility 0.02s;
 }
 
+.red_button {background: #f5b3b380;}
+
+.yell_button {background: #f5edb3;}
+
 
 .tooltip:hover::after {
   opacity: 1;

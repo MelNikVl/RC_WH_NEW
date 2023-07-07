@@ -74,29 +74,29 @@ $(document).ready(function () {
     });
     $(".select-result").on("click", function () {
         $(this).parent().find(".select").fadeToggle(300);
-
     });
     $("#new-popup-select").on("change", function () {
-        let comp_template = `процессор: ____\n
-оперативная память: ____\n
-жестккий диск: ____\n
-ssd: ______\n
-блок питания ______`;
-        let laptop_template = `производитель: ____\n
-модель: _____\n
-процессор: ____\n
-оперативная память: ____\n
-жесткий диск: ____\n
-*дополнительная информация: ____`;
-        let server_template = `производитель: ____\n
-модель: _____\n
-процессор: ____\n
-оперативная память: ____\n
-RAID: ____`;
-        let switch_template = `производитель: ____\n
-модель: _____`;
-        let camera_template = `производитель: ____\n
-модель: _____`;
+        let comp_template = `
+процессор: 
+оперативная память: 
+жестккий диск: 
+ssd: 
+блок питания `;
+        let laptop_template = `производитель: 
+модель: 
+процессор: 
+оперативная память: 
+жесткий диск: 
+*дополнительная информация: `;
+        let server_template = `производитель: 
+модель: 
+процессор: 
+оперативная память: 
+RAID: `;
+        let switch_template = `производитель: 
+модель: `;
+        let camera_template = `производитель: 
+модель: `;
         let other_template = ``;
 
         switch ($(this).val()) {
