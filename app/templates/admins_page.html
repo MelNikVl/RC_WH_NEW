@@ -58,22 +58,21 @@
                 <button id="logs" onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'
                     class="button_admins_page">Перейти в логи</button>
                 <button id="swagger" class="button_admins_page" onclick="window.location.href = '/docs'">Swagger</button>
-
             </div>
         </div>
     </div>
-        <div style="display: none;" id="new-user-popup" class="popup-wrapper">
-            <div class="popup">
-                <div class="close-btn">
-                    <img src="/static/close.svg" alt="close">
-                </div>
-                <input type="text" id="username" placeholder="Имя пользователя">
-                <input type="text" id="password" placeholder="Пароль">
-                <input type="text" id="chat_id" placeholder="Telegram ID">
-                <label for="input" class="input_label"><input type="checkbox" name="" id="is_admin">Admin</label>
-                <input type="button" value="Create" class="button_admins_page" id="submit-new-user">
+    <div style="display: none;" id="new-user-popup" class="popup-wrapper">
+        <div class="popup">
+            <div class="close-btn">
+                <img src="/static/close.svg" alt="close">
             </div>
+            <input type="text" id="username" placeholder="Имя пользователя">
+            <input type="text" id="password" placeholder="Пароль">
+            <input type="text" id="chat_id" placeholder="Telegram ID">
+            <label for="input" class="input_label"><input type="checkbox" name="" id="is_admin">Admin</label>
+            <input type="button" value="Create" class="button_admins_page" id="submit-new-user">
         </div>
+    </div>
     
     <script>
         $(document).ready(function () {
