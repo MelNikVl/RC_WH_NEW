@@ -61,16 +61,17 @@ class AccessoriesController:
                                   count=body.count,
                                   responsible=user.get("username"),
                                   place=body.place,
-                                  date_time=datetime.datetime.now())
+                                  date_time=datetime.datetime.now()
+                                  )
 
         new_acc_event = LogItem(kind_table="Комплектующие",
-                                   user_id=user["username"],
-                                   passive_id=body.title,
-                                   modified_cols="добавление комплектующих",
-                                   values_of_change=f'категория: {body.category},'
+                                user_id=user["username"],
+                                passive_id=body.title,
+                                modified_cols="добавление комплектующих",
+                                values_of_change=f'категория: {body.category},'
                                                     f' количество {body.count}',
-                                   date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                   )
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                )
 
         db.add(new_acc_event)
         db.add(accessories)

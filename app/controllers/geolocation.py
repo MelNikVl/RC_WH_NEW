@@ -244,6 +244,7 @@ class GeoLocationController:
                                              folder_name=timestamp
                                              )
             db.add(create_new_trash_archive)
+            db.commit()
             print(f'актив {y.id} скопирован в таблицу Trash')
 
             material_for_delete = db.query(Material).filter(Material.id == y.id).first()
