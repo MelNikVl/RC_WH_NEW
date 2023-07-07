@@ -44,7 +44,7 @@
             <thead>
                 <tr>
                     <th>ID актива</th>
-                    <th>Кто завел</th>
+<!--                    <th>Кто завел</th>-->
                     <th>Категория</th>
                     <th>Номер (тайтл)</th>
                     <th>Описание (характеристики)</th>
@@ -57,7 +57,7 @@
                 {% for item in data[0] %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{{ item.user_id }}</td>
+<!--                    <td>{{ item.user_id }}</td>-->
                     <td>{{ item.category }}</td>
                     <td>{{ item.title }}</td>
                     <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
