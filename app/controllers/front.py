@@ -124,8 +124,6 @@ class FrontMainController:
     async def user_auth(db: Session = Depends(get_db),
                         request: Request = None,
                         ):
-        # popo = "123"
-        # print(bcrypt_context.hash(popo))
         return templates.TemplateResponse("auth.html", {"request": request})
 
     @staticmethod

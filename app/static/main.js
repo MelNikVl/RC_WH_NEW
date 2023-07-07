@@ -75,6 +75,8 @@ $(document).ready(function () {
     $(".select-result").on("click", function () {
         $(this).parent().find(".select").fadeToggle(300);
     });
+
+    // здесь в попапе создания товара добавляем шаблоны
     $("#new-popup-select").on("change", function () {
         let comp_template = `
 процессор: 
