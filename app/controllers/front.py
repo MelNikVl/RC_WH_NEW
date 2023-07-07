@@ -204,8 +204,8 @@ class FrontMainController:
 
     @staticmethod
     async def repairs_page(request: Request = None,
-                            t: str = None,  # jwt токен
-                            db: Session = Depends(get_db)):
+                           t: str = None,  # jwt токен
+                           db: Session = Depends(get_db)):
 
         try:
             result = await AuthUtil.decode_jwt(t)
