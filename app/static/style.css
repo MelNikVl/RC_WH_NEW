@@ -181,12 +181,9 @@ textarea {
     border-radius: 5px;
     box-shadow: #00000042 1px 1px 10px;
     font-size: 1em;
-    border: none;
-    appearance: none;
     -webkit-appearance: none;
     width: 100%;
     border: none;
-    resize: none;
     margin-bottom: 15px;
     resize: both;
 }
@@ -333,11 +330,7 @@ tbody input[type='checkbox'] {
 }
 
 .button_admins_page {
-    /* margin: 1em 20px; */
-    /* font-size: inherit; */
-    /* display: block; */
     padding: 10px;
-    /* margin-bottom: 10px; */
     text-align: center;
     background-color: #4c88af;
     color: white;
@@ -393,7 +386,6 @@ tbody input[type='checkbox'] {
     padding: 2.5em 0 0 0;
     text-align: right;
     margin: 1em;
-    /* width: 63%; */
 }
 
 .clear {
@@ -493,7 +485,6 @@ tbody input[type='checkbox'] {
 
 .action-buttons {
     display: inline-flex;
-    /* width: 60%; */
     position: absolute;
     z-index: 20;
     background: #fff;
@@ -504,7 +495,6 @@ tbody input[type='checkbox'] {
 }
 
 .geo_material_one_dial {
-    /* background: #f1fffe; */
     border-radius: 1em;
     padding: 1em;
 }
@@ -530,7 +520,6 @@ tbody input[type='checkbox'] {
 }
 
 .action-column {
-    /* font-size: revert; */
     margin: 1em;
     float: left;
 }
@@ -542,7 +531,6 @@ tbody input[type='checkbox'] {
 
 .card_of_material_main {
     font-size: x-large;
-    /* margin: 0 1em 0 0; */
     background: #f9f9f9;
     border-radius: 1em;
     margin: 0 0 1em;
@@ -560,8 +548,6 @@ tbody input[type='checkbox'] {
 }
 
 .link_to {
-    /* padding: 0.15em; */
-    /* float: left; */
     display: block;
     margin: 1em 0 0 0;
 }
@@ -571,7 +557,6 @@ tbody input[type='checkbox'] {
 }
 
 .subs {
-    /* display: block; */
     margin: 1em;
 }
 
@@ -584,7 +569,6 @@ tbody input[type='checkbox'] {
 }
 
 .description_problem {
-    /* padding: 0.15em; */
     width: 100%;
 }
 
