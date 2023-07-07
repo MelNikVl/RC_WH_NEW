@@ -117,7 +117,6 @@ class GeoLocationCRUD:
                 rrrr = jsonable_encoder(ie)
                 last.append(rrrr)
             uniq_id_val.append(last)
-        print(uniq_id_val)
         return uniq_id_val
 
     @staticmethod
@@ -131,7 +130,6 @@ class GeoLocationCRUD:
                 List.append(i)
             uniq_id_val.append(List)
 
-        print(uniq_id_val)
         return uniq_id_val
 
     @staticmethod

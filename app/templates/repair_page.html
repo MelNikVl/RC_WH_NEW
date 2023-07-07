@@ -32,22 +32,24 @@
     <table class="fl-table" id="table">
             <thead>
                 <tr>
-                    <th><input type="checkbox" id="select-all"></th>
+<!--                    <th><input type="checkbox" id="select-all"></th>-->
                     <th>ID актива</th>
                     <th>Ответственный</th>
                     <th>Проблема - решение</th>
                     <th>Чья техника</th>
                     <th>Дата изменений</th>
+                    <th>Инфо</th>
                 </tr>
             <tbody>
                 {% for item in data.actives_in_repair %}
                 <tr>
-                    <td><input type="checkbox"></td>
+<!--                    <td><input type="checkbox"></td>-->
                     <td>{{ item.material_id }}</td>
                     <td>{{ item.responsible_it_dept_user }}</td>
                     <td>{{ item.problem_description }}</td>
                     <td>{{ item.user_whose_technique }}</td>
                     <td>{{ item.date_time }}</td>
+                    <td><a href="/app/{{ item.material_id }}?t={{ data.token }}">карточка актива</a></td>
                 </tr>
                 {% endfor %}
             <tbody>

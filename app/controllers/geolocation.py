@@ -297,7 +297,6 @@ class GeoLocationController:
         out[0] = materials_for_archive_trash
         out["token"] = t
         out["repairs"] = GeoLocationCRUD.list_of_arch_trash(db)
-        # print(out["repairs"])
 
         return templates.TemplateResponse("archive_trash_page.html", {"request": request, "data": out})
 
@@ -440,8 +439,6 @@ class GeoLocationController:
                            ):
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
-
-            print("fjsldkjf")
 
             # загружаем файл
             # await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)

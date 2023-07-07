@@ -192,7 +192,6 @@ class FrontMainController:
         out["one_material"] = material_card
         out["geo_material"] = material_geo1
         out["repairs"] = GeoLocationCRUD.list_of_repair(material_id, db)
-        print(GeoLocationCRUD.list_of_repair(material_id, db))
         out["date_time_f"] = formatted_date_time
         out["current_place"] = current_geo.place
         out["current_user"] = current_geo.client_mail

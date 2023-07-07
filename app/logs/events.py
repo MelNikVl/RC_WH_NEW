@@ -4,7 +4,6 @@ from fastapi import Depends
 from sqlalchemy import event, text
 
 
-
 def bind_materials(Material):
     @event.listens_for(Material, 'after_update')
     def after_update(mapper, connection, target):

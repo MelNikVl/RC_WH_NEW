@@ -49,7 +49,7 @@
                     <th>Номер (тайтл)</th>
                     <th>Описание (характеристики)</th>
                     <th>Дата ввода</th>
-                    <th>Ссылка на фото</th>
+                    <th>Инфо</th>
                 </tr>
             </thead>
             <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
@@ -62,7 +62,8 @@
                     <td>{{ item.title }}</td>
                     <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
                     <td>{{ item.date_time }}</td>
-                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>
+<!--                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>-->
+                    <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
                 </tr>
                 {% endfor %}
             <tbody>
