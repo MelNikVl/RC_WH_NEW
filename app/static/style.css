@@ -188,6 +188,7 @@ textarea {
     border: none;
     resize: none;
     margin-bottom: 15px;
+    resize: both;
 }
 
 #history-block {
@@ -279,7 +280,7 @@ form {
 }
 
 .new-wrapper {
-    width: 45%;
+    width: 65%;
     padding: 0;
     margin: 0;
     position: relative;
@@ -683,7 +684,7 @@ margin: 1em 0;
  margin: 0 0 1em;
 }
 
-/* for test
+.input_100 {/* background: #ffffff; *//* padding: 1em; *//* margin: 1em; *//* width: 100%; */}
 
 .tooltip {
   position: relative;

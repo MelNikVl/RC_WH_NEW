@@ -77,9 +77,27 @@ $(document).ready(function () {
 
     });
     $("#new-popup-select").on("change", function () {
-        let comp_template = `производитель: ____\nпроцессор: ____\nоперативная память: ____`;
-        let other_template = `процессор:  ____\nоперативная память: ____`;
-        let other_template1 = `test:  ____\nоперативная память: ____`;
+        let comp_template = `процессор: ____\n
+оперативная память: ____\n
+жестккий диск: ____\n
+ssd: ______\n
+блок питания ______`;
+        let laptop_template = `производитель: ____\n
+модель: _____\n
+процессор: ____\n
+оперативная память: ____\n
+жесткий диск: ____\n
+*дополнительная информация: ____`;
+        let server_template = `производитель: ____\n
+модель: _____\n
+процессор: ____\n
+оперативная память: ____\n
+RAID: ____`;
+        let switch_template = `производитель: ____\n
+модель: _____`;
+        let camera_template = `производитель: ____\n
+модель: _____`;
+        let other_template = ``;
 
         switch ($(this).val()) {
             case "Другое":
@@ -88,8 +106,17 @@ $(document).ready(function () {
             case "Компьютер":
                 $("#new-popup textarea").val(comp_template);
                 break;
-            case "test":
-                $("#new-popup textarea").val(other_template1);
+            case "Ноутбук":
+                $("#new-popup textarea").val(laptop_template);
+                break;
+            case "Сервер":
+                $("#new-popup textarea").val(server_template);
+                break;
+            case "Маршрутизатор / свитч":
+                $("#new-popup textarea").val(switch_template);
+                break;
+            case "Камера":
+                $("#new-popup textarea").val(camera_template);
                 break;
             default:
                 $("#new-popup textarea").val(comp_template);
