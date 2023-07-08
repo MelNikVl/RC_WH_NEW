@@ -1,5 +1,5 @@
 import os
-from aiogram import Bot, executor, Dispatcher, types
+from aiogram import executor, Dispatcher, types
 from aiogram.types import Message, CallbackQuery
 from db.db import engine, session
 from handlers.handlers import add_description_handler, get_by_id_handler, move_object_handler, \
@@ -35,7 +35,6 @@ async def command_start(message: Message):
         state[message.chat.id] = {'state': 'start'}
         await message.answer(f'Привет {message.from_user.full_name}! Твой айди: {message.from_user.id}\n'
                              f'Это бот для учета активов на складе RC MAIN office \n')
-                             # f'Ты авторизованный пользователь \n', reply_markup=registrated_keyboard())
     else:
         await message.answer("Тебя нет в списке пользователей ботом, либо ты еще не ввел команду: /start")
 

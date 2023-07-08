@@ -1,32 +1,22 @@
 import datetime
-from io import BytesIO
 import os
-from typing import List, Dict
-
+from typing import Dict
 import fastapi
-from fastapi import Depends, FastAPI, Request, Response
-from pydantic import parse_obj_as
-from sqlalchemy import distinct, desc
+from fastapi import Depends, Request, Response
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
-
 from fastapi.templating import Jinja2Templates
 from fastapi.encoders import jsonable_encoder
 from crud.geolocation import GeoLocationCRUD
-
 from crud.materials import MaterialCRUD
 from starlette import status
-from app.utils.auth import AuthUtil, user_dependency, bcrypt_context
-from utils.utils import response
-
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from db.db import get_db
 from models.models import User, GeoLocation, Material, Repair, Accessories
-
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
 from fastapi.responses import FileResponse
-
 from static_data import main_folder
 
 """

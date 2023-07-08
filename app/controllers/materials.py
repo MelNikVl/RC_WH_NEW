@@ -17,10 +17,6 @@ from models.models import GeoLocation, LogItem, Repair
 from models.models import User, Material
 from static_data import main_folder
 
-logging.basicConfig(level=logging.INFO,
-                    filename="log.log",
-                    filemode="w",
-                    format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 class MaterialsController:

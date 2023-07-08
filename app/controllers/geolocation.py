@@ -1,8 +1,4 @@
-import datetime, os, smtplib, ssl, shutil, fastapi
-from email.mime.application import MIMEApplication
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from os.path import basename
+import datetime, os, shutil, fastapi
 from typing import Dict, List, Optional, Union, Annotated
 from fastapi import Depends, Request, UploadFile, File, Form
 from fastapi.encoders import jsonable_encoder
@@ -13,44 +9,12 @@ from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
     RepairStopRequest, RepairDetailsRequest
 from starlette import status
-from app.utils.utils import response
+from app.utils.utils import response, send_email
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
 from models.models import User, LogItem, GeoLocation, Material, Trash, Repair
 from static_data import main_folder
-
-gmail_login = "testpython20231@gmail.com"
-gmail_pass = "seprtpqgzfwgcsvs"
-
-addresses = ["shumerrr@yandex.ru", "dklsgj@gmail.com", "raven10maxtgc@gmail.com"]
-
-
-def send_email(invoice):
-    message = MIMEMultipart("")
-    message["Subject"] = "Списание акивов"
-    message["From"] = gmail_login
-    message['To'] = ", ".join(addresses)
-    html = """\
-    <html>
-      <body>
-        <p>Накладная по списанию: </p>
-      </body>
-    </html>
-    """
-    part2 = MIMEText(html, "html")
-    message.attach(part2)
-
-    with open(invoice, "rb") as file:
-        part = MIMEApplication(file.read(), Name=basename(invoice))
-        part['Content-Disposition'] = 'attachment; filename="%s"' % basename(invoice)
-        message.attach(part)
-
-    serv = smtplib.SMTP("smtp.gmail.com", 587)
-    # smtp_server.ehlo()
-    serv.starttls()
-    serv.login(gmail_login, gmail_pass)
-    serv.sendmail(gmail_login, addresses, message.as_string())
 
 
 class GeoLocationController:
