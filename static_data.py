@@ -1,6 +1,10 @@
-# main_folder = "\\\\fs-mo\\ADMINS\\"
+import os
 from aiogram import Bot
 
-main_folder = r"C:\Users\admin\Documents\GitHub\RC_WH_NEW\app\it_warehouse_docs"
+# main_folder = r"C:\Users\admin\Documents\GitHub\RC_WH_NEW\app\it_warehouse_docs"
+# main_folder = "\\\\fs-mo\\ADMINS\\"
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+main_folder = os.path.join(current_dir, "app", "it_warehouse_docs")
 
 bot = Bot("6255903272:AAEYZgt6krIp723UY7mchIN4u-ydVZRLOC0")

@@ -90,8 +90,6 @@ class FrontMainController:
         materials = await MaterialCRUD.list_of_materials(db=db)
         out[0] = jsonable_encoder(materials)
 
-        print(main_folder)
-
         # подсчет активов
         out["count_warehouse"] = await GeoLocationCRUD.get_materials_at_warehouses(db=db)
 
