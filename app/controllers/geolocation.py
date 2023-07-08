@@ -216,11 +216,11 @@ class GeoLocationController:
             db.delete(material_for_delete)
             print(f'актив {y.id} удален из таблицы Material')
 
-            db.query(GeoLocation).filter(GeoLocation.material_id == y.id).delete()
+            db.query(GeoLocation).filter(GeoLocation.material_id == y.id).delete(synchronize_session=False)
             print(f'история передвижений актива {y.id} удалена из таблицы Гео')
 
-            db.query(Repair).filter(Repair.material_id == y.id).all()
-            print(f'история ремонтов актива {y.id} удалена из таблицы ретомнтов')
+            db.query(Repair).filter(Repair.material_id == y.id).delete(synchronize_session=False)
+            print(f'история ремонтов актива {y.id} удалена из таблицы ремонтов')
 
             db.commit()
             print(f'данные актива {y.id} записаны в новые таблицы и подтверждены')

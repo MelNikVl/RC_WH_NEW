@@ -17,7 +17,6 @@ from models.models import User, GeoLocation, Material, Repair, Accessories
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
 from fastapi.responses import FileResponse
-from static_data import main_folder
 
 """
 выдаем на фронт OUT 
