@@ -4,7 +4,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
 from typing import Dict, List, Optional, Union, Annotated
-
 from fastapi import Depends, Request, UploadFile, File, Form
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import desc
@@ -19,6 +18,7 @@ from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
 from models.models import User, LogItem, GeoLocation, Material, Trash, Repair
+from static_data import main_folder
 
 gmail_login = "testpython20231@gmail.com"
 gmail_pass = "seprtpqgzfwgcsvs"
@@ -66,7 +66,6 @@ class GeoLocationController:
                                                        status=body.status,
                                                        initiator=user.get("username"),
                                                        db=db)
-
             # логируем
             create_geo_event = LogItem(kind_table="Расположение активов",
                                        user_id=user["username"],
@@ -85,7 +84,8 @@ class GeoLocationController:
             return response(data="актив в ремонте и не подлежит перемещению", status=False)
 
     @staticmethod
-    async def get_by_id(body: GeoLocationGetByIdRequest, db: Session = Depends(get_db),
+    async def get_by_id(body: GeoLocationGetByIdRequest,
+                        db: Session = Depends(get_db),
                         user: User = Depends(AuthUtil.decode_jwt)):
         geolocation = await GeoLocationCRUD.get_by_id(material_id=body.material_id, db=db)
         return response(data=geolocation, status=True)
@@ -172,7 +172,9 @@ class GeoLocationController:
         # создаем имена для папок
         timestamp = str(
             datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
-        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization", timestamp)
+        destination_folder = os.path.join(f'{main_folder}archive_after_utilization', timestamp)
+
+        print(main_folder)
 
         photo_folder = os.path.join(destination_folder, "trashing_photos")
         old_photo_folder = os.path.join(destination_folder, "material_old_photos")
@@ -203,7 +205,7 @@ class GeoLocationController:
 
         # перемещаем папки с фото в архив
         for i in materials_for_trash:
-            folder_to_move = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(i.id))
+            folder_to_move = os.path.join(f'{main_folder}photos', str(i.id))
             id_for_logging.append(i.id)  # добавим айдишник каждой техники к списку
             destination = os.path.join(old_photo_folder, str(i.id))
             os.makedirs(destination, exist_ok=True)

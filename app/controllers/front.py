@@ -27,6 +27,8 @@ from app.payload.request import InvoiceCreateRequest
 from docx import Document
 from fastapi.responses import FileResponse
 
+from static_data import main_folder
+
 """
 выдаем на фронт OUT 
 Session = Depends(get_db) - единораазовые обращения к бд
@@ -97,6 +99,8 @@ class FrontMainController:
         out: Dict = {}
         materials = await MaterialCRUD.list_of_materials(db=db)
         out[0] = jsonable_encoder(materials)
+
+        print(main_folder)
 
         # подсчет активов
         out["count_warehouse"] = await GeoLocationCRUD.get_materials_at_warehouses(db=db)

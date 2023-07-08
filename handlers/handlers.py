@@ -176,7 +176,6 @@ async def add_geolocation_handler(bot, state, message=None, call_back=None):
         material.geolocation_id = geolocation.id
         session.flush()
         session.commit()
-        print(user.chat_id)
         await bot.send_message(call_back.message.chat.id,
                                f'Карточка актива создана.\n'
                                f'ID: {state[call_back.message.chat.id]["technic_id"]}\n'
@@ -195,6 +194,5 @@ async def add_geolocation_handler(bot, state, message=None, call_back=None):
                                                             f'Статус: "хранение"\n',
                                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                            )
-        print(user.username)
         session.add(create_material_from_bot)
         session.commit()

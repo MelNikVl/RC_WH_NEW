@@ -1,10 +1,7 @@
 import datetime
 import logging
-import os, platform
-import random
+import os
 import shutil
-import string
-from typing import Annotated
 import uuid
 from fastapi import Depends, File, UploadFile, HTTPException
 from pydantic import parse_obj_as
@@ -18,6 +15,7 @@ from db.db import get_db
 from app.payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest
 from models.models import GeoLocation, LogItem, Repair
 from models.models import User, Material
+from static_data import main_folder
 
 logging.basicConfig(level=logging.INFO,
                     filename="log.log",
@@ -33,8 +31,7 @@ class MaterialsController:
                      user: user_dependency,
                      db: Session = Depends(get_db)):
 
-        logging.info(f"username: , data: {body}")
-
+        # logging.info(f"username: , data: {body}")
         material = Material(id=body.id, user_id=user.get("username"), category=body.category, title=body.title,
                             description=body.description, date_time=datetime.datetime.now())
 
@@ -120,7 +117,7 @@ class MaterialsController:
             db.commit()
 
             try:
-                destination_folder = f'\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos\\{id_for_delete}'
+                destination_folder = f'{main_folder}photos\\{id_for_delete}'
                 # Удаляем папку на сервере
                 shutil.rmtree(destination_folder)
 
@@ -171,8 +168,8 @@ class MaterialsController:
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt)):
 
-        # Путь к папке назначения на сервер
-        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id))
+        # Путь к папке назначения
+        destination_folder = os.path.join(f'{main_folder}photos', str(material_id))
 
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
         os.makedirs(destination_folder, exist_ok=True)
@@ -191,7 +188,7 @@ class MaterialsController:
         autorisation_event = LogItem(kind_table="Активы",
                                      user_id=user.get("username"),
                                      passive_id=material_id,
-                                     modified_cols="добавление фото для актива из WEB",
+                                     modified_cols="добавление фото или файлов для актива из WEB",
                                      values_of_change=None,
                                      date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                      )

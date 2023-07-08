@@ -8,9 +8,9 @@ from pydantic import parse_obj_as
 from models.models import Material, GeoLocation, Repair, Trash
 from app.payload.response import GeoLocationUploadResponse
 from fastapi.encoders import jsonable_encoder
+from static_data import main_folder
 
 sys.path.append("..")
-
 
 class GeoLocationCRUD:
 
@@ -149,7 +149,7 @@ class GeoLocationCRUD:
 
     @staticmethod
     async def upload_file_to_repair(material_id_to_repair, file):
-        destination_folder = os.path.join("\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos", str(material_id_to_repair))
+        destination_folder = os.path.join(f"{main_folder}photos", str(material_id_to_repair))
         destination_folder1 = os.path.join(destination_folder, "Repairs")
         os.makedirs(destination_folder1, exist_ok=True)
 
