@@ -1,10 +1,6 @@
 import os
-from typing import Annotated
-
-from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.ext.declarative import declarative_base
 from app.logs.events import bind_materials, bind_users
 from models.models import Material, User, GeoLocation
 
@@ -19,9 +15,7 @@ engine = create_engine(
 
 # создание сессии для работы с БД
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 session = SessionLocal()
-
 
 # подключение к базе данных. тоесть создается единовразовая сессия при обращении и сразу же закрывается
 def get_db():
@@ -36,4 +30,3 @@ def get_db():
 # Привязка обработчиков
 bind_materials(Material)
 bind_users(User)
-# bind_geo(GeoLocation)
