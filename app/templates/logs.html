@@ -14,9 +14,23 @@
 </head>
 
 <body>
-    <div class="title_1">Main office IT warehouse tracker (LOGS)</div>
+    <div class="title_1">IT warehouse tracker (LOGS)</div>
+    <div class="button_exit">
+        <button id="go_to_app"
+                onclick='window.location.href = "/app?t="+"{{ data.token }}"'>Главная</button>
+        <button id="repair" onclick='window.location.href = "/app/repairs_page?t="+"{{ data.token }}"'>
+            Ремонт</button>
+        <button id="accessories"
+            onclick='window.location.href = "/accessories?t="+"{{ data.token }}"'>Комплектующие</button>
+        <button id="trash" onclick='window.location.href = "/app/trash_page?t="+"{{ data.token }}"'>Утилизация</button>
+        <button id="go_to_archive" onclick='window.location.href =
+         "/geolocation/archive_trash_page?t="+"{{ data.token }}"'>Архив</button>
+        <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
+            Как пользоваться приложением</button>
+        <button id="go_to_auth" class="other_buttons" onclick="window.location.href = '/app/auth'">Выйти</button>
+    </div>
     <div class="clear"></div>
-    <a class="for_logs_1" id="app" href='/app/admins_page?t={{ data["token"] }}'>обратно в админку</a>
+
     <div class="pagination">
         <input id="previous" type="button" value="<">
         <input id="next" type="button" value=">">

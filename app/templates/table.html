@@ -7,15 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App</title>
     <script type="text/javascript" src="/static/jquery-3.6.4.min.js"></script>
-
-<!--&lt;!&ndash; Include the Quill library &ndash;&gt;-->
-<!--<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>-->
-<!--    &lt;!&ndash; Include stylesheet &ndash;&gt;-->
-<!--<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">-->
-
-<!--    <script src="https://cdn.tiny.cloud/1/jul304ml46zqfwjprm7bswkwqipb0ypknsuu2ry3r2x1r9qe/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>-->
-
-
     <!--  линк на стили -->
     <link rel="stylesheet" href="static/style.css">
     <link rel="stylesheet" href="static/loader.css">
@@ -25,50 +16,41 @@
 
 <body>
     <div class="body_body">
-        <div class="title_1">Main office IT warehouse tracker</div>
-        <div class="button_exit">
-            <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
-                Как пользоваться приложением</button>
-            <button id="go_to_auth" class="other_buttons" onclick="window.location.href = '/app/auth'">Выйти</button>
-        </div>
-        <div class="clear"></div>
+        <div class="title_1">IT warehouse tracker</div>
+            <div class="button_exit">
+                <button id="repair" onclick='window.location.href = "/app/repairs_page?t="+"{{ data.token }}"'>
+                    Ремонт</button>
+                <button id="accessories"
+                    onclick='window.location.href = "/accessories?t="+"{{ data.token }}"'>Комплектующие</button>
+                <button id="trash" onclick='window.location.href = "/app/trash_page?t="+"{{ data.token }}"'>Утилизация</button>
+                <button id="go_to_archive" onclick='window.location.href =
+                 "/geolocation/archive_trash_page?t="+"{{ data.token }}"'>Архив</button>
+                <button id="instructions" onclick='window.location.href = "/app/instructions?t="+"{{ data.token }}"'>
+                    Как пользоваться приложением</button>
+                <button id="go_to_auth" class="other_buttons" onclick="window.location.href = '/app/auth'">Выйти</button>
+            </div>
+            <div class="clear"></div>
 
-        <div class="welcome">
-            <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
-            {% if data.role == True %}
-            <p class="hello_2">у тебя <b>административный</b> доступ</p>
-            <button id="for_admins" class="admin_but"
-                onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель
-                администратора</button>
-            {% endif %}
-            {% if data.role == False %}
-            <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
-            {% endif %}
-        </div>
+            <div class="welcome">
+                <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
+                {% if data.role == True %}
+                <p class="hello_2">у тебя <b>административный</b> доступ</p>
+                <button id="for_admins" class="admin_but"
+                    onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель
+                    администратора</button>
+                {% endif %}
+                {% if data.role == False %}
+                <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
+                {% endif %}
+            </div>
 
-        <div class="counts">
-            <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
-            <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
-            <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
-            <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
-            <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
-        </div>
-
-        <div class="counts">
-            <button id="trash" class="link_to"
-                onclick='window.location.href = "/app/trash_page?t="+"{{ data.token }}"'>Список на утилизацию</button>
-            <button id="repair" class="link_to"
-                onclick='window.location.href = "/app/repairs_page?t="+"{{ data.token }}"'>Список техники в
-                ремонте</button>
-            <button id="accessories" class="link_to"
-                onclick='window.location.href = "/accessories?t="+"{{ data.token }}"'>Список комплектующих</button>
-        </div>
-
-        <div class="counts">
-            <button class="link_to" id="go_to_archive" onclick='window.location.href =
-             "/geolocation/archive_trash_page?t="+"{{ data.token }}"'>Архив списанной техники</button>
-        </div>
-
+            <div class="counts">
+                <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
+                <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
+                <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
+                <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
+                <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
+            </div>
 
         <div class="clear"></div>
 
@@ -123,7 +105,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="clear"></div>
             <table class="fl-table" id="table">
@@ -157,7 +139,7 @@
                         <td>{{ item["geolocation_place"] }}</td>
                         <td>{{ item["geolocation_status"] }}</td>
                         <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
-    
+
                     </tr>
                     {% endfor %}
                 <tbody>
@@ -217,7 +199,7 @@
                 </div>
                 <input type="text" class="input_100" placeholder="номер техники (pc1000)">
                 <textarea name="" cols="20" rows="8" placeholder="базовые характеристики">
-процессор: 
+процессор:
 оперативная память:
 жесткий диск:
 ssd:
