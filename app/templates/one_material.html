@@ -26,18 +26,18 @@
     </div>
     <div class="clear"></div>
 
+        <div class="photo_one_card">
+            <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
+        </div>
+
         <div class="card_of_material_main_2">
-            <div class="title_one_card">
-                <img width="200" height="100" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
-            </div>
             <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
             <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
             <div class="title_one_card status_000">Статус:  {{ data.current_status }}</div>
         </div>
-    <div class="clear"></div>
 
-<div class="card_of_material_main">
 
+    <div class="card_of_material_main">
         <div class="card_of_material_main_1">
             <p class="desc_09">Категория:  {{ data.one_material.category }}</p>
             <p class="desc_09">Описание:  {{ data.one_material.description }}</p>
@@ -45,13 +45,14 @@
             <p class="desc_09">Ответственный сейчас: {{ data.current_user }}</p>
         </div>
     <div class="card_of_material_main_1">
-<!--            <p class="desc_09"></p>-->
             <p class="desc_09">Кто завел:  {{ data.one_material.user_id }}</p>
             <p class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</p>
             <p class="desc_09">Фото и документация:  \\fs-mo\ADMINS\Photo_warehouse\photos\{{ data.one_material.id }}</p>
         </div>
         <div class="clear"></div>
     </div>
+
+     <div class="clear"></div>
 
     <div class="card_of_material">
 

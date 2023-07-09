@@ -475,7 +475,7 @@ tbody input[type='checkbox'] {
     font-size: x-large;
     font-weight: bold;
     float: left;
-    margin: 1em;
+    margin: 0 1em;
     background: #e9e9e9;
     padding: 1em;
     border-radius: 1em;
@@ -528,21 +528,23 @@ tbody input[type='checkbox'] {
 }
 
 .card_of_material_main {
-    font-size: x-large;
-    background: #f9f9f9;
+    /* font-size: x-large; */
+    background: #e9e9e994;
     border-radius: 1em;
-    margin: 0 0 1em;
+    margin: 1em;
+    float: left;
 }
 
 .card_of_material_main_1 {
-    width: 45%;
-    float: left;
+    /* width: 45%; */
+    /* float: left; */
     margin: 1em;
+    /* height: 157px; */
 }
 
 .desc_09 {
     padding: 0.15em;
-    font-size: smaller;
+    font-size: unset;
 }
 
 .link_to {
@@ -700,3 +702,11 @@ margin: 1em 0;
   opacity: 1;
   visibility: visible;
 }
+
+.photo_one_card {/* background: #ffffff; */margin: 1em;float: left;}
+
+.real_photo {
+  height: 395px;
+  width: fit-content;
+  border-radius: 1em;
+  }
