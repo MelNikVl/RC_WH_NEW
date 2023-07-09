@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import secrets
 import shutil
 import uuid
 from fastapi import Depends, File, UploadFile, HTTPException
@@ -170,10 +171,7 @@ class MaterialsController:
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
         os.makedirs(destination_folder, exist_ok=True)
 
-        # Генерируем уникальное имя файла
-        unique_filename = str(uuid.uuid4()) + os.path.splitext(file.filename)[1]
-
-        # Создаем путь для сохранения файла в папке назначения
+        unique_filename = str(secrets.token_hex(4)) + os.path.splitext(file.filename)[1]
         destination_path = os.path.join(destination_folder, unique_filename)
 
         # Загружаем файл в папку назначения
