@@ -167,7 +167,7 @@ h1 {
     font-size: 1em;
     border: none;
     padding: 6px 30px;
-    width: 65%;
+    /* width: 65%; */
 }
 
 .popup button {

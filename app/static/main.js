@@ -78,8 +78,8 @@ $(document).ready(function () {
 
     // здесь в попапе создания товара добавляем шаблоны
     $("#new-popup-select").on("change", function () {
-        let comp_template = `
-процессор: 
+        let comp_template =
+`процессор:
 оперативная память (Gb):
 жестккий диск (Gb):
 ssd (Gb):

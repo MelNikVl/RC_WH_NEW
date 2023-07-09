@@ -12,6 +12,7 @@ from crud.materials import MaterialCRUD
 from starlette import status
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
+from app.utils.utils import get_first_photo
 from db.db import get_db
 from models.models import User, GeoLocation, Material, Repair, Accessories
 from app.payload.request import InvoiceCreateRequest
@@ -159,7 +160,6 @@ class FrontMainController:
                             request: Request = None,
                             t: str = None,  # jwt токен
                             db: Session = Depends(get_db)):
-
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
@@ -187,6 +187,8 @@ class FrontMainController:
         out["current_place"] = current_geo.place
         out["current_user"] = current_geo.client_mail
         out["current_status"] = current_geo.status
+        out["photo"] = get_first_photo(material_id)
+        out["material_id"] = str(material_id)
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 

@@ -8,13 +8,12 @@
     <script type="text/javascript" src="/static/jquery-3.6.4.min.js"></script>
     <!--  линк на стили -->
     <link rel="stylesheet" href="/static/style.css">
-    <!--  добавляем фавконку -->
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
     <script src="/static/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
-    <script src="/static/main.js"></script>
 </head>
 <body>
+
 <div class="body_body">
 <div class="title_1">Main office IT warehouse tracker (Asset card)</div>
 <!--    <div class="tooltip" title="Это подсказка">Наведите курсор для просмотра подсказки</div>-->
@@ -28,6 +27,9 @@
     <div class="clear"></div>
 
         <div class="card_of_material_main_2">
+            <div class="title_one_card">
+                <img width="200" height="100" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
+            </div>
             <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
             <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
             <div class="title_one_card status_000">Статус:  {{ data.current_status }}</div>

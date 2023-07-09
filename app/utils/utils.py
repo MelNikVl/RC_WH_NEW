@@ -1,10 +1,13 @@
 import logging
+import os
 import smtplib
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
 from typing import Any
+
+from static_data import main_folder
 
 logging.basicConfig(level=logging.INFO,
                     filename="log.log",
@@ -48,3 +51,13 @@ def send_email(invoice):
     serv.starttls()
     serv.login(gmail_login, gmail_pass)
     serv.sendmail(gmail_login, addresses, message.as_string())
+
+
+def get_first_photo(material_id):
+    fold = main_folder + f"\\photos\\{material_id}"
+    file_list = os.listdir(fold)
+    photo_files = [f for f in file_list if f.endswith(('.jpg', '.png'))]
+    if len(photo_files) > 1:
+        return photo_files[1]
+    else:
+        return photo_files[0]
