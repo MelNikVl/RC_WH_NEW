@@ -56,7 +56,7 @@ def send_email(invoice):
 def get_first_photo(material_id):
     fold = main_folder + f"\\photos\\{material_id}"
     file_list = os.listdir(fold)
-    photo_files = [f for f in file_list if f.endswith(('.jpg', '.png'))]
+    photo_files = [f for f in file_list if f.endswith(('.jpg', '.png', '.jpeg'))]
     if len(photo_files) > 1:
         return photo_files[1]
     else:
