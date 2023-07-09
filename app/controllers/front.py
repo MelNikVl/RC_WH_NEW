@@ -187,7 +187,8 @@ class FrontMainController:
         out["current_place"] = current_geo.place
         out["current_user"] = current_geo.client_mail
         out["current_status"] = current_geo.status
-        out["photo"] = get_first_photo(material_id)
+        out["photo"] = get_first_photo(material_id)["picture"]
+        out["len_of_files"] = get_first_photo(material_id)["len_of_files"]
         out["material_id"] = str(material_id)
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
