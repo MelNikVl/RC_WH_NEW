@@ -83,4 +83,5 @@ accessories.put("/add_accessories")(AccessoriesController.add_accessories)
 accessories.get("")(AccessoriesController.accessories_page)
 
 testing.post("/create_10_iterations")(TestingController.create_10_iterations)
-
+testing.post("/delete_all")(TestingController.delete_all)
+testing.delete("/delete_folder_contents")(TestingController.delete_folder_contents)
