@@ -43,7 +43,7 @@ class GeoLocationController:
 
             las_upd_ntg = db.query(Notifications).order_by(desc(Notifications.id)).first()
 
-            # логируем
+            # логируемlogs.html
             create_geo_event = LogItem(kind_table="Расположение активов",
                                        user_id=user["username"],
                                        passive_id=body.material_id,
@@ -279,6 +279,7 @@ class GeoLocationController:
         out[0] = materials_for_archive_trash
         out["token"] = t
         out["repairs"] = GeoLocationCRUD.list_of_arch_trash(db)
+        out["role"] = result["role"]
 
         return templates.TemplateResponse("archive_trash_page.html", {"request": request, "data": out})
 

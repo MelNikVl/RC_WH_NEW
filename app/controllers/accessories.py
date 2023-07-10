@@ -47,6 +47,7 @@ class AccessoriesController:
         out["token"] = t
         out["count_accessories"] = len(accessories)
         out["top_info"] = top_info
+        out["role"] = result["role"]
 
         return templates.TemplateResponse("accessories_page.html", {"request": request, "data": out})
 

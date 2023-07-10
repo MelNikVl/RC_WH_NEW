@@ -195,6 +195,7 @@ class FrontMainController:
         out["photo"] = get_first_photo(material_id)["picture"]
         out["len_of_files"] = get_first_photo(material_id)["len_of_files"]
         out["material_id"] = str(material_id)
+        out["role"] = result["role"]
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 
@@ -214,6 +215,7 @@ class FrontMainController:
         out["token"] = t
         out["actives_in_repair"] = products
         out["count_repair"] = len(products)
+        out["role"] = result["role"]
 
         return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})
 
@@ -237,6 +239,7 @@ class FrontMainController:
         out[0] = materials_for_trash
         out["token"] = t
         out["count_for_trash"] = len(materials_for_trash)
+        out["role"] = result["role"]
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
 
@@ -263,5 +266,27 @@ class FrontMainController:
         db.commit()
 
         return response(data="Спасибо за ответ. Уведомление получено", status=True)
+
+    @staticmethod
+    async def notifications_page(db: Session = Depends(get_db),
+                                 request: Request = None,
+                                 t: str = None  # jwt токен
+                                 ):
+        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
+        try:
+            result = await AuthUtil.decode_jwt(t)
+        except Exception as e:
+            return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+        out: Dict = {}
+        notifications_all = db.query(Notifications).all()
+
+        for item in notifications_all:
+            item.date_time = item.date_time.strftime("%Y-%m-%d")
+
+        out["token"] = t
+        out["notifications"] = notifications_all
+
+        return templates.TemplateResponse("notifications.html", {"request": request, "data": out})
 
 

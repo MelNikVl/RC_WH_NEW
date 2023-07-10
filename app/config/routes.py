@@ -42,6 +42,7 @@ router.get("/ping")(FrontMainController.ping)
 router.get("/instructions")(FrontMainController.instructions)
 router.get("/admins_page")(FrontMainController.admins_page)
 router.get("/repairs_page")(FrontMainController.repairs_page)
+router.get("/notifications_page")(FrontMainController.notifications_page)
 router.get("/notification_answer")(FrontMainController.notification_answer)
 
 router.get("/trash_page")(FrontMainController.trash_page)

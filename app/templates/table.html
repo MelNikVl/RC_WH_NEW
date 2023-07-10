@@ -18,23 +18,26 @@
     <div class="body_body">
         <div class="title_1">IT warehouse tracker</div>
             <div class="button_exit">
-            <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
-            <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
-            <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
-            <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
-            <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
-            <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
-            <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
-        </div>
+                <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
+                {% if data.role == True %}
+                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                {% endif %}
+                <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
+                <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
+                <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
+                <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
+                <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
+                <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
+            </div>
             <div class="clear"></div>
 
             <div class="welcome">
                 <p class="hello">Добро пожаловать, {{ data.username }} шеф &#128293;</p>
                 {% if data.role == True %}
                 <p class="hello_2">у тебя <b>административный</b> доступ</p>
-                <button id="for_admins" class="admin_but"
-                    onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель
-                    администратора</button>
+<!--                <button id="for_admins" class="admin_but"-->
+<!--                    onclick='window.location.href = "/app/admins_page?t="+"{{ data.token }}"'>Перейти в панель-->
+<!--                    администратора</button>-->
                 {% endif %}
                 {% if data.role == False %}
                 <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
@@ -60,7 +63,7 @@
                             <button id="new">Завести актив</button>
                             <button id="delete">Удалить</button>
                             <button id="relocate">Переместить</button>
-                            <button id="history">Перемещения данного актива</button>
+<!--                            <button id="history">Перемещения данного актива</button>-->
                             <button id="add_photo">Добавить фото или файлы</button>
                         </div>
                         <div class="action-column">

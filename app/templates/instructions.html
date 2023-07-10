@@ -20,6 +20,9 @@
 
     <div class="button_exit">
         <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
+        {% if data.role == True %}
+            <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+        {% endif %}
         <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
         <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
         <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>

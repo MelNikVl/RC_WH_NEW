@@ -57,5 +57,6 @@ class LogsController:
         out["items"] = logs_from[start_index:end_index]
         out["page_count"] = page_count
         out["current_page"] = page
+        out["role"] = result["role"]
 
         return templates.TemplateResponse("logs.html", {"request": request, "data": out})

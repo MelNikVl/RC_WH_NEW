@@ -18,9 +18,6 @@
     <div class="title_1">IT warehouse tracker (LOGS)</div>
     <div class="button_exit">
             <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
-            {% if data.role == True %}
-                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
-            {% endif %}
             <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
             <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
             <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
@@ -30,41 +27,39 @@
         </div>
     <div class="clear"></div>
 
-    <div class="pagination">
-        <input id="previous" type="button" value="<">
-        <input id="next" type="button" value=">">
-        <span>Вы на {{ data["current_page"] }} странице из <span id="page_count">{{ data["page_count"] }}</span></span>
+<!--    <div class="pagination">-->
+<!--        <input id="previous" type="button" value="<">-->
+<!--        <input id="next" type="button" value=">">-->
+<!--        <span>Вы на {{ data["current_page"] }} странице из <span id="page_count">{{ data["page_count"] }}</span></span>-->
 
-    </div>
-    <div class="filter_count">
-        <input type="text" name="material_id" id="material_id" placeholder="ID материала" value='{{ data["id_filter"] }}'>
-        <input type="text" name="user_id" id="user_id" placeholder="login пользователя" value='{{ data["user_filter"] }}'>
-        <input type="text" name="date_time" id="date_time" placeholder="Date" value='{{ data["date_filter"] }}'>
-        <input id="apply" type="button" value="Применить">
-    </div>
+<!--    </div>-->
+<!--    <div class="filter_count">-->
+<!--        <input type="text" name="material_id" id="material_id" placeholder="ID материала" value='{{ data["id_filter"] }}'>-->
+<!--        <input type="text" name="user_id" id="user_id" placeholder="login пользователя" value='{{ data["user_filter"] }}'>-->
+<!--        <input type="text" name="date_time" id="date_time" placeholder="Date" value='{{ data["date_filter"] }}'>-->
+<!--        <input id="apply" type="button" value="Применить">-->
+<!--    </div>-->
 
     <table class="fl-table" id="table">
         <thead style="top: 0px;">
             <tr>
                 <th>ID</th>
-                <th>Вид таблицы</th>
-                <th>User login</th>
-                <th>Passive id</th>
-                <th>Изменяемые колонки</th>
-                <th width="20%">Что поменялось</th>
+                <th>Категория</th>
+                <th>Пользователь</th>
+                <th>Уведомление</th>
+                <th>Уникальный код</th>
                 <th width="12%">дата</th>
             </tr>
         </thead>
         <!--   итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
         <tbody>
-            {% for item in data["items"] %}
+            {% for item in data["notifications"] %}
             <tr>
                 <td>{{ item.id }}</td>
-                <td>{{ item.kind_table }}</td>
-                <td>{{ item.user_id }}</td>
-                <td>{{ item.passive_id }}</td>
-                <td>{{ item.modified_cols }}</td>
-                <td>{{ item.values_of_change }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.user }}</td>
+                <td>{{ item.read }}</td>
+                <td>{{ item.unique_code }}</td>
                 <td>{{ item.date_time }}</td>
             </tr>
             {% endfor %}
