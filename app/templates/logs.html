@@ -14,6 +14,7 @@
 </head>
 
 <body>
+<div class="body_body">
     <div class="title_1">IT warehouse tracker (LOGS)</div>
     <div class="button_exit">
             <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
@@ -46,9 +47,9 @@
                 <th>Вид таблицы</th>
                 <th>User login</th>
                 <th>Passive id</th>
-                <th>Modified colls</th>
-                <th>values_of_change</th>
-                <th>date_time</th>
+                <th>Изменяемые колонки</th>
+                <th width="20%">Что поменялось</th>
+                <th width="12%">дата</th>
             </tr>
         </thead>
         <!--   итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
@@ -66,6 +67,7 @@
             {% endfor %}
         <tbody>
     </table>
+    </div>
     <script>
         $(document).ready(function () {
             let url = new URL(window.location);

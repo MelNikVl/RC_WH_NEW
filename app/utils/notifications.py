@@ -18,12 +18,12 @@ gmail_pass = "seprtpqgzfwgcsvs"
 
 class SUBJECT(Enum):
     UTILIZATION = "Списание активов"
-    RELOCATION = "Перемещение активов"
-    REPAIR = "Ремонт активов"
+    RELOCATION = "Перемещение актива"
+    REPAIR = "Ремонт актива"
 
 
 @staticmethod
-def notify(db: Session, subject, addresses: list, invoice=None, materials: list[dict[int, str]] = None):
+def notify(db: Session, subject, addresses: list, invoice=None, materials: list[dict] = None):
     unique = secrets.token_hex(8)
     print(unique)
     addresses_to = ", ".join(addresses)
@@ -56,7 +56,7 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                 <html>
                     <body>
                         <p>Уведомляем Вас о том, что следующий актив был отправлен в ремонт:</p>
-                        <p>id: {materials[0]} &nbsp; Номер: {materials[1]}</p>
+                        <p>id: {materials[0]} &nbsp; Номер: {materials[1]} --- {materials[2]}</p>
                         <a href="">Уведомлён</a>
                         <p>Если у вас возникли вопросы - напишите пожалуйста нам на общую почту +RCSPBADMINS</p>
                     </body>
@@ -68,7 +68,10 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                             <body>
                                 <p>Уведомляем Вас о том, что следующий актив был перемещен на Ваше имя:</p>
                                 <p>id: {materials[0]} &nbsp; Номер: {materials[1]}</p>
-                                <a href="">Уведомлён</a>
+                                <p>Характеристики: {materials[2]}</p>
+                                <p>Инициатор перемещения: {materials[4]}.</p>
+                                <p>Планируемый статус после перемещения: {materials[3]}</p>
+                                <a href="http://localhost:8000/app/notification_answer?unique_code={unique}&material_id={materials[0]}">Уведомлен</a>
                                 <p>Если у вас возникли вопросы - напишите пожалуйста нам на общую почту +RCSPBADMINS</p>
                             </body>
                         </html>                        

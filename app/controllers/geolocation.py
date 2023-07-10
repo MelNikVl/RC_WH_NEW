@@ -31,6 +31,18 @@ class GeoLocationController:
                                                        status=body.status,
                                                        initiator=user.get("username"),
                                                        db=db)
+            # уведомление
+            material_for_notif = db.query(Material).filter(Material.id == body.material_id).first()
+            notify_materials = [material_for_notif.id,
+                                material_for_notif.title,
+                                material_for_notif.description,
+                                body.status,
+                                user["username"]
+                                ]
+            notify(db, SUBJECT.RELOCATION, [body.client_mail], materials=notify_materials)
+
+            las_upd_ntg = db.query(Notifications).order_by(desc(Notifications.id)).first()
+
             # логируем
             create_geo_event = LogItem(kind_table="Расположение активов",
                                        user_id=user["username"],
@@ -38,7 +50,8 @@ class GeoLocationController:
                                        modified_cols="новое расположение",
                                        values_of_change=f'новое место: {body.place},'
                                                         f' новый статус: {body.status},'
-                                                        f' новый ответственный: {body.client_mail}',
+                                                        f' новый ответственный: {body.client_mail}'
+                                                        f' уведомление {las_upd_ntg.unique_code} выслано пользователю',
                                        date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                        )
             db.add(create_geo_event)
@@ -239,15 +252,16 @@ class GeoLocationController:
                                    )
         db.add(create_geo_event)
         db.commit()
+
+        # уведомление
         notify_materials = []
         for i in materials_for_trash:
             notify_materials.append({i.id : i.title})
-
         notify(db, SUBJECT.UTILIZATION, ["shumerrr@yandex.ru"], invoice=out_filename, materials=notify_materials)
 
         return response(data=f'активы списаны, фото списания '
                              f'и накладная загружены, папки с фото техники перемещены в архив,'
-                             f' логирование произведено', status=True)
+                             f' логирование произведено, увдомление отправлено', status=True)
 
     @staticmethod
     async def archive_trash_page(db: Session = Depends(get_db),

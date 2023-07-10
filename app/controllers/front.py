@@ -14,7 +14,7 @@ from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from app.utils.utils import get_first_photo, response
 from db.db import get_db
-from models.models import User, GeoLocation, Material, Repair, Accessories, Notifications
+from models.models import User, GeoLocation, Material, Repair, Accessories, Notifications, LogItem
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
 from fastapi.responses import FileResponse
@@ -242,13 +242,26 @@ class FrontMainController:
 
     @staticmethod
     async def notification_answer(unique_code,
-                               db: Session = Depends(get_db),
-                               request: Request = None
-                               ):
-        if unique_code:
-            answer = db.query(Notifications).filter(Notifications.unique_code == unique_code).first()
-            answer.read = True
-            db.commit()
+                                  material_id,
+                                  db: Session = Depends(get_db),
+                                  request: Request = None
+                                  ):
+        answer = db.query(Notifications).filter(Notifications.unique_code == unique_code).first()
+        answer.read = True
+        db.commit()
 
-            return response(data="Спасибо за ответ. Уведомление получено", status=True)
+        create_event = LogItem(kind_table="Уведомления",
+                               user_id=0,
+                               passive_id=material_id,
+                               modified_cols="ответ на уведомление",
+                               values_of_change=f'пользователь {answer.user} '
+                                                f'подтвердил перемещение актива - {material_id}, '
+                                                f' идентификатор уведомления - {answer.unique_code}',
+                               date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                               )
+        db.add(create_event)
+        db.commit()
+
+        return response(data="Спасибо за ответ. Уведомление получено", status=True)
+
 
