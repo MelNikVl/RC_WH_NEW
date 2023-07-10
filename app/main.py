@@ -10,7 +10,7 @@ Base.metadata.create_all(bind=engine)
 
 # метод для работы с фастапи
 app = FastAPI(
-    title="RC WH MO tracker",  # Set the new project name
+    title="RC WH MO tracker.",  # Set the new project name
     version="3.1",  # Set the project version
     description="здесь все методы работы с API"  # Set the project description
 )
