@@ -20,11 +20,11 @@
 
     <div class="button_exit">
         <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
-        <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
         <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
-        <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Утилизация</a>
+        <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
+        <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
         <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
-        <a href="/app/instructions?t={{ data.token }}" class="menu_arc">Как пользоваться приложением</a>
+        <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
         <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
     </div>
 
@@ -36,12 +36,16 @@
       <li>Вести учет активов на складах</li>
       <li>Следить за перемещениями активов</li>
     </ul>
+    <p>Пользоваться приложением можно через WEB терминал или телеграмм бота</p>
 
     <h2>WEB TERMINAL (<code>http://{адрес_сервера}/app:9000</code>)</h2>
 
         <h2>Авторизация и доступы</h2>
 
     <h3>Управление активами:</h3>
+        <p>Управление активами в веб терминале реализовано на основе разделения пользователей на админов и юзеров.</p>
+        <p>При каждой авторизации пользователя ему выдается закодированный JWT токен на 10 часов работы.</p>
+        <p>После истечения срока действия токена, пользователя перенаправит на страницу авторизации</p>
     <ul>
         <li>Админы могут:
             <ul>
@@ -60,8 +64,6 @@
         </li>
     </ul>
         <img  width="800" height="500" src="../static/instructions_files/auth.gif" alt="Описание картинки">
-    <p>При каждой авторизации пользователя ему выдается закодированный JWT токен на 10 часов работы.
-    Валидность JWT токена проверяется раз в 5 секунд. Как только токен истекает, пользователя выкидывает обратно на страницу авторизации.</p>
 
 
         <h3>Работа с активами</h3>
