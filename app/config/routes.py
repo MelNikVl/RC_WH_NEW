@@ -6,6 +6,7 @@ from controllers.front import FrontMainController
 from app.controllers.accessories import AccessoriesController
 from app.controllers.auth import AuthController
 from app.controllers.logs import LogsController
+from app.controllers.testing import TestingController
 
 APIRouter.enter = lambda self: self
 APIRouter.exit = lambda *args: ''
@@ -31,6 +32,8 @@ for_admins = APIRouter(prefix='/for_admins',
 accessories = APIRouter(prefix='/accessories',
                         tags=['accessories'])
 
+testing = APIRouter(prefix='/testing',
+                        tags=['testing'])
 
 # здесь указываем эндпоинты
 router.get("")(FrontMainController.index)
@@ -78,4 +81,6 @@ accessories.post("/create")(AccessoriesController.create)
 accessories.put("/change_count")(AccessoriesController.change_count)
 accessories.put("/add_accessories")(AccessoriesController.add_accessories)
 accessories.get("")(AccessoriesController.accessories_page)
+
+testing.post("/create_10_iterations")(TestingController.create_10_iterations)
 

@@ -3,7 +3,6 @@ import logging
 import os
 import secrets
 import shutil
-import uuid
 from fastapi import Depends, File, UploadFile, HTTPException
 from pydantic import parse_obj_as
 from sqlalchemy import update
