@@ -9,7 +9,8 @@ from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
     RepairStopRequest, RepairDetailsRequest
 from starlette import status
-from app.utils.utils import response, send_email
+from app.utils.utils import response
+from app.utils.notifications import *
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
@@ -238,8 +239,11 @@ class GeoLocationController:
                                    )
         db.add(create_geo_event)
         db.commit()
+        notify_materials = []
+        for i in materials_for_trash:
+            notify_materials.append({i.id : i.title})
 
-        send_email(out_filename)
+        notify(db, SUBJECT.UTILIZATION, ["shumerrr@yandex.ru"], invoice=out_filename, materials=notify_materials)
 
         return response(data=f'активы списаны, фото списания '
                              f'и накладная загружены, папки с фото техники перемещены в архив,'

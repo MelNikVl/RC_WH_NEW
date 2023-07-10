@@ -116,6 +116,11 @@ class FrontMainController:
     async def user_auth(db: Session = Depends(get_db),
                         request: Request = None,
                         ):
+        if len(db.query(User).all()) == 0:
+            user = User(chat_id=11111, username="admin",
+                        password="$2b$12$LHizNG913MQ.FlcjXS9eGufsJK2yp5xdbt6dvCGzOnMQbCSrLna2.", is_admin=True)
+            db.add(user)
+            db.commit()
         return templates.TemplateResponse("auth.html", {"request": request})
 
     @staticmethod

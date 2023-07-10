@@ -94,3 +94,14 @@ class Accessories(Base):
     responsible: str = Column(String)
     place: str = Column(String)
     date_time: datetime = Column(DateTime)
+
+
+class Notifications(Base):
+    __tablename__ = "notifications"
+
+    id: int = Column(Integer, primary_key=True, index=True)
+    category: str = Column(String)
+    user: str = Column(String)
+    read: bool = Column(Boolean,  unique=False, default=False)
+    unique_code: str = Column(String)
+    date_time: datetime = Column(DateTime)
