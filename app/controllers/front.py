@@ -12,9 +12,9 @@ from crud.materials import MaterialCRUD
 from starlette import status
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
-from app.utils.utils import get_first_photo
+from app.utils.utils import get_first_photo, response
 from db.db import get_db
-from models.models import User, GeoLocation, Material, Repair, Accessories
+from models.models import User, GeoLocation, Material, Repair, Accessories, Notifications
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
 from fastapi.responses import FileResponse
@@ -239,3 +239,16 @@ class FrontMainController:
         out["count_for_trash"] = len(materials_for_trash)
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
+
+    @staticmethod
+    async def notification_answer(unique_code,
+                               db: Session = Depends(get_db),
+                               request: Request = None
+                               ):
+        if unique_code:
+            answer = db.query(Notifications).filter(Notifications.unique_code == unique_code).first()
+            answer.read = True
+            db.commit()
+
+            return response(data="Спасибо за ответ. Уведомление получено", status=True)
+

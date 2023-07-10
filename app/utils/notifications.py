@@ -6,10 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from enum import Enum
 from os.path import basename
-
 from sqlalchemy.orm import Session
-
-from db.db import get_db
 from models.models import Notifications
 
 gmail_login = "testpython20231@gmail.com"
@@ -28,6 +25,7 @@ class SUBJECT(Enum):
 @staticmethod
 def notify(db: Session, subject, addresses: list, invoice=None, materials: list[dict[int, str]] = None):
     unique = secrets.token_hex(8)
+    print(unique)
     addresses_to = ", ".join(addresses)
     new_notify = Notifications(category=subject.value, user=addresses_to,
                                unique_code=unique, date_time=datetime.datetime.now())
@@ -44,11 +42,12 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                 part = MIMEApplication(file.read(), Name=basename(invoice))
                 part['Content-Disposition'] = 'attachment; filename="%s"' % basename(invoice)
                 message.attach(part)
-            html = """\
+            html = f"""\
                 <html>
                   <body>
-                    <p>Накладная по списанию: </p>
-                    <a href="http://abc.ru/notification_read?unique=123">Уведомлён</a>
+                    <p>Накладная по списанию в приложении</p>
+                    <a href="">Фото утилизации (ссылка)</a>
+                    <a href="">Вся документация по списанию от ____ </a>
                   </body>
                 </html>
                 """
@@ -59,9 +58,21 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                         <p>Уведомляем Вас о том, что следующий актив был отправлен в ремонт:</p>
                         <p>id: {materials[0]} &nbsp; Номер: {materials[1]}</p>
                         <a href="">Уведомлён</a>
+                        <p>Если у вас возникли вопросы - напишите пожалуйста нам на общую почту +RCSPBADMINS</p>
                     </body>
                 </html>                        
                 """
+        case SUBJECT.RELOCATION:
+            html = f"""\
+                        <html>
+                            <body>
+                                <p>Уведомляем Вас о том, что следующий актив был перемещен на Ваше имя:</p>
+                                <p>id: {materials[0]} &nbsp; Номер: {materials[1]}</p>
+                                <a href="">Уведомлён</a>
+                                <p>Если у вас возникли вопросы - напишите пожалуйста нам на общую почту +RCSPBADMINS</p>
+                            </body>
+                        </html>                        
+                        """
     part2 = MIMEText(html, "html")
     message.attach(part2)
 
@@ -70,3 +81,5 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     serv.starttls()
     serv.login(gmail_login, gmail_pass)
     serv.sendmail(gmail_login, addresses, message.as_string())
+
+
