@@ -15,12 +15,10 @@ dispatcher = Dispatcher(bot)
 # создание бд если ее нет
 Base.metadata.create_all(engine)
 
-# сообщение в консоль
 print("Бот запущен")
 
 # сохраняем значения введенные пользователем в бота
 state = {}
-
 
 # действие при команде старт - проверка пользователя - приветственное сообщение
 @dispatcher.message_handler(commands=['start'])
@@ -174,4 +172,3 @@ async def handlers(message: Message):
 
 
 executor.start_polling(dispatcher, skip_updates=True)
-# executor.start_polling(dispatcher2, on_startup=on_startup, skip_updates=True)

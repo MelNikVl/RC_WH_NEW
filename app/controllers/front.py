@@ -10,13 +10,11 @@ from fastapi.encoders import jsonable_encoder
 from crud.geolocation import GeoLocationCRUD
 from crud.materials import MaterialCRUD
 from starlette import status
-from app.bot_for_admins import dp, ntf_page
-from app.bot_for_admins import TARGET_USER_ID, bot
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from app.utils.utils import get_first_photo, response
 from db.db import get_db
-from models.models import User, GeoLocation, Material, Repair, Accessories, Notifications, LogItem
+from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem
 from app.payload.request import InvoiceCreateRequest
 from docx import Document
 from fastapi.responses import FileResponse
@@ -282,8 +280,6 @@ class FrontMainController:
 
         out: Dict = {}
         notifications_all = db.query(Notifications).order_by(Notifications.date_time.desc()).all()
-
-        await ntf_page(dp)
 
         for item in notifications_all:
             item.date_time = item.date_time.strftime("%Y-%m-%d")
