@@ -265,7 +265,7 @@ class FrontMainController:
         db.add(create_event)
         db.commit()
 
-        return response(data="Спасибо за ответ. Уведомление получено", status=True)
+        return response(data="Спасибо за ответ. Уведомление получено. Вы можете закрыть эту страницу", status=True)
 
     @staticmethod
     async def notifications_page(db: Session = Depends(get_db),
