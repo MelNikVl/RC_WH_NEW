@@ -9,7 +9,6 @@ from models.models import User, Base, LogItem
 from static_data import main_folder, bot
 from utils.set_bot_commands import check_if_admin
 
-
 # диспетчер для обработки команд боту
 dispatcher = Dispatcher(bot)
 
@@ -19,7 +18,7 @@ Base.metadata.create_all(engine)
 # сообщение в консоль
 print("Бот запущен")
 
-# здесь сохраняем значения введенные пользователем в бота
+# сохраняем значения введенные пользователем в бота
 state = {}
 
 
@@ -87,7 +86,6 @@ async def add_other(call_back: CallbackQuery):
 # диспетчер который добавляет фото
 @dispatcher.message_handler(content_types=types.ContentType.PHOTO)
 async def picture_download(message: Message):
-
     if state[message.chat.id]["state"] in ['send_first_photo', 'send_second_photo']:
         file_id = message.photo[-1].file_id
         file = await bot.get_file(file_id)
@@ -174,4 +172,6 @@ async def handlers(message: Message):
     else:
         await bot.send_message(message.chat.id, "я не понимаю")
 
-executor.start_polling(dispatcher)
+
+executor.start_polling(dispatcher, skip_updates=True)
+# executor.start_polling(dispatcher2, on_startup=on_startup, skip_updates=True)

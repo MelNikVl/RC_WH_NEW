@@ -8,3 +8,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 main_folder = os.path.join(current_dir, "app", "it_warehouse_docs")
 
 bot = Bot("6255903272:AAEYZgt6krIp723UY7mchIN4u-ydVZRLOC0")
+bot_for_admin = Bot("5858975680:AAFdDI-XOEYqFxNf9OAbx0p6JgpuW89DiqE")
+
+host = "http://localhost:8000"

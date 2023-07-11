@@ -8,6 +8,7 @@ from enum import Enum
 from os.path import basename
 from sqlalchemy.orm import Session
 from models.models import Notifications
+from static_data import host
 
 gmail_login = "testpython20231@gmail.com"
 gmail_pass = "seprtpqgzfwgcsvs"
@@ -61,7 +62,7 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
             html = f"""\
                 <html>
                     <body>
-                        <p>Уведомляем Вас о том, что следующий актив был отправлен в ремонт:</p>
+                        <p>Уведомляем Вас о том, что следующий актив был взят в ремонт:</p>
                         <p>id: {materials[0]} &nbsp; Номер: {materials[1]} --- {materials[2]}</p>
                         <a href="">Уведомлён</a>
                         <p>Если у вас возникли вопросы - напишите пожалуйста нам на общую почту +RCSPBADMINS</p>
@@ -84,7 +85,7 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                                 <p>Характеристики: {materials[2]}</p>
                                 <p>Инициатор перемещения: {materials[4]}.</p>
                                 <p>Планируемый статус после перемещения: {materials[3]}</p>
-                                <a href="http://localhost:8000/app/notification_answer?unique_code={unique}&material_id={materials[0]}">Уведомлен</a>
+                                <a href="{host}/app/notification_answer?unique_code={unique}&material_id={materials[0]}">Уведомлен</a>
                                 <p>Если у вас возникли вопросы - напишите пожалуйста нам на общую почту +RCSPBADMINS</p>
                             </body>
                         </html>                        

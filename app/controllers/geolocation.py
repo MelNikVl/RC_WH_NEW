@@ -256,7 +256,7 @@ class GeoLocationController:
         # уведомление
         notify_materials = []
         for i in materials_for_trash:
-            notify_materials.append({i.id : i.title})
+            notify_materials.append({i.id: i.title})
         notify(db, SUBJECT.UTILIZATION, ["shumerrr@yandex.ru"], invoice=out_filename, materials=notify_materials)
 
         return response(data=f'активы списаны, фото списания '
@@ -323,6 +323,15 @@ class GeoLocationController:
             db.add(new_location)
             db.add(new_repair_event)
             db.commit()
+
+            # уведомление
+            try:
+                material_to_ntf = db.query(Material).filter(Material.id == data.material_id).first()
+                notify_materials = [material_to_ntf.id, material_to_ntf.title, material_to_ntf.description]
+                notify(db, SUBJECT.UTILIZATION, ["shumerrr@yandex.ru", data.customer], materials=notify_materials)
+            except Exception:
+                print(Exception)
+
             return response(data="взяли на ремонт", status=True)
         else:
             return response(data="актив уже в ремонте", status=False)

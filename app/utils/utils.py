@@ -1,12 +1,6 @@
 import logging
 import os
-import smtplib
-from email.mime.application import MIMEApplication
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from os.path import basename
 from typing import Any, Dict
-
 from static_data import main_folder
 
 logging.basicConfig(level=logging.INFO,
