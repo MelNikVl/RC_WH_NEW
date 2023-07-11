@@ -27,8 +27,11 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     unique = secrets.token_hex(8)
     print(unique)
     addresses_to = ", ".join(addresses)
-    new_notify = Notifications(category=subject.value, user=addresses_to,
-                               unique_code=unique, date_time=datetime.datetime.now())
+    new_notify = Notifications(category=subject.value,
+                               user=addresses_to,
+                               unique_code=unique,
+                               date_time=datetime.datetime.now()
+                               )
     db.add(new_notify)
     db.commit()
     message = MIMEMultipart("")

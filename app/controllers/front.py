@@ -279,7 +279,7 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         out: Dict = {}
-        notifications_all = db.query(Notifications).all()
+        notifications_all = db.query(Notifications).order_by(Notifications.date_time.desc()).all()
 
         for item in notifications_all:
             item.date_time = item.date_time.strftime("%Y-%m-%d")

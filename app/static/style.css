@@ -687,7 +687,7 @@ details:not([open]) > *:not(summary) {
   transition: opacity 0.02s, visibility 0.02s;
 }
 
-.red_button {background: #f5b3b380;}
+.red_button {background: #c7adad80;}
 
 .yell_button {background: #f5edb3;}
 
