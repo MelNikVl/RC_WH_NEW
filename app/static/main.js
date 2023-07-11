@@ -24,7 +24,7 @@ function invert_selection(elem) {
             $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash,  #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', false);
             $("#delete_user, #make_admin").removeClass("disabled-btn");
             if ($('tbody > tr.selected').children("td").eq(7).text() == "ремонт"){
-                $("#fast_repair, #send_to_repair").prop("disabled", true);
+                $("#fast_repair, #send_to_repair, #relocate").prop("disabled", true);
                 $("#add_repair_info, #end_repair").prop("disabled", false);
             } else{
                 $("#fast_repair, #send_to_repair").prop("disabled", false);

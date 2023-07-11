@@ -27,13 +27,7 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     unique = secrets.token_hex(8)
     print(unique)
     addresses_to = ", ".join(addresses)
-    new_notify = Notifications(category=subject.value,
-                               user=addresses_to,
-                               unique_code=unique,
-                               date_time=datetime.datetime.now()
-                               )
-    db.add(new_notify)
-    db.commit()
+
     message = MIMEMultipart("")
     message["Subject"] = subject.value
     message["From"] = gmail_login
@@ -41,6 +35,15 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     html = ""
     match subject:
         case SUBJECT.UTILIZATION:
+
+            new_notify = Notifications(category=subject.value,
+                                       user=addresses_to,
+                                       unique_code=unique,
+                                       date_time=datetime.datetime.now()
+                                       )
+            db.add(new_notify)
+            db.commit()
+
             with open(invoice, "rb") as file:
                 part = MIMEApplication(file.read(), Name=basename(invoice))
                 part['Content-Disposition'] = 'attachment; filename="%s"' % basename(invoice)
@@ -66,6 +69,13 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                 </html>                        
                 """
         case SUBJECT.RELOCATION:
+            new_notify = Notifications(category=f'{subject.value} {materials[0]}',
+                                       user=addresses_to,
+                                       unique_code=unique,
+                                       date_time=datetime.datetime.now()
+                                       )
+            db.add(new_notify)
+            db.commit()
             html = f"""\
                         <html>
                             <body>
