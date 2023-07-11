@@ -25,7 +25,7 @@ class TestingController:
                                         user_id=user.get("username"),
                                         category="компьютер",
                                         title=f"pc10{i}",
-                                        description="актив для тестирования",
+                                        description="i7 7700, ssd: 500gb, video: GeForce 1060",
                                         date_time=datetime.datetime.now()
                                         )
             # ФОТО
