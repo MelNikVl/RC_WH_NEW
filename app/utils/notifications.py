@@ -10,8 +10,12 @@ from sqlalchemy.orm import Session
 from models.models import Notifications
 from static_data import host
 
-gmail_login = "testpython20231@gmail.com"
-gmail_pass = "seprtpqgzfwgcsvs"
+# gmail_login = "testpython20231@gmail.com"
+# gmail_pass = "seprtpqgzfwgcsvs"
+
+gmail_login = "it.wh@rencons.com"
+gmail_pass = "tznppgeklmillvha"
+# it.wh@rencons.com
 
 
 class SUBJECT(Enum):
