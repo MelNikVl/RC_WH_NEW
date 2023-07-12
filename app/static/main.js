@@ -133,7 +133,8 @@ RAID: `;
 
     });
 
-    $("tbody > tr").on("click", function () {
+// событие по клику
+    $("tbody > tr").on("dblclick", function () {
         if (!$(this).hasClass("inactive"))
             invert_selection(this);
     });
