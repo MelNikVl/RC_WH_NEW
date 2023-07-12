@@ -14,9 +14,6 @@ gmail_login = "testpython20231@gmail.com"
 gmail_pass = "seprtpqgzfwgcsvs"
 
 
-# addresses = ["shumerrr@yandex.ru", "dklsgj@gmail.com"]
-
-
 class SUBJECT(Enum):
     UTILIZATION = "Списание активов"
     RELOCATION = "Перемещение актива"
@@ -26,7 +23,6 @@ class SUBJECT(Enum):
 @staticmethod
 def notify(db: Session, subject, addresses: list, invoice=None, materials: list[dict] = None):
     unique = secrets.token_hex(8)
-    print(unique)
     addresses_to = ", ".join(addresses)
 
     message = MIMEMultipart("")
