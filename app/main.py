@@ -4,7 +4,10 @@ from config.routes import router, materials, geolocation, auth, logs, accessorie
 from db.db import engine
 from models.models import Base
 from fastapi.staticfiles import StaticFiles
-from app.autoupdate import Updater
+try:
+    from app.autoupdate import Updater
+except ImportError:
+    pass
 
 # создание бд если ее нет (да - втоторой раз) но это ни на что не влияет
 Base.metadata.create_all(bind=engine)
