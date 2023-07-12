@@ -4,6 +4,7 @@ from config.routes import router, materials, geolocation, auth, logs, accessorie
 from db.db import engine
 from models.models import Base
 from fastapi.staticfiles import StaticFiles
+from app.autoupdate import Updater
 
 # создание бд если ее нет (да - втоторой раз) но это ни на что не влияет
 Base.metadata.create_all(bind=engine)
@@ -36,3 +37,8 @@ app.include_router(testing)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/it_warehouse_docs", StaticFiles(directory="it_warehouse_docs"), name="it_warehouse_docs")
+
+try:
+    Updater()
+except Exception as e:
+    print(e)
