@@ -34,10 +34,10 @@ $(document).ready(function () {
         let counter = 1;
         $('tbody > tr').each(function (index) {
             let id = $(this).children("td").eq(0).text();
-            let category = $(this).children("td").eq(2).text();
-            let title = $(this).children("td").eq(3).text();
-            let description = $(this).children("td").eq(4).children("textarea").val();
-            let date = $(this).children("td").eq(5).text();
+            let category = $(this).children("td").eq(1).text();
+            let title = $(this).children("td").eq(2).text();
+            let description = $(this).children("td").eq(3).children("textarea").val();
+            let date = $(this).children("td").eq(4).text();
             data["data"].push([counter, id, category, title, description, date]);
             counter++;
         });
