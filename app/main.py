@@ -45,3 +45,4 @@ try:
     Updater()
 except Exception as e:
     print(e)
+    pass
