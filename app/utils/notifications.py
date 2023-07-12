@@ -94,5 +94,3 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     serv.starttls()
     serv.login(gmail_login, gmail_pass)
     serv.sendmail(gmail_login, addresses, message.as_string())
-
-
