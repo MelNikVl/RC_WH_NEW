@@ -36,7 +36,6 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     html = ""
     match subject:
         case SUBJECT.UTILIZATION:
-
             new_notify = Notifications(category=subject.value,
                                        user=addresses_to,
                                        unique_code=unique,
