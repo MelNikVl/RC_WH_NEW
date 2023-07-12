@@ -52,7 +52,7 @@ class FrontMainController:
         par.alignment = 1
 
         par = document.add_paragraph()
-        par.add_run('№______________ от ' + datetime.datetime.now().strftime("%Y.%m.%d")).bold = True
+        par.add_run('№_____________| от ' + datetime.datetime.now().strftime("%Y.%m.%d")).bold = True
         par.alignment = 1
 
         table = document.add_table(1, 6)
