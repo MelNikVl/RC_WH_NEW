@@ -514,9 +514,8 @@ tbody input[type='checkbox'] {
 }
 
 .filters {
-    float: left;
     font-size: x-large;
-    margin: 0 1em 0 0;
+    display: inline-block;
 }
 
 .action-column {
@@ -761,3 +760,11 @@ details:not([open]) > *:not(summary) {
     .menu_arc:hover {
         background-color: #cfd8ff;
     }
+.input-wrapper input[type="image"]{
+    display: inline-block;
+    /* margin-top: 92px; */
+    position: relative;
+    left: 15px;
+    top: 7px;
+    width: 25px;
+}

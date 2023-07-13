@@ -138,6 +138,15 @@ RAID: `;
         if (!$(this).hasClass("inactive"))
             invert_selection(this);
     });
+    $("#reset-filters").on("click", function(){
+        $('#id-filter').val("");
+        $('#category-filter').val("");
+        $('#description-filter').val("");
+        $('#date-filter').val("");
+        $('#status-filter').val("");
+        apply_filters();
+    })
+
     $("#new").on("click", function () {
         $("#new-popup").fadeIn(200);
     });
