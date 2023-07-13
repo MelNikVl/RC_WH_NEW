@@ -152,10 +152,8 @@ class GeoLocationCRUD:
         destination_folder = os.path.join(f"{main_folder}\\photos", str(material_id_to_repair))
         destination_folder1 = os.path.join(destination_folder, "Repairs")
         os.makedirs(destination_folder1, exist_ok=True)
-
-        # Создаем путь для сохранения файла в папке назначения
         destination_path = os.path.join(destination_folder1, str(datetime.datetime.now()))
 
-        # Загружаем файл в папку назначения
+        # Загружаем файл
         with open(destination_path, "wb") as buffer:
             buffer.write(await file.read())
