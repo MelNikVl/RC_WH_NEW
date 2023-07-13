@@ -533,7 +533,8 @@ tbody input[type='checkbox'] {
     border-radius: 1em;
     margin: 1em;
     float: left;
-    width: 933px;
+    /* width: 933px; */
+    width: 74%;
 }
 
 .card_of_material_main_1 {

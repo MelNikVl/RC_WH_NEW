@@ -21,10 +21,10 @@ class TestingController:
                                    db: Session = Depends(get_db)):
 
         for i in range(10):
-            new_10_materials = Material(id=i,
+            new_10_materials = Material(id=i+1000,
                                         user_id=user.get("username"),
                                         category="компьютер",
-                                        title=f"pc10{i}",
+                                        title=f"pc100{i}",
                                         description="i7 7700, ssd: 500gb, video: GeForce 1060",
                                         date_time=datetime.datetime.now()
                                         )
