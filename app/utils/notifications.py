@@ -15,7 +15,6 @@ from static_data import host
 
 gmail_login = "it.wh@rencons.com"
 gmail_pass = "tznppgeklmillvha"
-# it.wh@rencons.com
 
 
 class SUBJECT(Enum):

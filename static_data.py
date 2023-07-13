@@ -11,3 +11,6 @@ bot = Bot("6255903272:AAEYZgt6krIp723UY7mchIN4u-ydVZRLOC0")
 # bot_for_admin = Bot("5858975680:AAFdDI-XOEYqFxNf9OAbx0p6JgpuW89DiqE")
 
 host = "http://localhost:8000"
+
+utilization_ntf_users = ["shumerrr@yandex.ru", "sergey.zagustin@rencons.com", "nikolai.melnik@rencons.com"]
+repair_ntf_users = "shumerrr@yandex.ru, sergey.zagustin@rencons.com"

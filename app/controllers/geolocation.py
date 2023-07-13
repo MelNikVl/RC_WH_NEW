@@ -15,7 +15,7 @@ from app.controllers.front import templates
 from app.utils.auth import AuthUtil
 from db.db import get_db
 from models.models import User, LogItem, GeoLocation, Material, Trash, Repair
-from static_data import main_folder
+from static_data import main_folder, utilization_ntf_users
 
 
 class GeoLocationController:
@@ -31,7 +31,7 @@ class GeoLocationController:
                                                        status=body.status,
                                                        initiator=user.get("username"),
                                                        db=db)
-            # уведомление
+            # уведомление о перемещении
             material_for_notif = db.query(Material).filter(Material.id == body.material_id).first()
             notify_materials = [material_for_notif.id,
                                 material_for_notif.title,
@@ -39,9 +39,10 @@ class GeoLocationController:
                                 body.status,
                                 user["username"]
                                 ]
+            # высылаем письмо
             notify(db, SUBJECT.RELOCATION, [body.client_mail], materials=notify_materials)
-
-            las_upd_ntg = db.query(Notifications).order_by(desc(Notifications.id)).first()
+            # находим последний элемент уведомления
+            last_ntf = db.query(Notifications).order_by(desc(Notifications.id)).first().unique_code
 
             # логируемlogs.html
             create_geo_event = LogItem(kind_table="Расположение активов",
@@ -51,7 +52,7 @@ class GeoLocationController:
                                        values_of_change=f'новое место: {body.place},'
                                                         f' новый статус: {body.status},'
                                                         f' новый ответственный: {body.client_mail}'
-                                                        f' уведомление {las_upd_ntg.unique_code} выслано пользователю',
+                                                        f' уведомление {last_ntf} выслано пользователю',
                                        date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                        )
             db.add(create_geo_event)
@@ -253,11 +254,11 @@ class GeoLocationController:
         db.add(create_geo_event)
         db.commit()
 
-        # уведомление
+        # уведомление финального списания
         notify_materials = []
         for i in materials_for_trash:
             notify_materials.append({i.id: i.title})
-        notify(db, SUBJECT.UTILIZATION, ["shumerrr@yandex.ru"], invoice=out_filename, materials=notify_materials)
+        notify(db, SUBJECT.UTILIZATION, utilization_ntf_users, invoice=out_filename, materials=notify_materials)
 
         return response(data=f'активы списаны, фото списания '
                              f'и накладная загружены, папки с фото техники перемещены в архив,'
@@ -324,7 +325,7 @@ class GeoLocationController:
             db.add(new_repair_event)
             db.commit()
 
-            # уведомление
+            # уведомление о ремонте
             try:
                 material_to_ntf = db.query(Material).filter(Material.id == data.material_id).first()
                 notify_materials = [material_to_ntf.id, material_to_ntf.title, material_to_ntf.description]
