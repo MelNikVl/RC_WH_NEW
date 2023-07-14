@@ -420,7 +420,6 @@ async function upload_photos(mat_id) {
         }
     }
 }
-
 async function move_to_trash(id) {
     try {
         const response = await fetch(host + "/geolocation/add_to_trash?material_id=" + id, {
@@ -435,7 +434,6 @@ async function move_to_trash(id) {
         console.error(error);
     }
 }
-
 async function delete_user(username) {
     try {
         const response = await fetch(host + "/auth/delete_user" + "?user_for_delete=" + username, {
