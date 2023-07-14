@@ -241,7 +241,6 @@ RAID: `;
 
 //========================================    Методы для работы с апи
 
-
 async function get_history(id) {
 
     try {
@@ -264,7 +263,6 @@ async function get_history(id) {
         alert('Ошибка!');
     }
 }
-
 async function post(uri, data) {
 
     try {
@@ -321,8 +319,6 @@ async function update_desc(data) {
         console.error('Ошибка:', error);
     }
 }
-
-
 async function del(uri, id) {
 
     try {
@@ -439,7 +435,6 @@ async function move_to_trash(id) {
         console.error(error);
     }
 }
-
 
 async function delete_user(username) {
     try {
