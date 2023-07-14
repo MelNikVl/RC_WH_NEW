@@ -19,11 +19,6 @@ from app.payload.request import InvoiceCreateRequest
 from docx import Document
 from fastapi.responses import FileResponse
 
-"""
-выдаем на фронт OUT 
-Session = Depends(get_db) - единораазовые обращения к бд
-"""
-
 templates = Jinja2Templates(directory="templates")
 
 
@@ -171,7 +166,8 @@ class FrontMainController:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
-        material_geo1 = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(desc(GeoLocation.date_time)).all()
+        material_geo1 = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
+            desc(GeoLocation.date_time)).all()
 
         current_geo = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
             desc(GeoLocation.date_time)).all()[0]
@@ -235,7 +231,6 @@ class FrontMainController:
         for item in materials_for_trash:
             item.date_time = item.date_time.strftime("%Y-%m-%d")
 
-
         out[0] = materials_for_trash
         out["token"] = t
         out["count_for_trash"] = len(materials_for_trash)
@@ -289,12 +284,11 @@ class FrontMainController:
 
         return templates.TemplateResponse("notifications.html", {"request": request, "data": out})
 
-
     @staticmethod
     async def test_page(db: Session = Depends(get_db),
-                         request: Request = None,
-                         t: str = None  # jwt токен,
-                         ):
+                        request: Request = None,
+                        t: str = None  # jwt токен,
+                        ):
         # проверка токена на валидность и если он не вализный - переадресация на авторизацию
         try:
             result = await AuthUtil.decode_jwt(t)
@@ -305,4 +299,3 @@ class FrontMainController:
         out["token"] = t
 
         return templates.TemplateResponse("test.html", {"request": request, "data": out})
-
