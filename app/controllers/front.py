@@ -72,7 +72,7 @@ class FrontMainController:
         par = document.add_paragraph()
         par = document.add_paragraph()
         par = document.add_paragraph()
-        par.add_run('Подпись руководителя IT отдела _______________________________').bold = True
+        par.add_run('Подпись руководителя IT отдела ______________________________').bold = True
         par.alignment = 1
 
         document.save(out_name)
