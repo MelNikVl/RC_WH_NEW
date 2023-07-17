@@ -113,9 +113,9 @@
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="select-all"></th>
-                        <th>ID актива</th>
+                        <th>ID</th>
                         <th>Категория</th>
-                        <th>Номер (тайтл)</th>
+                        <th>Номер</th>
                         <th>Описание (характеристики)</th>
                         <th>Дата ввода</th>
                         <th>Расположение</th>
@@ -126,7 +126,8 @@
                 <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
                 <tbody>
                     {% for item in data[0] %}
-                    <tr {% if item["geolocation_status"]=="списание" %} class="inactive" {% endif %}>
+                    <tr class="tr_main" 
+                    {% if item["geolocation_status"]=="списание" %} class="inactive" {% endif %}>
                         <td><input type="checkbox"></td>
                         <td>{{ item.id }}</td>
                         <td>{{ item.category }}</td>
