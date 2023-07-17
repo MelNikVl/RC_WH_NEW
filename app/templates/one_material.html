@@ -9,7 +9,7 @@
     <!--  линк на стили -->
     <link rel="stylesheet" href="/static/style.css">
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
-    <script src="/static/main.js"></script>
+    <script src="/static/one_material.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 </head>
 <body>
@@ -36,6 +36,7 @@
     </div>
 
     <div class="card_of_material_main_2">
+        <div id="materials_is">{{ data.one_material.id }}</div>
         <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
         <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
         <div class="title_one_card status_000">Статус:  {{ data.current_status }}</div>
@@ -59,16 +60,16 @@
 
     <div class="clear"></div>
 
-<!--    <div class="action-buttons_1_card">-->
-<!--        <button id="delete">Удалить</button>-->
-<!--        <button id="relocate">Переместить</button>-->
-<!--        <button id="add_photo">Добавить фото или файлы</button>-->
-<!--        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>-->
-<!--        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
-<!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
-<!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
-<!--        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>-->
-<!--    </div>-->
+    <div class="action-buttons_1_card">
+        <button id="delete">Удалить</button>
+        <button id="relocate">Переместить</button>
+        <button id="add_photo">Добавить файлы</button>
+        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
+        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>
+        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>
+        <button id="end_repair" class="yell_button">Закончить ремонт</button>
+        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+    </div>
 
     <div class="card_of_material">
 
