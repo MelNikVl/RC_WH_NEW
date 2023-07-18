@@ -27,14 +27,14 @@ def bind_materials(Material):
                 f" '{target.description}',"
                 f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
-    @event.listens_for(Material, 'after_insert')
-    def after_insert(mapper, connection, target):
-        connection.execute(
-            text(
-                f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
-                f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'создание актива',"
-                f" '{target.description}',"
-                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
+    # @event.listens_for(Material, 'after_insert')
+    # def after_insert(mapper, connection, target):
+    #     connection.execute(
+    #         text(
+    #             f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
+    #             f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'создание актива',"
+    #             f" '{target.description}',"
+    #             f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
 
 def bind_users(User):
