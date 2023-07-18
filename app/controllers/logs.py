@@ -44,7 +44,7 @@ class LogsController:
         if date_1 != "":
             query = query.filter(LogItem.date_time.contains(date_1))
 
-        logs_from = query.all()
+        logs_from = query.order_by(LogItem.id.desc()).all()
         # END_FILTERS
 
         items_number = 100
