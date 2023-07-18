@@ -51,8 +51,7 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                 <html>
                   <body>
                     <p>Накладная по списанию в приложении</p>
-                    <a href="">Фото утилизации (ссылка)</a>
-                    <a href="">Вся документация по списанию от ____ </a>
+                    <a href="">Документация по списанию \it-wh\it_warehouse_docs</a>
                   </body>
                 </html>
                 """
