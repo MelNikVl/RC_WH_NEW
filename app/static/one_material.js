@@ -4,6 +4,10 @@ $(document).ready(function() {
   let material_id = window.location.href.split("/").pop().split("?")[0];
   let url = window.location.origin + "/materials/delete?id_for_delete=" + material_id;
   $("#delete").on("click", async function() {
+    // Выводим предупреждение
+    if (!confirm("Вы точно хотите удалить этот актив?")) {
+      return; // Отменяем удаление, если пользователь нажал "Отмена"
+    }
     try {
       const response = await $.ajax({
         url: url,
