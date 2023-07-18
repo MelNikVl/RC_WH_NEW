@@ -79,25 +79,29 @@ $(document).ready(function () {
     // здесь в попапе создания товара добавляем шаблоны
     $("#new-popup-select").on("change", function () {
         let comp_template =
-`процессор:
-оперативная память (Gb):
-жестккий диск (Gb):
-ssd (Gb):
-блок питания (Вт)`;
-        let laptop_template = `производитель: 
+`процессор: 
+оперативная память (Gb): 
+жестккий диск (Gb): 
+ssd (Gb): 
+блок питания (Вт) `;
+        let laptop_template = 
+`производитель: 
 модель: 
 процессор: 
-оперативная память (Gb):
-жесткий диск (Gb):
+оперативная память (Gb): 
+жесткий диск (Gb): 
 *дополнительная информация: `;
-        let server_template = `производитель: 
+        let server_template = 
+`производитель: 
 модель: 
 процессор: 
-оперативная память (Gb):
+оперативная память (Gb): 
 RAID: `;
-        let switch_template = `производитель: 
+        let switch_template = 
+`производитель: 
 модель: `;
-        let camera_template = `производитель: 
+        let camera_template = 
+`производитель: 
 модель: `;
         let other_template = ``;
 
@@ -130,7 +134,6 @@ RAID: `;
         $(this).closest(".select-wrapper").find(".select-result").val($(this).find("span").html());
         $(this).closest(".select-wrapper").find(".select-result").trigger("change");
         $(this).parent().fadeOut(300);
-
     });
 
 // событие по клику
