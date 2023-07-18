@@ -62,8 +62,11 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                     <body>
                         <p>Уведомляем Вас о том, что следующий актив был взят в ремонт:</p>
                         <p>id: {materials[0]} &nbsp; Номер: {materials[1]} --- {materials[2]}</p>
-                        <a href="">Уведомлён</a>
-                        <p>Если у вас возникли вопросы - напишите пожалуйста нам на общую почту +RCSPBADMINS</p>
+                        <p>Если согласны с действием перемещения актива на Вас, 
+                        нажмите пожалуйста кнопку ниже. Если нет - напишите пожалуйста нам на 
+                        общую почту: +RCSPBADMINS</p>
+                        <a href="{host}/app/notification_answer?unique_code={unique}&material_id={materials[0]}">Уведомлен</a>
+                        <p>Так же если у вас возникли вопросы, можете их задать по адресу: +RCSPBADMINS</p>
                     </body>
                 </html>                        
                 """
