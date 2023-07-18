@@ -76,9 +76,9 @@ $(document).ready(function () {
         $(this).parent().find(".select").fadeToggle(300);
     });
 
-    // здесь в попапе создания товара добавляем шаблоны
+    // шаблоны типов техники при создании товара
     $("#new-popup-select").on("change", function () {
-        let comp_template =
+        let comp_template = 
 `процессор: 
 оперативная память (Gb): 
 жестккий диск (Gb): 

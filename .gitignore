@@ -8,3 +8,7 @@ app/invoices/*.docx
 app/it_warehouse_docs
 app/\\\\fs-mo\\ADMINS\\Photo_warehouse\\archive_after_utilization/
 app/\\\\fs-mo\\ADMINS\\Photo_warehouse\\photos/
+app/templates/test.html
+app/controllers/log.log
+app/trash/get_excel.py
+app/trash/llll.xlsx
