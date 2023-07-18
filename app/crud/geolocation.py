@@ -3,7 +3,7 @@ import sys
 import datetime
 from typing import List, Dict
 from sqlalchemy import desc, distinct, func
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from pydantic import parse_obj_as
 from models.models import Material, GeoLocation, Repair, Trash
 from app.payload.response import GeoLocationUploadResponse
@@ -148,11 +148,11 @@ class GeoLocationCRUD:
         return list_active_repairs
 
     @staticmethod
-    async def upload_file_to_repair(material_id_to_repair, file):
+    async def upload_file_to_repair(material_id_to_repair, file: UploadFile):
         destination_folder = os.path.join(f"{main_folder}\\photos", str(material_id_to_repair))
         destination_folder1 = os.path.join(destination_folder, "Repairs")
         os.makedirs(destination_folder1, exist_ok=True)
-        destination_path = os.path.join(destination_folder1, str(datetime.datetime.now()))
+        destination_path = os.path.join(destination_folder1, str(datetime.datetime.now().strftime("%Y-%m-%d---%H-%M-%S"))+os.path.splitext(file.filename)[1])
 
         # Загружаем файл
         with open(destination_path, "wb") as buffer:

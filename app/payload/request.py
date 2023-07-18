@@ -1,16 +1,14 @@
-from typing import Dict, List, Optional
-
-from pydantic import BaseModel, Field
+from typing import List, Optional
+from fastapi import Form
+from pydantic import BaseModel
 
 
 class MaterialCreateRequest(BaseModel):
     id: int
-    # user_id: int
     category: str
     title: str
     description: str
     place: Optional[str]
-    # client_mail: Optional[str]
 
 
 # класс для формирования файла загрузки списка товаров на утиль
@@ -56,9 +54,9 @@ class UserAuth(BaseModel):
 
 
 class RepairCreateRequest(BaseModel):
-    material_id: int
-    problem: str
-    customer: str
+    material_id: int = Form()
+    problem: str = Form()
+    customer: str = Form()
 
 
 class RepairStopRequest(BaseModel):

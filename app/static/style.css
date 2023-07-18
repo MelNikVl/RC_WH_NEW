@@ -569,7 +569,7 @@ tbody input[type='checkbox'] {
 }
 
 .inactive {
-    opacity: 0.65;
+    opacity: 0.40;
     background: #ffe9e9;
 }
 
@@ -795,7 +795,7 @@ details:not([open])>*:not(summary) {
     transition: background-color 0.3s ease;
 }
 
-.remont {background-color: #ffee8a66;}
+.remont {background-color: #ffee8a2b;}
 
 .menu_arc:hover {
     background-color: #cfd8ff;

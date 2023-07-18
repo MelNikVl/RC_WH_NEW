@@ -9,7 +9,7 @@ $(document).ready(function () {
         $("#repair-details-popup").fadeIn(300);
     });
     $("#submit-short-repair").on("click", function(){
-        let id = $("tbody > tr.selected td").eq(1).text();
+        let id = parseInt($("tbody > tr.selected td").eq(1).text());
         let problem = $("#fast-repair-popup textarea").val();
         let customer = $("#fast-repair-popup input").eq(0).val();
         if (customer && problem){
@@ -18,7 +18,8 @@ $(document).ready(function () {
                 "problem": problem,
                 "customer": customer
             };
-            short_repair(data);
+            let file = $("#short-repair-file")[0].files[0] || null;
+            short_repair(data, file);
         }
         else{
             alert("Заполните все поля!");
@@ -141,15 +142,19 @@ async function move_from_repair(data){
         console.error(error);
     }
 }
-async function short_repair(data){
+async function short_repair(data, file = null){
     try {
-        const response = await fetch(host+"/geolocation/short_repair", {
+        const url = new URL(host+"/geolocation/short_repair");
+        url.search = new URLSearchParams(data);
+        let form = new FormData();
+        if (file)
+            form.append('file', file);
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + access_token
             },
-            body: JSON.stringify(data)
+            body: form
         });
         const resp = await response.json();
         if (resp["status"] != true){
