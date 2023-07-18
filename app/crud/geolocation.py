@@ -121,7 +121,6 @@ class GeoLocationCRUD:
 
     @staticmethod
     def list_of_arch_trash(db):
-        # формируем список уникальных айди ремонтов 1 товара - сначала последние
         all_trash_unique_id = db.query(distinct(Trash.trash_unique_id)).order_by(desc(Trash.date_time)).all()
         uniq_id_val = []
         for i in all_trash_unique_id:

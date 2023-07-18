@@ -480,13 +480,11 @@ tbody input[type='checkbox'] {
 .title_one_card {
     font-size: x-large;
     font-weight: bold;
-    /* float: left; */
-    margin: 0 17px;
+    margin: 0 1em 0 0;
     background: #e9e9e9;
     padding: 1em;
     border-radius: 1em;
     flex-grow: 1;
-    flex-basis: 1;
 }
 
 .action-buttons {
@@ -538,9 +536,10 @@ tbody input[type='checkbox'] {
     background: #e9e9e994;
     border-radius: 1em;
     margin: 1em;
-    float: left;
-    /* width: 933px; */
-    width: 65%;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
 .card_of_material_main_1 {
@@ -661,7 +660,7 @@ details:not([open])>*:not(summary) {
 .card_of_material_main_2 {
     margin: 1em 0;
     display: flex;
-    width: 800px;
+    justify-content: flex-end;
 }
 
 .menu_accessories {

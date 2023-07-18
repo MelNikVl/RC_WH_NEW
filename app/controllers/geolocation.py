@@ -147,6 +147,8 @@ class GeoLocationController:
 
         # получаем список товаров на списание
         materials_for_trash = await GeoLocationCRUD.get_materials_for_trash(db=db)
+        # уникальный идентификатор для данного списнаия
+        un_id_trash = MaterialCRUD.generate_alphanum_random_string(20)
 
         # создаем имена для папок
         timestamp = str(
@@ -221,7 +223,7 @@ class GeoLocationController:
                                              repairs=str(jsonable_encoder(repairs)),
                                              date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                              folder_name=timestamp,
-                                             trash_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                                             trash_unique_id=un_id_trash
                                              )
             db.add(create_new_trash_archive)
             db.commit()
