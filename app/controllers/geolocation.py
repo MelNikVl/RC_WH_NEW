@@ -1,9 +1,8 @@
-import datetime, os, shutil, fastapi
-from typing import Dict, List, Optional, Union, Annotated
+import os, shutil, fastapi
+from typing import Dict, List
 from fastapi import Depends, Request, UploadFile, File, Form
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import desc
-from sqlalchemy.orm import Session
 from app.crud.geolocation import GeoLocationCRUD
 from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
