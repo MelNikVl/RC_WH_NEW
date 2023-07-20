@@ -17,6 +17,7 @@ gmail_login = "it.wh@rencons.com"
 gmail_pass = "tznppgeklmillvha"
 
 
+
 class SUBJECT(Enum):
     UTILIZATION = "Списание активов"
     RELOCATION = "Перемещение актива"
