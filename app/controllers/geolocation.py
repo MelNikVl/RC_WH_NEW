@@ -427,8 +427,8 @@ class GeoLocationController:
     async def short_repair(body: RepairCreateRequest = Depends(),
                            db: Session = Depends(get_db),
                            user: User = Depends(AuthUtil.decode_jwt),
-                           file: UploadFile = None
-                           ):
+                           file: UploadFile = None):
+
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
 
             # загружаем файл

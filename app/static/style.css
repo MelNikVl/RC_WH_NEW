@@ -581,16 +581,15 @@ tbody input[type='checkbox'] {
 }
 
 .date_one_card {
-    width: 35%;
-    float: left;
     font-size: unset;
+    font-weight: bold;
 }
 
 .desc_one_card {
-    width: 65%;
+    /* width: 65%; */
     float: left;
     font-size: unset;
-    margin: 1em;
+    margin: 0 0 1em 0;
 }
 
 .top-panel {
@@ -790,7 +789,6 @@ details:not([open])>*:not(summary) {
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
-    /* text-transform: uppercase; */
     transition: background-color 0.3s ease;
 }
 
