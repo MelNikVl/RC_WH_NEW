@@ -501,6 +501,10 @@ tbody input[type='checkbox'] {
 .geo_material_one_dial {
     border-radius: 1em;
     padding: 1em;
+    display: flex;
+    flex-direction: column;
+    background: #c2d9dd6e;
+    margin: 1em 0 0 0;
 }
 
 .repair_stile {
@@ -590,6 +594,7 @@ tbody input[type='checkbox'] {
     float: left;
     font-size: unset;
     margin: 0 0 1em 0;
+    display: block;
 }
 
 .top-panel {
@@ -793,6 +798,8 @@ details:not([open])>*:not(summary) {
 }
 
 .remont {background-color: #ffee8a2b;}
+
+.rep_status {font-weight: bold;margin: 0 0 10px; /* Настройте размер изображения фона по вашему выбору */ /* Задаем фон только для текста */color: #155287;font-family: system-ui;}
 
 .menu_arc:hover {
     background-color: #cfd8ff;

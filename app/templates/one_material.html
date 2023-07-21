@@ -99,18 +99,26 @@
          {% for item in data.repairs %}
             <div class="geo_material_one">
                 <details>
-                    <summary>Ремонт от {{ item[0].date_time }} --- статус: {{ item[0].repair_status }}</summary>
+                    <summary>Ремонт от {{ item[0].date_time }}</summary>
                     {% for item in item %}
                         <div class="geo_material_one_dial">
-                            <div class="date_one_card">Дата: {{ item.date_time }},</div>
+                            <div class="rep_status">
+                                {% if item.repair_status == True %}
+                                    <div>В РЕМОНТЕ</div>
+                                {% endif %}
+                                {% if item.repair_status == False %}
+                                    <div>ВЫВЕДЕН ИЗ РЕМОНТА</div>
+                                {% endif %}
+                            </div>
+                            <div class="date_one_card">Дата: {{ item.date_time }}</div>
                             <div class="desc_one_card">
                             <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
                             <div>Кто сдал: {{ item.user_whose_technique }},</div>
                             <div>Проблема / решение: {{ item.problem_description }},</div>
+                        </div>
                             </div>
-                            <div class="clear"></div>
+                        <div class="clear"></div>
                     {% endfor %}
-<!--                        <div class="clear">-&#45;&#45;&#45;&#45;</div>-->
                 </details>
             </div>
         {% endfor %}
