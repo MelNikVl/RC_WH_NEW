@@ -40,7 +40,7 @@ async function add_to_repair(data, file = null){
         if (resp["status"] != true){
             alert("Произошла ошибка! Актив не в ремонте");
         };
-        // window.location.reload();
+        window.location.reload();
     } catch (error) {
         console.error(error);
     }
