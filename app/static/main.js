@@ -100,7 +100,8 @@ $(document).ready(function () {
                 "details": details
             };
             $("#submit-repair-details").prop("disabled", true);
-            add_to_repair(data);
+            let file = $("#repair-details-file")[0].files[0];
+            add_to_repair(data,file);
         }
         else{
             alert("Заполните все поля!");

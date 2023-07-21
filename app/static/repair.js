@@ -20,21 +20,27 @@ async function move_to_repair(data){
         console.error(error);
     }
 }
-async function add_to_repair(data){
+async function add_to_repair(data, file = null){
     try {
-        const response = await fetch(host+"/geolocation/add_details_to_repair", {
+        const url = new URL(host+"/geolocation/add_details_to_repair");
+        url.search = new URLSearchParams(data);
+        let form;
+        if (file){
+            form = new FormData();
+            form.append('file', file);
+        }
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + access_token
             },
-            body: JSON.stringify(data)
+            body: form
         });
         const resp = await response.json();
         if (resp["status"] != true){
             alert("Произошла ошибка! Актив не в ремонте");
         };
-        window.location.reload();
+        // window.location.reload();
     } catch (error) {
         console.error(error);
     }

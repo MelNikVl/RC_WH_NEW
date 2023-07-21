@@ -385,14 +385,15 @@ class GeoLocationController:
             return response(data="актив не в ремонте", status=False)
 
     @staticmethod
-    async def add_details_to_repair(body: RepairDetailsRequest,
-                                    # file: Union[UploadFile, None] = None,
+    async def add_details_to_repair(body: RepairDetailsRequest = Depends(),
                                     db: Session = Depends(get_db),
                                     user: User = Depends(AuthUtil.decode_jwt),
+                                    file: UploadFile = None
                                     ):
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == True:
-
+            if file:
+                await GeoLocationCRUD.upload_file_to_repair(body.material_id, file)
             find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
             rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
             un_number_of_repair = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_unique_id
