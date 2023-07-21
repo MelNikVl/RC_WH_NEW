@@ -67,7 +67,9 @@
 <!--        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
 <!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
 <!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
-<!--        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>-->
+        {% if data.current_status != "ремонт"%}
+            <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+        {%endif%}
     </div>
 
     <div class="card_of_material">
@@ -253,7 +255,7 @@
         </div>
     </div>
 
-    <!-- <script src="static/main.js"></script> -->
+    <script src="/static/API.js"></script>
     <script src="/static/repair.js"></script>
 
 </body>

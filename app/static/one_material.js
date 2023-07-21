@@ -101,6 +101,12 @@ $(document).ready(function () {
       await short_repair(data, file);
     }
   });
+  $("#move_to_trash").on("click", async function () {
+    if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы? Это действие будет уже не отменить')) {
+        await move_to_trash(material_id);
+        window.location.reload();
+    }
+});
 
 
   async function upload_photos(mat_id) {
