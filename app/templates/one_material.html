@@ -62,8 +62,8 @@
     <div class="action-buttons_1_card">
         <button id="delete">Удалить</button>
         <button id="relocate">Переместить</button>
-<!--        <button id="add_photo">Добавить файлы</button>-->
-<!--        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>-->
+        <button id="add_photo">Добавить файлы</button>
+        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
 <!--        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
 <!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
 <!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
@@ -217,7 +217,25 @@
             <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
         </div>
     </div>
+    <div style="display: none;" id="add-photo-popup" class="popup-wrapper">
+        <div class="popup">
+            <div class="close-btn">
+                <img src="/static/close.svg" alt="close">
+            </div>
+            <h1>Добавление фото</h1>
+            <form>
+                <label class="input-file">
+                    <input type="file" name="file" accept=".png, .jpg, .jpeg" id="add-photo-btn" multiple="multiple">
+                    <span>Выбрать файл</span>
+                </label>
+            </form>
 
+            <div class="upload-btns">
+                <button id="submit-photo">Добавить файл (файлы)</button>
+            </div>
+            <h5>* можно выбрать несколько фото, для очистки списка фото для загрузки кликнуть ПКМ по кнопке</h5>
+        </div>
+    </div>
     <div style="display: none;" id="fast-repair-popup" class="popup-wrapper">
         <div class="popup">
             <div class="close-btn">
@@ -235,8 +253,8 @@
         </div>
     </div>
 
-    <!-- <script src="static/main.js"></script>
-    <script src="static/repair.js"></script> -->
+    <!-- <script src="static/main.js"></script> -->
+    <script src="/static/repair.js"></script>
 
 </body>
 </html>
