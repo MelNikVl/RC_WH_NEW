@@ -18,7 +18,8 @@ $(document).ready(function () {
                 "problem": problem,
                 "customer": customer
             };
-            let file = $("#short-repair-file")[0].files[0] || null;
+            let file = $("#short-repair-file")[0].files[0];
+            console.log(file);
             short_repair(data, file);
         }
         else{
@@ -146,9 +147,11 @@ async function short_repair(data, file = null){
     try {
         const url = new URL(host+"/geolocation/short_repair");
         url.search = new URLSearchParams(data);
-        let form = new FormData();
-        if (file)
+        let form = null;
+        if (file){
+            form = new FormData();
             form.append('file', file);
+        }
         const response = await fetch(url, {
             method: 'POST',
             headers: {
