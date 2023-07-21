@@ -62,12 +62,12 @@
     <div class="action-buttons_1_card">
         <button id="delete">Удалить</button>
         <button id="relocate">Переместить</button>
-        <button id="add_photo">Добавить файлы</button>
-        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
-        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>
-        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>
-        <button id="end_repair" class="yell_button">Закончить ремонт</button>
-        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+<!--        <button id="add_photo">Добавить файлы</button>-->
+<!--        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>-->
+<!--        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
+<!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
+<!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
+<!--        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>-->
     </div>
 
     <div class="card_of_material">
@@ -99,7 +99,19 @@
          {% for item in data.repairs %}
             <div class="geo_material_one">
                 <details>
-                    <summary>Ремонт от {{ item[0].date_time }}</summary>
+<!--                    <summary>Ремонт от {{ item[0].date_time }}</summary>-->
+                    <summary>поступление {{ item[0].date_time }}, статус:
+                        {% for item in item %}
+                        {% if loop.last %}
+                            {% set last_repair_status = item.repair_status %}
+                                {% if last_repair_status == True %}
+                                    в ремонте
+                                {% endif %}
+                                {% if last_repair_status == False %}
+                                    проблема решена {{item.date_time}}
+                                {% endif %}
+                        {% endif %}
+                        {% endfor %}</summary>
                     {% for item in item %}
                         <div class="geo_material_one_dial">
                             <div class="rep_status">
