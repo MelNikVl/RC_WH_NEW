@@ -80,7 +80,7 @@
         {% for item in data.geo_material %}
             <div class="geo_material_one">
                 <details>
-                    <summary>Перемещение от {{ item.date_time }}</summary>
+                    <summary>{{ item.date_time }} на {{ item.client_mail }}</summary>
                         <div class="desc_one_card">
                             <div>Место: {{ item.place }},</div>
                             <div>Ответственный: {{ item.client_mail }},</div>
@@ -101,7 +101,6 @@
          {% for item in data.repairs %}
             <div class="geo_material_one">
                 <details>
-<!--                    <summary>Ремонт от {{ item[0].date_time }}</summary>-->
                     <summary>поступление {{ item[0].date_time }}, статус:
                         {% for item in item %}
                         {% if loop.last %}
