@@ -49,6 +49,7 @@ router.get("/test_page")(FrontMainController.test_page)
 router.get("/trash_page")(FrontMainController.trash_page)
 router.get("/{material_id}")(FrontMainController.only_one_card)
 
+materials.post("/generate_list")(FrontMainController.generate_list)
 materials.post("/invoice")(FrontMainController.generate_invoice)
 materials.post("/create")(MaterialsController.create)
 materials.post("/get")(MaterialsController.get)

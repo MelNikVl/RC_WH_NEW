@@ -142,3 +142,21 @@ async function del(uri, id) {
         console.error('Ошибка:', error);
     }
 }
+async function generate_list(data) {
+
+    try {
+        const response = await fetch(host +"/materials/generate_list",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + access_token
+            },
+            body: JSON.stringify(data)
+        });
+        const blob = await response.blob();
+        saveAs(blob, "Materials.xlsx");
+        
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+}

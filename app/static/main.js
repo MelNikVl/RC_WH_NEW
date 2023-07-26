@@ -221,6 +221,22 @@ RAID: `;
         $(this).parent().fadeOut(300);
     });
 
+    $("#generate_list").on("click", async ()=>{
+        let data = {"data": []};
+        $("tbody > tr").each(async function (index) {
+            data.data.push([
+                $(this).children("td").eq(1).text(),
+                $(this).children("td").eq(2).text(),
+                $(this).children("td").eq(3).text(),
+                $(this).children("td").eq(4).find("textarea").val(),
+                $(this).children("td").eq(5).text(),
+                $(this).children("td").eq(6).text(),
+                $(this).children("td").eq(7).text()
+            ]);
+        });
+        generate_list(data);
+    })
+
 // событие по клику
     $("tbody > tr").on("dblclick", function () {
         if (!$(this).hasClass("inactive"))
@@ -341,7 +357,7 @@ let apply_filters = function () {
             if (!$(this).children('td').eq(1).text().includes(text0))
                 $(this).hide();
         if (text2)
-            if (!$(this).children('td').eq(3).text().includes(text2))
+            if (!$(this).children('td').eq(2).text().includes(text2))
                 $(this).hide();
         if (text5)
             if (!$(this).children('td').eq(5).text().includes(text5))

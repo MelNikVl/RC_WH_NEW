@@ -40,13 +40,19 @@
                 <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
                 {% endif %}
             </div>
-
+            
             <div class="counts">
                 <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
                 <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
                 <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
                 <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
                 <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
+            </div>
+            <div class="welcome">
+                
+                <button class="button_to_file" id="generate_list">Экспортировать в Excel</button>
+                <div class="podpis" >* если применены фильтры экпортируется только те товары, </div>
+                <div class="podpis" >которые отображены на странице</div>
             </div>
 
         <div class="clear"></div>
@@ -341,6 +347,7 @@ ssd:
             <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
     <script src="/static/API.js"></script>
     <script src="static/main.js"></script>
     <script src="static/repair.js"></script>

@@ -16,6 +16,10 @@ class InvoiceCreateRequest(BaseModel):
     data: List[List[str]]
 
 
+class MaterialsListRequest(BaseModel):
+    data: List[List[str]]
+
+
 class MaterialGetRequest(BaseModel):
     id: int
 

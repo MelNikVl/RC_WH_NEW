@@ -2,6 +2,7 @@ import datetime
 import os
 from typing import Dict
 import fastapi
+import xlsxwriter
 from fastapi import Depends, Request, Response
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
@@ -15,7 +16,7 @@ from app.utils.auth import AuthUtil
 from app.utils.utils import get_first_photo, response
 from db.db import get_db
 from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem
-from app.payload.request import InvoiceCreateRequest
+from app.payload.request import InvoiceCreateRequest, MaterialsListRequest
 from docx import Document
 from fastapi.responses import FileResponse
 
@@ -28,6 +29,34 @@ class FrontMainController:
     @staticmethod
     async def ping(user: user_dependency):
         return Response("ok", media_type="text/plain")
+
+    @staticmethod
+    async def generate_list(materials: MaterialsListRequest) -> FileResponse:
+        out_filename = 'list.xlsx'
+        headers = ["ID", "Category", "Title", "Description", "Creation date", "Place", "Status"]
+        workbook = xlsxwriter.Workbook(out_filename)
+        worksheet = workbook.add_worksheet()
+        cell_format = workbook.add_format({"valign": "top", 'text_wrap': True})
+        for col_num, data in enumerate(headers):
+            worksheet.write(0, col_num, data)
+        counter = 1
+
+        # worksheet.set_default_row(100)
+
+        for item in materials.data:
+            for col_num, data in enumerate([item[0], item[1], item[2], item[3], item[4], item[5], item[6]]):
+                worksheet.write(counter, col_num, data, cell_format)
+                worksheet.set_column(counter, col_num, 30)
+            counter += 1
+
+        workbook.close()
+
+        # with open(out_filename, 'w', newline='') as csvfile:
+        #     out_file = csv.writer(csvfile)
+        #     out_file.writerow(["ID", "Category", "Title", "Description", "Creation date", "Place", "Status"])
+        #     for item in materials.data:
+        #         out_file.writerow([item[0], item[1], item[2], item[3], item[4], item[5], item[6]], )
+        return FileResponse(out_filename)
 
     @staticmethod
     async def generate_invoice(
