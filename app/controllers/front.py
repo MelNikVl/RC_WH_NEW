@@ -248,6 +248,7 @@ class FrontMainController:
         out["actives_in_repair"] = products
         out["count_repair"] = len(products)
         out["role"] = result["role"]
+        out["username"] = result["username"]
 
         return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})
 
@@ -271,6 +272,7 @@ class FrontMainController:
         out["token"] = t
         out["count_for_trash"] = len(materials_for_trash)
         out["role"] = result["role"]
+        out["username"] = result["username"]
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
 
