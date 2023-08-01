@@ -17,45 +17,63 @@
     <!-- https://codepen.io/nobuakihonma/pen/dYbqLQ -->
 </head>
 
-<body>
-    <div class="body_body">
-        <div class="title_1">IT WH tracker (Accessories)</div>
+<div class="body_body">
+        <div class="title_1">IT warehouse tracker</div>
+            <div class="button_exit">
+                <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
+                {% if data.role == True %}
+                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                {% endif %}
+                <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
+                <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
+                <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
+                <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
+                <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
+                <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
+            </div>
+            <div class="clear"></div>
+            <div class="counts">
+                <p class="p_for_count"><b>Всего комплектующих: {{ data.count_accessories }}</b></p>
+            </div>
+            <details>
+                    <summary class="ml-4">последние 5 выдач</summary>
+                        <div class="menu_accessories">
+                            {% for item in data.top_info %}
+                                    <div class="menu_accessories_1">
+                                        <tr>
+                                            <td>{{ item.date_time }} -- </td>
+                                            <td>{{ item.values_of_change }}</td>
+                                        </tr>
+                                        </div>
+                                    {% endfor %}
+                            </div>
+                     </details>
 
-        <div class="button_exit">
-            <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
-            {% if data.role == True %}
-                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
-            {% endif %}
-            <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
-            <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
-            <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
-            <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
-            <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
-            <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
-        </div>
         <div class="clear"></div>
 
-        <details>
-            <summary class="ml-4">показать последние 5 выдач</summary>
-                <div class="menu_accessories">
-
-                    {% for item in data.top_info %}
-                            <div class="menu_accessories_1">
-                                <tr>
-                                    <td>{{ item.date_time }} -- </td>
-                                    <td>{{ item.values_of_change }}</td>
-                                </tr>
-                                </div>
-                            {% endfor %}
-
-                    </div>
-             </details>
-        <div class="clear"></div>
-
-        <div class="button-wrapper">
-            <button id="create">Добавить новые</button>
+    <div class="body_separate">
+            <div class="body_left top-panel">
+                 <div class="welcome">
+                    <p class="hello">{{ data.username }} шеф &#128293;</p>
+                    {% if data.role == True %}
+                    <p class="hello_2"><b>административный</b> доступ</p>
+                    {% endif %}
+                    {% if data.role == False %}
+                    <p class="hello_2"><b>пользовательский</b> доступ</p>
+                    {% endif %}
+                </div>
+            <div class="menu_left">
+                <div class="menu_1">
+                    <button id="create">Добавить новые</button>
             <button id="issue">Отдать</button>
             <button id="add">Добавить к имеющимся</button>
+                     </div>
+
+                </div>
+            </div>
+
+        <div class="button-wrapper">
+
         </div>
         <div class="clear"></div>
 

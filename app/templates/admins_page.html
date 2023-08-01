@@ -34,7 +34,12 @@
                 <p class="p_for_count"><b>Всего пользователей: {{ data.count }}</b></p>
                 <p class="p_for_count">Админов: {{ data.admins_count }}</p>
             </div>
-
+            <button class="button_to_file"  id="logs"
+                    onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
+            <button class="button_to_file"  id="ntf"
+                    onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'>Уведомления</button>
+            <button class="button_to_file"  id="swagger" class="button_admins_page"
+                    onclick="window.location.href = '/docs'">Swagger</button>
         <div class="clear"></div>
 
         <div class="body_separate">
@@ -55,9 +60,7 @@
                     <button id="make_admin" class="button_admins_page ">Назначить админом</button>
                      </div>
                     <div class="menu_1">
-                    <button id="logs" onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
-                    <button id="ntf" onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'>Уведомления</button>
-                <button id="swagger" class="button_admins_page" onclick="window.location.href = '/docs'">Swagger</button>
+
                 </div>
                 </div>
             </div>

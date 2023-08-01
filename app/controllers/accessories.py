@@ -48,6 +48,8 @@ class AccessoriesController:
         out["count_accessories"] = len(accessories)
         out["top_info"] = top_info
         out["role"] = result["role"]
+        result = await AuthUtil.decode_jwt(t)
+        out["username"] = result["username"]
 
         return templates.TemplateResponse("accessories_page.html", {"request": request, "data": out})
 
