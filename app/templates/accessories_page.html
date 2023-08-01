@@ -35,6 +35,7 @@
             <div class="counts">
                 <p class="p_for_count"><b>Всего комплектующих: {{ data.count_accessories }}</b></p>
             </div>
+    <div class="counts">
             <details>
                     <summary class="ml-4">последние 5 выдач</summary>
                         <div class="menu_accessories">
@@ -48,6 +49,7 @@
                                     {% endfor %}
                             </div>
                      </details>
+        </div>
 
         <div class="clear"></div>
 
@@ -74,29 +76,24 @@
         <div class="button-wrapper">
         </div>
         <div class="clear"></div>
-
         <div class="body_right">
         <div class="table-wrapper">
             <table class="fl-table" id="table">
-                <!--  заголовок таблицы -->
                 <thead>
                     <tr>
                         <th>Категория</th>
                         <th>Наименование</th>
                         <th>Количество (шт)</th>
-<!--                        <th>Ответственный</th>-->
                         <th>Расположение</th>
                         <th>Дата последнего изменения</th>
                     </tr>
                 </thead>
-                <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
                 <tbody>
                     {% for item in data[0] %}
                     <tr>
                         <td>{{ item.category }}</td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.count }}</td>
-<!--                        <td>{{ item.responsible }}</td>-->
                         <td>{{ item.place }}</td>
                         <td>{{ item.date_time }}</td>
                     </tr>
