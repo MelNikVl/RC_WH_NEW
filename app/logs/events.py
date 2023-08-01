@@ -1,21 +1,26 @@
+import codecs
 import datetime
+import json
 
 from fastapi import Depends
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy import event, text
+from sqlalchemy.orm.attributes import get_history
 
 
 def bind_materials(Material):
     @event.listens_for(Material, 'after_update')
     def after_update(mapper, connection, target):
-        # old_name = get_history(target, 'name').deleted
-        # old_name_bool = get_history(target, 'name').has_changes()
-        # name_1 = get_history(target, 'name').sum()
+        old_name = get_history(target, 'description').deleted
+        old_name_bool = get_history(target, 'description').has_changes()
+        name_1 = get_history(target, 'description').sum()
+        new_val = name_1[1] + " -------- > " + name_1[0]
 
         connection.execute(
             text(
                 f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
                 f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'изменение актива', "
-                f" '{target.description}',"
+                f" '{new_val}',"
                 f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
     @event.listens_for(Material, 'after_delete')
