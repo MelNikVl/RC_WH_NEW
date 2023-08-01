@@ -19,23 +19,51 @@
 </head>
 
 <body>
-<div class="body_body">
-    <div class="title_1">IT warehouse tracker (Repair)</div>
+    <div class="body_body">
+        <div class="title_1">IT warehouse tracker (Repair)</div>
+            <div class="button_exit">
+                <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
+                {% if data.role == True %}
+                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                {% endif %}
+                <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
+                <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
+                <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
+                <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
+                <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
+                <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
+            </div>
+            <div class="clear"></div>
+            <div class="counts">
+                <p class="p_for_count"><b>Всего техники в ремонте: {{ data.count_repair }}</b></p>
+            </div>
+        <div class="clear"></div>
 
-    <div class="button_exit">
-            <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
-            {% if data.role == True %}
-                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
-            {% endif %}
-            <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
-            <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
-            <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
-            <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
-            <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
-            <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
-        </div>
-    <div class="clear"></div>
-    <h3 class="subs">Техники в ремонте: {{ data.count_repair }}</h3>
+        <div class="body_separate">
+            <div class="body_left top-panel">
+                 <div class="welcome">
+                    <p class="hello">{{ data.username }} шеф &#128293;</p>
+                    {% if data.role == True %}
+                    <p class="hello_2"><b>административный</b> доступ</p>
+                    {% endif %}
+                    {% if data.role == False %}
+                    <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
+                    {% endif %}
+                </div>
+            <div class="menu_left">
+                <div class="menu_1">
+                <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
+                <button id="send_to_repair" class="yell_button">Взять в ремонт</button>
+                <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>
+                <button id="end_repair" class="yell_button">Закончить ремонт</button>
+                    </div>
+                <div class="menu_1">
+                <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+
+                    </div>
+                </div>
+            </div>
+
     <table class="fl-table" id="table">
             <thead>
                 <tr>

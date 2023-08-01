@@ -830,3 +830,5 @@ details:not([open])>*:not(summary) {
 .podpis {
     margin: 1em;
 }
+
+.word_button {margin: 1em;background: #62a9e769;padding: 1em;}
