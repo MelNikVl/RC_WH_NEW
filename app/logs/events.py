@@ -14,14 +14,21 @@ def bind_materials(Material):
         old_name = get_history(target, 'description').deleted
         old_name_bool = get_history(target, 'description').has_changes()
         name_1 = get_history(target, 'description').sum()
-        new_val = name_1[1] + " -------- > " + name_1[0]
-
-        connection.execute(
-            text(
-                f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
-                f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'изменение актива', "
-                f" '{new_val}',"
-                f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
+        if len(name_1) == 1:
+            connection.execute(
+                text(
+                    f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
+                    f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'изменение актива', "
+                    f" '{target.description}',"
+                    f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
+        else:
+            new_val = name_1[1] + " -------- > " + name_1[0]
+            connection.execute(
+                text(
+                    f"INSERT INTO log (kind_table, user_id, passive_id, modified_cols, values_of_change, date_time) "
+                    f"VALUES ('Активы', '{target.user_id}', '{target.id}', 'изменение актива', "
+                    f" '{new_val}',"
+                    f"'{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}');"))
 
     @event.listens_for(Material, 'after_delete')
     def after_delete(mapper, connection, target):

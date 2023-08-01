@@ -23,7 +23,7 @@ body {
     z-index: 1;
     background: #fff;
     display: inline-block;
-    margin: 1em;
+    /* margin: 1em; */
 }
 
 .input-wrapper {
@@ -94,6 +94,7 @@ th:nth-child(even) {
 button:hover:enabled {
     background: #9fb5f7;
     cursor: pointer;
+    /* width: 100px; */
 }
 
 button:disabled {
@@ -104,10 +105,11 @@ button {
     -webkit-appearance: none;
     transition: 0.2s;
     border: none;
-    padding: 10px 20px;
+    font-weight: bold;
+    padding: 5px 10px;
     background: #a7d2e7;
     font-size: 16px;
-    border-radius: 1em;
+    border-radius: 10px;
     margin-bottom: 6px;
 }
 
@@ -373,7 +375,7 @@ tbody input[type='checkbox'] {
 
 .hello {
     margin: 1em 20px;
-    font-size: x-large;
+    /* font-size: x-large; */
 }
 
 .hello_2 {
@@ -416,8 +418,8 @@ tbody input[type='checkbox'] {
     float: left;
     background: whitesmoke;
     border-radius: 1em;
-    padding: 0 0 1.7em 0;
-    height: 200px;
+    /* padding: 0 0 1.7em 0; */
+    /* height: 200px; */
 }
 
 .counts {
@@ -427,7 +429,8 @@ tbody input[type='checkbox'] {
     border-radius: 1em;
     float: left;
     padding: 1em;
-    height: 200px;
+    display: flex;
+    /* height: 200px; */
 }
 
 .p_for_count {
@@ -622,7 +625,7 @@ tbody input[type='checkbox'] {
 }
 
 .body_body {
-    width: 1500px;
+    width: 1560px;
     margin: 0 0 0 1em;
     border-radius: 1em;
     box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
@@ -805,6 +808,12 @@ details:not([open])>*:not(summary) {
     background-color: #cfd8ff;
 }
 
+.body_left {display: flex;flex-direction: column;width: 300px;background: #f7f7f7;border-right: 2px solid #bdbdbd;}
+
+.body_separate {/* background-color: #cfd8ff; */display: flex;border-top: 2px solid lightgrey;}
+
+.body_right {/* background-color: #cfd8ff; */display: flex;}
+
 .input-wrapper input[type="image"] {
     display: inline-block;
     position: relative;
@@ -814,16 +823,14 @@ details:not([open])>*:not(summary) {
 }
 
 .button_to_file {
-    /* display: inline-block; */
-    /* position: relative; */
     margin: 1em;
     background: #70c38d73;
     padding: 10px;
     border-radius: 11px;
 }
+.menu_1 {margin: 1em;display: flex;flex-direction: column;width: 250px;}
+.menu_left {margin: 1em;display: flex;flex-direction: column;}
 
 .podpis {
     margin: 1em;
-    /* background: #70c38d73; */
-    /* padding: 10px; */
 }
