@@ -428,7 +428,7 @@ tbody input[type='checkbox'] {
     background: whitesmoke;
     border-radius: 1em;
     float: left;
-    padding: 1em;
+    /* padding: 1em; */
     display: flex;
     /* height: 200px; */
 }
