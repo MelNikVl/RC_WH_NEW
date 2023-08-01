@@ -108,7 +108,9 @@ class FrontMainController:
         return FileResponse(out_name)
 
     @staticmethod
-    async def index(db: Session = Depends(get_db), request: Request = None, t: str = None):
+    async def index(db: Session = Depends(get_db),
+                    request: Request = None,
+                    t: str = None):
 
         out: Dict = {}
         materials = await MaterialCRUD.list_of_materials(db=db)
@@ -163,6 +165,11 @@ class FrontMainController:
             out: Dict = {}
             out["token"] = t
             out["users"] = jsonable_encoder(db.query(User).all())
+            out["count"] = db.query(User).count()
+            out["admins_count"] = db.query(User).filter(User.is_admin == True).count()
+            result = await AuthUtil.decode_jwt(t)
+            out["username"] = result["username"]
+            out["role"] = result["role"]
             return templates.TemplateResponse("admins_page.html", {"request": request, "data": out})
         else:
             return fastapi.responses.RedirectResponse('/app', status_code=status.HTTP_301_MOVED_PERMANENTLY)

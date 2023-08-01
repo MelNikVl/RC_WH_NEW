@@ -16,28 +16,54 @@
 
 <body>
     <div class="body_body">
-        <div class="title_1">IT WH tracker (ADMIN page)</div>
+        <div class="title_1">IT warehouse tracker</div>
+            <div class="button_exit">
+                <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
+                {% if data.role == True %}
+                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                {% endif %}
+                <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
+                <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
+                <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
+                <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
+                <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
+                <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
+            </div>
+            <div class="clear"></div>
+            <div class="counts">
+                <p class="p_for_count"><b>Всего пользователей: {{ data.count }}</b></p>
+                <p class="p_for_count">Админов: {{ data.admins_count }}</p>
+            </div>
 
-        <div class="button_exit">
-            <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
-            {% if data.role == True %}
-                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
-            {% endif %}
-            <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
-            <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
-            <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
-            <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
-            <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
-            <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
-        </div>
         <div class="clear"></div>
 
-        <div class="cols">
-            <div class="admins_table">
-                <button id="create_new_user" class="button_admins_page ">Создать пользователя</button>
-                <button id="delete_user" class="button_admins_page ">Удалить пользователя</button>
-                <button id="make_admin" class="button_admins_page ">Назначить админом</button>
-                <table class="users_table_for_admins" id="table">
+        <div class="body_separate">
+            <div class="body_left top-panel">
+                 <div class="welcome">
+                    <p class="hello">{{ data.username }} шеф &#128293;</p>
+                    {% if data.role == True %}
+                    <p class="hello_2"><b>административный</b> доступ</p>
+                    {% endif %}
+                    {% if data.role == False %}
+                    <p class="hello_2"><b>пользовательский</b> доступ</p>
+                    {% endif %}
+                </div>
+            <div class="menu_left">
+                <div class="menu_1">
+                    <button id="create_new_user" class="button_admins_page ">Создать пользователя</button>
+                    <button id="delete_user" class="button_admins_page ">Удалить пользователя</button>
+                    <button id="make_admin" class="button_admins_page ">Назначить админом</button>
+                     </div>
+                    <div class="menu_1">
+                    <button id="logs" onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
+                    <button id="ntf" onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'>Уведомления</button>
+                <button id="swagger" class="button_admins_page" onclick="window.location.href = '/docs'">Swagger</button>
+                </div>
+                </div>
+            </div>
+
+        <div class="body_right">
+                <table id="table">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="select-all"></th>
@@ -62,13 +88,9 @@
                 </table>
             </div>
             <div class="admins_table">
-                <button id="logs" onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'
-                    class="button_admins_page">LOGS</button>
-                <button id="ntf" onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'
-                    class="button_admins_page">Уведомления</button>
-                <button id="swagger" class="button_admins_page" onclick="window.location.href = '/docs'">Swagger</button>
+
             </div>
-        </div>
+
     </div>
     <div style="display: none;" id="new-user-popup" class="popup-wrapper">
         <div class="popup">
