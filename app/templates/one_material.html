@@ -59,18 +59,20 @@
 
     <div class="clear"></div>
 
-    <div class="action-buttons_1_card">
-        <button id="delete">Удалить</button>
-        <button id="relocate">Переместить</button>
-        <button id="add_photo">Добавить файлы</button>
-        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
-<!--        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
-<!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
-<!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
-        {% if data.current_status != "ремонт"%}
-            <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
-        {%endif%}
-    </div>
+    {% if data.current_status != "списание"%}
+        <div class="action-buttons_1_card">
+            <button id="delete">Удалить</button>
+            <button id="relocate">Переместить</button>
+            <button id="add_photo">Добавить файлы</button>
+            <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
+    <!--        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
+    <!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
+    <!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
+            {% if data.current_status != "ремонт"%}
+                <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+            {%endif%}
+        </div>
+    {%endif%}
 
     <div class="card_of_material">
 
