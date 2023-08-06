@@ -14,3 +14,4 @@ host = "http://192.168.1.104:50131"
 
 utilization_ntf_users = ["shumerrr@yandex.ru", "sergey.zagustin@rencons.com", "nikolai.melnik@rencons.com"]
 repair_ntf_users = "shumerrr@yandex.ru, sergey.zagustin@rencons.com"
+
