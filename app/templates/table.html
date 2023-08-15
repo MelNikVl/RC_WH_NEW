@@ -16,7 +16,8 @@
 
 <body>
     <div class="body_body">
-        <div class="title_1">IT warehouse tracker</div>
+        <div class="top-part">
+            <div class="title_1">IT warehouse tracker</div>
             <div class="button_exit">
                 <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
                 {% if data.role == True %}
@@ -40,9 +41,10 @@
         <button class="button_to_file" id="generate_list">Экспортировать в Excel</button>
 
         <div class="clear"></div>
+        </div>
 
 
-        <div class="body_separate">
+        <div class="body_separate scrollable_table">
             <div class="body_left top-panel">
                  <div class="welcome">
                     <p class="hello">{{ data.username }} шеф &#128293;</p>
@@ -75,7 +77,7 @@
 
             <div class="body_right">
                 <div class="table-wrapper">
-                <div class="top-panel scrollable_table">
+                <div class="top-panel">
                     <div class="button-wrapper fixed_buttons">
                     <!--  фильтры -->
                     <div class="input-wrapper">
@@ -111,7 +113,7 @@
                 </div>
 
                 <div class="clear"></div>
-                <table class="fl-table fixed_table" id="table">
+                <table class="fl-table" id="table">
                     <thead class="fixed_thead">
                         <tr>
                             <th><input type="checkbox" id="select-all"></th>

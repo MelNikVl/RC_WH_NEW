@@ -20,11 +20,12 @@
 
 <body>
     <div class="body_body">
-        <div class="title_1">IT warehouse tracker (Repair)</div>
+        <div class="top-part">
+            <div class="title_1">IT warehouse tracker (Repair)</div>
             <div class="button_exit">
                 <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
                 {% if data.role == True %}
-                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
                 {% endif %}
                 <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
                 <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
@@ -37,11 +38,11 @@
             <div class="counts">
                 <p class="p_for_count"><b>Всего техники в ремонте: {{ data.count_repair }}</b></p>
             </div>
-        <div class="clear"></div>
-
-        <div class="body_separate">
+            <div class="clear"></div>
+        </div>
+        <div class="body_separate scrollable_table">
             <div class="body_left top-panel">
-                 <div class="welcome">
+                <div class="welcome">
                     <p class="hello">{{ data.username }} шеф &#128293;</p>
                     {% if data.role == True %}
                     <p class="hello_2"><b>административный</b> доступ</p>
@@ -50,46 +51,44 @@
                     <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
                     {% endif %}
                 </div>
-            <div class="menu_left">
-                <div class="menu_1">
-                <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>
-                <button id="end_repair" class="yell_button">Закончить ремонт</button>
+                <div class="menu_left">
+                    <div class="menu_1">
+                        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>
+                        <button id="end_repair" class="yell_button">Закончить ремонт</button>
                     </div>
-                <div class="menu_1">
-                <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+                    <div class="menu_1">
+                        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
 
                     </div>
                 </div>
             </div>
 
-    <table class="fl-table" id="table">
-            <thead>
-                <tr>
-<!--                    <th><input type="checkbox" id="select-all"></th>-->
-                    <th>ID актива</th>
-                    <th>Ответственный</th>
-                    <th>Проблема - решение</th>
-                    <th>Чья техника</th>
-                    <th>Дата изменений</th>
-                    <th>Инфо</th>
-                </tr>
-            <tbody>
-                {% for item in data.actives_in_repair %}
-                <tr>
-<!--                    <td><input type="checkbox"></td>-->
-                    <td>{{ item.material_id }}</td>
-                    <td>{{ item.responsible_it_dept_user }}</td>
-                    <td>{{ item.problem_description }}</td>
-                    <td>{{ item.user_whose_technique }}</td>
-                    <td>{{ item.date_time }}</td>
-                    <td><a href="/app/{{ item.material_id }}?t={{ data.token }}">карточка актива</a></td>
-                </tr>
-                {% endfor %}
-            <tbody>
-
-            <tbody>
-        </table>
-</div>
+            <table class="fl-table" id="table">
+                <thead>
+                    <tr>
+                        <!--                    <th><input type="checkbox" id="select-all"></th>-->
+                        <th>ID актива</th>
+                        <th>Ответственный</th>
+                        <th>Проблема - решение</th>
+                        <th>Чья техника</th>
+                        <th>Дата изменений</th>
+                        <th>Инфо</th>
+                    </tr>
+                <tbody>
+                    {% for item in data.actives_in_repair %}
+                    <tr>
+                        <!--                    <td><input type="checkbox"></td>-->
+                        <td>{{ item.material_id }}</td>
+                        <td>{{ item.responsible_it_dept_user }}</td>
+                        <td>{{ item.problem_description }}</td>
+                        <td>{{ item.user_whose_technique }}</td>
+                        <td>{{ item.date_time }}</td>
+                        <td><a href="/app/{{ item.material_id }}?t={{ data.token }}">карточка актива</a></td>
+                    </tr>
+                    {% endfor %}
+                </thead>
+            </table>
+        </div>
 </body>
 
 </html>
