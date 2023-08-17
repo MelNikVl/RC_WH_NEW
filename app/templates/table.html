@@ -31,14 +31,25 @@
                 <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
             </div>
             <div class="clear"></div>
-            <div class="counts">
-                <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
-                <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
-                <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
-                <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
-                <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
+            <div class="top_pan_2">
+                <div class="welcome">
+                        <p class="hello">{{ data.username }} шеф &#128293;
+                        {% if data.role == True %}
+                        --- Администратор</p>
+                        {% endif %}
+                        {% if data.role == False %}
+                        --- Пользователь</p>
+                        {% endif %}
+                    </div>
+                <div class="counts">
+                    <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
+                    <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
+                    <p class="p_for_count">Списание: {{ data.count_warehouse.trash_count }}</p>
+                    <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
+                    <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
+                </div>
+                <button class="button_to_file" id="generate_list">Экспортировать в Excel</button>
             </div>
-        <button class="button_to_file" id="generate_list">Экспортировать в Excel</button>
 
         <div class="clear"></div>
         </div>
@@ -46,15 +57,7 @@
 
         <div class="body_separate scrollable_table">
             <div class="body_left top-panel">
-                 <div class="welcome">
-                    <p class="hello">{{ data.username }} шеф &#128293;</p>
-                    {% if data.role == True %}
-                    <p class="hello_2"><b>административный</b> доступ</p>
-                    {% endif %}
-                    {% if data.role == False %}
-                    <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
-                    {% endif %}
-                </div>
+
             <div class="menu_left">
                 <div class="menu_1">
                 <button id="new">Завести актив</button>
