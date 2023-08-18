@@ -835,10 +835,12 @@ details:not([open])>*:not(summary) {
     position: sticky;
     top: 66px;
 }
+
 .fixed_buttons{
     position: sticky;
     top: 0px;
 }
+
 .scrollable_table{
     overflow-y: scroll;
     width: 100%;
