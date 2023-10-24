@@ -18,6 +18,13 @@ body {
     justify-content: flex-start;
 }
 
+.c_title {
+    margin-right: 1em;
+    background: #ac8686;
+}
+
+.card_of_material_main_1c {background: #e5e5e5;padding: 1em;}
+
 .table-wrapper {
     opacity: 1;
     position: sticky;

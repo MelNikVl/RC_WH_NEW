@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class MaterialCreateRequest(BaseModel):
-    id: int
+    id: str
     category: str
     title: str
     description: str

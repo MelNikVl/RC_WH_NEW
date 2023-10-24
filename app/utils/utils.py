@@ -17,8 +17,8 @@ def response(data: Any, status: bool = True):
 
 
 
-def get_first_photo(material_id):
-    fold = main_folder + f"\\photos\\{material_id}"
+def get_first_photo(material_id: str):
+    fold = main_folder + "\\photos\\"+material_id
     file_list = os.listdir(fold)
 
     out: Dict = {}

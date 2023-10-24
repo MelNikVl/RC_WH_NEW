@@ -48,6 +48,7 @@
             <p class="desc_09">Категория:  {{ data.one_material.category }}</p>
             <p class="desc_09">Описание:  {{ data.one_material.description }}</p>
         </div>
+
     <div class="card_of_material_main_1">
             <p class="desc_09">Кто завел:  {{ data.one_material.user_id }}</p>
             <p class="desc_09">Дата ввода в эксплуатацию:  {{ data.date_time_f }}</p>
@@ -57,7 +58,17 @@
         <div class="clear"></div>
     </div>
 
+
     <div class="clear"></div>
+
+    <div class="card_of_material_main_1c">
+        <p class="1c_title">Данные из 1с</p>
+        <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
+        <p>Full name: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
+        <p>NameRU: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
+<!--        <p>NameEN: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>-->
+        <p>Organization: {{ data.infa_1c["EquipmentData"]["Organization"] }}</p>
+        </div>
 
     {% if data.current_status != "списание"%}
         <div class="action-buttons_1_card">

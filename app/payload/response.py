@@ -8,7 +8,7 @@ from pydantic import BaseModel, validator
 
 # отображение данных для карточек
 class MaterialUploadResponse(BaseModel):
-    id: int
+    id: str
     user_id: Optional[str]
     category: str
     title: str
@@ -30,7 +30,7 @@ class MaterialUploadResponse(BaseModel):
 # отображение данных для перемещений
 class GeoLocationUploadResponse(BaseModel):
     id: int
-    material_id: int
+    material_id: str
     place: Optional[str]
     client_mail: str
     status: Optional[str]
@@ -45,7 +45,7 @@ class LogsUploadResponse(BaseModel):
     id: int
     kind_table: str
     user_id: int
-    passive_id: int
+    passive_id: str
     modified_cols: str
     values_of_change: str
     date_time: datetime.date

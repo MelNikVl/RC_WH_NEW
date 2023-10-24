@@ -21,7 +21,7 @@ class User(Base):
 class Material(Base):
     __tablename__ = "material"
 
-    id: int = Column(Integer, primary_key=True, index=True)
+    id: str = Column(String, primary_key=True, index=True)
     user_id: int = Column(Integer, ForeignKey('user.id'))
     category: str = Column(String)
     title: str = Column(String)
@@ -50,7 +50,7 @@ class GeoLocation(Base):
     __tablename__ = "geolocation"
 
     id: int = Column(Integer, primary_key=True, index=True)
-    material_id: int = Column(Integer, ForeignKey('material.id'))
+    material_id: str = Column(String, ForeignKey('material.id'))
     place: str = Column(String)
     client_mail: str = Column(String)
     status: str = Column(String)
@@ -74,7 +74,7 @@ class Repair(Base):
     __tablename__ = "repair"
 
     id: int = Column(Integer, primary_key=True, index=True)
-    material_id: int = Column(Integer)
+    material_id: str = Column(String)
     responsible_it_dept_user: str = Column(String)
     problem_description: str = Column(String)
     user_whose_technique: str = Column(String)

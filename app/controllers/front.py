@@ -214,6 +214,7 @@ class FrontMainController:
         date_time = material_card['date_time']
         datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
         formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
+        from app.utils.soap import get_material
 
         out: Dict = {}
         out["token"] = t
@@ -228,6 +229,7 @@ class FrontMainController:
         out["len_of_files"] = get_first_photo(material_id)["len_of_files"]
         out["material_id"] = str(material_id)
         out["role"] = result["role"]
+        out["infa_1c"] = get_material(material_id)
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 
