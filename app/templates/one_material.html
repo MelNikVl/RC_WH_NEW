@@ -62,12 +62,14 @@
     <div class="clear"></div>
 
     <div class="card_of_material_main_1c">
-        <p class="1c_title">Данные из 1с</p>
+        <p class="c_title">Данные из 1с</p>
         <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
-        <p>Full name: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
-        <p>NameRU: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
-<!--        <p>NameEN: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>-->
+        <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
+        <p>Name 2: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
+        <p>Цена на момент ввода: {{ data.infa_1c["EquipmentData"]["InitialCost"] }}</p>
+        <p>Перемещения: {{ data.infa_1c["EquipmentData"]["MovementHistory"] }}</p>
         <p>Organization: {{ data.infa_1c["EquipmentData"]["Organization"] }}</p>
+
         </div>
 
     {% if data.current_status != "списание"%}

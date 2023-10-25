@@ -20,7 +20,9 @@ body {
 
 .c_title {
     margin-right: 1em;
-    background: #ac8686;
+    background: #e5b8b8;
+    font-size: xx-large;
+    text-transform: uppercase;
 }
 
 .card_of_material_main_1c {background: #e5e5e5;padding: 1em;}
