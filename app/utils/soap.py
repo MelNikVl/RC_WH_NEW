@@ -21,9 +21,9 @@ def get_material(id: str):
         url,
         transport=transport)
 
-
+    # print(client.service.GetEquipment())
     response = client.service.GetEquipmentInfo(EquipmentID=id)
     from zeep import helpers
     _json = helpers.serialize_object(response, dict)
-    print(_json)
+    # print(_json)
     return _json

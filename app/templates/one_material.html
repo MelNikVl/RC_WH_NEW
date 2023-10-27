@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<div class="body_body">
+<div class="body_body" style="height: auto;margin-bottom: 50px;">
 
     <div class="title_1">IT warehouse tracker (Asset card)</div>
     <div class="button_exit">
@@ -67,7 +67,18 @@
         <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
         <p>Name 2: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
         <p>Цена на момент ввода: {{ data.infa_1c["EquipmentData"]["InitialCost"] }}</p>
-        <p>Перемещения: {{ data.infa_1c["EquipmentData"]["MovementHistory"] }}</p>
+        <p>Перемещения:</p>
+        {% for item in data.infa_1c["EquipmentData"]["MovementHistory"] %}
+            <div class="movement">
+                <p>Дата: {{ item.Period }}</p>
+                <p>Место: {{ item.Dept }}</p>
+                <p>Ответсвенный: {{ item.Person }}</p>
+                <p>Document: {{ item.Document }}</p>
+                
+            </div>
+        {% endfor %}
+        
+
         <p>Organization: {{ data.infa_1c["EquipmentData"]["Organization"] }}</p>
 
         </div>
