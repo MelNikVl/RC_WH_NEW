@@ -151,8 +151,8 @@
                             <td>{{ item["geolocation_place"] }}</td>
                             <td>{{ item["geolocation_status"] }}</td>
                             <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
-                            <td>статус 1с</td>
-                            <td>статус от пользователя</td>
+                            <td><img src="../static/check.png" width="20px"/></td>
+                            <td><img src="../static/tick.png" width="20px"/></td>
                         </tr>
                         {% endfor %}
                     </tbody>

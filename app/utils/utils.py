@@ -16,9 +16,8 @@ def response(data: Any, status: bool = True):
     return {"data": data, "status": status}
 
 
-
 def get_first_photo(material_id: str):
-    fold = main_folder + "\\photos\\"+material_id
+    fold = main_folder + "\\photos\\" + material_id
     file_list = os.listdir(fold)
 
     out: Dict = {}
