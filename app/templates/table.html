@@ -128,6 +128,8 @@
                             <th>Расположение</th>
                             <th>Cтатус</th>
                             <th>Инфо</th>
+                            <th>1с</th>
+                            <th>User</th>
                         </tr>
                     </thead>
                     <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
@@ -149,6 +151,8 @@
                             <td>{{ item["geolocation_place"] }}</td>
                             <td>{{ item["geolocation_status"] }}</td>
                             <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
+                            <td>статус 1с</td>
+                            <td>статус от пользователя</td>
                         </tr>
                         {% endfor %}
                     </tbody>

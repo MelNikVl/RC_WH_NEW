@@ -61,27 +61,7 @@
 
     <div class="clear"></div>
 
-    <div class="card_of_material_main_1c">
-        <p class="c_title">Данные из 1с</p>
-        <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
-        <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
-        <p>Name 2: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
-        <p>Цена на момент ввода: {{ data.infa_1c["EquipmentData"]["InitialCost"] }}</p>
-        <p>Перемещения:</p>
-        {% for item in data.infa_1c["EquipmentData"]["MovementHistory"] %}
-            <div class="movement">
-                <p>Дата: {{ item.Period }}</p>
-                <p>Место: {{ item.Dept }}</p>
-                <p>Ответсвенный: {{ item.Person }}</p>
-                <p>Document: {{ item.Document }}</p>
-                
-            </div>
-        {% endfor %}
-        
-
-        <p>Organization: {{ data.infa_1c["EquipmentData"]["Organization"] }}</p>
-
-        </div>
+    
 
     {% if data.current_status != "списание"%}
         <div class="action-buttons_1_card">
@@ -97,6 +77,30 @@
             {%endif%}
         </div>
     {%endif%}
+
+    <div class="card_of_material_main_1c">
+        <p class="c_title">Данные из 1с</p>
+        <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
+        <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
+        <p>Name 2: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
+        <p>Цена на момент ввода: {{ data.infa_1c["EquipmentData"]["InitialCost"] }}</p>
+        
+        <div class="movement_1"></div>
+        <p class="movement_2">Перемещения:</p>
+        {% for item in data.infa_1c["EquipmentData"]["MovementHistory"] %}
+            <div class="movement">
+                <p class="movement_2">Дата: {{ item.Period }}</p>
+                <p>Место: {{ item.Dept }}</p>
+                <p class="movement_2">Ответсвенный: {{ item.Person }}</p>
+                <p>Document: {{ item.Document }}</p>
+                
+            </div>
+        {% endfor %}
+        
+
+        <!-- <p>Organization: {{ data.infa_1c["EquipmentData"]["Organization"] }}</p> -->
+
+        </div>
 
     <div class="card_of_material">
 
