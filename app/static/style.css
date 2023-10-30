@@ -892,8 +892,10 @@ font-weight: bolder;
 
 .search_1c_class {
     display: flex;
-    background: #ffff8c;
+    background: #ffdd8c;
     align-items: center;
+    padding: 0 1em;
+    border-radius: 1em;
 }
 
 .search_1c_class_1 {
