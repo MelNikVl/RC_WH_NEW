@@ -53,23 +53,30 @@ $(document).ready(function () {
         let name = equip["FullName"];
         let name2 = equip["Name"];
 
+        // заголовок для данных
+        $("#data-1c-popup .1c-data").append(`<div><strong>Данные по ID ${id}</strong></div>`);
 
-        $("#data-1c-popup .1c-data").append(`<div class=\"1c-elem\">
-            Дата ввода: ${date} <br>
-            Описание 1: ${name} <br>
-            Описание 2: ${name2} <br>
+        // блок для данных о "Оборудовании"
+        $("#data-1c-popup .1c-data").append(`<div class="equipment-info">
+            <div class=\"1c-elem\">Дата ввода: ${date}</div>
+            <div class=\"1c-elem\">Описание 1: ${name}</div>
+            <div class=\"1c-elem\">Описание 2: ${name2}</div>
         </div>`);
 
-
+        // заголовок и блок для перемещений
+        $("#data-1c-popup .1c-data").append(`<div><strong>Перемещения:</strong></div>`);
         $("#data-1c-popup .1c-data").append("<div class=\"1c-history\"></div>");
+
+        // блок с перемещениями данными
         history.forEach(el => {
-            $("#data-1c-popup .1c-data .1c-history").append(`<div class="1c-elem">
-            Перемещение от: ${el["Period"]} <br>
-            отдел: ${el["Dept"]} <br>
-            </div>`);
+            $("#data-1c-popup .1c-data .1c-history").append(`<div class="movement-item">
+        <div class=\"1c-elem\">Перемещение от: ${el["Period"]}</div>
+        <div class=\"1c-elem\">Отдел: ${el["Dept"]}</div>
+        </div>`);
         });
 
-        
+
+
         $("#data-1c-popup").fadeIn(300);
     })
     $("#end_repair").on("click", function () {
@@ -487,14 +494,14 @@ $("#add_from_1c").on("click", function () {
     let title = $("#data-1c-popup > div > input.input_100").val();
     let id = $("#1c-search").val();
     let photo = $("#1c_file")[0].files[0];
-    if(!category || !title || !id || !photo){
+    if (!category || !title || !id || !photo) {
         alert("Заполните необходимые поля*");
         return;
     }
     var fd = new FormData();
     fd.append('photo', photo);
     fd.append('category', category);
-    fd.append('description',descr );
+    fd.append('description', descr);
     fd.append('title', title);
     fd.append('id', id);
     $.ajax({
@@ -508,12 +515,12 @@ $("#add_from_1c").on("click", function () {
         processData: false,
         data: fd,
         success: async function (resp) {
-            if (resp.status != true){
+            if (resp.status != true) {
                 alert("Произошла ошибка, попробуйте ещё раз");
             }
             window.location.reload();
         },
-        error: function (err){
+        error: function (err) {
             alert("Произошла ошибка, попробуйте ещё раз");
             window.location.reload();
         }
