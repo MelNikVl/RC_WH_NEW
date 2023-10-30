@@ -83,13 +83,18 @@
             <div class="card_of_material_main_1c">
                 <p class="c_title"><u>Данные из 1с</u></p>
                 <div class="card_of_material_main_1">
-                <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
-                <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
-                <p>Name 2: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
+                <p>Описание / характеристики: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
+                <div class="geo_material_one">
+                    <details>
+                        <summary>расширенное описание</summary>
+                        <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
+                        <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
+                    </details>
+                </div>
                 {% set last_item = data.infa_1c["EquipmentData"]["MovementHistory"][-1] %}
                 <p><strong>Расположение сейчас:</strong> {{ last_item.Dept }}, дата перемещения: {{ last_item.Period }},
                     числится на: {{ last_item.Person }}</p>
-                <p>Цена на момент ввода: {{ data.infa_1c["EquipmentData"]["InitialCost"] }} $</p>
+                <p>Цена: {{ data.infa_1c["EquipmentData"]["InitialCost"] }} $</p>
 
 
                 <div class="card_of_material">
