@@ -16,7 +16,6 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    height: em;
 }
 
 .c_title {
@@ -159,8 +158,7 @@ button {
 .popup {
     background: white;
     border-radius: 15px;
-    /* width: 70vw; */
-    /* height: 80vh; */
+    width: 40vw;
     position: relative;
     padding: 2em 1em;
 }
@@ -443,7 +441,7 @@ tbody input[type='checkbox'] {
 }
 
 .counts {
-    /* margin: 0 1em; */
+    margin: 0 1em;
     font-size: inherit;
     background: whitesmoke;
     border-radius: 1em;
@@ -844,12 +842,12 @@ details:not([open])>*:not(summary) {
 }
 
 .button_to_file {
-    margin: 0 0.5em;
+    /* margin: 0 0.5em; */
     background: #70c38d73;
-    padding: 10px;
-    border-radius: 1em;
+    /* padding: 10px; */
+    border-radius: 11px;
 }
-.menu_1 {margin: 1em;display: flex;flex-direction: column;width: 250px;align-content: center;justify-content: center;align-items: center;}
+.menu_1 {margin: 1em;display: flex;flex-direction: column;width: 250px;align-content: center;justify-content: flex-end;align-items: stretch;flex: unset;}
 .menu_left {margin: 1em;display: flex;flex-wrap: wrap;/* flex-direction: column; */}
 
 .podpis {
@@ -887,4 +885,29 @@ color: #000000;
 font-size: large;
 
 font-weight: bolder;
+}
+
+.hidden {
+    display: none;
+}
+
+.search_1c_class {
+    /* color: #000000; */
+    /* font-size: large; */
+    display: flex;
+    background: #ffff8c;
+    align-items: center;
+}
+
+.search_1c_class_1 {
+    /* color: #000000; */
+    font-size: large;
+    border-radius: 1em;
+    margin: 0 1em;
+}
+
+.search_1c_class_2 {
+    /* color: #000000; */
+    font-size: large;
+    border-radius: 1em;
 }

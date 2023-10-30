@@ -50,7 +50,16 @@ $(document).ready(function () {
         let equip = resp["EquipmentData"];
         let date = equip["AcceptanceDate"];
         let history = equip["MovementHistory"];
-        let name = equip["Name"];
+        let name = equip["FullName"];
+        let name2 = equip["Name"];
+
+
+        $("#data-1c-popup .1c-data").append(`<div class=\"1c-elem\">
+            Дата ввода: ${date} <br>
+            Описание 1: ${name} <br>
+            Описание 2: ${name2} <br>
+        </div>`);
+
 
         $("#data-1c-popup .1c-data").append("<div class=\"1c-history\"></div>");
         history.forEach(el => {
@@ -60,10 +69,7 @@ $(document).ready(function () {
             </div>`);
         });
 
-        $("#data-1c-popup .1c-data").append(`<div class=\"1c-elem\">
-            Дата ввода: ${date} <br>
-            Имя: ${name} <br>
-        </div>`);
+        
         $("#data-1c-popup").fadeIn(300);
     })
     $("#end_repair").on("click", function () {

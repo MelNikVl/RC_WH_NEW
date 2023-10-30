@@ -32,15 +32,7 @@
             </div>
             <div class="clear"></div>
             <div class="top_pan_2">
-                <div class="welcome">
-                    <p class="hello">{{ data.username }} шеф &#128293;
-                        {% if data.role == True %}
-                        --- Администратор</p>
-                    {% endif %}
-                    {% if data.role == False %}
-                    --- Пользователь</p>
-                    {% endif %}
-                </div>
+
                 <div class="counts">
                     <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
                     <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
@@ -48,8 +40,11 @@
                     <p class="p_for_count">Выдано: {{ data.count_warehouse.get_out_count }}</p>
                     <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
                 </div>
-                <button class="button_to_file" id="generate_list">Экспортировать в Excel</button>
-                <input type="text" name="" id="1c-search"> <input id="search_1c_btn" type="button" value="Найти в 1С">
+
+                <div class="search_1c_class">
+                <input class="search_1c_class_1" type="text" name="" id="1c-search">
+                    <input class="search_1c_class_2" id="search_1c_btn" type="button" value="Найти в 1С">
+                    </div>
             </div>
 
             <div class="clear"></div>
@@ -60,7 +55,17 @@
             <div class="body_left top-panel">
 
                 <div class="menu_left">
+                    <div class="welcome">
+                    <p class="hello">{{ data.username }} шеф &#128293;
+                        {% if data.role == True %}
+                        --- Администратор</p>
+                    {% endif %}
+                    {% if data.role == False %}
+                    --- Пользователь</p>
+                    {% endif %}
+                </div>
                     <div class="menu_1">
+
                         <button id="new">Завести актив</button>
                         <button id="delete">Удалить</button>
                         <button id="add_photo">Добавить файлы</button>
@@ -73,8 +78,8 @@
                         <button id="end_repair" class="yell_button">Закончить ремонт</button>
                     </div>
                     <div class="menu_1">
-                        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
-
+                        <button id="move_to_trash" class="red_button">Отправить на списание</button>
+                        <button class="button_to_file" id="generate_list">Экспортировать в Excel</button>
                     </div>
                 </div>
             </div>
@@ -369,35 +374,48 @@ ssd:
                         <img src="static/close.svg" alt="close">
                     </div>
                     <h1>Информация из 1С</h1>
-                    <div class="1c-data">
-                    </div>
-                    <div class="category-wrapper">
-                        <p>Категория</p>
-                        <input id="popup-select-1c" class="select-result" value="Компьютер" type="text"
-                            style="border-width: 0;appearance: none;" readonly placeholder="категория">
-                        <div class="select">
-                            <div class="option">
-                                <span>Компьютер</span>
+                    <div class="1c-data"></div>
+
+                    <hr>
+
+                    <details>
+                        <summary>Добавить этот актив в систему IT WH ?</summary>
+                            <div class="add_from_1c_info">
+                            <div class="category-wrapper">
+                                <p>Выберите категорию:</p>
+                                <input id="popup-select-1c" class="select-result" value="Компьютер" type="text" style="border-width: 0; appearance: none;" readonly placeholder="категория">
+
+                                <div class="select">
+                                    <div class="option">
+                                        <span>Компьютер</span>
+                                    </div>
+                                    <div class="option">
+                                        <span>Ноутбук</span>
+                                    </div>
+                                    <div class="option">
+                                        <span>Сервер</span>
+                                    </div>
+                                    <div class="option">
+                                        <span>Маршрутизатор / свитч</span>
+                                    </div>
+                                    <div class="option">
+                                        <span>Камера</span>
+                                    </div>
+                                    <div class="option"><span>Другое</span></div>
+                                </div>
                             </div>
-                            <div class="option">
-                                <span>Ноутбук</span>
-                            </div>
-                            <div class="option">
-                                <span>Сервер</span>
-                            </div>
-                            <div class="option">
-                                <span>Маршрутизатор / свитч</span>
-                            </div>
-                            <div class="option">
-                                <span>Камера</span>
-                            </div>
-                            <div class="option"><span>Другое</span></div>
+                            <input type="text" class="input_100" placeholder="номер техники (pc1000)">
+                            <textarea name="" cols="10" rows="4" placeholder="Сверьте характеристики техники с 1с. Если есть разница - то впишите ее здесь. Это не обязательно"></textarea>
+                            <p>Добавьте фото:</p>
+                                <input type="file" name="1c_file" id="1c_file">
+                                <p>Добавьте точное расположение</p>
+                                <input type="text" class="input_100" placeholder="**склад 1, полка 2.1">
+                                <hr>
+                            <input type="button" value="Создать актив" id="add_from_1c">
                         </div>
-                    </div>
-                    <input type="text" class="input_100" placeholder="номер техники (pc1000)">
-                    <textarea name="" cols="20" rows="8" placeholder="сверьте данные с 1с. И впишите разницу"></textarea>
-                    <input type="file" name="1c_file" id="1c_file">
-                    <input type="button" value="Ввести товар" id="add_from_1c">
+                    </details>
+
+
                 </div>
             </div>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
