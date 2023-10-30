@@ -3,7 +3,7 @@ import string
 import sys
 
 sys.path.append("..")
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from pydantic import parse_obj_as
 from typing import List
 from app.payload.response import MaterialUploadResponse
@@ -18,7 +18,7 @@ from models.models import Material
 class MaterialCRUD:
     # Получение карточки по айди
     @staticmethod
-    async def get(db, id: int):
+    async def get(db, id: str):
         material = db.query(Material).filter(Material.id == id).all()
         if len(material) == 0:
             raise HTTPException(status_code=404, detail="Модели с таким айди не найдено")
@@ -26,7 +26,7 @@ class MaterialCRUD:
 
     # ОБновление описания карточки
     @staticmethod
-    async def update_description(db, id: int, description: str):
+    async def update_description(db, id: str, description: str):
         material = db.query(Material).filter(Material.id == id).all()
         if len(material) == 0:
             raise HTTPException(status_code=404, detail="Модели с таким айди не найдено")
@@ -47,5 +47,6 @@ class MaterialCRUD:
         letters_and_digits = string.ascii_letters + string.digits
         rand_string = ''.join(random.sample(letters_and_digits, length))
         return rand_string
+
 
 

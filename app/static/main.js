@@ -23,10 +23,10 @@ function invert_selection(elem) {
         case 1:
             $("#history, #delete, #relocate, #add_photo, #remont, #move_to_trash,  #fast_repair, #send_to_repair, #add_repair_info, #end_repair").prop('disabled', false);
             $("#delete_user, #make_admin").removeClass("disabled-btn");
-            if ($('tbody > tr.selected').children("td").eq(7).text() == "ремонт"){
+            if ($('tbody > tr.selected').children("td").eq(7).text() == "ремонт") {
                 $("#fast_repair, #send_to_repair, #relocate").prop("disabled", true);
                 $("#add_repair_info, #end_repair").prop("disabled", false);
-            } else{
+            } else {
                 $("#fast_repair, #send_to_repair").prop("disabled", false);
                 $("#add_repair_info, #end_repair").prop("disabled", true);
             }
@@ -41,20 +41,45 @@ function invert_selection(elem) {
 
 // активность кнопок (доступна она или нет)
 $(document).ready(function () {
-    $("#end_repair").on("click", function(){
+    // попап для поиска товара в 1с по айди
+    $("#search_1c_btn").on("click", async function () {
+
+        let id = $("#1c-search").val();
+        let resp = await from_1c(id);
+        $("#data-1c-popup .1c-data").html("")
+        let equip = resp["EquipmentData"];
+        let date = equip["AcceptanceDate"];
+        let history = equip["MovementHistory"];
+        let name = equip["Name"];
+
+        $("#data-1c-popup .1c-data").append("<div class=\"1c-history\"></div>");
+        history.forEach(el => {
+            $("#data-1c-popup .1c-data .1c-history").append(`<div class="1c-elem">
+            Перемещение от: ${el["Period"]} <br>
+            отдел: ${el["Dept"]} <br>
+            </div>`);
+        });
+
+        $("#data-1c-popup .1c-data").append(`<div class=\"1c-elem\">
+            Дата ввода: ${date} <br>
+            Имя: ${name} <br>
+        </div>`);
+        $("#data-1c-popup").fadeIn(300);
+    })
+    $("#end_repair").on("click", function () {
         $("#repair-end-popup").fadeIn(300);
     });
-    $("#fast_repair").on("click", function(){
+    $("#fast_repair").on("click", function () {
         $("#fast-repair-popup").fadeIn(300);
     });
-    $("#add_repair_info").on("click", function(){
+    $("#add_repair_info").on("click", function () {
         $("#repair-details-popup").fadeIn(300);
     });
-    $("#submit-short-repair").on("click", function(){
+    $("#submit-short-repair").on("click", function () {
         let id = parseInt($("tbody > tr.selected td").eq(1).text());
         let problem = $("#fast-repair-popup textarea").val();
         let customer = $("#fast-repair-popup input").eq(0).val();
-        if (customer && problem){
+        if (customer && problem) {
             const data = {
                 "material_id": id,
                 "problem": problem,
@@ -63,17 +88,17 @@ $(document).ready(function () {
             let file = $("#short-repair-file")[0].files[0];
             short_repair(data, file);
         }
-        else{
+        else {
             alert("Заполните все поля!");
         }
     });
-    $("#submit-repair-end").on("click", function(){
+    $("#submit-repair-end").on("click", function () {
         let id = $("tbody > tr.selected td").eq(1).text();
         let solution = $("#repair-end-popup textarea").val();
         let customer = $("#repair-end-popup input").eq(0).val();
         let place = $("#repair-end-popup input").eq(1).val();
         let status = $("#repair-end-popup input").eq(2).val();
-        if (solution){
+        if (solution) {
             const data = {
                 "material_id": id,
                 "solution": solution,
@@ -84,37 +109,37 @@ $(document).ready(function () {
             $("#submit-repair-end").prop("disabled", true);
             move_from_repair(data);
         }
-        else{
+        else {
             alert("Заполните все поля!");
         }
     });
-    $("#send_to_repair").on("click", function(){
+    $("#send_to_repair").on("click", function () {
         $("#add-to-repair-popup").fadeIn(300);
     });
-    $("#submit-repair-details").on("click", function(){
+    $("#submit-repair-details").on("click", function () {
         let id = $("tbody > tr.selected td").eq(1).text();
         let details = $("#repair-details-popup textarea").val();
-        if (details){
+        if (details) {
             const data = {
                 "material_id": id,
                 "details": details
             };
             $("#submit-repair-details").prop("disabled", true);
             let file = $("#repair-details-file")[0].files[0];
-            add_to_repair(data,file);
+            add_to_repair(data, file);
         }
-        else{
+        else {
             alert("Заполните все поля!");
         }
     });
-    $("#send_to_repair").on("click", function(){
+    $("#send_to_repair").on("click", function () {
         $("#add-to-repair-popup").fadeIn(300);
     });
-    $("#submit-repair").on("click", function(){
+    $("#submit-repair").on("click", function () {
         let id = $("tbody > tr.selected td").eq(1).text();
         let customer = $("#add-to-repair-popup input").val();
         let problem = $("#add-to-repair-popup textarea").val();
-        if (customer && problem){
+        if (customer && problem) {
             const data = {
                 "material_id": id,
                 "problem": problem,
@@ -122,7 +147,7 @@ $(document).ready(function () {
             };
             move_to_repair(data);
         }
-        else{
+        else {
             alert("Заполните все поля!");
         }
     });
@@ -163,30 +188,30 @@ $(document).ready(function () {
 
     // шаблоны типов техники при создании товара
     $("#new-popup-select").on("change", function () {
-        let comp_template = 
-`процессор: 
+        let comp_template =
+            `процессор: 
 оперативная память (Gb): 
 жестккий диск (Gb): 
 ssd (Gb): 
 блок питания (Вт) `;
-        let laptop_template = 
-`производитель: 
+        let laptop_template =
+            `производитель: 
 модель: 
 процессор: 
 оперативная память (Gb): 
 жесткий диск (Gb): 
 *дополнительная информация: `;
-        let server_template = 
-`производитель: 
+        let server_template =
+            `производитель: 
 модель: 
 процессор: 
 оперативная память (Gb): 
 RAID: `;
-        let switch_template = 
-`производитель: 
+        let switch_template =
+            `производитель: 
 модель: `;
-        let camera_template = 
-`производитель: 
+        let camera_template =
+            `производитель: 
 модель: `;
         let other_template = ``;
 
@@ -221,8 +246,8 @@ RAID: `;
         $(this).parent().fadeOut(300);
     });
 
-    $("#generate_list").on("click", async ()=>{
-        let data = {"data": []};
+    $("#generate_list").on("click", async () => {
+        let data = { "data": [] };
         $("tbody > tr").each(async function (index) {
             data.data.push([
                 $(this).children("td").eq(1).text(),
@@ -237,12 +262,12 @@ RAID: `;
         generate_list(data);
     })
 
-// событие по клику
+    // событие по клику
     $("tbody > tr").on("dblclick", function () {
         if (!$(this).hasClass("inactive"))
             invert_selection(this);
     });
-    $("#reset-filters").on("click", function(){
+    $("#reset-filters").on("click", function () {
         $('#id-filter').val("");
         $('#category-filter').val("");
         $('#description-filter').val("");
@@ -426,4 +451,65 @@ async function upload_photos(mat_id) {
         }
     }
 }
+
+async function from_1c(mat_id) {
+    try {
+        const response = await fetch(host + "/materials/from_1c?id=" + mat_id, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + access_token
+            }
+        });
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        alert(error);
+        return;
+    }
+}
 setInterval(ping, 5000);
+
+$(".category-wrapper .option").on("click", function () {
+    $("#popup-select-1c").val($(this).find("span").html());
+    $(this).closest(".category-wrapper").find(".select-result").trigger("change");
+    $(this).parent().fadeOut(300);
+});
+$("#add_from_1c").on("click", function () {
+    // 000355389
+    let category = $("#popup-select-1c").val();
+    let descr = $("#data-1c-popup > div > textarea").val();
+    let title = $("#data-1c-popup > div > input.input_100").val();
+    let id = $("#1c-search").val();
+    let photo = $("#1c_file")[0].files[0];
+    if(!category || !title || !id || !photo){
+        alert("Заполните необходимые поля*");
+        return;
+    }
+    var fd = new FormData();
+    fd.append('photo', photo);
+    fd.append('category', category);
+    fd.append('description',descr );
+    fd.append('title', title);
+    fd.append('id', id);
+    $.ajax({
+        type: "POST",
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        url: host + "/materials/add_from_1c",
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: fd,
+        success: async function (resp) {
+            if (resp.status != true){
+                alert("Произошла ошибка, попробуйте ещё раз");
+            }
+            window.location.reload();
+        },
+        error: function (err){
+            alert("Произошла ошибка, попробуйте ещё раз");
+            window.location.reload();
+        }
+    });
+})

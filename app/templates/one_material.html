@@ -12,162 +12,177 @@
     <script src="/static/one_material.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 </head>
+
+
 <body>
+    <div class="body_body">
 
-<div class="body_body" style="height: auto;margin-bottom: 50px;">
+        <!-- шапка -->
 
-    <div class="title_1">IT warehouse tracker (Asset card)</div>
-    <div class="button_exit">
-            <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
-            {% if data.role == True %}
+        <div class="top-part">
+            <div class="title_1">IT warehouse tracker (Repair)</div>
+            <div class="button_exit">
+                <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
+                {% if data.role == True %}
                 <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
-            {% endif %}
-            <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
-            <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
-            <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
-            <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
-            <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
-            <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
-        </div>
-    <div class="clear"></div>
+                {% endif %}
+                <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
+                <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
+                <a href="/app/trash_page?t={{ data.token }}" class="menu_arc">Списание</a>
+                <a href="/geolocation/archive_trash_page?t={{ data.token }}" class="menu_arc">Архив</a>
+                <a href="/app/instructions?t={{ data.token }}" class="menu_arc">FAQ</a>
+                <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
+            </div>
+            <div class="clear"></div>
 
-    <div class="photo_one_card">
-        <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
-    </div>
+            <!-- ниже шапки -->
 
-    <div class="card_of_material_main_2">
-        <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
-        <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
-        <div class="title_one_card status_000">Статус:  {{ data.current_status }}</div>
-    </div>
+            <div class="photo_one_card">
+                <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
+            </div>
 
-    <div class="card_of_material_main">
-        <div class="card_of_material_main_1">
-            <p class="desc_09">Расположение: {{ data.current_place }}</p>
-            <p class="desc_09">Ответственный сейчас: {{ data.current_user }}</p>
-            <p class="desc_09">Категория:  {{ data.one_material.category }}</p>
-            <p class="desc_09">Описание:  {{ data.one_material.description }}</p>
-        </div>
+            <div class="card_of_material_main_2">
+                <div class="title_one_card">ID актива:  {{ data.one_material.id }}</div>
+                <div class="title_one_card">Номер:  {{ data.one_material.title }}</div>
+                <div class="title_one_card status_000">Статус:  {{ data.current_status }}</div>
+            </div>
 
-    <div class="card_of_material_main_1">
-            <p class="desc_09">Дата ввода в IT WH:  {{ data.date_time_f }}, завел {{ data.one_material.user_id }}</p>
-            <p class="desc_09">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
-                 -----  Файлов в папке актива: {{ data.len_of_files }}</p>
+
         </div>
         <div class="clear"></div>
-    </div>
 
+        <!-- разделенная на 2 части страница -->
 
-    <div class="clear"></div>
+        <div class="body_separate scrollable_table">
+            <div class="body_left top-panel">
+                <div class="welcome">
+                    <p class="hello">{{ data.username }} шеф &#128293;</p>
+                    {% if data.role == True %}
+                    <p class="hello_2"><b>административный</b> доступ</p>
+                    {% endif %}
+                    {% if data.role == False %}
+                    <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
+                    {% endif %}
+                </div>
+                <div class="menu_left">
+                    <div class="menu_1">
+                        {% if data.current_status != "списание"%}
+                        <div class="action-buttons_1_card">
+                            <button id="delete">Удалить</button>
+                            <button id="relocate">Переместить</button>
+                            <button id="add_photo">Добавить файлы</button>
+                            <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
+                <!--            <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
+                    <!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
+                    <!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
+                            {% if data.current_status != "ремонт"%}
+                                <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+                            {%endif%}
+                        </div>
+                    {%endif%}
 
-    
-
-    {% if data.current_status != "списание"%}
-        <div class="action-buttons_1_card">
-            <button id="delete">Удалить</button>
-            <button id="relocate">Переместить</button>
-            <button id="add_photo">Добавить файлы</button>
-            <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
-<!--            <button id="send_to_repair" class="yell_button">Взять в ремонт</button>-->
-    <!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
-    <!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
-            {% if data.current_status != "ремонт"%}
-                <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
-            {%endif%}
-        </div>
-    {%endif%}
-
-    <div class="card_of_material_main_1c">
-        <p class="c_title">Данные из 1с</p>
-        <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
-        <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
-        <p>Name 2: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
-        <p>Цена на момент ввода: {{ data.infa_1c["EquipmentData"]["InitialCost"] }} $</p>
-        
-        <div class="movement_1"></div>
-        <p class="movement_2">Перемещения:</p>
-        {% for item in data.infa_1c["EquipmentData"]["MovementHistory"] %}
-            <div class="movement">
-                <p class="movement_2">Дата: {{ item.Period }}</p>
-                <p>Место: {{ item.Dept }}</p>
-                <p class="movement_2">Ответсвенный: {{ item.Person }}</p>
-                <p>Document: {{ item.Document }}</p>
-                
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-        
 
-        <!-- <p>Organization: {{ data.infa_1c["EquipmentData"]["Organization"] }}</p> -->
+            <div class="card_of_material_main_1c">
+                <p class="c_title">Данные из 1с</p>
+                <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
+                <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
+                <p>Name 2: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
+                {% set last_item = data.infa_1c["EquipmentData"]["MovementHistory"][-1] %}
+                <p><strong>Расположение сейчас:</strong> {{ last_item.Dept }}, дата перемещения: {{ last_item.Period }},
+                    числится на: {{ last_item.Person }}</p>
+                <p>Цена на момент ввода: {{ data.infa_1c["EquipmentData"]["InitialCost"] }} $</p>
 
-        </div>
+                <details>
+                    <summary>Все перемещения из 1с</summary>
+                        {% for item in data.infa_1c["EquipmentData"]["MovementHistory"] %}
+                            <div class="movement">
+                                <p class="movement_2">Дата: {{ item.Period }}</p>
+                                <p>Место: {{ item.Dept }}</p>
+                                <p class="movement_2">Ответсвенный: {{ item.Person }}</p>
+                                <p>Document: {{ item.Document }}</p>
+                            </div>
+                        {% endfor %}
+                </details>
+            </div>
 
-    <div class="card_of_material">
+            <div class="card_of_material_main">
+                <div class="card_of_material_main_1">
+                    <p class="desc_09">Расположение: {{ data.current_place }}</p>
+                    <p class="desc_09">Ответственный сейчас: {{ data.current_user }}</p>
+                    <p class="desc_09">Категория:  {{ data.one_material.category }}</p>
+                    <p class="desc_09">Описание:  {{ data.one_material.description }}</p>
+                    <p class="desc_09">Дата ввода в IT WH:  {{ data.date_time_f }}, завел {{ data.one_material.user_id }}</p>
+                    <p class="desc_09">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
+                         -----  Файлов в папке актива: {{ data.len_of_files }}</p>
+                </div>
+                <div class="card_of_material">
 
-          <h3>ПЕРЕМЕЩЕНИЯ</h3>
+            <h3>ПЕРЕМЕЩЕНИЯ</h3>
+            <h5>*(сначала новые):</h5>
+                {% for item in data.geo_material %}
+                    <div class="geo_material_one">
+                        <details>
+                            <summary>{{ item.date_time }} на {{ item.client_mail }}</summary>
+                                <div class="desc_one_card">
+                                    <div>Место: {{ item.place }},</div>
+                                    <div>Ответственный: {{ item.client_mail }},</div>
+                                    <div>Статус: {{ item.status }},</div>
+                                    <div>Иницатор: {{ item.initiator }},</div>
+                                    </div>
+                        </details>
+                    </div>
+                    <div class="clear"></div>
+                {% endfor %}
+            </div>
+
+            <div class="repair_stile">
+            <h3>РЕМОНТЫ</h3>
             <h5>*(сначала новые):</h5>
 
-
-        {% for item in data.geo_material %}
-            <div class="geo_material_one">
-                <details>
-                    <summary>{{ item.date_time }} на {{ item.client_mail }}</summary>
-                        <div class="desc_one_card">
-                            <div>Место: {{ item.place }},</div>
-                            <div>Ответственный: {{ item.client_mail }},</div>
-                            <div>Статус: {{ item.status }},</div>
-                            <div>Иницатор: {{ item.initiator }},</div>
-                            </div>
-                        </div>
-                </details>
-             <div class="clear"></div>
-        {% endfor %}
-    </div>
-
-    <div class="repair_stile">
-
-          <h3>РЕМОНТЫ</h3>
-        <h5>*(сначала новые):</h5>
-
-         {% for item in data.repairs %}
-            <div class="geo_material_one">
-                <details>
-                    <summary>поступление {{ item[0].date_time }}, статус:
+             {% for item in data.repairs %}
+                <div class="geo_material_one">
+                    <details>
+                        <summary>поступление {{ item[0].date_time }}, статус:
+                            {% for item in item %}
+                            {% if loop.last %}
+                                {% set last_repair_status = item.repair_status %}
+                                    {% if last_repair_status == True %}
+                                        в ремонте
+                                    {% endif %}
+                                    {% if last_repair_status == False %}
+                                        ремонт закончен {{item.date_time}}
+                                    {% endif %}
+                            {% endif %}
+                            {% endfor %}</summary>
                         {% for item in item %}
-                        {% if loop.last %}
-                            {% set last_repair_status = item.repair_status %}
-                                {% if last_repair_status == True %}
-                                    в ремонте
-                                {% endif %}
-                                {% if last_repair_status == False %}
-                                    ремонт закончен {{item.date_time}}
-                                {% endif %}
-                        {% endif %}
-                        {% endfor %}</summary>
-                    {% for item in item %}
-                        <div class="geo_material_one_dial">
-                            <div class="rep_status">
-                                {% if item.repair_status == True %}
-                                    <div>В РЕМОНТЕ</div>
-                                {% endif %}
-                                {% if item.repair_status == False %}
-                                    <div>ВЫВЕДЕН ИЗ РЕМОНТА</div>
-                                {% endif %}
+                            <div class="geo_material_one_dial">
+                                <div class="rep_status">
+                                    {% if item.repair_status == True %}
+                                        <div>В РЕМОНТЕ</div>
+                                    {% endif %}
+                                    {% if item.repair_status == False %}
+                                        <div>ВЫВЕДЕН ИЗ РЕМОНТА</div>
+                                    {% endif %}
+                                </div>
+                                <div class="date_one_card">Дата: {{ item.date_time }}</div>
+                                <div class="desc_one_card">
+                                <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
+                                <div>Кто сдал: {{ item.user_whose_technique }},</div>
+                                <div>Проблема / решение: {{ item.problem_description }},</div>
                             </div>
-                            <div class="date_one_card">Дата: {{ item.date_time }}</div>
-                            <div class="desc_one_card">
-                            <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
-                            <div>Кто сдал: {{ item.user_whose_technique }},</div>
-                            <div>Проблема / решение: {{ item.problem_description }},</div>
-                        </div>
-                            </div>
-                        <div class="clear"></div>
-                    {% endfor %}
-                </details>
-            </div>
-        {% endfor %}
+                                </div>
+                            <div class="clear"></div>
+                        {% endfor %}
+                    </details>
+                </div>
+            {% endfor %}
 
-    </div>
-    <div class="clear"></div>
+        </div>
+            </div>
+
     </div>
 
    <!-- попапы -->
@@ -287,5 +302,8 @@
     <script src="/static/API.js"></script>
     <script src="/static/repair.js"></script>
 
+    </div>
+
 </body>
+
 </html>

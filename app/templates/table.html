@@ -21,7 +21,7 @@
             <div class="button_exit">
                 <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
                 {% if data.role == True %}
-                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
                 {% endif %}
                 <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
                 <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
@@ -33,14 +33,14 @@
             <div class="clear"></div>
             <div class="top_pan_2">
                 <div class="welcome">
-                        <p class="hello">{{ data.username }} шеф &#128293;
+                    <p class="hello">{{ data.username }} шеф &#128293;
                         {% if data.role == True %}
                         --- Администратор</p>
-                        {% endif %}
-                        {% if data.role == False %}
-                        --- Пользователь</p>
-                        {% endif %}
-                    </div>
+                    {% endif %}
+                    {% if data.role == False %}
+                    --- Пользователь</p>
+                    {% endif %}
+                </div>
                 <div class="counts">
                     <p class="p_for_count"><b>Всего активов: {{ data.count_warehouse.all_count }}</b></p>
                     <p class="p_for_count">Ремонт: {{ data.count_warehouse.repair_count }}</p>
@@ -49,30 +49,31 @@
                     <p class="p_for_count">На хранении: {{ data.count_warehouse.warehouse_count }}</p>
                 </div>
                 <button class="button_to_file" id="generate_list">Экспортировать в Excel</button>
+                <input type="text" name="" id="1c-search"> <input id="search_1c_btn" type="button" value="Найти в 1С">
             </div>
 
-        <div class="clear"></div>
+            <div class="clear"></div>
         </div>
 
 
         <div class="body_separate scrollable_table">
             <div class="body_left top-panel">
 
-            <div class="menu_left">
-                <div class="menu_1">
-                <button id="new">Завести актив</button>
-                <button id="delete">Удалить</button>
-                <button id="add_photo">Добавить файлы</button>
-                <button id="relocate">Переместить</button>
+                <div class="menu_left">
+                    <div class="menu_1">
+                        <button id="new">Завести актив</button>
+                        <button id="delete">Удалить</button>
+                        <button id="add_photo">Добавить файлы</button>
+                        <button id="relocate">Переместить</button>
                     </div>
-                <div class="menu_1">
-                <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
-                <button id="send_to_repair" class="yell_button">Взять в ремонт</button>
-                <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>
-                <button id="end_repair" class="yell_button">Закончить ремонт</button>
+                    <div class="menu_1">
+                        <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
+                        <button id="send_to_repair" class="yell_button">Взять в ремонт</button>
+                        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>
+                        <button id="end_repair" class="yell_button">Закончить ремонт</button>
                     </div>
-                <div class="menu_1">
-                <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+                    <div class="menu_1">
+                        <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
 
                     </div>
                 </div>
@@ -80,139 +81,139 @@
 
             <div class="body_right">
                 <div class="table-wrapper">
-                <div class="top-panel">
-                    <div class="button-wrapper fixed_buttons">
-                    <!--  фильтры -->
-                    <div class="input-wrapper">
-                        <div class="filters">Фильтры:</div>
-                        <input class="filter" type="text" placeholder="ID" id="id-filter" style="width: 150px;">
-                        <input class="filter" type="text" placeholder="Описание" id="description-filter">
-                        <input class="filter" type="text" placeholder="Категория" id="category-filter">
-                        <input class="filter" type="text" placeholder="Дата-Время" id="date-filter">
-                        <div class="select-wrapper filter" style="display: inline-block;">
-                            <input id="status-filter" class="select-result" value="" type="text"
-                                style="border-width: 0;appearance: none;" readonly placeholder="Статус">
-                            <div class="select">
-                                <div class="option">
-                                    <span></span>
-                                    <a>---</a>
+                    <div class="top-panel">
+                        <div class="button-wrapper fixed_buttons">
+                            <!--  фильтры -->
+                            <div class="input-wrapper">
+                                <div class="filters">Фильтры:</div>
+                                <input class="filter" type="text" placeholder="ID" id="id-filter" style="width: 150px;">
+                                <input class="filter" type="text" placeholder="Описание" id="description-filter">
+                                <input class="filter" type="text" placeholder="Категория" id="category-filter">
+                                <input class="filter" type="text" placeholder="Дата-Время" id="date-filter">
+                                <div class="select-wrapper filter" style="display: inline-block;">
+                                    <input id="status-filter" class="select-result" value="" type="text"
+                                        style="border-width: 0;appearance: none;" readonly placeholder="Статус">
+                                    <div class="select">
+                                        <div class="option">
+                                            <span></span>
+                                            <a>---</a>
+                                        </div>
+                                        <div class="option">
+                                            <span>хранение</span>
+                                        </div>
+                                        <div class="option">
+                                            <span>выдан</span>
+                                        </div>
+                                        <div class="option">
+                                            <span>ремонт</span>
+                                        </div>
+                                        <div class="option">
+                                            <span>списание</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="option">
-                                    <span>хранение</span>
-                                </div>
-                                <div class="option">
-                                    <span>выдан</span>
-                                </div>
-                                <div class="option">
-                                    <span>ремонт</span>
-                                </div>
-                                <div class="option">
-                                    <span>списание</span>
-                                </div>
+                                <input id="reset-filters" type="image" src="/static/remove.png" />
                             </div>
                         </div>
-                        <input id="reset-filters" type="image" src="/static/remove.png" />
-                    </div>
-                </div>
 
-                <div class="clear"></div>
-                <table class="fl-table" id="table">
-                    <thead class="fixed_thead">
-                        <tr>
-                            <th><input type="checkbox" id="select-all"></th>
-                            <th>ID с наклейки</th>
-                            <th>Категория</th>
-                            <th>Номер</th>
-                            <th>Описание (характеристики)</th>
-                            <th>Дата ввода</th>
-                            <th>Расположение</th>
-                            <th>Cтатус</th>
-                            <th>Инфо</th>
-                            <th>1с</th>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                    <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
-                    <tbody>
-                        {% for item in data[0] %}
-                        <tr {% if item["geolocation_status"]=="списание" %} class="inactive" {% endif %}
-                        {% if item["geolocation_status"]=="ремонт" %} class="remont" {% endif %}
-                        >
-                            <td><input type="checkbox"></td>
-                            <td>{{ item.id }}</td>
-                            <td>{{ item.category }}</td>
-                            <td>{{ item.title }}</td>
-                            <td>
-                                <textarea cols="30" rows="5">
+                        <div class="clear"></div>
+                        <table class="fl-table" id="table">
+                            <thead class="fixed_thead">
+                                <tr>
+                                    <th><input type="checkbox" id="select-all"></th>
+                                    <th>ID с наклейки</th>
+                                    <th>Категория</th>
+                                    <th>Номер</th>
+                                    <th>Описание (характеристики)</th>
+                                    <th>Дата ввода</th>
+                                    <th>Расположение</th>
+                                    <th>Cтатус</th>
+                                    <th>Инфо</th>
+                                    <th>1с</th>
+                                    <th>User</th>
+                                </tr>
+                            </thead>
+                            <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
+                            <tbody>
+                                {% for item in data[0] %}
+                                <tr {% if item["geolocation_status"]=="списание" %} class="inactive" {% endif %} {% if
+                                    item["geolocation_status"]=="ремонт" %} class="remont" {% endif %}>
+                                    <td><input type="checkbox"></td>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.category }}</td>
+                                    <td>{{ item.title }}</td>
+                                    <td>
+                                        <textarea cols="30" rows="5">
     {{ item.description }}
                                 </textarea>
-                            </td>
-                            <td>{{ item.date_time }}</td>
-                            <td>{{ item["geolocation_place"] }}</td>
-                            <td>{{ item["geolocation_status"] }}</td>
-                            <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
-                            <td><img src="../static/check.png" width="20px"/></td>
-                            <td><img src="../static/tick.png" width="20px"/></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            </div>
-        </div>
-
-    <!--  попапы -->
-    <div style="display: none;" id="add-photo-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>Добавление фото</h1>
-            <form>
-                <label class="input-file">
-                    <input type="file" name="file" accept=".png, .jpg, .jpeg" id="add-photo-btn" multiple="multiple">
-                    <span>Выбрать файл</span>
-                </label>
-            </form>
-
-            <div class="upload-btns">
-                <button id="submit-photo">Добавить файл (файлы)</button>
-            </div>
-            <h5>* можно выбрать несколько фото, для очистки списка фото для загрузки кликнуть ПКМ по кнопке</h5>
-        </div>
-    </div>
-    <div style="display: none;" id="new-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>Новый актив</h1>
-            <div class="new-wrapper">
-                <input type="text" placeholder="ID актива с наклейки">
-                <div class="select-wrapper">
-                    <input id="new-popup-select" class="select-result" value="Компьютер" type="text" style="border-width: 0;appearance: none;"
-                        readonly placeholder="категория">
-                    <div class="select">
-                        <div class="option">
-                            <span>Компьютер</span>
-                        </div>
-                        <div class="option">
-                            <span>Ноутбук</span>
-                        </div>
-                        <div class="option">
-                            <span>Сервер</span>
-                        </div>
-                        <div class="option">
-                            <span>Маршрутизатор / свитч</span>
-                        </div>
-                        <div class="option">
-                            <span>Камера</span>
-                        </div>
-                        <div class="option"><span>Другое</span></div>
+                                    </td>
+                                    <td>{{ item.date_time }}</td>
+                                    <td>{{ item["geolocation_place"] }}</td>
+                                    <td>{{ item["geolocation_status"] }}</td>
+                                    <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
+                                    <td><img src="../static/check.png" width="20px" /></td>
+                                    <td><img src="../static/tick.png" width="20px" /></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <input type="text" class="input_100" placeholder="номер техники (pc1000)">
-                <textarea name="" cols="20" rows="8" placeholder="базовые характеристики">
+            </div>
+
+            <!--  попапы -->
+            <div style="display: none;" id="add-photo-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Добавление фото</h1>
+                    <form>
+                        <label class="input-file">
+                            <input type="file" name="file" accept=".png, .jpg, .jpeg" id="add-photo-btn"
+                                multiple="multiple">
+                            <span>Выбрать файл</span>
+                        </label>
+                    </form>
+
+                    <div class="upload-btns">
+                        <button id="submit-photo">Добавить файл (файлы)</button>
+                    </div>
+                    <h5>* можно выбрать несколько фото, для очистки списка фото для загрузки кликнуть ПКМ по кнопке</h5>
+                </div>
+            </div>
+            <div style="display: none;" id="new-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Новый актив</h1>
+                    <div class="new-wrapper">
+                        <input type="text" placeholder="ID актива с наклейки">
+                        <div class="select-wrapper">
+                            <input id="#new-popup-select" class="select-result" value="Компьютер" type="text"
+                                style="border-width: 0;appearance: none;" readonly placeholder="категория">
+                            <div class="select">
+                                <div class="option">
+                                    <span>Компьютер</span>
+                                </div>
+                                <div class="option">
+                                    <span>Ноутбук</span>
+                                </div>
+                                <div class="option">
+                                    <span>Сервер</span>
+                                </div>
+                                <div class="option">
+                                    <span>Маршрутизатор / свитч</span>
+                                </div>
+                                <div class="option">
+                                    <span>Камера</span>
+                                </div>
+                                <div class="option"><span>Другое</span></div>
+                            </div>
+                        </div>
+                        <input type="text" class="input_100" placeholder="номер техники (pc1000)">
+                        <textarea name="" cols="20" rows="8" placeholder="базовые характеристики">
 процессор:
 оперативная память:
 жесткий диск:
@@ -220,146 +221,191 @@ ssd:
 блок питания:
 видео карта:
                 </textarea>
-                <input type="text" placeholder="местоположение актива">
-            </div>
-            <form>
-                <label class="input-file">
-                    <input type="file" name="file" accept=".png, .jpg, .jpeg" id="files-to-upload" multiple="multiple">
-                    <span>Выбрать файл</span>
-                </label>
-            </form>
-            <h5>* прикрепите фото наклейки и фото техники целиком в форматах png, jpg или jpeg</h5>
-            <h5>* для очистки списка фото для загрузки кликнуть ПКМ по кнопке</h5>
-            <div class="upload-btns">
-                <button id="submit-new">Создать карточку актива</button> <div style="display: none;" class="loader loader-1 center"><span></span></div>
-            </div>
-        </div>
-    </div>
-    <div style="display: none;" id="delete-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>Вы действительно хотите удалить актив?</h1>
-            <h3>удалится папка с его фото и все данные о перемещениях</h3>
-            <button style="bottom: 10px; right: 10px;" id="submit-delete">Удалить</button>
-
-        </div>
-    </div>
-    <div style="display: none;" id="new-geo-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>Обновить местоположение актива</h1>
-            <input type="text" placeholder="Новое местоположение">
-            <input type="text" placeholder="Почта нового ответсвенного">
-            <div class="select-wrapper">
-                <input class="select-result" value="хранение" type="text" style="border-width: 0;appearance: none;"
-                    readonly placeholder="Статус">
-                <div class="select">
-                    <div class="option">
-                        <span>хранение</span>
+                        <input type="text" placeholder="местоположение актива">
                     </div>
-                    <div class="option">
-                        <span>выдан</span>
+                    <form>
+                        <label class="input-file">
+                            <input type="file" name="file" accept=".png, .jpg, .jpeg" id="files-to-upload"
+                                multiple="multiple">
+                            <span>Выбрать файл</span>
+                        </label>
+                    </form>
+                    <h5>* прикрепите фото наклейки и фото техники целиком в форматах png, jpg или jpeg</h5>
+                    <h5>* для очистки списка фото для загрузки кликнуть ПКМ по кнопке</h5>
+                    <div class="upload-btns">
+                        <button id="submit-new">Создать карточку актива</button>
+                        <div style="display: none;" class="loader loader-1 center"><span></span></div>
                     </div>
                 </div>
             </div>
-            <button style="bottom: 10px; right: 10px;" id="submit-geo">Переместить</button>
-            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
-        </div>
-    </div>
-    <div style="display: none;" id="history-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>История местоположений актива</h1>
-            <div id="history-block"></div>
+            <div style="display: none;" id="delete-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Вы действительно хотите удалить актив?</h1>
+                    <h3>удалится папка с его фото и все данные о перемещениях</h3>
+                    <button style="bottom: 10px; right: 10px;" id="submit-delete">Удалить</button>
 
-        </div>
-    </div>
-    <div style="display: none;" id="add-to-repair-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>Взять актив в ремонт</h1>
-            <textarea class="description_problem" placeholder="Опишите проблему" name="" cols="30" rows="5"></textarea>
-            <input type="text" placeholder="Заказчик ремонта">
-            <button style="bottom: 10px; right: 10px;" id="submit-repair">Разберемся &#129310;</button>
-            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
-        </div>
-    </div>
-    <div style="display: none;" id="repair-details-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>Добавить информацию к ремонту</h1>
-            <textarea class="description_problem" placeholder="Опишите, что именно добавляется" name="" cols="30" rows="5"></textarea>
-            <div class="file-wrapper">
-                <label class="file-label" for="repair-details-file">Добавить файл (опционально)</label>
-                <input type="file" hidden name="" id="repair-details-file">
-            </div>
-            <button style="bottom: 10px; right: 10px;" id="submit-repair-details">Добавить</button>
-            <h5>* если изменена конфигурация актива - обязательно внесите эти данные в поле его характеристик</h5>
-            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
-        </div>
-    </div>
-    <div style="display: none;" id="repair-end-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
-            </div>
-            <h1>Завершить ремонт</h1>
-            <textarea class="description_problem" placeholder="Опишите решение проблемы" name="" cols="30" rows="5"></textarea>
-            <input type="text" placeholder="Кому отдана техника">
-            <input type="text" placeholder="Местоположение">
-            <div class="select-wrapper">
-                <input class="select-result" value="выдан" type="text" style="border-width: 0;appearance: none;"
-                    readonly placeholder="Статус">
-                <div class="select">
-                    <div class="option">
-                        <span>хранение</span>
-                    </div>
-                    <div class="option">
-                        <span>выдан</span>
-                    </div>
-                    <div class="option">
-                        <span>списание</span>
-                    </div>
                 </div>
             </div>
-            <button style="bottom: 10px; right: 10px;" id="submit-repair-end">Завершить</button>
-            <h5>* если изменена конфигурация актива - обязательно внесите эти данные в поле его характеристик</h5>
-            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
-        </div>
-    </div>
-
-    <div style="display: none;" id="fast-repair-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="static/close.svg" alt="close">
+            <div style="display: none;" id="new-geo-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Обновить местоположение актива</h1>
+                    <input type="text" placeholder="Новое местоположение">
+                    <input type="text" placeholder="Почта нового ответсвенного">
+                    <div class="select-wrapper">
+                        <input class="select-result" value="хранение" type="text"
+                            style="border-width: 0;appearance: none;" readonly placeholder="Статус">
+                        <div class="select">
+                            <div class="option">
+                                <span>хранение</span>
+                            </div>
+                            <div class="option">
+                                <span>выдан</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button style="bottom: 10px; right: 10px;" id="submit-geo">Переместить</button>
+                    <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+                </div>
             </div>
-            <h1>Быстрый ремонт техники</h1>
-            <textarea class="description_problem" placeholder="Опишите проблему и решение" name="" cols="30" rows="5"></textarea>
-            <input type="text" placeholder="Заказчик ремонта">
-            <div class="file-wrapper">
-                <label class="file-label" for="short-repair-file">Добавить файл (опционально)</label>
-                <input type="file" hidden name="" id="short-repair-file">
-            </div>
-            <button style="bottom: 10px; right: 10px;" id="submit-short-repair">Solved &#129309;</button>
-            <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
-        </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
-    <script src="/static/API.js"></script>
-    <script src="static/main.js"></script>
-    <script src="static/repair.js"></script>
+            <div style="display: none;" id="history-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>История местоположений актива</h1>
+                    <div id="history-block"></div>
 
-    </div>
+                </div>
+            </div>
+            <div style="display: none;" id="add-to-repair-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Взять актив в ремонт</h1>
+                    <textarea class="description_problem" placeholder="Опишите проблему" name="" cols="30"
+                        rows="5"></textarea>
+                    <input type="text" placeholder="Заказчик ремонта">
+                    <button style="bottom: 10px; right: 10px;" id="submit-repair">Разберемся &#129310;</button>
+                    <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+                </div>
+            </div>
+            <div style="display: none;" id="repair-details-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Добавить информацию к ремонту</h1>
+                    <textarea class="description_problem" placeholder="Опишите, что именно добавляется" name=""
+                        cols="30" rows="5"></textarea>
+                    <div class="file-wrapper">
+                        <label class="file-label" for="repair-details-file">Добавить файл (опционально)</label>
+                        <input type="file" hidden name="" id="repair-details-file">
+                    </div>
+                    <button style="bottom: 10px; right: 10px;" id="submit-repair-details">Добавить</button>
+                    <h5>* если изменена конфигурация актива - обязательно внесите эти данные в поле его характеристик
+                    </h5>
+                    <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+                </div>
+            </div>
+            <div style="display: none;" id="repair-end-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Завершить ремонт</h1>
+                    <textarea class="description_problem" placeholder="Опишите решение проблемы" name="" cols="30"
+                        rows="5"></textarea>
+                    <input type="text" placeholder="Кому отдана техника">
+                    <input type="text" placeholder="Местоположение">
+                    <div class="select-wrapper">
+                        <input class="select-result" value="выдан" type="text" style="border-width: 0;appearance: none;"
+                            readonly placeholder="Статус">
+                        <div class="select">
+                            <div class="option">
+                                <span>хранение</span>
+                            </div>
+                            <div class="option">
+                                <span>выдан</span>
+                            </div>
+                            <div class="option">
+                                <span>списание</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button style="bottom: 10px; right: 10px;" id="submit-repair-end">Завершить</button>
+                    <h5>* если изменена конфигурация актива - обязательно внесите эти данные в поле его характеристик
+                    </h5>
+                    <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+                </div>
+            </div>
+
+            <div style="display: none;" id="fast-repair-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Быстрый ремонт техники</h1>
+                    <textarea class="description_problem" placeholder="Опишите проблему и решение" name="" cols="30"
+                        rows="5"></textarea>
+                    <input type="text" placeholder="Заказчик ремонта">
+                    <div class="file-wrapper">
+                        <label class="file-label" for="short-repair-file">Добавить файл (опционально)</label>
+                        <input type="file" hidden name="" id="short-repair-file">
+                    </div>
+                    <button style="bottom: 10px; right: 10px;" id="submit-short-repair">Solved &#129309;</button>
+                    <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
+                </div>
+            </div>
+            <div style="display: none;" id="data-1c-popup" class="popup-wrapper">
+                <div class="popup">
+                    <div class="close-btn">
+                        <img src="static/close.svg" alt="close">
+                    </div>
+                    <h1>Информация из 1С</h1>
+                    <div class="1c-data">
+                    </div>
+                    <div class="category-wrapper">
+                        <p>Категория</p>
+                        <input id="popup-select-1c" class="select-result" value="Компьютер" type="text"
+                            style="border-width: 0;appearance: none;" readonly placeholder="категория">
+                        <div class="select">
+                            <div class="option">
+                                <span>Компьютер</span>
+                            </div>
+                            <div class="option">
+                                <span>Ноутбук</span>
+                            </div>
+                            <div class="option">
+                                <span>Сервер</span>
+                            </div>
+                            <div class="option">
+                                <span>Маршрутизатор / свитч</span>
+                            </div>
+                            <div class="option">
+                                <span>Камера</span>
+                            </div>
+                            <div class="option"><span>Другое</span></div>
+                        </div>
+                    </div>
+                    <input type="text" class="input_100" placeholder="номер техники (pc1000)">
+                    <textarea name="" cols="20" rows="8" placeholder="сверьте данные с 1с. И впишите разницу"></textarea>
+                    <input type="file" name="1c_file" id="1c_file">
+                    <input type="button" value="Ввести товар" id="add_from_1c">
+                </div>
+            </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+            <script src="/static/API.js"></script>
+            <script src="static/main.js"></script>
+            <script src="static/repair.js"></script>
+
+        </div>
 </body>
 
 </html>

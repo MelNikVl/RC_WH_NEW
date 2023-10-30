@@ -3,11 +3,14 @@ import logging
 import os
 import secrets
 import shutil
-from fastapi import Depends, File, UploadFile, HTTPException
+from fastapi import Depends, File, UploadFile, HTTPException, Form
 from pydantic import parse_obj_as
 from sqlalchemy import update
 from sqlalchemy.orm import Session
 from crud.materials import MaterialCRUD
+from zeep import Transport, Client
+
+from app.utils.soap import basic, url
 from app.utils.utils import response
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
@@ -67,6 +70,75 @@ class MaterialsController:
         logging.info(f"username: , data: {body}")
         material = await MaterialCRUD.update_description(id=body.id, description=body.description, db=db)
         return response(data=material, status=True)
+
+    @staticmethod
+    async def get_material(id: str, user: user_dependency):
+        if user.get("role"):
+            try:
+                session = Session()
+                session.verify = False
+                session.auth = basic
+                transport = Transport(session=session)
+                client = Client(
+                    url,
+                    transport=transport)
+
+                resp = client.service.GetEquipmentInfo(EquipmentID=id)
+                from zeep import helpers
+                _json = helpers.serialize_object(resp, dict)
+                # print(_json)
+                return _json
+            except:
+                return response(data=f'Произошла ошибка', status=False)
+        else:
+            return response(data=f'Недостаточно прав', status=False)
+
+    @staticmethod
+    async def add_from_1c(
+            user: user_dependency,
+            photo: UploadFile = File(),
+            title: str = Form(),
+            category: str = Form(),
+            description: str = Form(),
+            id: str = Form(),
+            db: Session = Depends(get_db)
+    ):
+        try:
+
+            # Путь к папке назначения
+            destination_folder = os.path.join(f'{main_folder}\\photos', str(id))
+
+        # Проверяем, существует ли папка назначения, и создаем ее при необходимости
+            os.makedirs(destination_folder, exist_ok=True)
+
+            unique_filename = str(secrets.token_hex(4)) + os.path.splitext(photo.filename)[1]
+            destination_path = os.path.join(destination_folder, unique_filename)
+            material = Material(id=id, user_id=user.get("username"), category=category, title=title,
+                                description=description, date_time=datetime.datetime.now())
+
+            new_repair = Repair(material_id=id,
+                                responsible_it_dept_user=user.get("username"),
+                                problem_description="создание карточки актива",
+                                repair_number=1,
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                repair_status=False,
+                                repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
+                                )
+            db.add(material)
+            db.add(new_repair)
+            db.commit()
+            geolocation = GeoLocation(material_id=material.id, place="Склад IT", client_mail=user.get("username"),
+                                      status="хранение", date_time=datetime.datetime.now(),
+                                      initiator=user.get("username"))
+            db.add(geolocation)
+            db.commit()
+            material.geolocation_id = geolocation.id
+            db.commit()
+            with open(destination_path, "wb") as buffer:
+                buffer.write(await photo.read())
+        except Exception as e:
+            raise HTTPException(status_code=520, detail="Unknown error")
+        return response({"text": "Всё прошло успешно"})
 
     @staticmethod
     async def update_title(title: str,

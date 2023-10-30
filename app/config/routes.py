@@ -7,6 +7,7 @@ from app.controllers.accessories import AccessoriesController
 from app.controllers.auth import AuthController
 from app.controllers.logs import LogsController
 from app.controllers.testing import TestingController
+from app.utils.soap import get_material
 
 APIRouter.enter = lambda self: self
 APIRouter.exit = lambda *args: ''
@@ -59,6 +60,8 @@ materials.delete("/delete")(MaterialsController.delete_material)
 materials.get("/get_last_update")(MaterialsController.get_last_update)
 materials.post("/upload_photo")(MaterialsController.upload_photo)
 materials.post("/update_title")(MaterialsController.update_title)
+materials.get("/from_1c")(get_material)
+materials.post("/add_from_1c")(MaterialsController.add_from_1c)
 
 geolocation.post("/create")(GeoLocationController.create)
 geolocation.post("/get-by-id")(GeoLocationController.get_by_id)
