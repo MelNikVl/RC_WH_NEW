@@ -230,6 +230,7 @@ class FrontMainController:
         out["material_id"] = str(material_id)
         out["role"] = result["role"]
         out["infa_1c"] = get_material(material_id)
+        out["comments"] = await MaterialCRUD.get_comments(material_id, db)
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 

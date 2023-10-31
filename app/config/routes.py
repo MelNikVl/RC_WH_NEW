@@ -62,6 +62,7 @@ materials.post("/upload_photo")(MaterialsController.upload_photo)
 materials.post("/update_title")(MaterialsController.update_title)
 materials.get("/from_1c")(get_material)
 materials.post("/add_from_1c")(MaterialsController.add_from_1c)
+materials.post("/send_comment")(MaterialsController.send_comment)
 
 geolocation.post("/create")(GeoLocationController.create)
 geolocation.post("/get-by-id")(GeoLocationController.get_by_id)

@@ -105,3 +105,12 @@ class Notifications(Base):
     read: bool = Column(Boolean,  unique=False, default=False)
     unique_code: str = Column(String)
     date_time: datetime = Column(DateTime)
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    material_id = Column(String, ForeignKey('material.id'))
+    user_id: int = Column(Integer, ForeignKey('user.id'))
+    text: str = Column(String(100))
+

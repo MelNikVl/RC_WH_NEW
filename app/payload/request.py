@@ -79,3 +79,8 @@ class AccessoriesRequest(BaseModel):
     title: str
     count: int
     place: str
+
+
+class NewCommentRequest(BaseModel):
+    text: str
+    material_id: str

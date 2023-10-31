@@ -2,13 +2,14 @@ import random
 import string
 import sys
 
+from sqlalchemy.orm import Session
+
 sys.path.append("..")
 from fastapi import HTTPException, Depends
 from pydantic import parse_obj_as
 from typing import List
 from app.payload.response import MaterialUploadResponse
-from models.models import Material
-
+from models.models import Material, Comment
 
 '''
 класс CRUD - create read update delete
@@ -16,6 +17,13 @@ from models.models import Material
 '''
 
 class MaterialCRUD:
+    @staticmethod
+    async def get_comments(id: str, db:Session):
+        comments = db.query(Comment).filter(Comment.material_id == id).all()
+        result = []
+        for i in comments:
+            result.append({"text": i.text})
+        return result
     # Получение карточки по айди
     @staticmethod
     async def get(db, id: str):

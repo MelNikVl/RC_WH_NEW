@@ -130,6 +130,37 @@ $(document).ready(function () {
       }
     }
   }
-
+  async function send_comment(text) {
+    let data = {
+      "material_id": material_id,
+      "text": text
+    };
+      try {
+        const response = await fetch(host + "/materials/send_comment", {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Authorization': 'Bearer ' + access_token,
+            "Content-Type": "application/json"
+          }
+        });
+        const json = await response.json();
+        return json;
+      } catch (error) {
+        alert("произошла ошибка!");
+        window.location.reload();
+        return;
+      }
+    }
+  $("#send_comment").on("click", async ()=>{
+    let text = $("#comment-text").val();
+    if(text){
+      let res = await send_comment(text);
+      if (!res["status"]){
+        alert("Произошла ошибка!");
+      }
+      location.reload()
+    }
+  });
 });
 // добавление файлов

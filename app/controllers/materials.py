@@ -17,8 +17,9 @@ from app.utils.utils import response
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
 from db.db import get_db
-from app.payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest
-from models.models import GeoLocation, LogItem, Repair
+from app.payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest, \
+    NewCommentRequest
+from models.models import GeoLocation, LogItem, Repair, Comment
 from models.models import User, Material
 from static_data import main_folder
 
@@ -264,3 +265,13 @@ class MaterialsController:
         db.commit()
 
         return response(data={"message": f'Photo successfully added'}, status=True)
+
+    @staticmethod
+    async def send_comment(comment: NewCommentRequest, user: user_dependency, db: Session = Depends(get_db)):
+        if len(comment.text)<=100:
+            new_comment = Comment(material_id=comment.material_id, user_id=user.get("id"), text=comment.text)
+            db.add(new_comment)
+            db.commit()
+            return response({"text":"ok"}, True)
+        else:
+            return response({"text": "err"}, False)
