@@ -435,11 +435,12 @@ tbody input[type='checkbox'] {
 .welcome {
     margin: 0 1em;
     font-size: inherit;
-    float: left;
+    /* float: left; */
     background: whitesmoke;
     border-radius: 1em;
     /* padding: 0 0 1.7em 0; */
     /* height: 200px; */
+    text-align: left;
 }
 
 .counts {
@@ -847,7 +848,7 @@ details:not([open])>*:not(summary) {
     border-radius: 11px;
 }
 .menu_1 {margin: 1em;display: flex;flex-direction: column;width: 250px;align-content: center;justify-content: flex-end;align-items: stretch;flex: unset;}
-.menu_left {/* margin: 1em; */display: flex;flex-wrap: wrap;overflow: auto;/* flex-direction: column; */}
+.menu_left {display: flex;flex-wrap: wrap;/* flex-direction: column; *//* align-content: center; */justify-content: center;/* align-items: center; */}
 
 .podpis {
     margin: 1em;
@@ -927,4 +928,13 @@ font-weight: bolder;
     font-family: system-ui;
     font-weight: bolder;
     margin: 0 0 0.4em;
+}
+
+.param_photo {
+
+/* font-family: system-ui; */
+
+/* font-weight: bolder; */
+
+/* width: 50%; */
 }

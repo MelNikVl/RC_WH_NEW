@@ -63,17 +63,17 @@ $(document).ready(function () {
             <div class=\"1c-elem\">Описание 2: ${name2}</div>
         </div>`);
 
-        // заголовок и блок для перемещений
-        $("#data-1c-popup .1c-data").append(`<div><strong>Перемещения:</strong></div>`);
-        $("#data-1c-popup .1c-data").append("<div class=\"1c-history\"></div>");
-
-        // блок с перемещениями данными
+        let history_html = "";
+        history_html += "<details><summary>Перемещения:</summary><div class=\"1c-history\">";
         history.forEach(el => {
-            $("#data-1c-popup .1c-data .1c-history").append(`<div class="movement-item">
+            history_html += `<div class="movement-item">
         <div class=\"1c-elem\">Перемещение от: ${el["Period"]}</div>
         <div class=\"1c-elem\">Отдел: ${el["Dept"]}</div>
-        </div>`);
+        </div>`;
         });
+        history_html += "</div></details>";
+        $("#data-1c-popup .1c-data").append(history_html);
+
 
 
 
@@ -490,16 +490,19 @@ $(".category-wrapper .option").on("click", function () {
 $("#add_from_1c").on("click", function () {
     // 000355389
     let category = $("#popup-select-1c").val();
-    let descr = $("#data-1c-popup > div > textarea").val();
-    let title = $("#data-1c-popup > div > input.input_100").val();
+    let descr = $("#data-1c-popup textarea").val();
+    let title = $("#data-1c-popup #1c_title").val();
     let id = $("#1c-search").val();
-    let photo = $("#1c_file")[0].files[0];
-    if (!category || !title || !id || !photo) {
+    let files = $("#1c_file")[0].files;
+    
+    if (!category || !title || !id || !files[0]) {
         alert("Заполните необходимые поля*");
         return;
     }
     var fd = new FormData();
-    fd.append('photo', photo);
+    for (let f =0; f<files.length; f++){
+        fd.append('photos', files[f]);
+    }
     fd.append('category', category);
     fd.append('description', descr);
     fd.append('title', title);

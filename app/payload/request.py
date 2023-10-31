@@ -21,27 +21,27 @@ class MaterialsListRequest(BaseModel):
 
 
 class MaterialGetRequest(BaseModel):
-    id: int
+    id: str
 
 
 class MaterialUpdateDescriptionRequest(BaseModel):
-    id: int
+    id: str
     description: str
 
 
 class MaterialDeleteRequest(BaseModel):
-    id: int
+    id: str
 
 
 class GeoLocationCreateRequest(BaseModel):
-    material_id: int
+    material_id: str
     place: str
     client_mail: str
     status: str
 
 
 class GeoLocationGetByIdRequest(BaseModel):
-    material_id: int
+    material_id: str
 
 
 class UserAuth(BaseModel):
@@ -58,20 +58,20 @@ class UserAuth(BaseModel):
 
 
 class RepairCreateRequest(BaseModel):
-    material_id: int = Form()
+    material_id: str = Form()
     problem: str = Form()
     customer: str = Form()
 
 
 class RepairStopRequest(BaseModel):
-    material_id: int
+    material_id: str
     solution: str
     customer: str
     place: str
     status: str
 
 class RepairDetailsRequest(BaseModel):
-    material_id: int
+    material_id: str
     details: str
 
 class AccessoriesRequest(BaseModel):

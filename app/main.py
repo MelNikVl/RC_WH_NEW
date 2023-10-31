@@ -39,7 +39,7 @@ app.include_router(accessories)
 app.include_router(testing)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-# app.mount("/it_warehouse_docs", StaticFiles(directory="it_warehouse_docs"), name="it_warehouse_docs")
+app.mount("/it_warehouse_docs", StaticFiles(directory="it_warehouse_docs"), name="it_warehouse_docs")
 
 try:
     Updater()

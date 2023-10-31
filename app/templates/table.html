@@ -369,7 +369,7 @@ ssd:
                 </div>
             </div>
             <div style="display: none;" id="data-1c-popup" class="popup-wrapper">
-                <div class="popup">
+                <div class="popup" style="max-height: 80vh; overflow-y: scroll;">
                     <div class="close-btn">
                         <img src="static/close.svg" alt="close">
                     </div>
@@ -404,12 +404,12 @@ ssd:
                                     <div class="option"><span>Другое</span></div>
                                 </div>
                             </div>
-                            <input type="text" class="input_100" placeholder="номер техники (pc1000)">
+                            <input type="text" id="1c_title" class="input_100" placeholder="номер техники (pc1000)">
                             <textarea name="" cols="10" rows="4" placeholder="Скопируйте основные данные из 1с"></textarea>
                             <p>Добавьте фото:</p>
-                                <input type="file" name="1c_file" id="1c_file">
+                                <input type="file" multiple name="1c_file" id="1c_file">
                                 <p>Добавьте точное расположение</p>
-                                <input type="text" class="input_100" placeholder="**склад 1, полка 2.1">
+                                <input id="1c_geo" type="text" class="input_100" placeholder="**склад 1, полка 2.1">
                                 <hr>
                             <input type="button" value="Создать актив" id="add_from_1c">
                         </div>

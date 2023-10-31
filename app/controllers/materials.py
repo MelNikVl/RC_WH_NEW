@@ -3,6 +3,8 @@ import logging
 import os
 import secrets
 import shutil
+from typing import Annotated
+
 from fastapi import Depends, File, UploadFile, HTTPException, Form
 from pydantic import parse_obj_as
 from sqlalchemy import update
@@ -96,7 +98,7 @@ class MaterialsController:
     @staticmethod
     async def add_from_1c(
             user: user_dependency,
-            photo: UploadFile = File(),
+            photos: list[UploadFile],
             title: str = Form(),
             category: str = Form(),
             description: str = Form(),
@@ -111,8 +113,6 @@ class MaterialsController:
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
             os.makedirs(destination_folder, exist_ok=True)
 
-            unique_filename = str(secrets.token_hex(4)) + os.path.splitext(photo.filename)[1]
-            destination_path = os.path.join(destination_folder, unique_filename)
             material = Material(id=id, user_id=user.get("username"), category=category, title=title,
                                 description=description, date_time=datetime.datetime.now())
 
@@ -134,8 +134,11 @@ class MaterialsController:
             db.commit()
             material.geolocation_id = geolocation.id
             db.commit()
-            with open(destination_path, "wb") as buffer:
-                buffer.write(await photo.read())
+            for photo in photos:
+                unique_filename = str(secrets.token_hex(4)) + os.path.splitext(photo.filename)[1]
+                destination_path = os.path.join(destination_folder, unique_filename)
+                with open(destination_path, "wb") as buffer:
+                    buffer.write(await photo.read())
         except Exception as e:
             raise HTTPException(status_code=520, detail="Unknown error")
         return response({"text": "Всё прошло успешно"})
