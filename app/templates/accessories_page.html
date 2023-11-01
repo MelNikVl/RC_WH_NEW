@@ -36,21 +36,7 @@
             <div class="counts">
                 <p class="p_for_count"><b>Всего комплектующих: {{ data.count_accessories }}</b></p>
             </div>
-    <div class="counts">
-            <details>
-                    <summary class="ml-4">последние 5 выдач</summary>
-                        <div class="menu_accessories">
-                            {% for item in data.top_info %}
-                                    <div class="menu_accessories_1">
-                                        <tr>
-                                            <td>{{ item.date_time }} -- </td>
-                                            <td>{{ item.values_of_change }}</td>
-                                        </tr>
-                                        </div>
-                                    {% endfor %}
-                            </div>
-                     </details>
-        </div>
+    
 
 
         <div class="clear"></div>
@@ -58,7 +44,7 @@
 
     <div class="body_separate scrollable_table">
             <div class="body_left top-panel">
-                 <div class="welcome">
+                 <!-- <div class="welcome">
                     <p class="hello">{{ data.username }} шеф &#128293;</p>
                     {% if data.role == True %}
                     <p class="hello_2"><b>административный</b> доступ</p>
@@ -66,7 +52,7 @@
                     {% if data.role == False %}
                     <p class="hello_2"><b>пользовательский</b> доступ</p>
                     {% endif %}
-                </div>
+                </div> -->
             <div class="menu_left">
                 <div class="menu_1">
                     <button id="create">Добавить новые</button>
@@ -75,6 +61,24 @@
                      </div>
 
                 </div>
+
+                <div class="ml-4">
+                    <details >
+                            <summary>последние 5 выдач</summary>
+                                <div class="menu_accessories">
+                                    {% for item in data.top_info %}
+                                            <div class="menu_accessories_1">
+                                                <tr>
+                                                    <td>{{ item.date_time }} -- </td>
+                                                    <td>{{ item.values_of_change }}</td>
+                                                </tr>
+                                                </div>
+                                            {% endfor %}
+                                    </div>
+                             </details>
+                </div>
+
+
             </div>
         <div class="button-wrapper">
         </div>

@@ -63,19 +63,26 @@
                                 {%endif%}
                             </div>
                             {%endif%}
-
                         </div>
+
+                    
+
                     </div>
                     <div class="comment-block">
+                        <div class="comments_title">comments</div>
+
+                        <div class="comments_body">
                         <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
                         <button id="send_comment">Отправить</button>
+                    </div>
                         <div class="comments">
                             {% for comment in data.comments%}
                                 <div class="comment">
                                     <div class="one_comment">- {{comment["text"]}}</div>
                                 </div>
                             {% endfor %}
-                        </div>
+                        
+                    </div>
                     </div>
                 </div>
 
@@ -84,21 +91,29 @@
                 <div class="card_of_material_main_1c">
                     <p class="c_title"><u>Данные из 1с</u></p>
                     <div class="card_of_material_main_1">
-                        <p>Описание / характеристики: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
-                        <div class="geo_material_one">
-                            <details>
-                                <summary>расширенное описание</summary>
-                                <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
-                                <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
-                            </details>
-                        </div>
+                        <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
+                        <details>
+                            <summary>расширенное описание</summary>
+                            <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
+                            <p>Описание / характеристики: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
+                            <p>Цена: {{ data.infa_1c["EquipmentData"]["InitialCost"] }} $</p>
+                        </details>
                         {% set last_item = data.infa_1c["EquipmentData"]["MovementHistory"][-1] %}
                         <p><strong>Расположение сейчас:</strong> {{ last_item.Dept }}, дата перемещения: {{
                             last_item.Period }},
                             числится на: {{ last_item.Person }}</p>
-                        <p>Цена: {{ data.infa_1c["EquipmentData"]["InitialCost"] }} $</p>
-
-
+                        <div class="geo_material_one">
+                            
+                            <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: {{ data.one_material.description }}</p>
+                            <p class="desc_09">Номер IT: {{ data.one_material.title }}</p>
+                            <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
+                            <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
+                                -----  Файлов в папке актива: {{ data.len_of_files }}</p>
+                            <p class="desc_09">{{ data.one_material.user_id }} проверил актив и подтвердил спецификацию при вводе {{ data.date_time_f }},
+                                установил расположение: {{ data.current_place }}</p>
+                            
+                        </div>
+                        
                         <div class="card_of_material">
                             <h3>ПЕРЕМЕЩЕНИЯ 1с:</h3>
                             {% for item in data.infa_1c["EquipmentData"]["MovementHistory"] %}
@@ -113,28 +128,17 @@
                             {% endfor %}
                         </div>
                     </div>
-
-                    
-                    <div class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
-                        -----  Файлов в папке актива: {{ data.len_of_files }}</div>
-        
-                    
                 </div>
 
                 <div class="card_of_material_main_1c">
-                    <p class="c_title"><u>Данные добавленные в IT WH</u></p>
+                    <p class="c_title"><u>Добавленные данные</u></p>
                     <div class="card_of_material_main_1">
-                        <p class="desc_09">Номер: {{ data.one_material.title }}</p>
-                        <p class="desc_09">Категория: {{ data.one_material.category }}</p>
-                        <p class="desc_09">Описание: {{ data.one_material.description }}</p>
+                        
                         <p class="desc_09">Статус: {{ data.current_status }}</p>
-                        <p class="desc_09">Расположение: {{ data.current_place }}</p>
-                        <p class="desc_09">Ответственный сейчас: {{ data.current_user }}</p>
-                        <p class="desc_09">Дата ввода в IT WH: {{ data.date_time_f }}, завел и проверил данные - {{
-                            data.one_material.user_id }}</p>
-
+                        <p class="desc_09">Заявленный ответсвенный: {{ data.current_user }}</p>
+                        
                         <div class="card_of_material">
-                            <h3>ПЕРЕМЕЩЕНИЯ</h3>
+                            <h3>Заявки на ПЕРЕМЕЩЕНИЯ от IT</h3>
                             <h5>*(сначала новые):</h5>
                             {% for item in data.geo_material %}
                             <div class="geo_material_one">

@@ -214,6 +214,9 @@ ssd (Gb):
 оперативная память (Gb): 
 жесткий диск (Gb): 
 *дополнительная информация: `;
+        let monitor_template =
+`производитель:
+модель: `;
         let server_template =
             `производитель: 
 модель: 
@@ -237,6 +240,9 @@ RAID: `;
                 break;
             case "Ноутбук":
                 $("#new-popup textarea").val(laptop_template);
+                break;
+            case "Монитор":
+                $("#new-popup textarea").val(monitor_template);
                 break;
             case "Сервер":
                 $("#new-popup textarea").val(server_template);

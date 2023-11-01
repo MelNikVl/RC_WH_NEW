@@ -16,11 +16,12 @@
 
 <body>
     <div class="body_body">
-        <div class="title_1">IT warehouse tracker (Admins page)</div>
+        <div class="top-part">
+            <div class="title_1">IT warehouse tracker (Admin page)</div>
             <div class="button_exit">
                 <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
                 {% if data.role == True %}
-                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
                 {% endif %}
                 <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
                 <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
@@ -30,17 +31,24 @@
                 <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
             </div>
             <div class="clear"></div>
+
+            <div class="top_pan_2">
             <div class="counts">
                 <p class="p_for_count"><b>Всего пользователей: {{ data.count }}</b></p>
                 <p class="p_for_count">Админов: {{ data.admins_count }}</p>
+                
             </div>
-            <button class="button_to_file"  id="logs"
-                    onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
-            <button class="button_to_file"  id="ntf"
-                    onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'>Уведомления</button>
-            <button class="button_to_file"  id="swagger" class="button_admins_page"
-                    onclick="window.location.href = '/docs'">Swagger</button>
+            <button class="button_10"  id="logs"
+            onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
+        <button class="button_10"  id="ntf"
+                onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'>Уведомления</button>
+        <button class="button_10"  id="swagger" class="button_admins_page"
+                onclick="window.location.href = '/docs'">Swagger</button>
+        
+        </div>
+            
         <div class="clear"></div>
+    </div>
 
         <div class="body_separate">
             <div class="body_left top-panel">
