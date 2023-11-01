@@ -44,14 +44,8 @@
 
                 <!-- левая часть меню -->
                 <div class="body_left top-panel">
-                    <div class="welcome">
-                        <p class="hello">{{ data.username }} шеф &#128293;</p>
-                        {% if data.role == True %}
-                        <p class="hello_2"><b>административный</b> доступ</p>
-                        {% endif %}
-                        {% if data.role == False %}
-                        <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
-                        {% endif %}
+                    <div class="photo_one_card">
+                        <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
                     </div>
                     <div class="menu_left">
                         <div class="menu_1">
@@ -65,11 +59,22 @@
                                 <!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
                                 <!--        <button id="end_repair" class="yell_button">Закончить ремонт</button>-->
                                 {% if data.current_status != "ремонт"%}
-                                <button id="move_to_trash" class="red_button">Отправить на списание &#129512;</button>
+                                <button id="move_to_trash" class="red_button">Списать</button>
                                 {%endif%}
                             </div>
                             {%endif%}
 
+                        </div>
+                    </div>
+                    <div class="comment-block">
+                        <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
+                        <button id="send_comment">Отправить</button>
+                        <div class="comments">
+                            {% for comment in data.comments%}
+                                <div class="comment">
+                                    <div class="one_comment">- {{comment["text"]}}</div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -108,6 +113,12 @@
                             {% endfor %}
                         </div>
                     </div>
+
+                    
+                    <div class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
+                        -----  Файлов в папке актива: {{ data.len_of_files }}</div>
+        
+                    
                 </div>
 
                 <div class="card_of_material_main_1c">
@@ -186,25 +197,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="comment-block">
-                    <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
-                    <button id="send_comment">Отправить</button>
-                    <div class="comments">
-                        {% for comment in data.comments%}
-                            <div class="comment">
-                                <p>{{comment["text"]}}</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
+                
 
             </div>
 
-            <div class="photo_one_card">
-                <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
-            </div>
-            <div class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
-                -----  Файлов в папке актива: {{ data.len_of_files }}</div>
+            
             <!-- попапы -->
 
             <div style="display: none;" id="new-geo-popup" class="popup-wrapper">

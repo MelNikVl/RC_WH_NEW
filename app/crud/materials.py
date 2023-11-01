@@ -24,6 +24,7 @@ class MaterialCRUD:
         for i in comments:
             result.append({"text": i.text})
         return result
+
     # Получение карточки по айди
     @staticmethod
     async def get(db, id: str):
