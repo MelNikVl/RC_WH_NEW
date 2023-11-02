@@ -66,7 +66,7 @@
                 </div>
                     <div class="menu_1">
 
-                        <button id="new">Завести актив</button>
+                        <!-- <button id="new">Завести актив</button> -->
                         <button id="delete">Удалить</button>
                         <button id="add_photo">Добавить файлы</button>
                         <button id="relocate">Переместить</button>
@@ -145,9 +145,7 @@
                                     <td>{{ item.category }}</td>
                                     <td>{{ item.title }}</td>
                                     <td>
-                                        <textarea cols="30" rows="5">
-    {{ item.description }}
-                                </textarea>
+                                    <textarea cols="30" rows="5">{{ item.description }}</textarea>
                                     </td>
                                     <td>{{ item.date_time }}</td>
                                     <td>{{ item["geolocation_place"] }}</td>
@@ -410,7 +408,7 @@ ssd:
                                 <p>Добавьте точное расположение</p>
                                 <input id="1c_geo" type="text" class="input_100" placeholder="**склад 1, полка 2.1">
                                 <hr>
-                            <input type="button" value="Создать актив" id="add_from_1c">
+                            <input type="button" value="Подтверждаю характеристики. Добавить актив в IT WH" id="add_from_1c">
                         </div>
                     </details>
 

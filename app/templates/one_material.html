@@ -48,6 +48,7 @@
                         <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
                     </div>
                     <div class="menu_left">
+                        <p class="desc_09">Заявленный статус: {{ data.current_status }}</p>
                         <div class="menu_1">
                             {% if data.current_status != "списание"%}
                             <div class="action-buttons_1_card">
@@ -89,7 +90,7 @@
                 <!-- правая часть -->
 
                 <div class="card_of_material_main_1c">
-                    <p class="c_title"><u>Данные из 1с</u></p>
+                    <!-- <p class="c_title"><u>Данные из 1с</u></p> -->
                     <div class="card_of_material_main_1">
                         <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
                         <details>
@@ -109,8 +110,8 @@
                             <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
                             <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
                                 -----  Файлов в папке актива: {{ data.len_of_files }}</p>
-                            <p class="desc_09">{{ data.one_material.user_id }} проверил актив и подтвердил спецификацию при вводе {{ data.date_time_f }},
-                                установил расположение: {{ data.current_place }}</p>
+                            <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
+                                при вводе {{ data.date_time_f }}, установленное расположение: {{ data.current_place }} &#128077;</p>
                             
                         </div>
                         
@@ -134,7 +135,7 @@
                     <p class="c_title"><u>Добавленные данные</u></p>
                     <div class="card_of_material_main_1">
                         
-                        <p class="desc_09">Статус: {{ data.current_status }}</p>
+                        
                         <p class="desc_09">Заявленный ответсвенный: {{ data.current_user }}</p>
                         
                         <div class="card_of_material">

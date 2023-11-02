@@ -52,6 +52,8 @@ $(document).ready(function () {
         let history = equip["MovementHistory"];
         let name = equip["FullName"];
         let name2 = equip["Name"];
+        let name_ru = equip["NameRU"];
+        
 
         // заголовок для данных
         $("#data-1c-popup .1c-data").append(`<div><strong>Данные по ID ${id}</strong></div>`);
@@ -61,6 +63,7 @@ $(document).ready(function () {
             <div class=\"1c-elem\">Дата ввода: ${date}</div>
             <div class=\"1c-elem\">Описание 1: ${name}</div>
             <div class=\"1c-elem\">Описание 2: ${name2}</div>
+            // <div class=\"1c-elem\">Описание 3: ${name_ru}</div>
         </div>`);
 
         let history_html = "";

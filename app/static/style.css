@@ -482,7 +482,7 @@ tbody input[type='checkbox'] {
 
 .card_of_material {
     border: 1px solid #c3c3c3;
-    background: #cbccdd87;
+    background: #eefffd;
     border-radius: 1em;
     padding: 1em;
     /* margin: 1em; */
@@ -846,12 +846,15 @@ details:not([open])>*:not(summary) {
 .fixed_buttons{
     position: sticky;
     top: 0px;
+    width: 100%;
+    background: #f9f9f9;
 }
 
 .scrollable_table{
     overflow-y: scroll;
     width: 100%;
     height: 80vh;
+    font-family: system-ui;
 }
 .top-part{
     height: 20vh;
@@ -894,7 +897,7 @@ font-weight: bolder;
 
 .wow {
     font-size: large;
-    background: #ffff006e;
+    background: #ffdd8c;
     border-radius: 1em;
     text-align: center;
     padding: 0.5em;
@@ -919,7 +922,7 @@ font-weight: bolder;
 .comment-block {
     max-width: 210px;
     padding: 1em;
-    background: #f1ffc5;
+    background: #eefffd;
 }
 
 .one_comment {
@@ -941,4 +944,12 @@ margin: 0 1em;
 .ml-4 {
 
     margin: 1em 0 0 0;
+}
+
+.sign_adm {
+    margin: 1em 0;
+    background: #40e0d08a;
+    padding: 1em;
+    border-radius: 1em;
+    font-family: system-ui;
 }
