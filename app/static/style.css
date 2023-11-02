@@ -29,7 +29,7 @@ body {
     font-family: unset;
 }
 
-.card_of_material_main_1c {/* background: #e5e5e580; */padding: 1em;margin: 1em;border-radius: 1em;width: 50%;height: max-content;}
+.card_of_material_main_1c {/* background: #e5e5e580; */padding: 1em;margin: 1em;border-radius: 1em;/* width: 50%; */height: max-content;}
 
 .table-wrapper {
     opacity: 1;
@@ -494,7 +494,8 @@ tbody input[type='checkbox'] {
 }
 
 .geo_material_one {
-    margin: 1em 0 0;
+    margin: 1em;
+    /* width: 30%; */
 }
 
 .button_go_to_app_in_one_card {
@@ -576,6 +577,7 @@ tbody input[type='checkbox'] {
     border-radius: 1em;
     font-weight: bold;
     padding: 1em;
+    display: flex;
 }
 
 .desc_09 {
@@ -919,9 +921,12 @@ font-weight: bolder;
 }
 
 .comment-block {
-    max-width: 210px;
+    /* max-width: 210px; */
     padding: 1em;
     background: #eefffd;
+    margin: 1em;
+    border: 1px solid rosybrown;
+    border-radius: 1em;
 }
 
 .one_comment {
@@ -929,15 +934,30 @@ font-weight: bolder;
 }
 
 .comments_title {
-    font-size: xx-large;
+    font-size: unset;
 }
 
 .comments_body {
     margin: 1em 0 0 0;
 }
 
+.b_per_1 {
+
+/* margin: 0 1em; */
+
+font-size: large;
+
+background: #9acd3200;
+
+text-transform: uppercase;
+}
+
 .button_10 {
 margin: 0 1em;
+}
+
+.half_w {
+    max-width: 50%;
 }
 
 .ml-4 {

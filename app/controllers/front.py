@@ -232,6 +232,7 @@ class FrontMainController:
         out["material_id"] = str(material_id)
         out["role"] = result["role"]
         out["comments"] = await MaterialCRUD.get_comments(material_id, db)
+        # out["type_geo"] = db.query(GeoLocation).filter(User.username == user_for_delete).first()
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 

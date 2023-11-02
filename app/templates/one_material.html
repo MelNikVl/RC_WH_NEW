@@ -69,98 +69,126 @@
                     
 
                     </div>
-                    <div class="comment-block">
-                        <div class="comments_title">comments</div>
 
-                        <div class="comments_body">
-                        <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
-                        <button id="send_comment">Отправить</button>
-                    </div>
-                        <div class="comments">
-                            {% for comment in data.comments%}
-                                <div class="comment">
-                                    <div class="one_comment">- {{comment["text"]}}</div>
-                                </div>
-                            {% endfor %}
-                        
-                    </div>
-                    </div>
+
+
+
+
                 </div>
 
                 <!-- правая часть -->
 
-                <!-- <div class="card_of_material_main_1c">
-                    
-                </div> -->
-
                 <div class="card_of_material_main_1c">
-                    <p class="c_title"><u>Добавленные данные</u></p>
                     <div class="card_of_material_main_1">
-                        
-                        
-                        <p class="desc_09">Заявленный ответсвенный: {{ data.current_user }}</p>
-                        
-                        <div class="card_of_material">
-                            <h3>Заявки на ПЕРЕМЕЩЕНИЯ от IT</h3>
-                            <h5>*(сначала новые):</h5>
-                            {% for item in data.geo_material %}
+                        <div class="half_w">
                             <div class="geo_material_one">
-                                <details class="det_1">
-                                    <summary>{{ item.date_time }} на {{ item.client_mail }}</summary>
+
+                                <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: {{ data.one_material.description }}</p>
+                                <p class="desc_09">Номер IT: {{ data.one_material.title }}</p>
+                                <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
+                                <p class="desc_09">Заявленный ответсвенный сейчас: {{ data.current_user }}</p>
+                                <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
+                                    -----  Файлов в папке актива: {{ data.len_of_files }}</p>
+                                <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования
+                                    при вводе {{ data.date_time_f }}, установленное расположение: {{ data.current_place }} &#128077;</p>
+
+                            </div>
+                            <div class="comment-block">
+                                <div class="comments_title">Комментарии</div>
+
+                                <div class="comments_body">
+                                <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
+                                <button id="send_comment">Отправить</button>
+                                    </div>
+                                        <div class="comments">
+                                            {% for comment in data.comments%}
+                                                <div class="comment">
+                                                    <div class="one_comment">- {{comment["text"]}}</div>
+                                                </div>
+                                            {% endfor %}
+
+                                    </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card_of_material">
+                                <button class="b_per_1" id="toggleList">Перемещения (click!)</button>
+                                <div id="geoMaterialList" style="display: none;">
+<!--                                <h3>ПЕРЕМЕЩЕНИЯ *(сначала новые):</h3>-->
+                                {% for item in data.geo_material %}
+                                <div class="geo_material_one">
+                                <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
+                                    <summary>
+                                        {{ item.date_time }} на {{ item.client_mail }}
+                                    </summary>
                                     <div class="desc_one_card">
                                         <div>Место: {{ item.place }},</div>
-                                        <div>Ответственный: {{ item.client_mail }},</div>
                                         <div>Статус: {{ item.status }},</div>
-                                        <div>Иницатор: {{ item.initiator }},</div>
+                                        <div>Инициатор: {{ item.initiator }},</div>
                                     </div>
                                 </details>
+                                </div>
+                                {% endfor %}
+                                </div>
+
+                                <script>
+                                    document.getElementById("toggleList").addEventListener("click", function() {
+                                    var geoMaterialList = document.getElementById("geoMaterialList");
+                                    if (geoMaterialList.style.display === "none") {
+                                        geoMaterialList.style.display = "block";
+                                    } else {
+                                        geoMaterialList.style.display = "none";
+                                    }
+                                    });
+                                </script>
+
                             </div>
-                            <div class="clear"></div>
-                            {% endfor %}
-                        </div>
 
-                        <div class="repair_stile">
-                            <h3>РЕМОНТЫ</h3>
-                            <h5>*(сначала новые):</h5>
 
-                            {% for item in data.repairs %}
-                            <div class="geo_material_one">
-                                <details>
-                                    <summary>поступление {{ item[0].date_time }}, статус:
+
+                            <div class="repair_stile">
+                                <h3>РЕМОНТЫ</h3>
+                                <h5>*(сначала новые):</h5>
+
+                                {% for item in data.repairs %}
+                                <div class="geo_material_one">
+                                    <details>
+                                        <summary>поступление {{ item[0].date_time }}, статус:
+                                            {% for item in item %}
+                                            {% if loop.last %}
+                                            {% set last_repair_status = item.repair_status %}
+                                            {% if last_repair_status == True %}
+                                            в ремонте
+                                            {% endif %}
+                                            {% if last_repair_status == False %}
+                                            ремонт закончен {{item.date_time}}
+                                            {% endif %}
+                                            {% endif %}
+                                            {% endfor %}</summary>
                                         {% for item in item %}
-                                        {% if loop.last %}
-                                        {% set last_repair_status = item.repair_status %}
-                                        {% if last_repair_status == True %}
-                                        в ремонте
-                                        {% endif %}
-                                        {% if last_repair_status == False %}
-                                        ремонт закончен {{item.date_time}}
-                                        {% endif %}
-                                        {% endif %}
-                                        {% endfor %}</summary>
-                                    {% for item in item %}
-                                    <div class="geo_material_one_dial">
-                                        <div class="rep_status">
-                                            {% if item.repair_status == True %}
-                                            <div>В РЕМОНТЕ</div>
-                                            {% endif %}
-                                            {% if item.repair_status == False %}
-                                            <div>ВЫВЕДЕН ИЗ РЕМОНТА</div>
-                                            {% endif %}
+                                        <div class="geo_material_one_dial">
+                                            <div class="rep_status">
+                                                {% if item.repair_status == True %}
+                                                <div>В РЕМОНТЕ</div>
+                                                {% endif %}
+                                                {% if item.repair_status == False %}
+                                                <div>ВЫВЕДЕН ИЗ РЕМОНТА</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="date_one_card">Дата: {{ item.date_time }}</div>
+                                            <div class="desc_one_card">
+                                                <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
+                                                <div>Кто сдал: {{ item.user_whose_technique }},</div>
+                                                <div>Проблема / решение: {{ item.problem_description }},</div>
+                                            </div>
                                         </div>
-                                        <div class="date_one_card">Дата: {{ item.date_time }}</div>
-                                        <div class="desc_one_card">
-                                            <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
-                                            <div>Кто сдал: {{ item.user_whose_technique }},</div>
-                                            <div>Проблема / решение: {{ item.problem_description }},</div>
-                                        </div>
-                                    </div>
-                                    <div class="clear"></div>
-                                    {% endfor %}
-                                </details>
-                            </div>
-                            {% endfor %}
+                                        <div class="clear"></div>
+                                        {% endfor %}
+                                    </details>
+                                </div>
+                                {% endfor %}
 
+                            </div>
                         </div>
                     </div>
                 </div>
