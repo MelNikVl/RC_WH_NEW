@@ -124,6 +124,7 @@ class FrontMainController:
             out["username"] = result["username"]
             out["role"] = result["role"]
         except Exception as e:
+            print(e)
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         # апендим к основному json еще и местоположение актива из таблицы ГЕО
@@ -199,6 +200,7 @@ class FrontMainController:
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
+
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())

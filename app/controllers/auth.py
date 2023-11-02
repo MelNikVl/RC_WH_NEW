@@ -19,6 +19,7 @@ class AuthController:
                     db: Session = Depends(get_db)):
 
         user_db = AuthUtil.check_user(form_data.username, form_data.password, db)
+        dir(user_db)
         if not user_db:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail='Could not valiable user')
