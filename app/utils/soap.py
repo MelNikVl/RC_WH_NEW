@@ -23,7 +23,7 @@ def get_material(id: str):
 
     # print(client.service.GetEquipment(10))
     response = client.service.GetEquipmentInfo(EquipmentID=id)
-    # print(response)
+    print(response)
     from zeep import helpers
     _json = helpers.serialize_object(response, dict)
     # print(_json)

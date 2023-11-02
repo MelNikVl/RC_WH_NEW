@@ -3,23 +3,23 @@ import logging
 import os
 import secrets
 import shutil
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import Depends, File, UploadFile, HTTPException, Form
 from pydantic import parse_obj_as
-from sqlalchemy import update
+from sqlalchemy import update, desc
 from sqlalchemy.orm import Session
 from crud.materials import MaterialCRUD
 from zeep import Transport, Client
 
-from app.utils.soap import basic, url
+from app.utils.soap import basic, url, get_material
 from app.utils.utils import response
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
 from db.db import get_db
 from app.payload.request import MaterialCreateRequest, MaterialGetRequest, MaterialUpdateDescriptionRequest, \
     NewCommentRequest
-from models.models import GeoLocation, LogItem, Repair, Comment
+from models.models import GeoLocation, LogItem, Repair, Comment, GEO_TYPE, Raw_1c
 from models.models import User, Material
 from static_data import main_folder
 
@@ -104,8 +104,10 @@ class MaterialsController:
             category: str = Form(),
             description: str = Form(),
             id: str = Form(),
+            new_geo: Annotated[str | None, Form()] = None,
             db: Session = Depends(get_db)
     ):
+        global geolocation
         try:
 
             # Путь к папке назначения
@@ -117,6 +119,25 @@ class MaterialsController:
             material = Material(id=id, user_id=user.get("username"), category=category, title=title,
                                 description=description, date_time=datetime.datetime.now())
 
+
+
+            data_1c = get_material(id)["EquipmentData"]
+            history = data_1c["MovementHistory"]
+            new_raw = Raw_1c(material_id=id,
+                             name_ru=data_1c["NameRU"],
+                             name_en=data_1c["NameEN"],
+                             full_name=data_1c["FullName"],
+                             date_time=data_1c["AcceptanceDate"],
+                             organization=data_1c["Organization"],
+                             cost=data_1c["InitialCost"],
+                             cur_dept=data_1c["CurrentDept"],
+                             cur_person=data_1c["CurrentPerson"]
+                             )
+            db.add(new_raw)
+            for i in history:
+                geolocation = GeoLocation(material_id=id, place=i["Dept"], client_mail=i["Person"],
+                                          date_time=i["Period"], geo_type=GEO_TYPE.movement.value, comment=i["Document"])
+                db.add(geolocation)
             new_repair = Repair(material_id=id,
                                 responsible_it_dept_user=user.get("username"),
                                 problem_description="создание карточки актива",
@@ -125,23 +146,28 @@ class MaterialsController:
                                 repair_status=False,
                                 repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                                 )
+            if new_geo:
+                n_geo =  GeoLocation(material_id=id, place=new_geo, client_mail=user.get("username"),
+                                     initiator=user.get("username"), status="хранение",
+                                     date_time=datetime.datetime.now(), geo_type=GEO_TYPE.request.value,
+                                     comment="")
+                db.add(n_geo)
+            db.commit()
+            last_loc = db.query(GeoLocation).order_by(desc(GeoLocation.id)).filter(GeoLocation.material_id == id).first()
+            dir(last_loc)
+            material.geolocation_id = last_loc.id
             db.add(material)
             db.add(new_repair)
-            db.commit()
-            geolocation = GeoLocation(material_id=material.id, place="Склад IT", client_mail=user.get("username"),
-                                      status="хранение", date_time=datetime.datetime.now(),
-                                      initiator=user.get("username"))
-            db.add(geolocation)
-            db.commit()
-            material.geolocation_id = geolocation.id
-            db.commit()
+
             for photo in photos:
                 unique_filename = str(secrets.token_hex(4)) + os.path.splitext(photo.filename)[1]
                 destination_path = os.path.join(destination_folder, unique_filename)
                 with open(destination_path, "wb") as buffer:
                     buffer.write(await photo.read())
         except Exception as e:
+            print(e)
             raise HTTPException(status_code=520, detail="Unknown error")
+        db.commit()
         return response({"text": "Всё прошло успешно"})
 
     @staticmethod

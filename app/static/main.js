@@ -503,6 +503,7 @@ $("#add_from_1c").on("click", function () {
     let title = $("#data-1c-popup #1c_title").val();
     let id = $("#1c-search").val();
     let files = $("#1c_file")[0].files;
+    let new_geo = $("#1c_geo").val().trim();
     
     if (!category || !title || !id || !files[0]) {
         alert("Заполните необходимые поля*");
@@ -511,6 +512,9 @@ $("#add_from_1c").on("click", function () {
     var fd = new FormData();
     for (let f =0; f<files.length; f++){
         fd.append('photos', files[f]);
+    }
+    if(new_geo){
+        fd.append('new_geo', new_geo);
     }
     fd.append('category', category);
     fd.append('description', descr);

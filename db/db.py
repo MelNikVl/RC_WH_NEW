@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from app.logs.events import bind_materials, bind_users
-from models.models import Material, User, GeoLocation
+from models.models import Material, User, GeoLocation, Base
 
 # расположение базы для разных систем
 db_path = os.path.join(os.path.dirname(__file__), "warehouse.db")

@@ -615,7 +615,6 @@ tbody input[type='checkbox'] {
 }
 
 .desc_one_card {
-    float: left;
     font-size: unset;
     margin: 0 0 1em 0;
     display: block;

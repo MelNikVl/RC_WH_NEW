@@ -89,47 +89,9 @@
 
                 <!-- правая часть -->
 
-                <div class="card_of_material_main_1c">
-                    <!-- <p class="c_title"><u>Данные из 1с</u></p> -->
-                    <div class="card_of_material_main_1">
-                        <p>Name 1: {{ data.infa_1c["EquipmentData"]["FullName"] }}</p>
-                        <details>
-                            <summary>расширенное описание</summary>
-                            <p>Name: {{ data.infa_1c["EquipmentData"]["Name"] }}</p>
-                            <p>Описание / характеристики: {{ data.infa_1c["EquipmentData"]["NameRU"] }}</p>
-                            <p>Цена: {{ data.infa_1c["EquipmentData"]["InitialCost"] }} $</p>
-                        </details>
-                        {% set last_item = data.infa_1c["EquipmentData"]["MovementHistory"][-1] %}
-                        <p><strong>Расположение сейчас:</strong> {{ last_item.Dept }}, дата перемещения: {{
-                            last_item.Period }},
-                            числится на: {{ last_item.Person }}</p>
-                        <div class="geo_material_one">
-                            
-                            <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: {{ data.one_material.description }}</p>
-                            <p class="desc_09">Номер IT: {{ data.one_material.title }}</p>
-                            <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
-                            <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
-                                -----  Файлов в папке актива: {{ data.len_of_files }}</p>
-                            <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
-                                при вводе {{ data.date_time_f }}, установленное расположение: {{ data.current_place }} &#128077;</p>
-                            
-                        </div>
-                        
-                        <div class="card_of_material">
-                            <h3>ПЕРЕМЕЩЕНИЯ 1с:</h3>
-                            {% for item in data.infa_1c["EquipmentData"]["MovementHistory"] %}
-                            <div class="geo_material_one">
-                                <details class="det_1">
-                                    <summary>{{ item.Period }} на {{ item.Person }}</summary>
-                                    <p>Место: {{ item.Dept }}</p>
-                                    <p>Document: {{ item.Document }}</p>
-                                </details>
-                            </div>
-                            <div class="clear"></div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+                <!-- <div class="card_of_material_main_1c">
+                    
+                </div> -->
 
                 <div class="card_of_material_main_1c">
                     <p class="c_title"><u>Добавленные данные</u></p>
@@ -330,6 +292,16 @@
 
             <script src="/static/API.js"></script>
             <script src="/static/repair.js"></script>
+            <script>
+                $(".select-result").on("click", function () {
+                    $(this).parent().find(".select").fadeToggle(300);
+                });
+                $(".select-wrapper .option").on("click", function () {
+                    $(this).closest(".select-wrapper").find(".select-result").val($(this).find("span").html());
+                    $(this).closest(".select-wrapper").find(".select-result").trigger("change");
+                    $(this).parent().fadeOut(300);
+                });
+            </script>
 
         </div>
 
