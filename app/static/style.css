@@ -494,7 +494,7 @@ tbody input[type='checkbox'] {
 }
 
 .geo_material_one {
-    margin: 1em;
+    margin: 0 1em 1em 0;
     /* width: 30%; */
 }
 
@@ -924,7 +924,7 @@ font-weight: bolder;
     /* max-width: 210px; */
     padding: 1em;
     background: #eefffd;
-    margin: 1em;
+    /* margin: 1em; */
     border: 1px solid rosybrown;
     border-radius: 1em;
 }
@@ -952,8 +952,23 @@ background: #9acd3200;
 text-transform: uppercase;
 }
 
+.from_1c {
+
+/* margin: 0 1em; */
+
+/* line-height: 0.5; */
+
+background: #edededb8;
+
+padding: 1em;
+
+border-radius: 1em;
+
+border: 1px solid #cdcdcd;
+}
+
 .button_10 {
-margin: 0 1em;
+    margin: 0 1em;
 }
 
 .half_w {

@@ -15,7 +15,7 @@ from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from app.utils.utils import get_first_photo, response
 from db.db import get_db
-from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem
+from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem, Raw_1c
 from app.payload.request import InvoiceCreateRequest, MaterialsListRequest
 from docx import Document
 from fastapi.responses import FileResponse
@@ -216,7 +216,6 @@ class FrontMainController:
         date_time = material_card['date_time']
         datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
         formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
-        from app.utils.soap import get_material
 
         out: Dict = {}
         out["token"] = t
@@ -232,7 +231,7 @@ class FrontMainController:
         out["material_id"] = str(material_id)
         out["role"] = result["role"]
         out["comments"] = await MaterialCRUD.get_comments(material_id, db)
-        # out["type_geo"] = db.query(GeoLocation).filter(User.username == user_for_delete).first()
+        out["raw_1c"] = jsonable_encoder(db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first())
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 
