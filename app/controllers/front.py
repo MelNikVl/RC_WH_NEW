@@ -200,15 +200,14 @@ class FrontMainController:
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
-
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
         material_geo1 = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
             desc(GeoLocation.date_time)).all()
-
         current_geo = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
             desc(GeoLocation.date_time)).all()[0]
+        result = await AuthUtil.decode_jwt(t)
 
         for item in material_geo1:
             item.date_time = item.date_time.strftime("%Y-%m-%d")
@@ -216,8 +215,10 @@ class FrontMainController:
         date_time = material_card['date_time']
         datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
         formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
+        raw_1c = jsonable_encoder(db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first())
 
         out: Dict = {}
+        out["username"] = result["username"]
         out["token"] = t
         out["one_material"] = material_card
         out["geo_material"] = material_geo1
@@ -231,7 +232,7 @@ class FrontMainController:
         out["material_id"] = str(material_id)
         out["role"] = result["role"]
         out["comments"] = await MaterialCRUD.get_comments(material_id, db)
-        out["raw_1c"] = jsonable_encoder(db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first())
+        out["raw_1c"] = raw_1c
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 

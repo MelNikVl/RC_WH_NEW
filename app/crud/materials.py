@@ -16,13 +16,15 @@ from models.models import Material, Comment
 здесь бизнес логика для энпоинтов
 '''
 
+
 class MaterialCRUD:
     @staticmethod
-    async def get_comments(id: str, db:Session):
+    async def get_comments(id: str, db: Session):
         comments = db.query(Comment).filter(Comment.material_id == id).all()
         result = []
         for i in comments:
-            result.append({"text": i.text + " (пользователь " + str(i.user_id) + " -- " + str(i.date_time) + ")"})
+            formatted_date = i.date_time.strftime("%Y-%m-%d %H:%M:%S")
+            result.append({"text": i.text + " (пользователь " + str(i.user_id) + " -- " + formatted_date + ")"})
         return result
 
     # Получение карточки по айди
@@ -56,6 +58,3 @@ class MaterialCRUD:
         letters_and_digits = string.ascii_letters + string.digits
         rand_string = ''.join(random.sample(letters_and_digits, length))
         return rand_string
-
-
-
