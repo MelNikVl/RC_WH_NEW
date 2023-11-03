@@ -295,7 +295,7 @@ class MaterialsController:
     async def send_comment(comment: NewCommentRequest, user: user_dependency, db: Session = Depends(get_db)):
         if len(comment.text) <= 500:
             new_comment = Comment(material_id=comment.material_id,
-                                  user_id=user.get("id"),
+                                  user_id=user.get("username"),
                                   text=comment.text,
                                   date_time=datetime.datetime.now()
                                   )
