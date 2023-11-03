@@ -24,7 +24,6 @@ from models.models import User, Material
 from static_data import main_folder
 
 
-
 class MaterialsController:
 
     # создание карточки актива
@@ -113,13 +112,11 @@ class MaterialsController:
             # Путь к папке назначения
             destination_folder = os.path.join(f'{main_folder}\\photos', str(id))
 
-        # Проверяем, существует ли папка назначения, и создаем ее при необходимости
+            # Проверяем, существует ли папка назначения, и создаем ее при необходимости
             os.makedirs(destination_folder, exist_ok=True)
 
             material = Material(id=id, user_id=user.get("username"), category=category, title=title,
                                 description=description, date_time=datetime.datetime.now())
-
-
 
             data_1c = get_material(id)["EquipmentData"]
             history = data_1c["MovementHistory"]
@@ -136,7 +133,8 @@ class MaterialsController:
             db.add(new_raw)
             for i in history:
                 geolocation = GeoLocation(material_id=id, place=i["Dept"], client_mail=i["Person"],
-                                          date_time=i["Period"], geo_type=GEO_TYPE.movement.value, comment=i["Document"])
+                                          date_time=i["Period"], geo_type=GEO_TYPE.movement.value,
+                                          comment=i["Document"])
                 db.add(geolocation)
             new_repair = Repair(material_id=id,
                                 responsible_it_dept_user=user.get("username"),
@@ -147,13 +145,14 @@ class MaterialsController:
                                 repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                                 )
             if new_geo:
-                n_geo =  GeoLocation(material_id=id, place=new_geo, client_mail=user.get("username"),
-                                     initiator=user.get("username"), status="хранение",
-                                     date_time=datetime.datetime.now(), geo_type=GEO_TYPE.request.value,
-                                     comment="")
+                n_geo = GeoLocation(material_id=id, place=new_geo, client_mail=user.get("username"),
+                                    initiator=user.get("username"), status="хранение",
+                                    date_time=datetime.datetime.now(), geo_type=GEO_TYPE.request.value,
+                                    comment="")
                 db.add(n_geo)
             db.commit()
-            last_loc = db.query(GeoLocation).order_by(desc(GeoLocation.id)).filter(GeoLocation.material_id == id).first()
+            last_loc = db.query(GeoLocation).order_by(desc(GeoLocation.id)).filter(
+                GeoLocation.material_id == id).first()
             dir(last_loc)
             material.geolocation_id = last_loc.id
             db.add(material)
@@ -294,10 +293,14 @@ class MaterialsController:
 
     @staticmethod
     async def send_comment(comment: NewCommentRequest, user: user_dependency, db: Session = Depends(get_db)):
-        if len(comment.text)<=100:
-            new_comment = Comment(material_id=comment.material_id, user_id=user.get("id"), text=comment.text)
+        if len(comment.text) <= 500:
+            new_comment = Comment(material_id=comment.material_id,
+                                  user_id=user.get("id"),
+                                  text=comment.text,
+                                  date_time=datetime.datetime.now()
+                                  )
             db.add(new_comment)
             db.commit()
-            return response({"text":"ok"}, True)
+            return response({"text": "ok"}, True)
         else:
             return response({"text": "err"}, False)

@@ -121,6 +121,7 @@ class Comment(Base):
     material_id = Column(String, ForeignKey('material.id'))
     user_id: int = Column(Integer, ForeignKey('user.id'))
     text: str = Column(String(100))
+    date_time: datetime = Column(DateTime)
 
 
 class Raw_1c(Base):
