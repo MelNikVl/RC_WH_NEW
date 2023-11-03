@@ -22,7 +22,7 @@ class MaterialCRUD:
         comments = db.query(Comment).filter(Comment.material_id == id).all()
         result = []
         for i in comments:
-            result.append({"text": i.text + " (" + str(i.user_id) + " -- " + str(i.date_time) + ")"})
+            result.append({"text": i.text + " (пользователь " + str(i.user_id) + " -- " + str(i.date_time) + ")"})
         return result
 
     # Получение карточки по айди
