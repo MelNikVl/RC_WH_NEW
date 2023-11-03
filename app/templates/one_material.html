@@ -75,9 +75,10 @@
                         <div class="half_w">
                             <div class="geo_material_one">
                                 <div class="from_1c">
-                                    <p class="desc_09">Описание из 1с: {{ data.raw_1c.full_name }}</p>
-                                    <p class="desc_09">Организация из 1с: {{ data.raw_1c.organization }}</p>
-                                    <p class="desc_09">Цена из 1с: {{ data.raw_1c.cost }}</p>
+                                    <p class="desc_09">Данные из 1с</p>
+                                    <p class="desc_09">Описание: {{ data.raw_1c.full_name }}</p>
+                                    <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
+                                    <p class="desc_09">Цена: {{ data.raw_1c.cost }}</p>
                                 </div>
 <!--                                <p class="desc_09">Отдел из 1с: {{ data.raw_1c.cur_dept }}</p>-->
 <!--                                <p class="desc_09">Ответственный из 1с: {{ data.raw_1c.cur_person }}</p>-->
@@ -99,7 +100,7 @@
                             <!-- <div class="card_of_material"> -->
                                 
                                 <div id="geoMaterialList" style="display: none;">
-<!--                                <h3>ПЕРЕМЕЩЕНИЯ *(сначала новые):</h3>-->
+                                <h4>салатовые - заявки, зеленые - перемещения из 1с.</h4>
                                 {% for item in data.geo_material %}
                                 <div class="geo_material_one">
                                 <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
