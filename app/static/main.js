@@ -63,7 +63,6 @@ $(document).ready(function () {
             <div class=\"1c-elem\">Дата ввода: ${date}</div>
             <div class=\"1c-elem\">Описание 1: ${name}</div>
             <div class=\"1c-elem\">Описание 2: ${name2}</div>
-            // <div class=\"1c-elem\">Описание 3: ${name_ru}</div>
         </div>`);
 
         let history_html = "";
