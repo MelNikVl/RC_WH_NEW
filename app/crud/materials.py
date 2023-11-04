@@ -24,7 +24,7 @@ class MaterialCRUD:
         result = []
         for i in comments:
             formatted_date = i.date_time.strftime("%Y-%m-%d %H:%M:%S")
-            result.append({"text": i.text + " (пользователь " + i.username + " -- " + formatted_date + ")"})
+            result.append({"text": i.text + " (пользователь " + str(i.user_id) + " -- " + formatted_date + ")"})
         return result
 
     # Получение карточки по айди
