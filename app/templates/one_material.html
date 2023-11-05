@@ -48,7 +48,7 @@
                         <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
                     </div>
                     <div class="menu_left">
-                        <p class="desc_09">Заявленный статус: {{ data.current_status }}</p>
+                        
                         <div class="menu_1">
                             {% if data.current_status != "списание"%}
                             <div class="action-buttons_1_card">
@@ -75,10 +75,10 @@
                         <div class="half_w">
                             <div class="geo_material_one">
                                 <div class="from_1c">
-                                    <p class="desc_09">Данные из 1с</p>
+                                    <p class="data_1c">Данные из 1с</p>
                                     <p class="desc_09">Описание: {{ data.raw_1c.full_name }}</p>
                                     <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
-                                    <p class="desc_09">Цена: {{ data.raw_1c.cost }}</p>
+                                    <p class="desc_09">Цена: {{ data.raw_1c.cost }} $</p>
                                 </div>
 <!--                                <p class="desc_09">Отдел из 1с: {{ data.raw_1c.cur_dept }}</p>-->
 <!--                                <p class="desc_09">Ответственный из 1с: {{ data.raw_1c.cur_person }}</p>-->
@@ -86,6 +86,7 @@
                                 <p class="desc_09">Номер IT: {{ data.one_material.title }}</p>
                                 <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
                                 <p class="desc_09">Заявленный ответсвенный сейчас: {{ data.current_user }}</p>
+                                <p class="desc_09">Заявленный статус: {{ data.current_status }}</p>
                                 <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
                                     -----  Файлов в папке актива: {{ data.len_of_files }}</p>
                                 <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования
@@ -189,9 +190,11 @@
         <!-- блок с комментариями -->
         <div class="comment-block">
             <div class="comments_title">Комментарии</div>
+            <div class="comments_h4"">не менее 10 сиволов</div>
             <div class="comments_body">
             <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
             <button id="send_comment">Отправить</button>
+            <!-- метод send_comment в материалс пай -->
                 </div>
                     <div class="comments">
                         {% for comment in data.comments%}
