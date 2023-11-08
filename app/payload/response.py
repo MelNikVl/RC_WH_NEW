@@ -17,6 +17,7 @@ class MaterialUploadResponse(BaseModel):
     # альтернативный формат даты
     # date_time: datetime.datetime
     geolocation_id: Optional[int]
+    pic: Optional[str]
 
     # альтернативный формат даты
     # @validator('date_time')

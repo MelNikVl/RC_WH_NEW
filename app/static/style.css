@@ -25,6 +25,13 @@
     opacity:1
  }
 
+.real_photo_all {
+    /* border-radius: 5px; */
+    max-width: 100px;
+    border: 1px solid #d1d1d1;
+    border-radius: 1em;
+ }
+
 tr:hover {
     background: #dee3e3;
 }

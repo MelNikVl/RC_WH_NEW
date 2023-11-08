@@ -114,6 +114,9 @@ class FrontMainController:
 
         out: Dict = {}
         materials = await MaterialCRUD.list_of_materials(db=db)
+        for i in materials:
+            i.pic = get_first_photo(i.id)["picture"]
+
         out[0] = jsonable_encoder(materials)
 
         # подсчет активов
