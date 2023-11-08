@@ -47,6 +47,8 @@
                 <div class="body_left top-panel">
                     <div class="photo_one_card">
                         <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
+                        <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
+                        <p class="desc_09">Статус: {{ data.current_status }}</p>
                     </div>
                     <div class="menu_left">
                         
@@ -83,27 +85,45 @@
                                 </div>
 <!--                                <p class="desc_09">Отдел из 1с: {{ data.raw_1c.cur_dept }}</p>-->
 <!--                                <p class="desc_09">Ответственный из 1с: {{ data.raw_1c.cur_person }}</p>-->
-                                <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: {{ data.one_material.description }}</p>
-                                <p class="desc_09">Номер IT: {{ data.one_material.title }}</p>
-                                <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
+                                <!-- <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: </p> -->
+                                <p class="number_from_IT">Номер IT: {{ data.one_material.title }}</p>
                                 <p class="desc_09">Заявленный ответсвенный сейчас: {{ data.current_user }}</p>
-                                <p class="desc_09">Заявленный статус на данный момент: {{ data.current_status }}</p>
                                 <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
                                     -----  Файлов в папке актива: {{ data.len_of_files }}</p>
                                 <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
                                     ({{ data.raw_1c.full_name }}) 
-                                    при вводе {{ data.date_time_f }}</p>
+                                    при вводе {{ data.date_time_f }}, дополнения: {{ data.one_material.description }}</p>
                             </div>
+
+                            <!-- блок с комментариями -->
+                                <div class="comment-block">
+                                    <div class="comments_title">Комментарии</div>
+                                    <div class="comments_h4">не менее 10 сиволов</div>
+                                    <div class="comments_body">
+                                    <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
+                                    <button id="send_comment">Отправить</button>
+                                    <!-- метод send_comment в материалс пай -->
+                                        </div>
+                                            <div class="comments">
+                                                {% for comment in data.comments%}
+                                                    <div class="comment">
+                                                        <div class="one_comment">- {{comment["text"]}}</div>
+                                                    </div>
+                                                {% endfor %}
+                                        </div>
+                                </div>
   
                         </div>
 
 
-                        <div>
-                            <button id="toggleList">Список перемещений и заявок на перемещения</button>
+                        <div class="doble_side">
+                            <div class="second_side_2">
+                            <!-- <button id="toggleList">Список перемещений и заявок на перемещения</button> -->
+                            <h3>Перемещения</h3>
                             <!-- <div class="card_of_material"> -->
                                 
-                                <div id="geoMaterialList" style="display: none;">
-                                <h4>салатовые - заявки на перемещения от IT отдела, зеленые - уже произведенные перемещения в 1с</h4>
+                                <div id="geoMaterialList">
+                                <p>салатовые - заявки на перемещения от IT отдела, зеленые - уже произведенные перемещения в 1с</p>
                                 {% for item in data.geo_material %}
                                 <div class="geo_material_one">
                                 <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
@@ -123,7 +143,7 @@
                                                 <i tooltip="Уведомление не подтверждено" style="color: rgb(53, 24, 235);" class="fa fa-star-half-o" aria-hidden="true"> - уведомление отправлено</i>
                                             {% endif %}    
                                         {% else %}
-                                            NONE
+                                            none
                                         {% endif %}
                                     </div>
                                     </div>
@@ -144,12 +164,15 @@
                                 </script>
 
                             <!-- </div> -->
+                        </div>
 
-
-                            <button id="toggleRepairList">Список ремонтов</button>
-                            <div id="repairList" style="display: none" class="repair_stile">
-                                <h3>РЕМОНТЫ</h3>
-                                <h5>*(сначала новые):</h5>
+                        <div class="second_side_2">
+                            <!-- <button id="toggleRepairList">Список ремонтов</button> -->
+                            <h3>Ремонты</h3>
+                            <p>*(сначала новые):</p>
+                            <div id="repairList" class="repair_stile">
+                                <!-- <h3>РЕМОНТЫ</h3> -->
+                                
                                 {% for item in data.repairs %}
                                     <div class="geo_material_one">
                                         <details>
@@ -200,24 +223,9 @@
                                     }
                                 });
                             </script>
-
-        <!-- блок с комментариями -->
-        <div class="comment-block">
-            <div class="comments_title">Комментарии</div>
-            <div class="comments_h4">не менее 10 сиволов</div>
-            <div class="comments_body">
-            <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
-            <button id="send_comment">Отправить</button>
-            <!-- метод send_comment в материалс пай -->
-                </div>
-                    <div class="comments">
-                        {% for comment in data.comments%}
-                            <div class="comment">
-                                <div class="one_comment">- {{comment["text"]}}</div>
                             </div>
-                        {% endfor %}
-                </div>
-        </div>
+
+        
 
                         </div>
                         <!-- закончился блок с перемещениями и ремонтами -->
