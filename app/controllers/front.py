@@ -205,8 +205,14 @@ class FrontMainController:
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
         material_geo1 = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
             desc(GeoLocation.date_time)).all()
+        for i in material_geo1:
+            if (i.geo_type != 1):
+                notification = db.query(Notifications).filter(Notifications.geolocation_id == i.id).first()
+                if notification: i.read = notification.read
+
         current_geo = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
             desc(GeoLocation.date_time)).all()[0]
+
         result = await AuthUtil.decode_jwt(t)
 
         for item in material_geo1:

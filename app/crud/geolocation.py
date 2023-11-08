@@ -26,7 +26,7 @@ class GeoLocationCRUD:
             db.commit()
             material[0].geolocation_id = geolocation.id
             db.commit()
-            return parse_obj_as(GeoLocationUploadResponse, geolocation)
+            return geolocation
 
     @staticmethod
     async def get_materials_for_trash(db) -> List[Material]:

@@ -2,12 +2,15 @@ import os, shutil, fastapi
 from typing import Dict, List
 from fastapi import Depends, Request, UploadFile, File, Form
 from fastapi.encoders import jsonable_encoder
+from pydantic import parse_obj_as
 from sqlalchemy import desc
 from app.crud.geolocation import GeoLocationCRUD
 from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
     RepairStopRequest, RepairDetailsRequest
 from starlette import status
+
+from app.payload.response import GeoLocationUploadResponse
 from app.utils.utils import response
 from app.utils.notifications import *
 from app.controllers.front import templates
@@ -32,14 +35,15 @@ class GeoLocationController:
                                                        db=db)
             # уведомление о перемещении
             material_for_notif = db.query(Material).filter(Material.id == body.material_id).first()
-            notify_materials = [material_for_notif.id,
+            notify_material = [material_for_notif.id,
                                 material_for_notif.title,
                                 material_for_notif.description,
                                 body.status,
-                                user["username"]
+                                user["username"],
+                                geolocation.id
                                 ]
             # высылаем письмо
-            notify(db, SUBJECT.RELOCATION, [body.client_mail], materials=notify_materials)
+            notify(db, SUBJECT.RELOCATION, [body.client_mail], material=notify_material)
             # находим последний элемент уведомления
             last_ntf = db.query(Notifications).order_by(desc(Notifications.id)).first().unique_code
 
@@ -57,7 +61,7 @@ class GeoLocationController:
             db.add(create_geo_event)
             db.commit()
 
-            return response(data=geolocation, status=True)
+            return response(data=parse_obj_as(GeoLocationUploadResponse, geolocation), status=True)
         else:
             return response(data="актив в ремонте и не подлежит перемещению", status=False)
 
@@ -256,10 +260,11 @@ class GeoLocationController:
         db.commit()
 
         # уведомление финального списания
-        notify_materials = []
         for i in materials_for_trash:
-            notify_materials.append({i.id: i.title})
-        notify(db, SUBJECT.UTILIZATION, utilization_ntf_users, invoice=out_filename, materials=notify_materials)
+            notification_material = [i.id,
+                                     i.title,
+                                     i.description]
+            notify(db, SUBJECT.UTILIZATION, utilization_ntf_users, invoice=out_filename, material=notification_material)
 
         return response(data=f'активы списаны, фото списания '
                              f'и накладная загружены, папки с фото техники перемещены в архив,'
@@ -330,7 +335,7 @@ class GeoLocationController:
             try:
                 material_to_ntf = db.query(Material).filter(Material.id == data.material_id).first()
                 notify_materials = [material_to_ntf.id, material_to_ntf.title, material_to_ntf.description]
-                notify(db, SUBJECT.UTILIZATION, ["shumerrr@yandex.ru", data.customer], materials=notify_materials)
+                notify(db, SUBJECT.UTILIZATION, ["shumerrr@yandex.ru", data.customer], material=notify_materials)
             except Exception:
                 print(Exception)
 

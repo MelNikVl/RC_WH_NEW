@@ -9,6 +9,7 @@
     <script type="text/javascript" src="/static/jquery-3.6.4.min.js"></script>
     <!--  линк на стили -->
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
     <script src="/static/one_material.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
@@ -75,7 +76,7 @@
                         <div class="half_w">
                             <div class="geo_material_one">
                                 <div class="from_1c">
-                                    <p class="data_1c">Данные из 1с</p>
+                                    <p class="data_1c">Данные из 1C</p>
                                     <p class="desc_09">Описание: {{ data.raw_1c.full_name }} (данные на {{data.raw_1c.date_time}})</p>
                                     <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
                                     <p class="desc_09">Цена: {{ data.raw_1c.cost }} $</p>
@@ -112,7 +113,17 @@
                                     <div class="desc_one_card">
                                         <div>Место: {{ item.place }},</div>
                                         <div>Статус: {{ item.status }},</div>
-                                        <div>Инициатор: {{ item.initiator }},</div>
+                                        <div>Инициатор: {{ item.initiator }}</div>
+                                        {% if item.read is not none %}
+                                            <i tooltip="Уведомление отправлено" class="fa fa-envelope" aria-hidden="true"></i>
+                                            {% if item.read %}
+                                                <i tooltip="Уведомление подтверждено" style="color: greenyellow;" class="fa fa-check-square" aria-hidden="true"></i>
+                                            {% else %}
+                                                <i tooltip="Уведомление не подтверждено" style="color: gray;" class="fa fa-check-square" aria-hidden="true"></i>
+                                            {% endif %}    
+                                        {% else %}
+
+                                        {% endif %}
                                     </div>
                                 </details>
                                 </div>

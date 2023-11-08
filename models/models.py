@@ -65,7 +65,6 @@ class GeoLocation(Base):
     geo_type: int = Column(Integer)
     comment: str = Column(String, default="")
 
-
 class LogItem(Base):
     __tablename__ = "log"
 
@@ -113,6 +112,8 @@ class Notifications(Base):
     read: bool = Column(Boolean,  unique=False, default=False)
     unique_code: str = Column(String)
     date_time: datetime = Column(DateTime)
+    material_id: str = Column(String)
+    geolocation_id: int = Column(Integer, ForeignKey("geolocation.id"), nullable=True, default=None)
 
 
 class Comment(Base):

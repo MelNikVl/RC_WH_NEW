@@ -25,7 +25,7 @@ class SUBJECT(Enum):
 
 
 @staticmethod
-def notify(db: Session, subject, addresses: list, invoice=None, materials: list[dict] = None):
+def notify(db: Session, subject, addresses: list, invoice=None, material: []=None):
     unique = secrets.token_hex(8)
     addresses_to = ", ".join(addresses)
 
@@ -36,14 +36,6 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     html = ""
     match subject:
         case SUBJECT.UTILIZATION:
-            new_notify = Notifications(category=subject.value,
-                                       user=addresses_to,
-                                       unique_code=unique,
-                                       date_time=datetime.datetime.now()
-                                       )
-            db.add(new_notify)
-            db.commit()
-
             with open(invoice, "rb") as file:
                 part = MIMEApplication(file.read(), Name=basename(invoice))
                 part['Content-Disposition'] = 'attachment; filename="%s"' % basename(invoice)
@@ -61,35 +53,28 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
                 <html>
                     <body>
                         <p>Уведомляем Вас о том, что следующий актив был взят в ремонт:</p>
-                        <p>id: {materials[0]} &nbsp; Номер: {materials[1]} --- {materials[2]}</p>
+                        <p>id: {material[0]} &nbsp; Номер: {material[1]} --- {material[2]}</p>
                         <p>Если согласны с действием перемещения актива на Вас, 
                         нажмите пожалуйста кнопку ниже. Если нет - напишите пожалуйста нам на 
                         общую почту: +RCSPBADMINS</p>
-                        <a href="{host}/app/notification_answer?unique_code={unique}&material_id={materials[0]}">Уведомлен</a>
+                        <a href="{host}/app/notification_answer?unique_code={unique}&material_id={material[0]}">Уведомлен</a>
                         <p>Так же если у вас возникли вопросы, можете их задать по адресу: +RCSPBADMINS</p>
                     </body>
                 </html>                        
                 """
         case SUBJECT.RELOCATION:
-            new_notify = Notifications(category=f'{subject.value} {materials[0]}',
-                                       user=addresses_to,
-                                       unique_code=unique,
-                                       date_time=datetime.datetime.now()
-                                       )
-            db.add(new_notify)
-            db.commit()
             html = f"""\
                         <html>
                             <body>
                                 <p>Уведомляем Вас о том, что следующий актив был перемещен на Ваше имя:</p>
-                                <p>id: {materials[0]} &nbsp; Номер: {materials[1]}</p>
-                                <p>Характеристики: {materials[2]}</p>
-                                <p>Инициатор перемещения: {materials[4]}.</p>
-                                <p>Планируемый статус после перемещения: {materials[3]}</p>
+                                <p>id: {material[0]} &nbsp; Номер: {material[1]}</p>
+                                <p>Характеристики: {material[2]}</p>
+                                <p>Инициатор перемещения: {material[4]}.</p>
+                                <p>Планируемый статус после перемещения: {material[3]}</p>
                                 <p>Если согласны с действием перемещения актива на Вас, 
                                 нажмите пожалуйста кнопку ниже. Если нет - напишите пожалуйста нам на 
                                 общую почту: +RCSPBADMINS</p>
-                                <a href="{host}/app/notification_answer?unique_code={unique}&material_id={materials[0]}">Уведомлен</a>
+                                <a href="{host}/app/notification_answer?unique_code={unique}&material_id={material[0]}">Уведомлен</a>
                                 <p>Так же если у вас возникли вопросы, можете их задать по адресу: +RCSPBADMINS</p>
                             </body>
                         </html>                        
@@ -98,7 +83,18 @@ def notify(db: Session, subject, addresses: list, invoice=None, materials: list[
     message.attach(part2)
 
     serv = smtplib.SMTP("smtp.gmail.com", 587)
-    # smtp_server.ehlo()
     serv.starttls()
     serv.login(gmail_login, gmail_pass)
     serv.sendmail(gmail_login, addresses, message.as_string())
+
+    new_notify = Notifications(category=f'{subject.value} {material[0]}',
+                               user=addresses_to,
+                               unique_code=unique,
+                               material_id=material[0],
+                               date_time=datetime.datetime.now()
+                               )
+    # эта проверка нужна если существует айди геолокации
+    if 0 <= 5 < len(material):
+        new_notify.geolocation_id = material[5]
+    db.add(new_notify)
+    db.commit()
