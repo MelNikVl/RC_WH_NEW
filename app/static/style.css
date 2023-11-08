@@ -437,7 +437,7 @@ tbody input[type='checkbox'] {
 }
 
 .hello {
-    margin: 1em 20px;
+    /* margin: 1em 20px; */
     /* font-size: x-large; */
 }
 
@@ -574,7 +574,7 @@ tbody input[type='checkbox'] {
     background: #eefffd;
     border-radius: 1em;
     padding: 1em;
-    margin: 0 0 1em 0;
+    /* margin: 0 0 1em 0; */
     border: 1px solid #c3c3c3;
     /* width: 100%; */
 }
