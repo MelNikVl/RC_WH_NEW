@@ -62,7 +62,7 @@ $(document).ready(function () {
         $("#data-1c-popup .1c-data").append(`<div class="equipment-info">
             <div class=\"1c-elem\">Дата ввода: ${date}</div>
             <div class=\"1c-elem\">Описание 1: ${name}</div>
-            <div class=\"1c-elem\">Описание 2: ${name2}</div>
+//            <div class=\"1c-elem\">Описание 2: ${name2}</div>
         </div>`);
 
         let history_html = "";
