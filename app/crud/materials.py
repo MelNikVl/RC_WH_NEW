@@ -18,13 +18,15 @@ from models.models import Material, Comment
 
 
 class MaterialCRUD:
+    # Получение комментариев
     @staticmethod
     async def get_comments(id: str, db: Session):
         comments = db.query(Comment).filter(Comment.material_id == id).all()
         result = []
         for i in comments:
-            formatted_date = i.date_time.strftime("%Y-%m-%d %H:%M:%S")
+            formatted_date = i.date_time.strftime("%Y-%m-%d %H:%M")
             result.append({"text": i.text + " (" + str(i.user_name_1) + " -- " + formatted_date + ")"})
+            # result.append({"text": i.text})
         return result
 
     # Получение карточки по айди

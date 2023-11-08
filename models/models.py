@@ -120,7 +120,7 @@ class Comment(Base):
     id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
     material_id = Column(String, ForeignKey('material.id'))
     user_id: int = Column(Integer, ForeignKey('user.id'))
-    user_name_1: str = Column(String(20))
+    user_name_1: str = Column(String(30), nullable=True)
     text: str = Column(String(100))
     date_time: datetime = Column(DateTime)
 

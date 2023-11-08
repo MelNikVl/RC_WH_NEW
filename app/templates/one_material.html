@@ -76,7 +76,7 @@
                             <div class="geo_material_one">
                                 <div class="from_1c">
                                     <p class="data_1c">Данные из 1с</p>
-                                    <p class="desc_09">Описание: {{ data.raw_1c.full_name }}</p>
+                                    <p class="desc_09">Описание: {{ data.raw_1c.full_name }} (данные на ...)</p>
                                     <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
                                     <p class="desc_09">Цена: {{ data.raw_1c.cost }} $</p>
                                 </div>
@@ -86,11 +86,12 @@
                                 <p class="desc_09">Номер IT: {{ data.one_material.title }}</p>
                                 <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
                                 <p class="desc_09">Заявленный ответсвенный сейчас: {{ data.current_user }}</p>
-                                <p class="desc_09">Заявленный статус: {{ data.current_status }}</p>
+                                <p class="desc_09">Заявленный статус на данный момент: {{ data.current_status }}</p>
                                 <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
                                     -----  Файлов в папке актива: {{ data.len_of_files }}</p>
-                                <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования
-                                    при вводе {{ data.date_time_f }}, установленное расположение: {{ data.current_place }} &#128077;</p>
+                                <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
+                                    ({{ data.raw_1c.full_name }}) 
+                                    при вводе {{ data.date_time_f }}</p>
                             </div>
   
                         </div>
@@ -190,7 +191,7 @@
         <!-- блок с комментариями -->
         <div class="comment-block">
             <div class="comments_title">Комментарии</div>
-            <div class="comments_h4"">не менее 10 сиволов</div>
+            <div class="comments_h4">не менее 10 сиволов</div>
             <div class="comments_body">
             <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
             <button id="send_comment">Отправить</button>
