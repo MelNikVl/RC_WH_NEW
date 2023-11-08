@@ -224,7 +224,7 @@ textarea {
 
 .title_1 {
     font-size: 2em;
-    margin: 1.2em 0 1em 0.5em;
+    margin: 0 0 0 1em;
     font-weight: bold;
     font-family: math;
     float: left;
@@ -410,7 +410,7 @@ tbody input[type='checkbox'] {
 }
 
 .button_exit {
-    padding: 2.5em 0 0 0;
+    /* padding: 0em 0 0 0; */
     text-align: right;
     margin: 1em;
 }
@@ -634,10 +634,10 @@ tbody input[type='checkbox'] {
 
 .body_body {
     overflow: hidden;
-    max-width: 1560px;
+    /* max-width: 1560px; */
     width: 100vw;
-    margin: 0 0 0 1em;
-    border-radius: 1em;
+    /* margin: 0 0 0 1em; */
+    /* border-radius: 1em; */
     box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
     height: 97vh;
 }
@@ -849,7 +849,7 @@ details:not([open])>*:not(summary) {
     font-family: system-ui;
 }
 .top-part{
-    height: 20vh;
+    height: 12vh;
 }
 tr{
     height: max-content;

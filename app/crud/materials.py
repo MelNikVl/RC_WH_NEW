@@ -51,7 +51,7 @@ class MaterialCRUD:
     @staticmethod
     async def list_of_materials(db):
         materials = db.query(Material).all()
-        return parse_obj_as(List[MaterialUploadResponse], materials)  # засовывывает в шаблон данные
+        return parse_obj_as(List[MaterialUploadResponse], materials)
 
     @staticmethod
     def generate_alphanum_random_string(length):
