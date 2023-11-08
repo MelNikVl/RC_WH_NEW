@@ -1,6 +1,6 @@
 [tooltip] {
-    margin: 6px 20px;
-    position: relative;
+    margin: 3px;
+    /* position: relative; */
 }
 
 [tooltip]::after {

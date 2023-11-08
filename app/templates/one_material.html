@@ -114,16 +114,18 @@
                                         <div>Место: {{ item.place }},</div>
                                         <div>Статус: {{ item.status }},</div>
                                         <div>Инициатор: {{ item.initiator }}</div>
+                                        <div>Подтверждение перемещения от пользователя:
                                         {% if item.read is not none %}
-                                            <i tooltip="Уведомление отправлено" class="fa fa-envelope" aria-hidden="true"></i>
+                                            <!-- <i tooltip="Уведомление отправлено" class="fa fa-envelope" aria-hidden="true"></i> -->
                                             {% if item.read %}
-                                                <i tooltip="Уведомление подтверждено" style="color: greenyellow;" class="fa fa-check-square" aria-hidden="true"></i>
+                                                <i tooltip="Уведомление подтверждено" style="color: rgb(16, 107, 37);" class="fa fa-star" aria-hidden="true"> - пользователь подтвердил перемещение</i>
                                             {% else %}
-                                                <i tooltip="Уведомление не подтверждено" style="color: gray;" class="fa fa-check-square" aria-hidden="true"></i>
+                                                <i tooltip="Уведомление не подтверждено" style="color: rgb(53, 24, 235);" class="fa fa-star-half-o" aria-hidden="true"> - уведомление отправлено</i>
                                             {% endif %}    
                                         {% else %}
-
+                                            NONE
                                         {% endif %}
+                                    </div>
                                     </div>
                                 </details>
                                 </div>
