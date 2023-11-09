@@ -130,7 +130,7 @@ class FrontMainController:
             print(e)
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
-        # апендим к основному json еще и местоположение актива из таблицы ГЕО
+        # апендим к основному json местоположение актива из таблицы ГЕО
         for i in range(len(out[0])):
             geolocation_place = await GeoLocationCRUD.current_place(material_id=out[0][i]['id'], db=db)
             if geolocation_place is None:

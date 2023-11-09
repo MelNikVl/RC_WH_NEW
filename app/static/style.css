@@ -135,7 +135,7 @@ table {
     width: 100%;
     height: max-content;
     /* width: 80%; */
-    /* border-collapse: collapse; */
+    border-collapse: collapse;
     /* margin: 0 0 0 1em; */
 }
 
@@ -660,7 +660,7 @@ tbody input[type='checkbox'] {
     position: sticky;
     top: 0px;
     z-index: 2;
-    border-bottom: 1px solid;
+    /* border-bottom: 1px solid; */
 }
 
 .main_title {
@@ -936,7 +936,10 @@ details:not([open])>*:not(summary) {
 }
 
 tr {
-    height: max-content;
+    /* height: max-content; */
+    background: whitesmoke;
+    /* border: 1px solid #3f3f3f; */
+    border-bottom: 1px solid #a9a9a9;
 }
 
 .hidden_2 {

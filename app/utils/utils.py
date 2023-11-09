@@ -15,7 +15,7 @@ def response(data: Any, status: bool = True):
         data = {}
     return {"data": data, "status": status}
 
-
+# фотки к каждому товару
 def get_first_photo(material_id: str):
     fold = main_folder + "\\photos\\" + material_id
     file_list = os.listdir(fold)
