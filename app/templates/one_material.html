@@ -22,7 +22,7 @@
         <!-- шапка -->
 
         <div class="top-part">
-            <div class="title_1">IT warehouse tracker (Asset card: {{ data.one_material.id }})</div>
+            <div class="title_1">IT warehouse tracker (Asset card: {{ data.one_material.id }} / {{ data.one_material.title }})</div>
             <div class="button_exit">
                 <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
                 {% if data.role == True %}
@@ -77,44 +77,46 @@
                     <div class="card_of_material_main_1">
                         <div class="half_w">
                             <div class="geo_material_one">
+                                
+<!--                                <p class="desc_09">Отдел из 1с: {{ data.raw_1c.cur_dept }}</p>-->
+<!--                                <p class="desc_09">Ответственный из 1с: {{ data.raw_1c.cur_person }}</p>-->
+                                <!-- <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: </p> -->
+                                <!-- <div class="number_from_IT">Номер IT: </div> -->
+                                <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
+                                    ({{ data.raw_1c.full_name }}) 
+                                    при вводе {{ data.date_time_f }}, дополнения: {{ data.one_material.description }}</p>
+                                <!-- <p class="desc_09">Заявленный ответсвенный сейчас: {{ data.current_user }}</p> -->
+                                
                                 <div class="from_1c">
                                     <p class="data_1c">Данные из 1C</p>
                                     <p class="desc_09">Описание: {{ data.raw_1c.full_name }} (данные на {{data.raw_1c.date_time}})</p>
                                     <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
                                     <p class="desc_09">Цена: {{ data.raw_1c.cost }} $</p>
                                 </div>
-<!--                                <p class="desc_09">Отдел из 1с: {{ data.raw_1c.cur_dept }}</p>-->
-<!--                                <p class="desc_09">Ответственный из 1с: {{ data.raw_1c.cur_person }}</p>-->
-                                <!-- <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: </p> -->
-                                <p class="number_from_IT">Номер IT: {{ data.one_material.title }}</p>
-                                <p class="desc_09">Заявленный ответсвенный сейчас: {{ data.current_user }}</p>
                                 <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
                                     -----  Файлов в папке актива: {{ data.len_of_files }}</p>
-                                <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
-                                    ({{ data.raw_1c.full_name }}) 
-                                    при вводе {{ data.date_time_f }}, дополнения: {{ data.one_material.description }}</p>
+                                
                             </div>
 
                             <!-- блок с комментариями -->
-                                <div class="comment-block">
-                                    <div class="comments_title">Комментарии</div>
-                                    <div class="comments_h4">не менее 10 сиволов</div>
-                                    <div class="comments_body">
-                                    <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
-                                    <button id="send_comment">Отправить</button>
-                                    <!-- метод send_comment в материалс пай -->
-                                        </div>
-                                            <div class="comments">
-                                                {% for comment in data.comments%}
-                                                    <div class="comment">
-                                                        <div class="one_comment">- {{comment["text"]}}</div>
-                                                    </div>
-                                                {% endfor %}
-                                        </div>
-                                </div>
-  
+                            <div class="comment-block">
+                                <div class="comments_title">Комментарии</div>
+                                <div class="comments_h4">не менее 10 сиволов</div>
+                                <div class="comments_body">
+                                <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
+                                <button id="send_comment">Отправить</button>
+                                <!-- метод send_comment в материалс пай -->
+                                    </div>
+                                        <div class="comments">
+                                            {% for comment in data.comments%}
+                                                <div class="comment">
+                                                    <div class="one_comment">- {{comment["text"]}}</div>
+                                                </div>
+                                            {% endfor %}
+                                    </div>
+                            </div>
                         </div>
-
+                        <div class="doble_side_2">
 
                         <div class="doble_side">
                             <div class="second_side_2">
@@ -162,7 +164,6 @@
                                     }
                                     });
                                 </script>
-
                             <!-- </div> -->
                         </div>
 
@@ -233,6 +234,7 @@
                         
 
                     </div>
+                </div>
                 </div>
             </div>
 
@@ -370,7 +372,6 @@
                     $(this).parent().fadeOut(300);
                 });
             </script>
-
         </div>
 
 </body>

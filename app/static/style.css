@@ -265,8 +265,8 @@ textarea {
 
 
 .title_1 {
-    font-size: 2em;
-    margin: 0 0 0 1em;
+    font-size: 1.5em;
+    margin: 0.1em 0 0 1em;
     font-weight: bold;
     font-family: math;
     float: left;
@@ -614,8 +614,8 @@ tbody input[type='checkbox'] {
 }
 
 .desc_09 {
-    padding: 0.15em;
-    font-size: unset;
+    /* padding: 0.15em; */
+    /* font-size: unset; */
 }
 
 .link_to {
@@ -939,6 +939,12 @@ tr {
     height: max-content;
 }
 
+.hidden_2 {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 2s ease-in;
+  }
+
 .movement_2 {
 
     color: #000000;
@@ -999,6 +1005,7 @@ tr {
     background: #eefffd;
     border: 1px solid rosybrown;
     border-radius: 1em;
+    margin: 0 1em 0 0;
 }
 
 .one_comment {
@@ -1044,7 +1051,7 @@ tr {
 
 .second_side_2 {
     margin: 0 1em 0;
-    max-width: 50%;
+    /* max-width: 50%; */
 }
 
 .doble_side {
@@ -1060,8 +1067,32 @@ display: flex;
     font-size: small;
 }
 
+.but_12 {
+    background-color: #FFDD8C; /* Начальный цвет кнопки */
+    color: #000000; /* Цвет текста на кнопке */
+    border: none;
+    padding: 10px 20px; /* Размер кнопки */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px; /* Закругленные углы */
+    transition: background-color 0.3s; /* Плавное изменение цвета при наведении */
+  }
+
+  .but_12:hover {
+    background-color: #e7923c; /* Цвет кнопки при наведении на неё */
+  }
+
 .half_w {
     max-width: 40%;
+}
+
+.doble_side_2 {
+
+/* background-color: #e7923c; */
 }
 
 .ml-4 {
