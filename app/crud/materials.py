@@ -9,7 +9,7 @@ from fastapi import HTTPException, Depends
 from pydantic import parse_obj_as
 from typing import List
 from app.payload.response import MaterialUploadResponse
-from models.models import Material, Comment
+from models.models import Material, Comment, Raw_1c
 
 '''
 класс CRUD - create read update delete
@@ -60,3 +60,9 @@ class MaterialCRUD:
         letters_and_digits = string.ascii_letters + string.digits
         rand_string = ''.join(random.sample(letters_and_digits, length))
         return rand_string
+
+    # получим описание товара из 1с для создания карточки товара
+    @staticmethod
+    def get_description_from_1c(db, id: str):
+        desc_f_1c = db.query(Raw_1c).filter(Material.id == id).first()
+        return desc_f_1c

@@ -33,14 +33,18 @@ class MaterialsController:
                      db: Session = Depends(get_db)):
 
         # logging.info(f"username: , data: {body}")
-        material = Material(id=body.id, user_id=user.get("username"), category=body.category, title=body.title,
-                            description=body.description, date_time=datetime.datetime.now())
+        material = Material(id=body.id,
+                            user_id=user.get("username"),
+                            category=body.category,
+                            title=body.title,
+                            description=body.description,
+                            date_time=datetime.datetime.now())
 
         new_repair = Repair(material_id=body.id,
                             responsible_it_dept_user=user.get("username"),
                             problem_description="создание карточки актива",
                             repair_number=1,
-                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                             repair_status=False,
                             repair_unique_id=MaterialCRUD.generate_alphanum_random_string(20)
                             )
@@ -108,18 +112,19 @@ class MaterialsController:
     ):
         global geolocation
         try:
-
+            data_1c = get_material(id)["EquipmentData"]
+            history = data_1c["MovementHistory"]
             # Путь к папке назначения
             destination_folder = os.path.join(f'{main_folder}\\photos', str(id))
 
             # Проверяем, существует ли папка назначения, и создаем ее при необходимости
             os.makedirs(destination_folder, exist_ok=True)
 
-            material = Material(id=id, user_id=user.get("username"), category=category, title=title,
-                                description=description, date_time=datetime.datetime.now())
+            full_desc = data_1c["FullName"] + " --- " + description
 
-            data_1c = get_material(id)["EquipmentData"]
-            history = data_1c["MovementHistory"]
+            material = Material(id=id, user_id=user.get("username"), category=category, title=title,
+                                description=full_desc, date_time=datetime.datetime.now())
+
             new_raw = Raw_1c(material_id=id,
                              name_ru=data_1c["NameRU"],
                              name_en=data_1c["NameEN"],
