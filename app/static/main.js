@@ -61,8 +61,7 @@ $(document).ready(function () {
         // блок для данных о "Оборудовании"
         $("#data-1c-popup .1c-data").append(`<div class="equipment-info">
             <div class=\"1c-elem\">Дата ввода: ${date}</div>
-//            <div class=\"1c-elem\">Описание 1: ${name}</div>
-            <div class=\"1c-elem\">Описание: ${name2}</div>
+            <div class=\"1c-elem\">Описание 1: ${name}</div>
         </div>`);
 
         let history_html = "";
@@ -244,6 +243,9 @@ RAID: `;
                 $("#new-popup textarea").val(laptop_template);
                 break;
             case "Монитор":
+                $("#new-popup textarea").val(monitor_template);
+                break;
+            case "Принтер":
                 $("#new-popup textarea").val(monitor_template);
                 break;
             case "Сервер":

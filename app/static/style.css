@@ -198,7 +198,7 @@ button {
 
 .popup {
     background: white;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     width: 40vw;
     position: relative;
     padding: 2em 1em;
@@ -241,14 +241,14 @@ h1 {
 }
 
 textarea {
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: #00000042 1px 1px 10px;
-    font-size: 1em;
-    -webkit-appearance: none;
+    /* font-size: 1em; */
+    /* -webkit-appearance: none; */
     width: 100%;
     border: none;
-    margin-bottom: 15px;
-    resize: both;
+    /* margin-bottom: 15px; */
+    /* resize: both; */
 }
 
 #history-block {
@@ -1080,6 +1080,11 @@ display: flex;
 
 .right_content_one_page {
     width: 100%;
+}
+
+.sign_from_admin {
+    display: flex;
+    margin: 1em 0;
 }
 
 .tab-link {

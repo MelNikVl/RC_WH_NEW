@@ -387,10 +387,13 @@ ssd:
                                         <span>Ноутбук</span>
                                     </div>
                                     <div class="option">
-                                        <span>Сервер</span>
+                                        <span>Монитор</span>
                                     </div>
                                     <div class="option">
-                                        <span>Монитор</span>
+                                        <span>Принтер</span>
+                                    </div>
+                                    <div class="option">
+                                        <span>Сервер</span>
                                     </div>
                                     <div class="option">
                                         <span>Маршрутизатор / свитч</span>
@@ -403,11 +406,17 @@ ssd:
                             </div>
                             <input type="text" id="1c_title" class="input_100" placeholder="номер техники (pc1000)">
 
-                            <p>В описание техники будет скопирована информация из 1с. Если что то не совпадает или нужно дополнить,
+                            <p>В описание техники будет скопировао ее описание из 1с. Если что то не совпадает или нужно дополнить,
                                  напишите заметку в поле ниже. Эта информация будет добавлена к карточке актива в нашей базе.
                             </p>
+                            
+                            <div class="sign_from_admin">
+                                <input type="checkbox" id="myCheckbox" name="myCheckbox">
+                                <label for="myCheckbox">Подтверждаю, что данные из 1с верны</label>
+                            </div>
+                            
 
-                            <textarea name="" cols="10" rows="4" placeholder="это поле не обязательно. Просто можете добавить свои комментарии к описанию из 1с"></textarea>
+                            <textarea name="" cols="10" rows="4" placeholder="Это поле необязательно. Добавьте комментарии если описание из 1с неполное или неверное"></textarea>
                             <p>Добавьте фото (можно выбрать несколько):</p>
                                 <input type="file" multiple name="1c_file" id="1c_file">
                                 <p>Добавьте точное расположение:</p>
