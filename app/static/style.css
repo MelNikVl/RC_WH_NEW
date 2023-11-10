@@ -1087,6 +1087,16 @@ display: flex;
     margin: 1em 0;
 }
 
+.tab-link.active {
+    background-color: #dfdfdf00; /* Замените это на цвет вашей активной вкладки */
+    font-weight: bold;
+    /* color: #fff; */ /* Замените это на цвет текста вашей активной вкладки */
+}
+
+.tab-content.active {
+    display: block;
+}
+
 .tab-link {
     cursor: pointer;
     padding: 10px 15px;
