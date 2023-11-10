@@ -47,8 +47,7 @@
                 <div class="body_left top-panel">
                     <div class="photo_one_card">
                         <img class="real_photo" src="/it_warehouse_docs/photos/{{ data.one_material.id }}/{{ data.photo }}">
-                        <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
-                        <p class="desc_09">Статус: {{ data.current_status }}</p>
+                        
                     </div>
                     <div class="menu_left">
                         
@@ -73,170 +72,179 @@
 
                 <!-- правая часть -->
 
-                <div class="card_of_material_main_1c">
-                    <div class="card_of_material_main_1">
-                        <div class="half_w">
-                            <div class="geo_material_one">
-                                
-<!--                                <p class="desc_09">Отдел из 1с: {{ data.raw_1c.cur_dept }}</p>-->
-<!--                                <p class="desc_09">Ответственный из 1с: {{ data.raw_1c.cur_person }}</p>-->
-                                <!-- <p class="desc_09">Дополнение по характеристикам от сотрудника IT при вводе в систему IT WH: </p> -->
-                                <!-- <div class="number_from_IT">Номер IT: </div> -->
-                                <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
-                                    ({{ data.raw_1c.full_name }}) 
-                                    при вводе {{ data.date_time_f }}, дополнения: {{ data.one_material.description }}</p>
-                                <!-- <p class="desc_09">Заявленный ответсвенный сейчас: {{ data.current_user }}</p> -->
-                                
-                                <div class="from_1c">
-                                    <p class="data_1c">Данные из 1C</p>
-                                    <p class="desc_09">Описание: {{ data.raw_1c.full_name }} (данные на {{data.raw_1c.date_time}})</p>
-                                    <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
-                                    <p class="desc_09">Цена: {{ data.raw_1c.cost }} $</p>
-                                </div>
-                                <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
-                                    -----  Файлов в папке актива: {{ data.len_of_files }}</p>
-                                
+                <div class="right_content_one_page">
+                
+                    <div class="tabs">
+                        <a href="#" class="tab-link" onclick="openTab('tab1')">Описание</a>
+                        <a href="#" class="tab-link" onclick="openTab('tab2')">Комментарии</a>
+                        <a href="#" class="tab-link" onclick="openTab('tab3')">Перемещения и ремонты</a>
+                    </div>
+                    
+                    <div id="tab1" class="tab-content active">
+                        <div class="geo_material_one">     
+                            <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
+                                ({{ data.raw_1c.full_name }}) при вводе {{ data.date_time_f }}, дополнения: {{ data.one_material.description }}</p>
+                            <div class="from_1c">
+                                <p class="data_1c">Данные из 1C</p>
+                                <p class="desc_09">Описание: {{ data.raw_1c.full_name }} (данные на {{data.raw_1c.date_time}})</p>
+                                <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
+                                <p class="desc_09">Цена: {{ data.raw_1c.cost }} $</p>
                             </div>
-
-                            <!-- блок с комментариями -->
-                            <div class="comment-block">
-                                <div class="comments_title">Комментарии</div>
-                                <div class="comments_h4">не менее 10 сиволов</div>
-                                <div class="comments_body">
-                                <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
-                                <button id="send_comment">Отправить</button>
-                                <!-- метод send_comment в материалс пай -->
-                                    </div>
-                                        <div class="comments">
-                                            {% for comment in data.comments%}
-                                                <div class="comment">
-                                                    <div class="one_comment">- {{comment["text"]}}</div>
-                                                </div>
-                                            {% endfor %}
-                                    </div>
-                            </div>
+                            <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
+                            <p class="desc_09">Статус: {{ data.current_status }}</p>
+                            <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
+                                -----  Файлов в папке актива: {{ data.len_of_files }}</p>
                         </div>
-                        <div class="doble_side_2">
-
-                        <div class="doble_side">
-                            <div class="second_side_2">
-                            <!-- <button id="toggleList">Список перемещений и заявок на перемещения</button> -->
-                            <h3>Перемещения</h3>
-                            <!-- <div class="card_of_material"> -->
-                                
-                                <div id="geoMaterialList">
-                                <p>салатовые - заявки на перемещения от IT отдела, зеленые - уже произведенные перемещения в 1с</p>
-                                {% for item in data.geo_material %}
-                                <div class="geo_material_one">
-                                <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
-                                    <summary>
-                                        {{ item.date_time }} на {{ item.client_mail }}
-                                    </summary>
-                                    <div class="desc_one_card">
-                                        <div>Место: {{ item.place }},</div>
-                                        <div>Статус: {{ item.status }},</div>
-                                        <div>Инициатор: {{ item.initiator }}</div>
-                                        <div>Подтверждение перемещения от пользователя:
-                                        {% if item.read is not none %}
-                                            <!-- <i tooltip="Уведомление отправлено" class="fa fa-envelope" aria-hidden="true"></i> -->
-                                            {% if item.read %}
-                                                <i tooltip="Уведомление подтверждено" style="color: rgb(171 39 0);" class="fa fa-star" aria-hidden="true"> - пользователь подтвердил перемещение</i>
-                                            {% else %}
-                                                <i tooltip="Уведомление не подтверждено" style="color: rgb(53, 24, 235);" class="fa fa-star-half-o" aria-hidden="true"> - уведомление отправлено</i>
-                                            {% endif %}    
-                                        {% else %}
-                                            none
-                                        {% endif %}
-                                    </div>
-                                    </div>
-                                </details>
+                    </div>
+                
+                    <div id="tab2" class="tab-content">
+                        <!-- блок с комментариями -->
+                        <div class="comment-block">
+                            <div class="comments_title">Комментарии</div>
+                            <div class="comments_h4">не менее 10 сиволов</div>
+                            <div class="comments_body">
+                            <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
+                            <button id="send_comment">Отправить</button>
+                            <!-- метод send_comment в материалс пай -->
                                 </div>
-                                {% endfor %}
+                                    <div class="comments">
+                                        {% for comment in data.comments%}
+                                            <div class="comment">
+                                                <div class="one_comment">- {{comment["text"]}}</div>
+                                            </div>
+                                        {% endfor %}
                                 </div>
-
-                                <script>
-                                    document.getElementById("toggleList").addEventListener("click", function() {
-                                    var geoMaterialList = document.getElementById("geoMaterialList");
-                                    if (geoMaterialList.style.display === "none") {
-                                        geoMaterialList.style.display = "block";
-                                    } else {
-                                        geoMaterialList.style.display = "none";
-                                    }
-                                    });
-                                </script>
-                            <!-- </div> -->
                         </div>
-
+                    </div>
+                
+                <div id="tab3" class="tab-content">
+                    <div class="doble_side">
                         <div class="second_side_2">
-                            <!-- <button id="toggleRepairList">Список ремонтов</button> -->
-                            <h3>Ремонты</h3>
-                            <p>*(сначала новые):</p>
-                            <div id="repairList" class="repair_stile">
-                                <!-- <h3>РЕМОНТЫ</h3> -->
-                                
-                                {% for item in data.repairs %}
-                                    <div class="geo_material_one">
-                                        <details>
-                                            <summary>поступление {{ item[0].date_time }}, статус:
-                                                {% for item in item %}
-                                                    {% if loop.last %}
-                                                        {% set last_repair_status = item.repair_status %}
-                                                        {% if last_repair_status == True %}
-                                                            в ремонте
-                                                        {% endif %}
-                                                        {% if last_repair_status == False %}
-                                                            ремонт закончен {{item.date_time}}
-                                                        {% endif %}
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </summary>
-                                            {% for item in item %}
-                                                <div class="geo_material_one_dial">
-                                                    <div class="rep_status">
-                                                        {% if item.repair_status == True %}
-                                                            <div>В РЕМОНТЕ</div>
-                                                        {% endif %}
-                                                        {% if item.repair_status == False %}
-                                                            <div>ВЫВЕДЕН ИЗ РЕМОНТА</div>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="date_one_card">Дата: {{ item.date_time }}</div>
-                                                    <div class="desc_one_card">
-                                                        <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
-                                                        <div>Кто сдал: {{ item.user_whose_technique }},</div>
-                                                        <div>Проблема / решение: {{ item.problem_description }},</div>
-                                                    </div>
-                                                </div>
-                                                <div class="clear"></div>
-                                            {% endfor %}
-                                        </details>
-                                    </div>
-                                {% endfor %}
+                        <h3>Перемещения</h3>
+                            <div id="geoMaterialList">
+                            <p>салатовые - заявки на перемещения от IT отдела, зеленые - уже произведенные перемещения в 1с</p>
+                            {% for item in data.geo_material %}
+                            <div class="geo_material_one">
+                            <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
+                                <summary>
+                                    {{ item.date_time }} на {{ item.client_mail }}
+                                </summary>
+                                <div class="desc_one_card">
+                                    <div>Место: {{ item.place }},</div>
+                                    <div>Статус: {{ item.status }},</div>
+                                    <div>Инициатор: {{ item.initiator }}</div>
+                                    <div>Подтверждение перемещения от пользователя:
+                                    {% if item.read is not none %}
+                                        {% if item.read %}
+                                            <i tooltip="Уведомление подтверждено" style="color: rgb(171 39 0);" class="fa fa-star" aria-hidden="true"> - пользователь подтвердил перемещение</i>
+                                        {% else %}
+                                            <i tooltip="Уведомление не подтверждено" style="color: rgb(53, 24, 235);" class="fa fa-star-half-o" aria-hidden="true"> - уведомление отправлено</i>
+                                        {% endif %}    
+                                    {% else %}
+                                        none
+                                    {% endif %}
+                                </div>
+                                </div>
+                            </details>
+                            </div>
+                            {% endfor %}
                             </div>
 
                             <script>
-                                document.getElementById("toggleRepairList").addEventListener("click", function() {
-                                    var repairList = document.getElementById("repairList");
-                                    if (repairList.style.display === "none") {
-                                        repairList.style.display = "block";
-                                    } else {
-                                        repairList.style.display = "none";
-                                    }
+                                document.getElementById("toggleList").addEventListener("click", function() {
+                                var geoMaterialList = document.getElementById("geoMaterialList");
+                                if (geoMaterialList.style.display === "none") {
+                                    geoMaterialList.style.display = "block";
+                                } else {
+                                    geoMaterialList.style.display = "none";
+                                }
                                 });
                             </script>
-                            </div>
+                    </div>
 
-        
-
+                    <div class="second_side_2">
+                        <h3>Ремонты</h3>
+                        <p>*(сначала новые):</p>
+                        <div id="repairList" class="repair_stile">
+                            {% for item in data.repairs %}
+                                <div class="geo_material_one">
+                                    <details>
+                                        <summary>поступление {{ item[0].date_time }}, статус:
+                                            {% for item in item %}
+                                                {% if loop.last %}
+                                                    {% set last_repair_status = item.repair_status %}
+                                                    {% if last_repair_status == True %}
+                                                        в ремонте
+                                                    {% endif %}
+                                                    {% if last_repair_status == False %}
+                                                        ремонт закончен {{item.date_time}}
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </summary>
+                                        {% for item in item %}
+                                            <div class="geo_material_one_dial">
+                                                <div class="rep_status">
+                                                    {% if item.repair_status == True %}
+                                                        <div>В РЕМОНТЕ</div>
+                                                    {% endif %}
+                                                    {% if item.repair_status == False %}
+                                                        <div>ВЫВЕДЕН ИЗ РЕМОНТА</div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="date_one_card">Дата: {{ item.date_time }}</div>
+                                                <div class="desc_one_card">
+                                                    <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
+                                                    <div>Кто сдал: {{ item.user_whose_technique }},</div>
+                                                    <div>Проблема / решение: {{ item.problem_description }},</div>
+                                                </div>
+                                            </div>
+                                            <div class="clear"></div>
+                                        {% endfor %}
+                                    </details>
+                                </div>
+                            {% endfor %}
                         </div>
-                        <!-- закончился блок с перемещениями и ремонтами -->
-                        
-                        
+
+                        <script>
+                            document.getElementById("toggleRepairList").addEventListener("click", function() {
+                                var repairList = document.getElementById("repairList");
+                                if (repairList.style.display === "none") {
+                                    repairList.style.display = "block";
+                                } else {
+                                    repairList.style.display = "none";
+                                }
+                            });
+                        </script>
+                        </div>
+
+    
 
                     </div>
-                </div>
+                    <!-- закончился блок с перемещениями и ремонтами -->
                 </div>
             </div>
+
+                
+                <script>
+                    function openTab(tabName) {
+                        var i, tabContent, tabLink;
+                
+                        tabContent = document.getElementsByClassName("tab-content");
+                        for (i = 0; i < tabContent.length; i++) {
+                            tabContent[i].style.display = "none";
+                        }
+                
+                        tabLink = document.getElementsByClassName("tab-link");
+                        for (i = 0; i < tabLink.length; i++) {
+                            tabLink[i].classList.remove("active");
+                        }
+                
+                        document.getElementById(tabName).style.display = "block";
+                        event.currentTarget.classList.add("active");
+                    }
+                </script>
+            
 
             
             <!-- попапы -->
@@ -274,7 +282,6 @@
                         rows="5"></textarea>
                     <input type="text" placeholder="Заказчик ремонта">
                     <button style="bottom: 10px; right: 10px;" id="submit-repair">Разберемся &#129310;</button>
-                    <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
                 </div>
             </div>
             <div style="display: none;" id="repair-details-popup" class="popup-wrapper">
@@ -288,7 +295,6 @@
                     <button style="bottom: 10px; right: 10px;" id="submit-repair-details">Добавить</button>
                     <h5>* если изменена конфигурация актива - обязательно внесите эти данные в поле его характеристик
                     </h5>
-                    <!--            <button style="position: absolute; bottom: 10px; right: 10px;" id="submit-geo">Обновить</button>-->
                 </div>
             </div>
             <div style="display: none;" id="repair-end-popup" class="popup-wrapper">
