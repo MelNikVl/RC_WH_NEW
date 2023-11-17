@@ -538,6 +538,7 @@ $("#add_from_1c").on("click", function () {
             window.location.reload();
         },
         error: function (err) {
+            alert(err)
             alert("Произошла ошибка, попробуйте ещё раз");
             window.location.reload();
         }

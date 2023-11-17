@@ -73,6 +73,7 @@ geolocation.post("/move_to_repair")(GeoLocationController.move_to_repair)
 geolocation.post("/move_from_repair")(GeoLocationController.move_from_repair)
 geolocation.post("/add_details_to_repair")(GeoLocationController.add_details_to_repair)
 geolocation.post("/short_repair")(GeoLocationController.short_repair)
+geolocation.put("/refresh_1c")(GeoLocationController.refresh_1c)
 
 auth.post("/token")(AuthController.token)
 auth.post("/create_new_user")(AuthController.create_new_user)

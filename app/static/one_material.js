@@ -162,5 +162,26 @@ $(document).ready(function () {
       location.reload()
     }
   });
+  $("#update-1c-geo").on("click", async ()=>{
+    try {
+      const response = await fetch(host + "/geolocation/refresh_1c?id="+material_id, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + access_token,
+          "Content-Type": "application/json"
+        }
+      });
+      const json = await response.json();
+      if(!json["status"]){
+        alert("произошла ошибка!");
+      }
+      window.location.reload();
+    } catch (error) {
+      alert("произошла ошибка!");
+      window.location.reload();
+      
+    }
+  });
 });
 // добавление файлов
+

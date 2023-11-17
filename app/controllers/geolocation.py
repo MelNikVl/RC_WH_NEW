@@ -1,9 +1,11 @@
 import os, shutil, fastapi
 from typing import Dict, List
-from fastapi import Depends, Request, UploadFile, File, Form
+from fastapi import Depends, Request, UploadFile, File, Form, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import parse_obj_as
 from sqlalchemy import desc
+from zeep import Transport, Client
+
 from app.crud.geolocation import GeoLocationCRUD
 from app.crud.materials import MaterialCRUD
 from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
@@ -11,10 +13,11 @@ from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequ
 from starlette import status
 
 from app.payload.response import GeoLocationUploadResponse
+from app.utils.soap import basic, url
 from app.utils.utils import response
 from app.utils.notifications import *
 from app.controllers.front import templates
-from app.utils.auth import AuthUtil
+from app.utils.auth import AuthUtil, user_dependency
 from db.db import get_db
 from models.models import User, LogItem, GeoLocation, Material, Trash, Repair
 from static_data import main_folder, utilization_ntf_users
@@ -469,3 +472,39 @@ class GeoLocationController:
             return response(data="быстрый ремонт произвден", status=True)
         else:
             return response(data="актив уже в ремонте", status=False)
+
+    @staticmethod
+    async def refresh_1c(id: str, user: user_dependency, db: Session = Depends(get_db)):
+        try:
+            from requests import Session
+            session = Session()
+            session.verify = False
+            session.auth = basic
+            transport = Transport(session=session)
+            client = Client(
+                url,
+                transport=transport)
+            resp = client.service.GetEquipmentInfo(EquipmentID=id)
+            last_1c = db.query(GeoLocation).filter(
+                GeoLocation.material_id == id, GeoLocation.geo_type == 1
+            ).order_by(desc(GeoLocation.date_time)).all()[0]
+
+            resp["EquipmentData"]["MovementHistory"].append({
+                    'Period': datetime.datetime(2023, 12, 23, 14, 0),
+                    'Document': 'Перемещение ОС RCK00000005 от 23.03.2023 13:00:00',
+                    'Person': 'Колян',
+                    'Dept': 'Ust-Luga LNG Camp'
+                })
+            new_array = []
+            for i in resp["EquipmentData"]["MovementHistory"]:
+                if (i["Period"]>last_1c.date_time):
+                    new_array.append(i)
+            for i in new_array:
+                geolocation = GeoLocation(material_id=id, place=i["Dept"], client_mail=str(i["Person"] or ""),
+                                          date_time=i["Period"], initiator=user["username"], geo_type=1)
+                db.add(geolocation)
+        except Exception as e:
+            print(e)
+            raise HTTPException(status_code=520, detail="Unknown error")
+        db.commit()
+        return response({"text": "Всё прошло успешно"})
