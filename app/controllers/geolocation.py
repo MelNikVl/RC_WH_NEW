@@ -489,12 +489,12 @@ class GeoLocationController:
                 GeoLocation.material_id == id, GeoLocation.geo_type == 1
             ).order_by(desc(GeoLocation.date_time)).all()[0]
 
-            resp["EquipmentData"]["MovementHistory"].append({
-                    'Period': datetime.datetime(2023, 12, 23, 14, 0),
-                    'Document': 'Перемещение ОС RCK00000005 от 23.03.2023 13:00:00',
-                    'Person': 'Колян',
-                    'Dept': 'Ust-Luga LNG Camp'
-                })
+            # resp["EquipmentData"]["MovementHistory"].append({
+            #         'Period': datetime.datetime(2023, 12, 23, 14, 0),
+            #         'Document': 'Перемещение ОС RCK00000005 от 23.03.2023 13:00:00',
+            #         'Person': 'Колян',
+            #         'Dept': 'Ust-Luga LNG Camp'
+            #     })
             new_array = []
             for i in resp["EquipmentData"]["MovementHistory"]:
                 if (i["Period"]>last_1c.date_time):
