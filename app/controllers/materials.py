@@ -105,7 +105,7 @@ class MaterialsController:
             photos: list[UploadFile],
             title: str = Form(),
             category: str = Form(),
-            description: str = Form(),
+            description: str = Form(default=""),
             id: str = Form(),
             new_geo: Annotated[str | None, Form()] = None,
             db: Session = Depends(get_db)

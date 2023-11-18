@@ -47,6 +47,7 @@ $(document).ready(function () {
     $("#new-geo-popup").fadeIn(200);
   });
   $("#submit-geo").on("click", async function () {
+    $("#loader-geo").fadeIn(300);
     try {
       let data = {
         "material_id": material_id,
@@ -153,6 +154,7 @@ $(document).ready(function () {
       }
     }
   $("#send_comment").on("click", async ()=>{
+    if (!confirm("Вы действительно хотите отправить коммментарий?")) return;
     let text = $("#comment-text").val();
     if(text){
       let res = await send_comment(text);

@@ -30,6 +30,7 @@ class GeoLocationController:
                      user: User = Depends(AuthUtil.decode_jwt)):
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
+            await GeoLocationController.refresh_1c(body.material_id, user, db)
             geolocation = await GeoLocationCRUD.create(material_id=body.material_id,
                                                        place=body.place,
                                                        client_mail=body.client_mail,
