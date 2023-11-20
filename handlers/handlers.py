@@ -22,15 +22,20 @@ async def add_description_handler(bot, message, state):
 
 # получание местоположение по айди
 async def get_by_id_handler(bot, message):
-    material = session.query(Material).filter(Material.id == message.text).all()
+    global geo
+    material = session.query(Material).filter(Material.id == message.text).first()
+    geos = session.query(GeoLocation).filter(Material.id == message.text).all()
+    if len(geos)>0:
+        geo = geos[-1]
     # если пользователь ничего не ввел
-    if len(material) == 0:
+    if not material:
         await bot.send_message(message.chat.id, 'техника не найдена')
     # если введен айди - то выдаем значения из базы данных
     else:
         await bot.send_message(message.chat.id,
-                               f'категория: {material[0].category},\nномер: {material[0].title},'
-                               f'\nописание {material[0].description},\nдата создания {material[0].date_time}')
+                               f'категория: {material.category},\nномер: {material.title},'
+                               f'\nописание {material.description},\nдата создания {material.date_time}'
+                               f'\nстатус {geo.status}')
 
 
 # перемещение товара
