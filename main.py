@@ -3,7 +3,7 @@ from aiogram import executor, Dispatcher, types
 from aiogram.types import Message, CallbackQuery
 from db.db import engine, session
 from handlers.handlers import add_description_handler, get_by_id_handler, move_object_handler, \
-    show_object_moving_handler, add_id_handler, add_geolocation_handler
+    show_object_moving_handler, add_id_handler, add_geolocation_handler, search_1c
 from keyboards.keyboards import add_technic_keyboard, status_keyboard
 from models.models import User, Base, LogItem
 from static_data import main_folder, bot
@@ -124,6 +124,15 @@ async def get_by_id(message: Message):
     await bot.send_message(message.chat.id, "Введите ID техники")
 
 
+@dispatcher.message_handler(commands=['get_from_1c'])
+async def get_from_1c(message: Message):
+    if message.chat.id not in state.keys():
+        state[message.chat.id] = {'state': 'get_from_1c'}
+    else:
+        state[message.chat.id]['state'] = 'get_from_1c'
+    await bot.send_message(message.chat.id, "Введите ID техники")
+
+
 @dispatcher.message_handler(commands=['move_object'])
 async def move_object(message: Message):
     if message.chat.id not in state.keys():
@@ -161,6 +170,8 @@ async def handlers(message: Message):
             await bot.send_message(message.chat.id, "Введите базовые характеристики (марка, CPU, RAM, HDD(SSD))")
         if state[message.chat.id]['state'] == 'get_by_id':
             await get_by_id_handler(bot, message)
+        if state[message.chat.id]['state'] == 'get_from_1c':
+            await search_1c(bot, message)
         if state[message.chat.id]['state'] == 'move_object':
             await move_object_handler(bot, message)
         if state[message.chat.id]['state'] == 'show_object_moving':
