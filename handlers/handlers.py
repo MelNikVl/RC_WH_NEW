@@ -209,10 +209,16 @@ async def add_geolocation_handler(bot, state, message=None, call_back=None):
 
 async def search_1c(bot, message: Message):
     mat = get_material(message.text)['EquipmentData']
-    output = (f"*Данные по ID* {mat['Code']}\n"
+    koil = []
+    for i in get_material(message.text)['EquipmentData']['MovementHistory']:
+        koil.append(i)
+    for u in koil:
+        print(u)
+    output = (f"*Данные по ID - * {mat['Code']}\n"
               f"Дата ввода: {mat['AcceptanceDate']}\n"
-              f"*Описание* {mat['NameRU']}\n"
-              f"*Местонахождение* {mat['CurrentDept']}\n"
-              f"*Ответсвенный сейчас* {mat['CurrentPerson']}\n"
+              f"*Описание:* {mat['NameRU']}\n"
+              f"*Местонахождение:* {mat['CurrentDept']}\n"
+              f"*Ответсвенный сейчас:* {mat['CurrentPerson']}\n"
+              # f"*Ебаные перемещения* {koil}\n"
               )
     await bot.send_message(message.chat.id, output, parse_mode='Markdown')
