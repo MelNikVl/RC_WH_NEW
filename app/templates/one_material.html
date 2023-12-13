@@ -105,7 +105,7 @@
                             <div class="comments_h4">не менее 10 сиволов</div>
                             <div class="comments_body">
                             <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
-                            <button id="send_comment">Отправить</button>
+                            <button class="but_comm" id="send_comment">Отправить</button>
                             <!-- метод send_comment в материалс пай -->
                                 </div>
                                     <div class="comments">
@@ -121,8 +121,11 @@
                 <div id="tab3" class="tab-content">
                     <div class="doble_side">
                         <div class="second_side_2">
+
+                        <div class="sep_2_for_1c">
+                            <h3>Перемещения</h3>
                             <button id="update-1c-geo">Обновить из 1С</button>
-                        <h3>Перемещения</h3>
+                            </div>
                             <div id="geoMaterialList">
                             <p>салатовые - заявки на перемещения от IT отдела, зеленые - уже произведенные перемещения в 1с</p>
                             {% for item in data.geo_material %}

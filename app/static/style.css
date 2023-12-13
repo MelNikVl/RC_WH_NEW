@@ -968,6 +968,8 @@ tr {
 
 .param_photo {}
 
+.but_comm {/* padding: 1em; */margin: 1em 0;}
+
 .comment-block {
     padding: 1em;
     background: #eefffd;
@@ -1096,6 +1098,8 @@ display: flex;
 .tab-content.active {
     display: block;
 }
+
+.sep_2_for_1c {/* padding: 10px 15px; */display: flex;align-items: center;gap: 1em;align-content: space-around;/* background: #f2f2f2; */justify-content: flex-start;}
 
 .tab-link {
     cursor: pointer;
