@@ -1101,6 +1101,11 @@ display: flex;
 
 .sep_2_for_1c {/* padding: 10px 15px; */display: flex;align-items: center;gap: 1em;align-content: space-around;/* background: #f2f2f2; */justify-content: flex-start;}
 
+.status_one_card {
+ /* padding: 10px 15px; */
+ font-size: xx-large;
+}
+
 .tab-link {
     cursor: pointer;
     padding: 10px 15px;

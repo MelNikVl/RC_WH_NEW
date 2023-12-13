@@ -82,19 +82,22 @@
                     </div>
                     
                     <div id="tab1" class="tab-content active">
-                        <div class="geo_material_one">     
-                            <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования 
-                                ({{ data.raw_1c.full_name }}) при вводе {{ data.date_time_f }}, дополнения: {{ data.one_material.description }}</p>
+                        <div class="geo_material_one">
+                            <p class="status_one_card">Статус: {{ data.current_status }}</p>
+                            <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
+                            <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
+                                -----  Файлов в папке актива: {{ data.len_of_files }}</p>
+
                             <div class="from_1c">
                                 <p class="data_1c">Данные из 1C</p>
-                                <p class="desc_09">Описание: {{ data.raw_1c.full_name }} (данные на {{data.raw_1c.date_time}})</p>
+                                <p class="desc_09">Дата поступления на баланс организации: {{data.formatted_time_1c}}</p>
+                                <p class="desc_09">Описание: {{ data.raw_1c.full_name }}</p>
                                 <p class="desc_09">Организация: {{ data.raw_1c.organization }}</p>
                                 <p class="desc_09">Цена: {{ data.raw_1c.cost }} $</p>
                             </div>
-                            <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
-                            <p class="desc_09">Статус: {{ data.current_status }}</p>
-                            <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
-                                -----  Файлов в папке актива: {{ data.len_of_files }}</p>
+                            <p class="sign_adm">Сотрудник {{ data.one_material.user_id }} проверил и подтвердил спецификацию оборудования
+                                ({{ data.raw_1c.full_name }}) при вводе {{ data.date_time_f }}, дополнения: {{ data.one_material.description }}</p>
+
                         </div>
                     </div>
                 
@@ -129,30 +132,37 @@
                             <div id="geoMaterialList">
                             <p>салатовые - заявки на перемещения от IT отдела, зеленые - уже произведенные перемещения в 1с</p>
                             {% for item in data.geo_material %}
-                            <div class="geo_material_one">
-                            <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
-                                <summary>
-                                    {{ item.date_time }} на {{ item.client_mail }}
-                                </summary>
-                                <div class="desc_one_card">
-                                    <div>Место: {{ item.place }},</div>
-                                    <div>Статус: {{ item.status }},</div>
-                                    <div>Инициатор: {{ item.initiator }}</div>
-                                    <div>Подтверждение перемещения от пользователя:
-                                    {% if item.read is not none %}
-                                        {% if item.read %}
-                                            <i tooltip="Уведомление подтверждено" style="color: rgb(171 39 0);" class="fa fa-star" aria-hidden="true"> - пользователь подтвердил перемещение</i>
-                                        {% else %}
-                                            <i tooltip="Уведомление не подтверждено" style="color: rgb(53, 24, 235);" class="fa fa-star-half-o" aria-hidden="true"> - уведомление отправлено</i>
-                                        {% endif %}    
-                                    {% else %}
-                                        none
-                                    {% endif %}
+                                <div class="geo_material_one">
+                                    <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
+                                        <summary>
+                                            {{ item.date_time }} на {{ item.client_mail }}
+                                            {% if item.geo_type != 1 %}
+                                            <div>Статус: {{ item.status }},</div>
+                                            {% endif %}
+                                        </summary>
+                                        <div class="desc_one_card">
+                                            <div>Место: {{ item.place }},</div>
+
+                                            {% if item.geo_type != 1 %}
+                                                <div>Инициатор: {{ item.initiator }}</div>
+                                            {% endif %}
+
+                                            <div>Подтверждение перемещения от пользователя:
+                                                {% if item.read is not none %}
+                                                    {% if item.read %}
+                                                        <i tooltip="Уведомление подтверждено" style="color: rgb(171 39 0);" class="fa fa-star" aria-hidden="true"> - пользователь подтвердил перемещение</i>
+                                                    {% else %}
+                                                        <i tooltip="Уведомление не подтверждено" style="color: rgb(53, 24, 235);" class="fa fa-star-half-o" aria-hidden="true"> - уведомление отправлено</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    none
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </details>
                                 </div>
-                                </div>
-                            </details>
-                            </div>
                             {% endfor %}
+
                             </div>
 
                             <script>

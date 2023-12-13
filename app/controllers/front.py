@@ -225,6 +225,7 @@ class FrontMainController:
         datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
         formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
         raw_1c = jsonable_encoder(db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first())
+        formatted_time_1c = db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first().date_time.strftime("%d %B %Y")
 
         out: Dict = {}
         out["username"] = result["username"]
@@ -242,6 +243,7 @@ class FrontMainController:
         out["role"] = result["role"]
         out["comments"] = await MaterialCRUD.get_comments(material_id, db)
         out["raw_1c"] = raw_1c
+        out["formatted_time_1c"] = formatted_time_1c
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 
