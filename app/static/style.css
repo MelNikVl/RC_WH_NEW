@@ -1103,7 +1103,7 @@ display: flex;
 
 .status_one_card {
  /* padding: 10px 15px; */
- font-size: xx-large;
+ font-size: x-large;
 }
 
 .tab-link {
@@ -1119,6 +1119,7 @@ display: flex;
 
 .tab-content {
     display: none;
+    max-width: 70%;
     padding: 20px;
 }
 

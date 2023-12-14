@@ -14,7 +14,7 @@ from starlette import status
 
 from app.payload.response import GeoLocationUploadResponse
 from app.utils.soap import basic, url
-from app.utils.utils import response
+from app.utils.utils import response, email_validate
 from app.utils.notifications import *
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil, user_dependency
@@ -30,29 +30,31 @@ class GeoLocationController:
                      user: User = Depends(AuthUtil.decode_jwt)):
 
         if db.query(Repair).filter(Repair.material_id == body.material_id).all()[-1].repair_status == False:
-            await GeoLocationController.refresh_1c(body.material_id, user, db)
-            geolocation = await GeoLocationCRUD.create(material_id=body.material_id,
+            if (email_validate(body.client_mail)):
+                await GeoLocationController.refresh_1c(body.material_id, user, db)
+                geolocation = await GeoLocationCRUD.create(material_id=body.material_id,
                                                        place=body.place,
                                                        client_mail=body.client_mail,
                                                        status=body.status,
                                                        initiator=user.get("username"),
                                                        db=db)
             # уведомление о перемещении
-            material_for_notif = db.query(Material).filter(Material.id == body.material_id).first()
-            notify_material = [material_for_notif.id,
+                material_for_notif = db.query(Material).filter(Material.id == body.material_id).first()
+                notify_material = [material_for_notif.id,
                                 material_for_notif.title,
                                 material_for_notif.description,
                                 body.status,
                                 user["username"],
                                 geolocation.id
                                 ]
+
             # высылаем письмо
-            notify(db, SUBJECT.RELOCATION, [body.client_mail], material=notify_material)
+                notify(db, SUBJECT.RELOCATION, [body.client_mail], material=notify_material)
             # находим последний элемент уведомления
-            last_ntf = db.query(Notifications).order_by(desc(Notifications.id)).first().unique_code
+                last_ntf = db.query(Notifications).order_by(desc(Notifications.id)).first().unique_code
 
             # логируемlogs.html
-            create_geo_event = LogItem(kind_table="Расположение активов",
+                create_geo_event = LogItem(kind_table="Расположение активов",
                                        user_id=user["username"],
                                        passive_id=body.material_id,
                                        modified_cols="новое расположение",
@@ -62,12 +64,14 @@ class GeoLocationController:
                                                         f' уведомление {last_ntf} выслано пользователю',
                                        date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                        )
-            db.add(create_geo_event)
-            db.commit()
+                db.add(create_geo_event)
+                db.commit()
+            else:
+                return response(data={"text": "Введены некорректные данные"}, status=False)
 
             return response(data=parse_obj_as(GeoLocationUploadResponse, geolocation), status=True)
         else:
-            return response(data="актив в ремонте и не подлежит перемещению", status=False)
+            return response(data={"text": "актив в ремонте и не подлежит перемещению"}, status=False)
 
     @staticmethod
     async def get_by_id(body: GeoLocationGetByIdRequest,
@@ -89,6 +93,7 @@ class GeoLocationController:
                                            place=add_to_trash.place,
                                            client_mail=user.get("username"),
                                            status="списание",
+                                           geo_type=0,
                                            initiator=user.get("username"),
                                            date_time=datetime.datetime.now()
                                            )
@@ -127,6 +132,7 @@ class GeoLocationController:
                                            place=add_to_trash.place,
                                            client_mail=user.get("username"),
                                            status="списание",
+                                           geo_type=0,
                                            date_time=datetime.datetime.now()
                                            )
 
@@ -305,6 +311,7 @@ class GeoLocationController:
                                        place="IT отдел",
                                        client_mail=data.customer,
                                        status="ремонт",
+                                       geo_type=2,
                                        initiator=user.get("username"),
                                        date_time=datetime.datetime.now()
                                        )
@@ -359,6 +366,7 @@ class GeoLocationController:
                                        client_mail=body.customer,
                                        status=body.status,
                                        initiator=user.get("username"),
+                                       geo_type=2,
                                        date_time=datetime.datetime.now()
                                        )
 
@@ -447,6 +455,26 @@ class GeoLocationController:
 
             find_repair = db.query(Repair).filter(Repair.material_id == body.material_id)
             rapair_count_last = find_repair.order_by(desc(Repair.repair_number)).all()[0].repair_number
+
+            # last_geolocation = db.query(GeoLocation).filter(GeoLocation.material_id == body.material_id).first()[-1]
+            #
+            # new_location = GeoLocation(material_id=body.material_id,
+            #                            place="IT отдел",
+            #                            client_mail=body.customer,
+            #                            status="ремонт",
+            #                            initiator=user.get("username"),
+            #                            date_time=datetime.datetime.now()
+            #                            )
+            # db.add(new_location)
+            #
+            # new_location1 = GeoLocation(material_id=body.material_id,
+            #                                place=last_geolocation,
+            #                                client_mail=body.customer,
+            #                                status="выдан",
+            #                                initiator=user.get("username"),
+            #                                date_time=datetime.datetime.now()
+            #                                )
+            # db.add(new_location1)
 
             new_repair = Repair(material_id=body.material_id,
                                 responsible_it_dept_user=user.get("username"),

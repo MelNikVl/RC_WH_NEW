@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Any, Dict
 from static_data import main_folder
+import re
 
 logging.basicConfig(level=logging.INFO,
                     filename="log.log",
@@ -14,6 +15,7 @@ def response(data: Any, status: bool = True):
     if data is None:
         data = {}
     return {"data": data, "status": status}
+
 
 # фотки к каждому товару
 def get_first_photo(material_id: str):
@@ -30,3 +32,12 @@ def get_first_photo(material_id: str):
     else:
         out["picture"] = photo_files[0]
         return out
+
+
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+
+
+def email_validate(email):
+    if re.fullmatch(regex, email):
+        return True
+    return False

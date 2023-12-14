@@ -64,7 +64,9 @@ $(document).ready(function () {
         }
       });
       const json = await response.json();
-      console.log('Успех:', JSON.stringify(json));
+      if (!json["status"]){
+        alert("Ошибка! Возможно вы ввели некорректные данные");
+      }
       window.location.reload();
       $("#new-geo-popup").fadeOut(200);
     } catch (error) {

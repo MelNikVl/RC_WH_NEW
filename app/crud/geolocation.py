@@ -21,7 +21,7 @@ class GeoLocationCRUD:
             raise HTTPException(status_code=404, detail="Карточки актива с таким айди не найдено")
         else:
             geolocation = GeoLocation(material_id=material_id, place=place, client_mail=client_mail,
-                                      status=status, date_time=datetime.datetime.now(), initiator=initiator)
+                                      status=status, date_time=datetime.datetime.now(), geo_type=0, initiator=initiator)
             db.add(geolocation)
             db.commit()
             material[0].geolocation_id = geolocation.id
@@ -113,9 +113,9 @@ class GeoLocationCRUD:
         uniq_id_val = []
         for i in unique_ids:
             last = []
-            for ie in db.query(Repair).filter(Repair.repair_unique_id == i).all():
-                rrrr = jsonable_encoder(ie)
-                last.append(rrrr)
+            for rep in db.query(Repair).filter(Repair.repair_unique_id == i).all():
+                rep_0 = jsonable_encoder(rep)
+                last.append(rep_0)
             uniq_id_val.append(last)
         return uniq_id_val
 

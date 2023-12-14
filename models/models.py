@@ -64,6 +64,7 @@ class GeoLocation(Base):
     date_time: datetime = Column(DateTime)
     geo_type: int = Column(Integer)
     comment: str = Column(String, default="")
+    # repair_unique_id: str = Column(String, ForeignKey('repair.repair_unique_id'), nullable=True)
 
 class LogItem(Base):
     __tablename__ = "log"

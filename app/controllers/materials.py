@@ -138,7 +138,7 @@ class MaterialsController:
             db.add(new_raw)
             for i in history:
                 geolocation = GeoLocation(material_id=id, place=i["Dept"], client_mail=i["Person"],
-                                          date_time=i["Period"], geo_type=GEO_TYPE.movement.value,
+                                          date_time=i["Period"], geo_type=GEO_TYPE.movement.value, status="1С",
                                           comment=i["Document"])
                 db.add(geolocation)
             new_repair = Repair(material_id=id,

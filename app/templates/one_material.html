@@ -78,12 +78,15 @@
                     <div class="tabs">
                         <a href="#" class="tab-link active" onclick="openTab('tab1')">Описание</a>
                         <a href="#" class="tab-link" onclick="openTab('tab2')">Комментарии</a>
-                        <a href="#" class="tab-link" onclick="openTab('tab3')">Перемещения и ремонты</a>
+                        <a href="#" class="tab-link" onclick="openTab('tab3')">Перемещения</a>
+                        <a href="#" class="tab-link" onclick="openTab('tab4')">Ремонты</a>
                     </div>
                     
                     <div id="tab1" class="tab-content active">
                         <div class="geo_material_one">
                             <p class="status_one_card">Статус: {{ data.current_status }}</p>
+                            <p class="status_one_card">Местоположение: {{ data.current_place }}</p>
+                            <p class="status_one_card">Отвественный: {{ data.raw_1c.client_mail }} {{ data.current_user }}</p>
                             <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
                             <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
                                 -----  Файлов в папке актива: {{ data.len_of_files }}</p>
@@ -133,7 +136,9 @@
                             <p>салатовые - заявки на перемещения от IT отдела, зеленые - уже произведенные перемещения в 1с</p>
                             {% for item in data.geo_material %}
                                 <div class="geo_material_one">
-                                    <details class="det_1" {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}>
+                                    <details class="det_1"
+                                             {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}
+                                             {% if item.status == 'ремонт' %}style="background-color: #fff85b4f;"{% endif %}>
                                         <summary>
                                             {{ item.date_time }} на {{ item.client_mail }}
                                             {% if item.geo_type != 1 %}
@@ -147,6 +152,7 @@
                                                 <div>Инициатор: {{ item.initiator }}</div>
                                             {% endif %}
 
+                                            {% if item.geo_type != 1 %}
                                             <div>Подтверждение перемещения от пользователя:
                                                 {% if item.read is not none %}
                                                     {% if item.read %}
@@ -158,6 +164,7 @@
                                                     none
                                                 {% endif %}
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </details>
                                 </div>
@@ -176,11 +183,14 @@
                                 });
                             </script>
                     </div>
+                    </div>
+                    <!-- закончился блок с перемещениями и ремонтами -->
+                </div>
 
-                    <div class="second_side_2">
+                    <div id="tab4" class="tab-content">
+                        <div class="second_side_2">
                         <h3>Ремонты</h3>
                         <p>*(сначала новые):</p>
-                        <div id="repairList" class="repair_stile">
                             {% for item in data.repairs %}
                                 <div class="geo_material_one">
                                     <details>
@@ -219,7 +229,6 @@
                                     </details>
                                 </div>
                             {% endfor %}
-                        </div>
 
                         <script>
                             document.getElementById("toggleRepairList").addEventListener("click", function() {
@@ -232,12 +241,7 @@
                             });
                         </script>
                         </div>
-
-    
-
-                    </div>
-                    <!-- закончился блок с перемещениями и ремонтами -->
-                </div>
+                        </div>
             </div>
 
                 
