@@ -64,7 +64,7 @@ $(document).ready(function () {
         }
       });
       const json = await response.json();
-      if (!json["status"]){
+      if (!json["status"]) {
         alert("Ошибка! Возможно вы ввели некорректные данные");
       }
       window.location.reload();
@@ -106,10 +106,10 @@ $(document).ready(function () {
   });
   $("#move_to_trash").on("click", async function () {
     if (confirm('Вы уверены, что хотите добавить к списку на списание данные активы? Это действие будет уже не отменить')) {
-        await move_to_trash(material_id);
-        window.location.reload();
+      await move_to_trash(material_id);
+      window.location.reload();
     }
-});
+  });
 
 
   async function upload_photos(mat_id) {
@@ -138,37 +138,37 @@ $(document).ready(function () {
       "material_id": material_id,
       "text": text
     };
-      try {
-        const response = await fetch(host + "/materials/send_comment", {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Authorization': 'Bearer ' + access_token,
-            "Content-Type": "application/json"
-          }
-        });
-        const json = await response.json();
-        return json;
-      } catch (error) {
-        alert("произошла ошибка!");
-        window.location.reload();
-        return;
-      }
+    try {
+      const response = await fetch(host + "/materials/send_comment", {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Authorization': 'Bearer ' + access_token,
+          "Content-Type": "application/json"
+        }
+      });
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      alert("произошла ошибка!");
+      window.location.reload();
+      return;
     }
-  $("#send_comment").on("click", async ()=>{
+  }
+  $("#send_comment").on("click", async () => {
     if (!confirm("Вы действительно хотите отправить коммментарий?")) return;
     let text = $("#comment-text").val();
-    if(text){
+    if (text) {
       let res = await send_comment(text);
-      if (!res["status"]){
+      if (!res["status"]) {
         alert("Произошла ошибка!");
       }
       location.reload()
     }
   });
-  $("#update-1c-geo").on("click", async ()=>{
+  $("#update-1c-geo").on("click", async () => {
     try {
-      const response = await fetch(host + "/geolocation/refresh_1c?id="+material_id, {
+      const response = await fetch(host + "/geolocation/refresh_1c?id=" + material_id, {
         method: 'PUT',
         headers: {
           'Authorization': 'Bearer ' + access_token,
@@ -176,16 +176,56 @@ $(document).ready(function () {
         }
       });
       const json = await response.json();
-      if(!json["status"]){
+      if (!json["status"]) {
         alert("произошла ошибка!");
       }
       window.location.reload();
     } catch (error) {
       alert("произошла ошибка!");
       window.location.reload();
-      
+
     }
   });
-});
-// добавление файлов
+  $("#send_to_repair").on("click", function () {
+    $("#add-to-repair-popup").fadeIn(300);
+  });
+  $("#submit-repair").on("click", function () {
+    let customer = $("#add-to-repair-popup input").val();
+    let problem = $("#add-to-repair-popup textarea").val();
+    if (customer && problem) {
+      const data = {
+        "material_id": material_id,
+        "problem": problem,
+        "customer": customer
+      };
+      move_to_repair(data);
+    }
+    else {
+      alert("Заполните все поля!");
+    }
+  });
+  $("#end_repair").on("click", function () {
+    $("#repair-end-popup").fadeIn(300);
+  });
+  $("#submit-repair-end").on("click", function () {
+    let solution = $("#repair-end-popup textarea").val();
+    let customer = $("#repair-end-popup input").eq(0).val();
+    let place = $("#repair-end-popup input").eq(1).val();
+    let status = $("#repair-end-popup input").eq(2).val();
+    if (solution) {
+      const data = {
+        "material_id": material_id,
+        "solution": solution,
+        "customer": customer,
+        "place": place,
+        "status": status
+      };
+      $("#submit-repair-end").prop("disabled", true);
+      move_from_repair(data);
+    }
+    else {
+      alert("Заполните все поля!");
+    }
+  });
 
+});
