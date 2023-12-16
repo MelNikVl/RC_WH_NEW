@@ -55,15 +55,15 @@
                         <div class="menu_1">
                             {% if data.current_status != "списание"%}
                             <div class="action-buttons_1_card">
-                                <button id="delete">Удалить</button>
-                                <button id="relocate">Переместить</button>
-                                <button id="add_photo">Добавить файлы</button>
-                                <button id="fast_repair" class="yell_button">Быстрый ремонт</button>
-                                           <button id="send_to_repair" class="yell_button">Взять в ремонт</button>
+                                <button class="button_one_card_left" id="relocate">Переместить</button>
+                                <button class="button_one_card_left" id="add_photo">Добавить файлы</button>
+                                <button class="button_one_card_left or_button" id="fast_repair">Быстрый ремонт</button>
+                                           <button class="button_one_card_left yell_button" id="send_to_repair">Взять в ремонт</button>
                                 <!--        <button id="add_repair_info" class="yell_button">Добавить инфо к ремонту</button>-->
-                                       <button id="end_repair" class="yell_button">Закончить ремонт</button>
+                                       <button class="button_one_card_left yell_button" id="end_repair" >Закончить ремонт</button>
                                 {% if data.current_status != "ремонт"%}
-                                <button id="move_to_trash" class="red_button">Списать</button>
+                                <button class="button_one_card_left red_button" id="move_to_trash" >Списать</button>
+                                <button class="button_one_card_left red_button" id="delete">Удалить</button>
                                 {%endif%}
                             </div>
                             {%endif%}
@@ -86,6 +86,7 @@
                         <div class="geo_material_one">
                             <p class="status_one_card">Статус: {{ data.current_status }}</p>
                             <p class="status_one_card">Местоположение: {{ data.current_place }}</p>
+                            <p class="status_one_card">Последнее перемещение в 1с: {{ data.geo_material[-1].date_time }}</p>
                             <p class="status_one_card">Отвественный: {{ data.raw_1c.client_mail }} {{ data.current_user }}</p>
                             <p class="desc_09">Категория IT: {{ data.one_material.category }}</p>
                             <p class="param_photo">Фото и документация:  \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}
@@ -112,7 +113,6 @@
                             <div class="comments_body">
                             <textarea name="" id="comment-text" cols="30" rows="3"></textarea>
                             <button class="but_comm" id="send_comment">Отправить</button>
-                            <!-- метод send_comment в материалс пай -->
                                 </div>
                                     <div class="comments">
                                         {% for comment in data.comments%}
@@ -140,12 +140,20 @@
                                              {% if item.geo_type == 1 %}style="background-color: #50c36f8f;"{% endif %}
                                              {% if item.status == 'ремонт' %}style="background-color: #fff85b4f;"{% endif %}>
                                         <summary>
+                                            {% if item.geo_type == 1 %}
                                             {{ item.date_time }} на {{ item.client_mail }}
+                                            {% endif %}
+
                                             {% if item.geo_type != 1 %}
-                                            <div>Статус: {{ item.status }},</div>
+                                            Заявка на перемещение от {{ item.initiator }}: {{ item.date_time }} на {{ item.client_mail }}
                                             {% endif %}
                                         </summary>
                                         <div class="desc_one_card">
+                                            {% if item.geo_type != 1 %}
+
+                                            <div>Статус: {{ item.status }}</div>
+                                            {% endif %}
+
                                             <div>Место: {{ item.place }},</div>
 
                                             {% if item.geo_type != 1 %}
@@ -222,6 +230,7 @@
                                                     <div>Ответственный: {{ item.responsible_it_dept_user }},</div>
                                                     <div>Кто сдал: {{ item.user_whose_technique }},</div>
                                                     <div>Проблема / решение: {{ item.problem_description }},</div>
+                                                    <div>Загруженные файлы в папке \\it-wh\it_warehouse_docs\photos\{{ data.one_material.id }}\Repairs\</div>
                                                 </div>
                                             </div>
                                             <div class="clear"></div>

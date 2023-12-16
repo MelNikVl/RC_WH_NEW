@@ -1066,7 +1066,7 @@ display: flex;
 
 .sign_adm {
     margin: 1em 0;
-    background: #40e0d08a;
+    background: #40a4e04a;
     padding: 1em;
     border-radius: 1em;
     font-family: system-ui;
@@ -1102,7 +1102,7 @@ display: flex;
 .sep_2_for_1c {/* padding: 10px 15px; */display: flex;align-items: center;gap: 1em;align-content: space-around;/* background: #f2f2f2; */justify-content: flex-start;}
 
 .status_one_card {
- /* padding: 10px 15px; */
+ font-weight: bold;
  font-size: x-large;
 }
 
@@ -1116,6 +1116,10 @@ display: flex;
     text-align: center;
     border-right: 1px solid;
 }
+
+.or_button {/* padding: 20px; */background: #ffd6008c;}
+
+.button_one_card_left {/* max-width: 70%; */width: 100%;}
 
 .tab-content {
     display: none;
