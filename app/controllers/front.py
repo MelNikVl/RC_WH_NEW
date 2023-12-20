@@ -174,7 +174,8 @@ class FrontMainController:
             result = await AuthUtil.decode_jwt(t)
             out["username"] = result["username"]
             out["role"] = result["role"]
-            print(EmailConfig.get_emails())
+            out["email_for_noth"] = EmailConfig.get_emails()
+
             return templates.TemplateResponse("admins_page.html", {"request": request, "data": out})
         else:
             return fastapi.responses.RedirectResponse('/app', status_code=status.HTTP_301_MOVED_PERMANENTLY)

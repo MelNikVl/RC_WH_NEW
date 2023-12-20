@@ -33,11 +33,7 @@
             <div class="clear"></div>
 
             <div class="top_pan_2">
-            <div class="counts">
-                <p class="p_for_count"><b>Всего пользователей: {{ data.count }}</b></p>
-                <p class="p_for_count">Админов: {{ data.admins_count }}</p>
-                
-            </div>
+
             <button class="button_10"  id="logs"
             onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
         <button class="button_10"  id="ntf"
@@ -46,21 +42,28 @@
                 onclick="window.location.href = '/docs'">Swagger</button>
         
         </div>
-            
-        <div class="clear"></div>
+
     </div>
+
+<h2>админы блять</h2>
+
+        <div class="email_counts_11">
+        <div class="email_122"><b>Всего пользователей: {{ data.count }}</b></div>
+        <div class="email_122">Админов: {{ data.admins_count }}</div>
+        <div class="email_1223">
+                    <div>{{ data.username }} шеф &#128293;</div>
+                    {% if data.role == True %}
+                    <div><b>административный</b> доступ</div>
+                    {% endif %}
+                    {% if data.role == False %}
+                    <div><b>пользовательский</b> доступ</div>
+                    {% endif %}
+                </div>
+            </div>
 
         <div class="body_separate">
             <div class="body_left top-panel">
-                 <div class="welcome">
-                    <p class="hello">{{ data.username }} шеф &#128293;</p>
-                    {% if data.role == True %}
-                    <p class="hello_2"><b>административный</b> доступ</p>
-                    {% endif %}
-                    {% if data.role == False %}
-                    <p class="hello_2"><b>пользовательский</b> доступ</p>
-                    {% endif %}
-                </div>
+
             <div class="menu_left">
                 <div class="menu_1">
                     <button id="create_new_user" class="button_admins_page ">Создать пользователя</button>
@@ -99,10 +102,40 @@
                 </table>
             </div>
             <div class="admins_table">
+            </div>
+    </div>
+        <h2>почты блять</h2>
+        <div class="body_separate">
+            <div class="body_left top-panel">
+            <div class="menu_left">
+                <div class="menu_1">
+                    <button id="ггггг" class="button_admins_page ">Добавить email</button>
+                    <button id="гггг" class="button_admins_page ">Удалить email</button>
+                </div>
+            </div>
+                </div>
 
+        <div class="body_right">
+                <table id="eeeeeeee">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="fadsfdsaf-all"></th>
+                            <th>Почта</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data.email_for_noth %}
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>{{ item }}</td>
+                        </tr>
+                        {% endfor %}
+                    <tbody>
+                </table>
             </div>
 
     </div>
+
     <div style="display: none;" id="new-user-popup" class="popup-wrapper">
         <div class="popup">
             <div class="close-btn">

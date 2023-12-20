@@ -836,7 +836,8 @@ details:not([open])>*:not(summary) {
 
 .body_right {
     display: flex;
-    width: 100%;
+    width: 50%;
+    background: #f7f7f7;
     justify-content: flex-start;
     align-content: center;
     flex-wrap: nowrap;
@@ -1126,6 +1127,23 @@ display: flex;
     max-width: 70%;
     padding: 20px;
 }
+
+.email_for_admin_page {padding: 1em 0 0;margin: 0 1em 0 1em;font-size: large;}
+
+.currently_email {
+padding: 20px;
+}
+
+.email_counts_11 {/* padding: 20px; */display: flex;}
+
+.email_122 {/* padding: 20px; */margin: 1em;}
+
+.email_for_admin_page1 {margin: 1em 0 0 0;/* padding: 20px; */width: 68%;background: #f5deb380;border-left: 1px solid;}
+
+.email_1223 {
+margin: 1em;
+}
+
 
 .active {
     display: block;
