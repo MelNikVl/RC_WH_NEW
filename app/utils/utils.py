@@ -3,6 +3,7 @@ import os
 from typing import Any, Dict
 from static_data import main_folder
 import re
+import json
 
 logging.basicConfig(level=logging.INFO,
                     filename="log.log",
@@ -41,3 +42,18 @@ def email_validate(email):
     if re.fullmatch(regex, email):
         return True
     return False
+
+
+class EmailConfig:
+    @staticmethod
+    def write(value: [str]):
+        data: dict = {"emails": value}
+        with open('config.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+            f.close()
+    @staticmethod
+    def get_emails():
+        f = open('config.json')
+        data = json.load(f)
+        emails = data["emails"] or []
+        return emails

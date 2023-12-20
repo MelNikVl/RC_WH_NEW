@@ -7,6 +7,8 @@ from email.mime.text import MIMEText
 from enum import Enum
 from os.path import basename
 from sqlalchemy.orm import Session
+
+from app.utils.utils import EmailConfig
 from models.models import Notifications
 from static_data import host
 
@@ -25,7 +27,7 @@ class SUBJECT(Enum):
 
 
 @staticmethod
-def notify(db: Session, subject, addresses: list, invoice=None, material: []=None):
+async def notify(db: Session, subject, addresses: list, invoice=None, material: []=None):
     unique = secrets.token_hex(8)
     addresses_to = ", ".join(addresses)
 
@@ -33,7 +35,13 @@ def notify(db: Session, subject, addresses: list, invoice=None, material: []=Non
     message["Subject"] = subject.value
     message["From"] = gmail_login
     message['To'] = addresses_to
+
+    message2 = MIMEMultipart("")
+    message2["Subject"] = subject.value
+    message2["From"] = gmail_login
+
     html = ""
+    html2 = None
     match subject:
         case SUBJECT.UTILIZATION:
             with open(invoice, "rb") as file:
@@ -79,6 +87,18 @@ def notify(db: Session, subject, addresses: list, invoice=None, material: []=Non
                             </body>
                         </html>                        
                         """
+            html2 = f"""\
+                    <html>
+                            <body>
+                                <p>Новая заявка на пермещение актива id: {material[0]} &nbsp; Номер: {material[1]}</p>
+                                <p>Характеристики: {material[2]}</p>
+                                <p>Инициатор перемещения: {material[4]}.</p>
+                                <p>Планируемый статус после перемещения: {material[3]}</p>
+                                <p>Просим переместить данный актив в 1с. Если у вас есть дополнительные вопросы - напишите пожалуйста нам на 
+                                общую почту: +RCSPBADMINS</p>
+                            </body>
+                        </html> 
+                    """
     part2 = MIMEText(html, "html")
     message.attach(part2)
 
@@ -86,7 +106,6 @@ def notify(db: Session, subject, addresses: list, invoice=None, material: []=Non
     serv.starttls()
     serv.login(gmail_login, gmail_pass)
     serv.sendmail(gmail_login, addresses, message.as_string())
-
     new_notify = Notifications(category=f'{subject.value} {material[0]}',
                                user=addresses_to,
                                unique_code=unique,
@@ -98,3 +117,10 @@ def notify(db: Session, subject, addresses: list, invoice=None, material: []=Non
         new_notify.geolocation_id = material[5]
     db.add(new_notify)
     db.commit()
+
+    emails2 = EmailConfig.get_emails()
+    if len(emails2) and html2:
+        part = MIMEText(html, "html")
+        message2.attach(part)
+        message2['To'] = ", ".join(emails2)
+        serv.sendmail(gmail_login, emails2, message2.as_string())

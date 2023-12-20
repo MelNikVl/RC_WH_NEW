@@ -13,7 +13,7 @@ from crud.materials import MaterialCRUD
 from starlette import status
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
-from app.utils.utils import get_first_photo, response
+from app.utils.utils import get_first_photo, response, EmailConfig
 from db.db import get_db
 from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem, Raw_1c
 from app.payload.request import InvoiceCreateRequest, MaterialsListRequest
@@ -174,6 +174,7 @@ class FrontMainController:
             result = await AuthUtil.decode_jwt(t)
             out["username"] = result["username"]
             out["role"] = result["role"]
+            print(EmailConfig.get_emails())
             return templates.TemplateResponse("admins_page.html", {"request": request, "data": out})
         else:
             return fastapi.responses.RedirectResponse('/app', status_code=status.HTTP_301_MOVED_PERMANENTLY)

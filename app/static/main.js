@@ -46,39 +46,43 @@ $(document).ready(function () {
 
         let id = $("#1c-search").val();
         let resp = await from_1c(id);
-        $("#data-1c-popup .1c-data").html("")
-        let equip = resp["EquipmentData"];
-        let date = equip["AcceptanceDate"];
-        let history = equip["MovementHistory"];
-        let name = equip["FullName"];
-        let name2 = equip["Name"];
-        let name_ru = equip["NameRU"];
-        
-
-        // заголовок для данных
-        $("#data-1c-popup .1c-data").append(`<div><strong>Данные по ID ${id}</strong></div>`);
-
-        // блок для данных о "Оборудовании"
-        $("#data-1c-popup .1c-data").append(`<div class="equipment-info">
-            <div class=\"1c-elem\">Дата ввода: ${date}</div>
-            <div class=\"1c-elem\">Описание 1: ${name}</div>
-        </div>`);
-
-        let history_html = "";
-        history_html += "<details><summary>Перемещения:</summary><div class=\"1c-history\">";
-        history.forEach(el => {
-            history_html += `<div class="movement-item">
-        <div class=\"1c-elem\">Перемещение от: ${el["Period"]}</div>
-        <div class=\"1c-elem\">Отдел: ${el["Dept"]}</div>
-        </div>`;
-        });
-        history_html += "</div></details>";
-        $("#data-1c-popup .1c-data").append(history_html);
 
 
+        if (resp && resp.Error) {
+            alert("Не найдено ОС с инвентарным номером " + id);
+        }
+
+        else {
+            $("#data-1c-popup .1c-data").html("")
+            let equip = resp["EquipmentData"];
+            let date = equip["AcceptanceDate"];
+            let history = equip["MovementHistory"];
+            let name = equip["FullName"];
+            let name2 = equip["Name"];
+            let name_ru = equip["NameRU"];
 
 
-        $("#data-1c-popup").fadeIn(300);
+            // заголовок для данных
+            $("#data-1c-popup .1c-data").append(`<div><strong>Данные по ID ${id}</strong></div>`);
+
+            // блок для данных о "Оборудовании"
+            $("#data-1c-popup .1c-data").append(`<div class="equipment-info">
+                <div class=\"1c-elem\">Дата ввода: ${date}</div>
+                <div class=\"1c-elem\">Описание 1: ${name}</div>
+            </div>`);
+
+            let history_html = "";
+            history_html += "<details><summary>Перемещения:</summary><div class=\"1c-history\">";
+            history.forEach(el => {
+                history_html += `<div class="movement-item">
+            <div class=\"1c-elem\">Перемещение от: ${el["Period"]}</div>
+            <div class=\"1c-elem\">Отдел: ${el["Dept"]}</div>
+            </div>`;
+            });
+            history_html += "</div></details>";
+            $("#data-1c-popup .1c-data").append(history_html);
+            $("#data-1c-popup").fadeIn(300);
+        }
     })
     $("#end_repair").on("click", function () {
         $("#repair-end-popup").fadeIn(300);
@@ -216,7 +220,7 @@ ssd (Gb):
 жесткий диск (Gb): 
 *дополнительная информация: `;
         let monitor_template =
-`производитель:
+            `производитель:
 модель: `;
         let server_template =
             `производитель: 
@@ -505,16 +509,16 @@ $("#add_from_1c").on("click", function () {
     let id = $("#1c-search").val();
     let files = $("#1c_file")[0].files;
     let new_geo = $("#1c_geo").val().trim();
-    
+
     if (!category || !title || !id || !files[0]) {
         alert("Заполните необходимые поля*");
         return;
     }
     var fd = new FormData();
-    for (let f =0; f<files.length; f++){
+    for (let f = 0; f < files.length; f++) {
         fd.append('photos', files[f]);
     }
-    if(new_geo){
+    if (new_geo) {
         fd.append('new_geo', new_geo);
     }
     fd.append('category', category);

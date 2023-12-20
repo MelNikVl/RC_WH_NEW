@@ -1,3 +1,4 @@
+import asyncio
 import os, shutil, fastapi
 from typing import Dict, List
 from fastapi import Depends, Request, UploadFile, File, Form, HTTPException
@@ -49,7 +50,7 @@ class GeoLocationController:
                                 ]
 
             # высылаем письмо
-                notify(db, SUBJECT.RELOCATION, [body.client_mail], material=notify_material)
+                asyncio.ensure_future(notify(db, SUBJECT.RELOCATION, [body.client_mail], material=notify_material))
             # находим последний элемент уведомления
                 last_ntf = db.query(Notifications).order_by(desc(Notifications.id)).first().unique_code
 
