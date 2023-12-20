@@ -45,13 +45,13 @@
 
     </div>
 
-<h2>админы блять</h2>
+<h2 class="h2_in_admin">Пользователи приложения</h2>
 
         <div class="email_counts_11">
         <div class="email_122"><b>Всего пользователей: {{ data.count }}</b></div>
         <div class="email_122">Админов: {{ data.admins_count }}</div>
         <div class="email_1223">
-                    <div>{{ data.username }} шеф &#128293;</div>
+                    <div>{{ data.username }} шеф &#128293;  --  </div>
                     {% if data.role == True %}
                     <div><b>административный</b> доступ</div>
                     {% endif %}
@@ -104,7 +104,7 @@
             <div class="admins_table">
             </div>
     </div>
-        <h2>почты блять</h2>
+        <h2 class="h2_in_admin">Почта для уведомлениях о перемещениях активов</h2>
         <div class="body_separate">
             <div class="body_left top-panel">
             <div class="menu_left">

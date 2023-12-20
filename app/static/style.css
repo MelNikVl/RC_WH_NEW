@@ -836,7 +836,7 @@ details:not([open])>*:not(summary) {
 
 .body_right {
     display: flex;
-    width: 50%;
+    /* width: 50%; */
     background: #f7f7f7;
     justify-content: flex-start;
     align-content: center;
@@ -1134,15 +1134,15 @@ display: flex;
 padding: 20px;
 }
 
-.email_counts_11 {/* padding: 20px; */display: flex;}
+.email_counts_11 {/* padding: 20px; */display: flex;background: whitesmoke;}
 
 .email_122 {/* padding: 20px; */margin: 1em;}
 
+.h2_in_admin {/* padding: 20px; */margin: 1em;}
+
 .email_for_admin_page1 {margin: 1em 0 0 0;/* padding: 20px; */width: 68%;background: #f5deb380;border-left: 1px solid;}
 
-.email_1223 {
-margin: 1em;
-}
+.email_1223 {/* margin: 1em; */display: flex;margin: 1em;background: #dbdbdb;padding: 0 1em;}
 
 
 .active {
