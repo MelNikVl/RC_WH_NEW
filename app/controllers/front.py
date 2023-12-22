@@ -138,10 +138,10 @@ class FrontMainController:
                 out[0][i].update({"geolocation_status": geolocation_place.status})
 
         # добавляем почты для уведомлений
-        emails_to_nothification_one_card = db.query(Email).all()
         emails_1 = []
-        for i in emails_to_nothification_one_card:
+        for i in Mail.get_emails(db):
             emails_1.append(i.addr)
+
         fik = jsonable_encoder(emails_1)
         print(fik)
         out["emails_to_nothification_main_table"] = fik
