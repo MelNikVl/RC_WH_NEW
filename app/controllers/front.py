@@ -293,11 +293,17 @@ class FrontMainController:
         for item in materials_for_trash:
             item.date_time = item.date_time.strftime("%Y-%m-%d")
 
+        emails_to_nothification_one_card = db.query(Email).all()
+        emails_1 = []
+        for i in emails_to_nothification_one_card: emails_1.append(i.addr)
+        fik = jsonable_encoder(emails_1)
+
         out[0] = materials_for_trash
         out["token"] = t
         out["count_for_trash"] = len(materials_for_trash)
         out["role"] = result["role"]
         out["username"] = result["username"]
+        out["notifications"] = fik
 
         return templates.TemplateResponse("trash_page.html", {"request": request, "data": out})
 

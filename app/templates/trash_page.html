@@ -113,9 +113,11 @@
                 <label class="file-label" for="upload-trashing-photos">Выбрать файлы</label>
                 <input type="file" multiple hidden name="" id="upload-trashing-photos">
             </div>
-            <button id="send-to-trash-finally">Списать</button> <div id="loader" class="loader-1 center"><span></span></div>
-             <h5>Все данные об активах будут перемещены в архив. Списанные активы
+            <h5>Все данные об активах будут перемещены в архив. Списанные активы
              вы сможете найти в таблице Архива</h5>
+            <h5>Уведомление о данном списании будет отправлено следующим получателям: {{ data.notifications }}</h5>
+            <button id="send-to-trash-finally">Списать</button> <div id="loader" class="loader-1 center"><span></span></div>
+
         </div>
     </div>
     </div>

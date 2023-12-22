@@ -50,9 +50,9 @@
             <div class="email_122"><b>Всего пользователей: {{ data.count }}</b></div>
             <div class="email_122">Админов: {{ data.admins_count }}</div>
             <div class="email_1223">
-                <div>{{ data.username }} шеф &#128293; -- </div>
+                <div>{{ data.username }} шеф &#128293;</div>
                 {% if data.role == True %}
-                <div><b>административный</b> доступ</div>
+                <div><b>  -  административный</b> доступ</div>
                 {% endif %}
                 {% if data.role == False %}
                 <div><b>пользовательский</b> доступ</div>
