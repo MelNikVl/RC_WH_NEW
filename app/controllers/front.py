@@ -146,7 +146,8 @@ class FrontMainController:
         for i in emails_to_nothification_one_card:
             emails_1.append(i.addr)
         fik = jsonable_encoder(emails_1)
-        out["emails_to_nothification_one_card"]: fik
+        print(fik)
+        out["emails_to_nothification_main_table"] = fik
 
         out["token"] = t
 
