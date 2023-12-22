@@ -41,8 +41,6 @@ class FrontMainController:
             worksheet.write(0, col_num, data)
         counter = 1
 
-        # worksheet.set_default_row(100)
-
         for item in materials.data:
             for col_num, data in enumerate([item[0], item[1], item[2], item[3], item[4], item[5], item[6]]):
                 worksheet.write(counter, col_num, data, cell_format)
@@ -114,8 +112,7 @@ class FrontMainController:
         materials = await MaterialCRUD.list_of_materials(db=db)
 
         # добавляем фото
-        for i in materials:
-            i.pic = get_first_photo(i.id)["picture"]
+        for i in materials: i.pic = get_first_photo(i.id)["picture"]
 
         out[0] = jsonable_encoder(materials)
 
