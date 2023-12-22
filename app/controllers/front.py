@@ -212,17 +212,12 @@ class FrontMainController:
             desc(GeoLocation.date_time)).all()
 
         for i in material_geo1:
-            print(i)
-        current_geo = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(
-            desc(GeoLocation.date_time)).all()[0]
-
-        result = await AuthUtil.decode_jwt(t)
+            current_geo = db.query(GeoLocation).filter(GeoLocation.material_id == material_id).order_by(desc(GeoLocation.date_time)).all()[0]
 
         for item in material_geo1:
             item.date_time = item.date_time.strftime("%Y-%m-%d")
 
-        date_time = material_card['date_time']
-        datetime_obj = datetime.datetime.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%f")
+        datetime_obj = datetime.datetime.strptime(material_card['date_time'], "%Y-%m-%dT%H:%M:%S.%f")
         formatted_date_time = datetime_obj.strftime("%Y-%m-%d %H:%M")
         raw_1c = jsonable_encoder(db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first())
         formatted_time_1c = db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first().date_time.strftime("%d %B %Y")
