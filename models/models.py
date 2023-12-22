@@ -140,3 +140,9 @@ class Raw_1c(Base):
     cur_dept: str = Column(String, nullable=True)
     cur_person: str = Column(String, nullable=True)
 
+
+class Email(Base):
+    __tablename__ = "emails"
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    addr: str = Column(String)
+    description: int = Column(Integer)

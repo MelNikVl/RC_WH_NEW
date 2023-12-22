@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from config.routes import router, materials, geolocation, auth, logs, accessories, testing
+from config.routes import router, materials, geolocation, auth, logs, accessories, testing, for_admins
 from db.db import engine
 from models.models import Base
 from fastapi.staticfiles import StaticFiles
@@ -37,6 +37,7 @@ app.include_router(auth)
 app.include_router(logs)
 app.include_router(accessories)
 app.include_router(testing)
+app.include_router(for_admins)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/it_warehouse_docs", StaticFiles(directory="it_warehouse_docs"), name="it_warehouse_docs")

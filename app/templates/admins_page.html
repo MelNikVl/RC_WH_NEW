@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="/static/style.css">
     <!--  добавляем фавконку -->
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
-    <script src="/static/main.js"></script>
 </head>
 
 <body>
@@ -34,53 +33,52 @@
 
             <div class="top_pan_2">
 
-            <button class="button_10"  id="logs"
-            onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
-        <button class="button_10"  id="ntf"
-                onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'>Уведомления</button>
-        <button class="button_10"  id="swagger" class="button_admins_page"
-                onclick="window.location.href = '/docs'">Swagger</button>
-        
+                <button class="button_10" id="logs"
+                    onclick='window.location.href = "/logs/get_all?t="+"{{ data.token }}"'>LOGS</button>
+                <button class="button_10" id="ntf"
+                    onclick='window.location.href = "/app/notifications_page?t="+"{{ data.token }}"'>Уведомления</button>
+                <button class="button_10" id="swagger" class="button_admins_page"
+                    onclick="window.location.href = '/docs'">Swagger</button>
+
+            </div>
+
         </div>
 
-    </div>
-
-<h2 class="h2_in_admin">Пользователи приложения</h2>
+        <h2 class="h2_in_admin">Пользователи приложения</h2>
 
         <div class="email_counts_11">
-        <div class="email_122"><b>Всего пользователей: {{ data.count }}</b></div>
-        <div class="email_122">Админов: {{ data.admins_count }}</div>
-        <div class="email_1223">
-                    <div>{{ data.username }} шеф &#128293;  --  </div>
-                    {% if data.role == True %}
-                    <div><b>административный</b> доступ</div>
-                    {% endif %}
-                    {% if data.role == False %}
-                    <div><b>пользовательский</b> доступ</div>
-                    {% endif %}
-                </div>
+            <div class="email_122"><b>Всего пользователей: {{ data.count }}</b></div>
+            <div class="email_122">Админов: {{ data.admins_count }}</div>
+            <div class="email_1223">
+                <div>{{ data.username }} шеф &#128293; -- </div>
+                {% if data.role == True %}
+                <div><b>административный</b> доступ</div>
+                {% endif %}
+                {% if data.role == False %}
+                <div><b>пользовательский</b> доступ</div>
+                {% endif %}
             </div>
+        </div>
 
         <div class="body_separate">
             <div class="body_left top-panel">
 
-            <div class="menu_left">
-                <div class="menu_1">
-                    <button id="create_new_user" class="button_admins_page ">Создать пользователя</button>
-                    <button id="delete_user" class="button_admins_page ">Удалить пользователя</button>
-                    <button id="make_admin" class="button_admins_page ">Назначить админом</button>
-                     </div>
+                <div class="menu_left">
                     <div class="menu_1">
-
-                </div>
+                        <button id="create_new_user" class="button_admins_page ">Создать пользователя</button>
+                        <button id="delete_user" class="button_admins_page disabled-btn">Удалить пользователя</button>
+                        <button id="make_admin" class="button_admins_page disabled-btn">Назначить админом</button>
+                    </div>
+                    <div class="menu_1">
+                    </div>
                 </div>
             </div>
 
-        <div class="body_right">
-                <table id="table">
+            <div class="body_right">
+                <table id="users-table">
                     <thead>
                         <tr>
-                            <th><input type="checkbox" id="select-all"></th>
+                            <th><input type="checkbox" class="select-all"></th>
                             <th>ID пользователя</th>
                             <th>Админский доступ</th>
                             <th>Логин</th>
@@ -103,112 +101,238 @@
             </div>
             <div class="admins_table">
             </div>
-    </div>
+        </div>
         <h2 class="h2_in_admin">Почта для уведомлениях о перемещениях активов</h2>
         <div class="body_separate">
             <div class="body_left top-panel">
-            <div class="menu_left">
-                <div class="menu_1">
-                    <button id="ггггг" class="button_admins_page ">Добавить email</button>
-                    <button id="гггг" class="button_admins_page ">Удалить email</button>
+                <div class="menu_left">
+                    <div class="menu_1">
+                        <button id="new-email" class="button_admins_page ">Добавить email</button>
+                        <button id="remove-email" class="button_admins_page disabled-btn">Удалить email</button>
+                    </div>
                 </div>
             </div>
-                </div>
 
-        <div class="body_right">
-                <table id="eeeeeeee">
+            <div class="body_right">
+                <table id="emails-table">
                     <thead>
                         <tr>
-                            <th><input type="checkbox" id="fadsfdsaf-all"></th>
+                            <th><input type="checkbox" class="select-all"></th>
                             <th>Почта</th>
+                            <th>Назначение</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in data.email_for_noth %}
                         <tr>
-                            <td><input type="checkbox"></td>
-                            <td>{{ item }}</td>
+                            <td><input type="checkbox" data-id="{{ item.id }}"></td>
+                            <td>{{ item.addr }}</td>
+                            <td>{% if item.description == 1 %} Перемещения {% elif  item.description == 2 %} Ремонты {% else %} Списания {% endif %}</td>
                         </tr>
                         {% endfor %}
                     <tbody>
                 </table>
             </div>
 
-    </div>
-
-    <div style="display: none;" id="new-user-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="/static/close.svg" alt="close">
-            </div>
-            <input type="text" id="username" placeholder="Имя пользователя">
-            <input type="text" id="password" placeholder="Пароль">
-            <input type="text" id="chat_id" placeholder="Telegram ID">
-            <label for="input" class="input_label"><input type="checkbox" name="" id="is_admin">Admin</label>
-            <input type="button" value="Create" class="button_admins_page" id="submit-new-user">
         </div>
-    </div>
-    
-    <script>
-        $(document).ready(function () {
-            $("#make_admin").on("click", function () {
-                if (confirm('Вы уверены?')) {
-                    make_admin($("tbody > tr.selected td:nth-child(4)").text())
-                    };
-            });
-            $("#create_new_user").on("click", function () {
-                $("#new-user-popup").fadeIn(300);
-            });
-            $("#submit-new-user").on("click", function () {
-                create_new_user();
-            });
-            $("#delete_user").on("click", function () {
-                if (confirm('Вы уверены?')) {
-                    $("tbody > tr.selected").each(function (index) {
-                        delete_user($("tbody > tr.selected").eq(index).children("td").eq(3).text());
-                    });  
-                };
-            });
-        });
-        async function create_new_user() {
-            let data = {
-                "chat_id_from_tg": $("#chat_id").val(),
-                "username": $("#username").val(),
-                "password": $("#password").val(),
-                "is_admin": $("#is_admin").is(":checked")
-            };
-            try {
-                const response = await fetch(host + "/auth/create_new_user", {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + access_token
-                    }
-                });
-                const text = await response.json();
-                window.location.reload();
-            } catch (error) {
-                console.error(error);
-            }
-        }
 
-        async function make_admin(username) {
-            try {
-                const response = await fetch(host + "/auth/make-admin?username=" + username, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + access_token
+        <div style="display: none;" id="new-user-popup" class="popup-wrapper">
+            <div class="popup">
+                <div class="close-btn">
+                    <img src="/static/close.svg" alt="close">
+                </div>
+                <input type="text" id="username" placeholder="Имя пользователя">
+                <input type="text" id="password" placeholder="Пароль">
+                <input type="text" id="chat_id" placeholder="Telegram ID">
+                <label for="input" class="input_label"><input type="checkbox" name="" id="is_admin">Admin</label>
+                <input type="button" value="Create" class="button_admins_page" id="submit-new-user">
+            </div>
+        </div>
+        <div style="display: none;" id="new-email-popup" class="popup-wrapper">
+            <div class="popup">
+                <div class="close-btn">
+                    <img src="/static/close.svg" alt="close">
+                </div>
+                <input type="text" id="email" placeholder="Почти">
+                <select name="" id="role">
+                    <option value="1">Перемещения</option>
+                    <option value="2">Ремонты</option>
+                    <option value="3">Списания</option>
+                </select>
+                <input type="button" value="Create" class="button_admins_page" id="submit-new-email">
+            </div>
+        </div>
+
+        <script>
+            const params = new URLSearchParams(window.location.search)
+            const access_token = params.get("t");
+            var host = document.location.origin;
+
+            $(document).ready(function () {
+                $("#make_admin").on("click", function () {
+                    if (confirm('Вы уверены?')) {
+                        make_admin($("#users-table tbody > tr.selected td:nth-child(4)").text())
+                    };
+                });
+                $("#create_new_user").on("click", function () {
+                    $("#new-user-popup").fadeIn(300);
+                });
+                $("#submit-new-user").on("click", function () {
+                    create_new_user();
+                });
+                $("#delete_user").on("click", function () {
+                    if (confirm('Вы уверены?')) {
+                        $("#users-table tbody > tr.selected").each(function (index) {
+                            delete_user($("#users-table tbody > tr.selected").eq(index).children("td").eq(3).text());
+                        });
+                    };
+                });
+            });
+            async function create_new_user() {
+                let data = {
+                    "chat_id_from_tg": $("#chat_id").val(),
+                    "username": $("#username").val(),
+                    "password": $("#password").val(),
+                    "is_admin": $("#is_admin").is(":checked")
+                };
+                try {
+                    const response = await fetch(host + "/auth/create_new_user", {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + access_token
+                        }
+                    });
+                    const text = await response.json();
+                    window.location.reload();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            async function make_admin(username) {
+                try {
+                    const response = await fetch(host + "/auth/make-admin?username=" + username, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + access_token
+                        }
+                    });
+                    const text = await response.json();
+                    window.location.reload();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            $(".select-all").change(function () {
+                if (!$(this).prop("checked")) {
+                    $(this).closest("table").find('tbody > tr.selected').each(function (index) {
+                        invert_selection(this);
+                    });
+
+                }
+                else {
+                    $(this).closest("table").find('tbody > tr').not(".selected").each(function (index) {
+                        invert_selection(this);
+                    });
+                }
+            });
+            $("tbody > tr").on("dblclick", function () {
+                if (!$(this).hasClass("inactive"))
+                    invert_selection(this);
+            });
+            function invert_selection(elem) {
+                if ($(elem).hasClass("selected")) {
+                    $(elem).removeClass("selected");
+                    $(elem).find('input[type="checkbox"]').prop("checked", false);
+                }
+                else {
+                    $(elem).addClass("selected");
+                    $(elem).find('input[type="checkbox"]').prop("checked", true);
+                }
+
+
+                switch ($('#users-table tbody > tr.selected').length) {
+                    case 0:
+                        $("#delete_user, #make_admin").addClass("disabled-btn");
+                        break;
+                    case 1:
+                        $("#delete_user, #make_admin").removeClass("disabled-btn");
+                        break;
+                    default:
+                        $("#make_admin").addClass("disabled-btn");
+                        break;
+                }
+                if ($('#emails-table tbody > tr.selected').length > 0) {
+
+                    $("#remove-email").removeClass("disabled-btn");
+                } else {
+                    $("#remove-email").addClass("disabled-btn");
+                }
+            }
+            $("#new-email").on("click", async () => {
+                $("#new-email-popup").fadeIn(300);
+
+            });
+            $("#submit-new-email").on("click", async function () {
+                    let email = $("#email").val();
+                    let role = $("#role").val()
+                    try {
+                        const response = await fetch(host + "/admin/create_email?addr="+email+"&role="+role, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + access_token
+                            }
+                        });
+                        const text = await response.json();
+                        window.location.reload();
+                    } catch (error) {
+                        alert("Произошла ошибка")
+                        window.location.reload();
                     }
                 });
-                const text = await response.json();
-                window.location.reload();
-            } catch (error) {
-                console.error(error);
+
+            $("#remove-email").on("click", async () => {
+                if (confirm('Вы уверены?')) {
+                    let arr = [];
+                    $('#emails-table tbody > tr.selected input[type="checkbox"]').each(function (index) {
+                        arr.push(Number.parseInt($(this).attr('data-id')));
+                    });
+
+                    try {
+                        const response = await fetch(host + "/admin/delete_emails", {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + access_token
+                            },
+                            body: JSON.stringify(arr)
+                        });
+                        const text = await response.json();
+                        window.location.reload();
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            })
+            $(".close-btn").on("click", function () {
+                $(this).closest(".popup-wrapper").fadeOut(200);
+            });
+        </script>
+        <style>
+            select {
+                display: block;
+                margin-bottom: 15px;
+                border-radius: 5px;
+                box-shadow: #00000042 1px 1px 10px;
+                font-size: 1em;
+                border: none;
+                padding: 6px 30px;
             }
-        }
-    </script>
+        </style>
 </body>
 
 </html>

@@ -8,7 +8,8 @@ from enum import Enum
 from os.path import basename
 from sqlalchemy.orm import Session
 
-from app.utils.utils import EmailConfig
+from app.utils.utils import Mail
+from db.db import get_db
 from models.models import Notifications
 from static_data import host
 
@@ -41,7 +42,7 @@ async def notify(db: Session, subject, addresses: list, invoice=None, material: 
     message2["From"] = gmail_login
 
     html = ""
-    html2 = None
+    html2 = ""
     match subject:
         case SUBJECT.UTILIZATION:
             with open(invoice, "rb") as file:
@@ -99,8 +100,8 @@ async def notify(db: Session, subject, addresses: list, invoice=None, material: 
                             </body>
                         </html> 
                     """
-    part2 = MIMEText(html, "html")
-    message.attach(part2)
+    part = MIMEText(html, "html")
+    message.attach(part)
 
     serv = smtplib.SMTP("smtp.gmail.com", 587)
     serv.starttls()
@@ -117,10 +118,14 @@ async def notify(db: Session, subject, addresses: list, invoice=None, material: 
         new_notify.geolocation_id = material[5]
     db.add(new_notify)
     db.commit()
-
-    emails2 = EmailConfig.get_emails()
+    admin_emails = Mail.get_emails(db)
+    emails2 = []
+    for i in admin_emails:
+        emails2.append(i.addr)
+    print(emails2)
+    print(html2)
     if len(emails2) and html2:
-        part = MIMEText(html, "html")
-        message2.attach(part)
+        part2 = MIMEText(html2, "html")
+        message2.attach(part2)
         message2['To'] = ", ".join(emails2)
         serv.sendmail(gmail_login, emails2, message2.as_string())

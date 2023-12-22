@@ -13,7 +13,7 @@ from crud.materials import MaterialCRUD
 from starlette import status
 from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
-from app.utils.utils import get_first_photo, response, EmailConfig
+from app.utils.utils import get_first_photo, response, Mail
 from db.db import get_db
 from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem, Raw_1c
 from app.payload.request import InvoiceCreateRequest, MaterialsListRequest
@@ -174,7 +174,7 @@ class FrontMainController:
             result = await AuthUtil.decode_jwt(t)
             out["username"] = result["username"]
             out["role"] = result["role"]
-            out["email_for_noth"] = EmailConfig.get_emails()
+            out["email_for_noth"] = Mail.get_emails(db)
 
             return templates.TemplateResponse("admins_page.html", {"request": request, "data": out})
         else:

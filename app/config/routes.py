@@ -4,6 +4,7 @@ from controllers.geolocation import GeoLocationController
 from controllers.front import FrontMainController
 
 from app.controllers.accessories import AccessoriesController
+from app.controllers.admin import AdminController
 from app.controllers.auth import AuthController
 from app.controllers.logs import LogsController
 from app.controllers.testing import TestingController
@@ -27,7 +28,7 @@ auth = APIRouter(prefix='/auth',
 logs = APIRouter(prefix='/logs',
                  tags=['logs'])
 
-for_admins = APIRouter(prefix='/for_admins',
+for_admins = APIRouter(prefix='/admin',
                        tags=['for_admins'])
 
 accessories = APIRouter(prefix='/accessories',
@@ -94,3 +95,7 @@ accessories.get("")(AccessoriesController.accessories_page)
 testing.post("/create_10_iterations")(TestingController.create_10_iterations)
 testing.post("/delete_all")(TestingController.delete_all)
 testing.delete("/delete_folder_contents")(TestingController.delete_folder_contents)
+
+for_admins.delete("/delete_emails")(AdminController.remove_emails)
+for_admins.post("/create_email")(AdminController.create_email)
+

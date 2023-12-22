@@ -1,6 +1,10 @@
 import logging
 import os
 from typing import Any, Dict
+
+from sqlalchemy.orm import Session
+
+from models.models import Email
 from static_data import main_folder
 import re
 import json
@@ -12,7 +16,7 @@ logging.basicConfig(level=logging.INFO,
 
 
 # добавляет в ответ в свагере - status
-def response(data: Any, status: bool = True):
+def response(data=None, status: bool = True):
     if data is None:
         data = {}
     return {"data": data, "status": status}
@@ -44,7 +48,7 @@ def email_validate(email):
     return False
 
 
-class EmailConfig:
+class Mail:
     @staticmethod
     def write(value: [str]):
         data: dict = {"emails": value}
@@ -52,8 +56,6 @@ class EmailConfig:
             json.dump(data, f, ensure_ascii=False, indent=4)
             f.close()
     @staticmethod
-    def get_emails():
-        f = open('config.json')
-        data = json.load(f)
-        emails = data["emails"] or []
-        return emails
+    def get_emails(db: Session):
+        res: [] = db.query(Email).all()
+        return res
