@@ -15,7 +15,7 @@ from app.controllers.materials import user_dependency
 from app.utils.auth import AuthUtil
 from app.utils.utils import get_first_photo, response, Mail
 from db.db import get_db
-from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem, Raw_1c
+from models.models import User, GeoLocation, Material, Repair, Notifications, LogItem, Raw_1c, Email
 from app.payload.request import InvoiceCreateRequest, MaterialsListRequest
 from docx import Document
 from fastapi.responses import FileResponse
@@ -99,8 +99,6 @@ class FrontMainController:
             row_cells[5].text = item[5]
 
         par = document.add_paragraph()
-        par = document.add_paragraph()
-        par = document.add_paragraph()
         par.add_run('Подпись руководителя IT отдела ______________________________').bold = True
         par.alignment = 1
 
@@ -140,6 +138,7 @@ class FrontMainController:
                 out[0][i].update({"geolocation_place": geolocation_place.place})
                 out[0][i].update({"geolocation_status": geolocation_place.status})
         out["token"] = t
+
         return templates.TemplateResponse("table.html", {"request": request, "data": out})
 
     @staticmethod
@@ -147,8 +146,10 @@ class FrontMainController:
                         request: Request = None,
                         ):
         if len(db.query(User).all()) == 0:
-            user = User(chat_id=11111, username="admin",
-                        password="$2b$12$LHizNG913MQ.FlcjXS9eGufsJK2yp5xdbt6dvCGzOnMQbCSrLna2.", is_admin=True)
+            user = User(chat_id=11111,
+                        username="admin",
+                        password="$2b$12$LHizNG913MQ.FlcjXS9eGufsJK2yp5xdbt6dvCGzOnMQbCSrLna2.",
+                        is_admin=True)
             db.add(user)
             db.commit()
         return templates.TemplateResponse("auth.html", {"request": request})
@@ -165,13 +166,13 @@ class FrontMainController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
-        if (is_admin):
-            out: Dict = {}
-            out["token"] = t
-            out["users"] = jsonable_encoder(db.query(User).all())
-            out["count"] = db.query(User).count()
-            out["admins_count"] = db.query(User).filter(User.is_admin == True).count()
+        if is_admin:
+            out: Dict = {"token": t,
+                         "users": jsonable_encoder(db.query(User).all()),
+                         "count": db.query(User).count(),
+                         "admins_count": db.query(User).filter(User.is_admin == True).count()}
             result = await AuthUtil.decode_jwt(t)
+
             out["username"] = result["username"]
             out["role"] = result["role"]
             out["email_for_noth"] = Mail.get_emails(db)
@@ -190,10 +191,9 @@ class FrontMainController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
-        out: Dict = {}
-        out["token"] = t
-        out["username"] = result["username"]
-        out["role"] = result["role"]
+        out: Dict = {"token": t,
+                     "username": result["username"],
+                     "role": result["role"]}
 
         return templates.TemplateResponse("instructions.html", {"request": request, "data": out})
 
@@ -222,23 +222,29 @@ class FrontMainController:
         raw_1c = jsonable_encoder(db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first())
         formatted_time_1c = db.query(Raw_1c).filter(Raw_1c.material_id == material_id).first().date_time.strftime("%d %B %Y")
 
-        out: Dict = {}
-        out["username"] = result["username"]
-        out["token"] = t
-        out["one_material"] = material_card
-        out["geo_material"] = material_geo1
-        out["repairs"] = GeoLocationCRUD.list_of_repair(material_id, db)
-        out["date_time_f"] = formatted_date_time
-        out["current_place"] = current_geo.place
-        out["current_user"] = current_geo.client_mail
-        out["current_status"] = current_geo.status
-        out["photo"] = get_first_photo(material_id)["picture"]
-        out["len_of_files"] = get_first_photo(material_id)["len_of_files"]
-        out["material_id"] = str(material_id)
-        out["role"] = result["role"]
-        out["comments"] = await MaterialCRUD.get_comments(material_id, db)
-        out["raw_1c"] = raw_1c
-        out["formatted_time_1c"] = formatted_time_1c
+        emails_to_nothification_one_card = db.query(Email).all()
+        emails_1 = []
+        for i in emails_to_nothification_one_card:
+            emails_1.append(i.addr)
+
+        fik = jsonable_encoder(emails_1)
+
+        out: Dict = {"username": result["username"],
+                     "token": t, "one_material": material_card,
+                     "geo_material": material_geo1,
+                     "repairs": GeoLocationCRUD.list_of_repair(material_id, db),
+                     "date_time_f": formatted_date_time,
+                     "current_place": current_geo.place,
+                     "current_user": current_geo.client_mail,
+                     "current_status": current_geo.status,
+                     "photo": get_first_photo(material_id)["picture"],
+                     "len_of_files": get_first_photo(material_id)["len_of_files"],
+                     "material_id": str(material_id),
+                     "role": result["role"],
+                     "comments": await MaterialCRUD.get_comments(material_id, db),
+                     "raw_1c": raw_1c,
+                     "formatted_time_1c": formatted_time_1c,
+                     "emails_to_nothification_one_card": fik}
 
         return templates.TemplateResponse("one_material.html", {"request": request, "data": out})
 
@@ -254,12 +260,11 @@ class FrontMainController:
 
         products = db.query(Repair).filter(Repair.id.in_(GeoLocationCRUD.list_of_active_repair(db))).all()
 
-        out: Dict = {}
-        out["token"] = t
-        out["actives_in_repair"] = products
-        out["count_repair"] = len(products)
-        out["role"] = result["role"]
-        out["username"] = result["username"]
+        out: Dict = {"token": t,
+                     "actives_in_repair": products,
+                     "count_repair": len(products),
+                     "role": result["role"],
+                     "username": result["username"]}
 
         return templates.TemplateResponse("repair_page.html", {"request": request, "data": out})
 
