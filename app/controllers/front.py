@@ -143,7 +143,6 @@ class FrontMainController:
             emails_1.append(i.addr)
 
         fik = jsonable_encoder(emails_1)
-        print(fik)
         out["emails_to_nothification_main_table"] = fik
 
         out["token"] = t
@@ -214,6 +213,7 @@ class FrontMainController:
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:
+            print(e)
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
         material_card = jsonable_encoder(db.query(Material).filter(Material.id == material_id).first())
@@ -358,7 +358,6 @@ class FrontMainController:
         except Exception as e:
             return fastapi.responses.RedirectResponse('/app/auth', status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
-        out: Dict = {}
-        out["token"] = t
+        out: Dict = {"token": t}
 
         return templates.TemplateResponse("test.html", {"request": request, "data": out})
