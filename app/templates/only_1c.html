@@ -20,12 +20,13 @@
 
 <body>
 <div class="body_body">
-        <div class="title_1">IT warehouse tracker</div>
+    <div class="top-part">
+            <div class="title_1">IT warehouse tracker (Search in 1c)</div>
             <div class="button_exit">
                 <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
                 <a href="/app/only_1c?t={{ data.token }}" class="menu_arc">Поиск по 1с</a>
                 {% if data.role == True %}
-                    <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
+                <a href="/app/admins_page?t={{ data.token }}" class="menu_arc">Админка</a>
                 {% endif %}
                 <a href="/accessories?t={{ data.token }}" class="menu_arc">Комплектующие</a>
                 <a href="/app/repairs_page?t={{ data.token }}" class="menu_arc">Ремонт</a>
@@ -35,69 +36,28 @@
                 <a href="/app/auth" class="menu_arc other_buttons">Выйти</a>
             </div>
             <div class="clear"></div>
-            <div class="counts">
-                <p class="p_for_count"><b>Всего активов на списании: {{ data.count_for_trash }}</b></p>
-            </div>
-        <button class="word_button" id="form_file">Скачать накладную (.docx)</button>
-        <div class="clear"></div>
-    <div class="table-wrapper">
-        <div class="button-wrapper">
-
         </div>
+
+
+
+            <div class="counts">
+                <p class="p_for_count"><b>Сейчас числится на: </b></p>
+                <p class="p_for_count"><b>Сейчас находится: </b></p>
+                <p class="p_for_count"><b>Всего пермещений: </b></p>
+            </div>
+        <button class="word_button" id="form_file">Скачать информацию по активу (.docx)</button>
         <div class="clear"></div>
 
 
-        <div class="body_separate">
-            <div class="body_left top-panel">
-                 <!-- <div class="welcome">
-                    <p class="hello">{{ data.username }} шеф &#128293;</p>
-                    {% if data.role == True %}
-                    <p class="hello_2"><b>административный</b> доступ</p>
-                    {% endif %}
-                    {% if data.role == False %}
-                    <p class="hello_2">у тебя <b>пользовательский</b> доступ</p>
-                    {% endif %}
-                </div> -->
-            <div class="menu_left">
-                <div class="menu_1">
-                <button id="move_to_archive">Списать активы</button>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="body_right">
-        <table class="fl-table" id="table">
-            <!--  заголовок таблицы -->
-            <thead>
-                <tr>
-                    <th>ID актива</th>
-<!--                    <th>Кто завел</th>-->
-                    <th>Категория</th>
-                    <th>Номер (тайтл)</th>
-                    <th>Описание (характеристики)</th>
-                    <th>Дата ввода</th>
-                    <th>Инфо</th>
-                </tr>
-            </thead>
-            <!--            итерируем по тому переменной которую получаем с фронта. там объект json распаршенный-->
-            <tbody>
-                {% for item in data[0] %}
-                <tr>
-                    <td>{{ item.id }}</td>
-<!--                    <td>{{ item.user_id }}</td>-->
-                    <td>{{ item.category }}</td>
-                    <td>{{ item.title }}</td>
-                    <td> <textarea cols="20" rows="3">{{ item.description }}</textarea></td>
-                    <td>{{ item.date_time }}</td>
-<!--                    <td>\\fs-mo\admins\Photo_warehouse\photos\{{ item.id }}</td>-->
-                    <td><a href="/app/{{ item.id }}?t={{ data.token }}">карточка актива</a></td>
-                </tr>
-                {% endfor %}
-            <tbody>
-        </table>
+    <div class="only_search_1c_class">
+        <input class="search_1c_class_1" type="text" name="" id="1c-search">
+        <input class="search_1c_class_2" id="search_1c_btn" type="button" value="Найти в 1С">
     </div>
-            </div>
+
+    <p></p>
+    <div class="1c-data"></div>
+
+
     <div style="display: none;" id="trash-popup" class="popup-wrapper">
         <div class="popup">
             <div class="close-btn">

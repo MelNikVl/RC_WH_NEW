@@ -47,6 +47,7 @@ router.get("/repairs_page")(FrontMainController.repairs_page)
 router.get("/notifications_page")(FrontMainController.notifications_page)
 router.get("/notification_answer")(FrontMainController.notification_answer)
 router.get("/test_page")(FrontMainController.test_page)
+router.get("/only_1c")(FrontMainController.only_1c)
 
 router.get("/trash_page")(FrontMainController.trash_page)
 router.get("/{material_id}")(FrontMainController.only_one_card)

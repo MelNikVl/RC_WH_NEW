@@ -47,7 +47,6 @@ $(document).ready(function () {
         let id = $("#1c-search").val();
         let resp = await from_1c(id);
 
-
         if (resp && resp.Error) {
             alert("Не найдено ОС с инвентарным номером " + id);
         }
@@ -84,6 +83,11 @@ $(document).ready(function () {
             $("#data-1c-popup").fadeIn(300);
         }
     })
+
+
+
+
+
     $("#end_repair").on("click", function () {
         $("#repair-end-popup").fadeIn(300);
     });
