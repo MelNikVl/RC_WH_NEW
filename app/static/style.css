@@ -1144,7 +1144,7 @@ padding: 20px;
 
 .email_1223 {/* margin: 1em; */display: flex;margin: 1em;/* background: #dbdbdb; */padding: 0 1em;align-items: flex-end;align-content: center;flex-wrap: nowrap;flex-direction: row;}
 
-.only_search_1c_class {margin: 1em;background: #ffff0069;PADDING: 2em;border-radius: 20px;}
+.only_search_1c_class {margin: 1em;background: #ffff3647;PADDING: 1em;border-radius: 20px;width: 61.6%;}
 
 .active {
     display: block;
