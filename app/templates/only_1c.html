@@ -11,16 +11,14 @@
     <link rel="stylesheet" href="/static/style.css">
     <!--  добавляем фавконку -->
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
-    <script src="/static/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
-    <script src="/static/trash_page.js"></script>
     <link rel="stylesheet" href="/static/loader.css">
     <!-- https://codepen.io/nobuakihonma/pen/dYbqLQ -->
 </head>
 
 <body>
-<div class="body_body">
-    <div class="top-part">
+    <div class="body_body">
+        <div class="top-part">
             <div class="title_1">IT warehouse tracker (Search in 1c)</div>
             <div class="button_exit">
                 <a href="/app?t={{ data.token }}" class="menu_arc">Главная</a>
@@ -40,48 +38,69 @@
 
 
 
-            <div class="counts">
-                <p class="p_for_count"><b>Сейчас числится на: </b></p>
-                <p class="p_for_count"><b>Сейчас находится: </b></p>
-                <p class="p_for_count"><b>Всего пермещений: </b></p>
-            </div>
+        <div class="counts">
+            <p class="p_for_count"><b>Сейчас числится на: </b></p>
+            <p class="p_for_count"><b>Сейчас находится: </b></p>
+            <p class="p_for_count"><b>Всего пермещений: <div id="movement_count"></div> </b></p>
+        </div>
         <button class="word_button" id="form_file">Скачать информацию по активу (.docx)</button>
         <div class="clear"></div>
 
 
-    <div class="only_search_1c_class">
-        <input class="search_1c_class_1" type="text" name="" id="1c-search">
-        <input class="search_1c_class_2" id="search_1c_btn" type="button" value="Найти в 1С">
-    </div>
+        <div class="only_search_1c_class">
+            <input class="search_1c_class_1" type="text" name="" id="1c-id">
+            <input class="search_1c_class_2" id="search_btn" type="button" value="Найти в 1С">
+        </div>
 
-    <p></p>
-    <div class="1c-data"></div>
-
-
-    <div style="display: none;" id="trash-popup" class="popup-wrapper">
-        <div class="popup">
-            <div class="close-btn">
-                <img src="/static/close.svg" alt="close">
-            </div>
-            <h1>Списать активы в архив</h1>
-            <h3>Подписанная накладная:</h3>
-            <div class="file-wrapper">
-                <label class="file-label" for="upload-invoice">Выбрать файл</label>
-                <input type="file" hidden name="" id="upload-invoice">
-            </div>
-            <h3>Фотографии списания:</h3>
-            <div class="file-wrapper">
-                <label class="file-label" for="upload-trashing-photos">Выбрать файлы</label>
-                <input type="file" multiple hidden name="" id="upload-trashing-photos">
-            </div>
-            <h5>Все данные об активах будут перемещены в архив. Списанные активы
-             вы сможете найти в таблице Архива</h5>
-            <h5>Уведомление о данном списании будет отправлено следующим получателям: {{ data.notifications }}</h5>
-            <button id="send-to-trash-finally">Списать</button> <div id="loader" class="loader-1 center"><span></span></div>
+        <p></p>
+        <div id="1c_data" class="1c-data">
 
         </div>
     </div>
-    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search)
+        const access_token = params.get("t");
+        var host = document.location.origin;
+
+        async function from_1c(mat_id) {
+            try {
+                const response = await fetch(host + "/materials/from_1c?id=" + mat_id, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + access_token
+                    }
+                });
+                const json = await response.json();
+                return json;
+            } catch (error) {
+                alert("Произошла ошибка");
+                return;
+            }
+        }
+        $(document).ready(function () {
+            $("#search_btn").on("click", async ()=>{
+                let search_text = $("#1c-id").val();
+                let resp = await from_1c(search_text);
+                if (resp["success"]){
+                    let movement_count = resp.EquipmentData.MovementHistory.length;
+                    $("#movement_count").text(movement_count);
+
+                    for (var i = 0; i<movement_count; i++){ //перебрать все перемещения
+                        let movement = "<div class='1c_movement'>";
+                        movement += "Накладная: " + resp.EquipmentData.MovementHistory[i].Document + '</br>';
+                        movement += "Депт: " + resp.EquipmentData.MovementHistory[i].Dept + '</br>';
+
+
+                        movement += "</div>"; //Закрывем тег для одного перемещения
+                        $("#1c_data").append(movement);   
+                    }
+
+                    $("#1c_data").append("<p>Полное имя: "+resp.EquipmentData.FullName + "</p>");
+
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>

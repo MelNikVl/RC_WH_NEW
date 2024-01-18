@@ -26,5 +26,6 @@ def get_material(id: str):
     print(response)
     from zeep import helpers
     _json = helpers.serialize_object(response, dict)
+    _json["success"] = True
     # print(_json)
     return _json
