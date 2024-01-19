@@ -39,21 +39,20 @@
 
 
         <div class="counts">
-            <p class="p_for_count"><b>Сейчас числится на: </b></p>
-            <p class="p_for_count"><b>Сейчас находится: </b></p>
-            <p class="p_for_count"><b>Всего пермещений: <div id="movement_count"></div> </b></p>
+            
+            <!-- <p class="p_for_count"><b>Всего пермещений: <div id="movement_count" class="mov_count"></div> </b></p> -->
         </div>
-        <button class="word_button" id="form_file">Скачать информацию по активу (.docx)</button>
+        <!-- <button class="word_button" id="form_file">Скачать информацию по активу (.docx)</button> -->
         <div class="clear"></div>
 
 
         <div class="only_search_1c_class">
             <input class="search_1c_class_1" type="text" name="" id="1c-id">
-            <input class="search_1c_class_2" id="search_btn" type="button" value="Найти в 1С">
+            <input class="search_1c_class_2" id="search_btn" type="button" value="Найти по инвентарному номеру актива в 1С">
         </div>
 
         <p></p>
-        <div id="1c_data" class="1c-data">
+        <div id="1c_data" class="1c-data class_for_1c_only">
 
         </div>
     </div>
@@ -85,17 +84,25 @@
                     let movement_count = resp.EquipmentData.MovementHistory.length;
                     $("#movement_count").text(movement_count);
 
-                    for (var i = 0; i<movement_count; i++){ //перебрать все перемещения
-                        let movement = "<div class='1c_movement'>";
-                        movement += "Накладная: " + resp.EquipmentData.MovementHistory[i].Document + '</br>';
-                        movement += "Депт: " + resp.EquipmentData.MovementHistory[i].Dept + '</br>';
-
-
-                        movement += "</div>"; //Закрывем тег для одного перемещения
-                        $("#1c_data").append(movement);   
-                    }
+                    let current_place = resp.EquipmentData.MovementHistory.CurrentDept;
+                    $("#current_place").text(current_place);
 
                     $("#1c_data").append("<p>Полное имя: "+resp.EquipmentData.FullName + "</p>");
+                    $("#1c_data").append("<p>Место где актив принимался на учет: "+resp.EquipmentData.CurrentDept + "</p>");
+                    $("#1c_data").append("<p>Дата принятия на баланс: "+resp.EquipmentData.AcceptanceDate + "</p>");
+                    $("#1c_data").append("<p>Ответственный (если есть): "+resp.EquipmentData.CurrentPerson + "</p>");
+                    $("#1c_data").append("<p>Цена: "+resp.EquipmentData.InitialCost + "$" + "</p>");
+
+                    $("#1c_data").append("<div class='move_class_1'>Перемещения:</div>");
+
+                    for (var i = 0; i<movement_count; i++){ //перебрать все перемещения
+                        let movement = "<div class='1c_movement'>";
+                            movement += "Накладная: " + resp.EquipmentData.MovementHistory[i].Document + '</br>';
+                            movement += "Место: " + resp.EquipmentData.MovementHistory[i].Dept + '</br>';
+                            movement += "Ответсвтенный (если есть): " + resp.EquipmentData.MovementHistory[i].Person + '</br>';
+                            movement += "</div>"; //Закрывем тег для одного перемещения
+                        $("#1c_data").append(movement);   
+                    }
 
                 }
             })

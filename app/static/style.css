@@ -1090,6 +1090,7 @@ display: flex;
     margin: 1em 0;
 }
 
+
 .tab-link.active {
     background-color: #dfdfdf00; /* Замените это на цвет вашей активной вкладки */
     font-weight: bold;
@@ -1149,4 +1150,19 @@ padding: 20px;
 .active {
     display: block;
     background: #c8f3d81a;
+}
+
+.class_for_1c_only {
+    padding: 20px;
+    width: 61.6%;
+}
+
+.mov_count {
+    padding: 16px 8px 0 0;
+    font-size: large;
+}
+
+.move_class_1 {
+    padding: 16px 8px 0 0;
+    font-size: x-large;
 }
