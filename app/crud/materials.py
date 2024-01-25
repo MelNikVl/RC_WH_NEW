@@ -68,15 +68,4 @@ class MaterialCRUD:
 
         print("запрос в 1с")
 
-        # # логируем авторизацию
-        # autorisation_event = LogItem(kind_table="Запрос в 1с",
-        #                              user_id=db.username,
-        #                              passive_id=db.id,
-        #                              modified_cols="успешная авторизация WEB",
-        #                              values_of_change=None,
-        #                              date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        #                              )
-        # db.add(autorisation_event)
-        # db.commit()
-
         return desc_f_1c
