@@ -127,7 +127,7 @@ $(document).ready(function () {
         const json = await response.json();
         return json;
       } catch (error) {
-        alert("произошла ошибка!");
+        alert("произошла ошибка в комментариях, раздел с авторизацией!");
         window.location.reload();
         return;
       }
@@ -161,7 +161,7 @@ $(document).ready(function () {
     if (text) {
       let res = await send_comment(text);
       if (!res["status"]) {
-        alert("Произошла ошибка!");
+        alert("Произошла ошибка! комментарии, запись в бд");
       }
       location.reload()
     }

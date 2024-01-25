@@ -27,6 +27,7 @@ class AuthUtil:
                     'role': user_role,
                     'id': user_id,
                     'exp': expire
+
                     }
         return jwt.encode(post_jwt, SECRET_KEY, algorithm=ALGORITHM)
 
