@@ -374,7 +374,6 @@ class FrontMainController:
                       request: Request = None,
                       t: str = None  # jwt токен,
                       ):
-        # проверка токена на валидность и если он не вализный - переадресация на авторизацию
         try:
             result = await AuthUtil.decode_jwt(t)
         except Exception as e:

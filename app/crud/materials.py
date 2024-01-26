@@ -65,7 +65,4 @@ class MaterialCRUD:
     @staticmethod
     def get_description_from_1c(db, id: str):
         desc_f_1c = db.query(Raw_1c).filter(Material.id == id).first()
-
-        print("запрос в 1с")
-
         return desc_f_1c
