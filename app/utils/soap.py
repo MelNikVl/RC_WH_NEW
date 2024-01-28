@@ -20,10 +20,32 @@ password = "Bp2684"
 basic = HTTPBasicAuth('rc-spb\\bpsupport', 'Bp2684')
 basic_id = "000355389"
 
+# def last_x_days():
+#     session = Session()
+#     session.verify = False
+#     session.auth = basic
+#     transport = Transport(session=session)
+#     client = Client(
+#         url,
+#         transport=transport)
+#     print(client.service.GetEquipment(DepthDays=10))
+
+def get_by_responsible():
+    session = Session()
+    session.verify = False
+    session.auth = basic
+    transport = Transport(session=session)
+    client = Client(
+        url,
+        transport=transport)
+    print(client.service.GetEquipmentOfResponsible(220032))
 
 def get_material(id: str,
                  user: User = Depends(AuthUtil.decode_jwt),
                  db: Session = Depends(get_db)):
+    # get_by_responsible(); return
+    # last_x_days()
+    # return
     session = Session()
     session.verify = False
     session.auth = basic
