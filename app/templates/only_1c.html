@@ -100,6 +100,7 @@
                             movement += "Накладная: " + resp.EquipmentData.MovementHistory[i].Document + '</br>';
                             movement += "Место: " + resp.EquipmentData.MovementHistory[i].Dept + '</br>';
                             movement += "Ответсвтенный (если есть): " + resp.EquipmentData.MovementHistory[i].Person + '</br>';
+                            movement += "Комментарий склада: " + resp.EquipmentData.MovementHistory[i].Comment + '</br>';
                             movement += "----------";
                             movement += "</div>"; //Закрывем тег для одного перемещения
                         $("#1c_data").append(movement);   
