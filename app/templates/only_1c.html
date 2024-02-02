@@ -39,27 +39,56 @@
 
 
         <div class="counts">
-            
+
             <!-- <p class="p_for_count"><b>Всего пермещений: <div id="movement_count" class="mov_count"></div> </b></p> -->
         </div>
         <!-- <button class="word_button" id="form_file">Скачать информацию по активу (.docx)</button> -->
         <div class="clear"></div>
 
-
-        <div class="only_search_1c_class">
-            <input class="search_1c_class_1" type="text" name="" id="1c-id">
-            <input class="search_1c_class_2" id="search_btn" type="button" value="Найти по инвентарному номеру актива в 1С">
+        <div class="two-col">
+            <div class="only_search_1c_class">
+                <input class="search_1c_class_1" type="text" name="" id="1c-id">
+                <input class="search_1c_class_2" id="search_btn" type="button"
+                    value="Найти по инвентарному номеру актива в 1С">
+                <div style="display: none;" id="loader-product" class="loader-1 center"><span></span></div>
+            </div>
+            <div class="only_search_1c_class">
+                <input class="search_1c_class_1" type="text" name="" id="responsible-id">
+                <input class="search_1c_class_2" id="responsible_btn" type="button" value="Найти активы по табельному номеру человека в 1С">
+                <div style="display: none;" id="loader-responsible" class="loader-1 center"><span></span></div>
+            </div>
         </div>
+
 
         <p></p>
         <div id="1c_data" class="1c-data class_for_1c_only">
 
         </div>
+        <div id="responsible_data" class="1c-data class_for_1c_only">
+
+        </div>
+
     </div>
     <script>
         const params = new URLSearchParams(window.location.search)
         const access_token = params.get("t");
         var host = document.location.origin;
+
+        async function by_responsible(responsible_id) {
+            try {
+                const response = await fetch(host + "/materials/by_responsible?id=" + responsible_id, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + access_token
+                    }
+                });
+                const json = await response.json();
+                return json;
+            } catch (error) {
+                alert("Произошла ошибка");
+                return;
+            }
+        }
 
         async function from_1c(mat_id) {
             try {
@@ -77,36 +106,72 @@
             }
         }
         $(document).ready(function () {
-            $("#search_btn").on("click", async ()=>{
-                let search_text = $("#1c-id").val();
-                let resp = await from_1c(search_text);
-                if (resp["success"]){
-                    let movement_count = resp.EquipmentData.MovementHistory.length;
-                    $("#movement_count").text(movement_count);
+            $("#search_btn").on("click", async () => {
+                try {
+                    $("#loader-product").fadeIn(300);
+                    let search_text = $("#1c-id").val();
+                    let resp = await from_1c(search_text);
 
-                    let current_place = resp.EquipmentData.MovementHistory.CurrentDept;
-                    $("#current_place").text(current_place);
+                    if (resp["success"]) {
+                        $("#1c_data").html("");
+                        let product = resp.EquipmentData[0];
+                        let movement_count = product.MovementHistory.length;
+                        $("#movement_count").text(movement_count);
 
-                    $("#1c_data").append("<p>Полное имя: "+resp.EquipmentData.FullName + "</p>");
-                    $("#1c_data").append("<p>Место где актив принимался на учет: "+resp.EquipmentData.CurrentDept + "</p>");
-                    $("#1c_data").append("<p>Дата принятия на баланс: "+resp.EquipmentData.AcceptanceDate + "</p>");
-                    $("#1c_data").append("<p>Ответственный (если есть): "+resp.EquipmentData.CurrentPerson + "</p>");
-                    $("#1c_data").append("<p>Цена: "+resp.EquipmentData.InitialCost + "$" + "</p>");
+                        let current_place = product.MovementHistory.CurrentDept;
+                        $("#current_place").text(current_place);
 
-                    $("#1c_data").append("<div class='move_class_1'>Перемещения:</div>");
+                        $("#1c_data").append("<p>Полное имя: " + product.FullName + "</p>");
+                        $("#1c_data").append("<p>Место где актив принимался на учет: " + product.CurrentDept + "</p>");
+                        $("#1c_data").append("<p>Дата принятия на баланс: " + product.AcceptanceDate + "</p>");
+                        $("#1c_data").append("<p>Ответственный (если есть): " + product.CurrentPerson + "</p>");
+                        $("#1c_data").append("<p>Цена: " + product.InitialCost + "$" + "</p>");
 
-                    for (var i = 0; i<movement_count; i++){ //перебрать все перемещения
-                        let movement = "<div class='1c_movement'>";
-                            movement += "Накладная: " + resp.EquipmentData.MovementHistory[i].Document + '</br>';
-                            movement += "Место: " + resp.EquipmentData.MovementHistory[i].Dept + '</br>';
-                            movement += "Ответсвтенный (если есть): " + resp.EquipmentData.MovementHistory[i].Person + '</br>';
-                            movement += "Комментарий склада: " + resp.EquipmentData.MovementHistory[i].Comment + '</br>';
+                        $("#1c_data").append("<div class='move_class_1'>Перемещения:</div>");
+
+                        for (var i = 0; i < movement_count; i++) { //перебрать все перемещения
+                            let movement = "<div class='1c_movement'>";
+                            movement += "Накладная: " + product.MovementHistory[i].Document + '</br>';
+                            movement += "Место: " + product.MovementHistory[i].Dept + '</br>';
+                            movement += "Ответсвтенный (если есть): " + product.MovementHistory[i].Person + '</br>';
+                            movement += "Комментарий склада: " + product.MovementHistory[i].Comment + '</br>';
                             movement += "----------";
                             movement += "</div>"; //Закрывем тег для одного перемещения
-                        $("#1c_data").append(movement);   
+                            $("#1c_data").append(movement);
+                        }
                     }
-
+                } finally {
+                    $("#loader-product").fadeOut(300);
                 }
+            })
+            $("#responsible_btn").on('click', async () => {
+                $("#loader-responsible").fadeIn(300);
+                try {
+                    let id = $('#responsible-id').val().replace(/[^\d.-]/g, '');
+                    $('#responsible-id').val(id);
+                    if (id.length < 5) {
+                        alert("введен некорректный ID");
+                        return;
+                    }
+                    let json = await by_responsible(id);
+                    let result_html = "";
+                    json["EquipmentData"].forEach(element => {
+                        result_html += "<p>Name: " + element["Name"] + "</p>";
+                        result_html += "<p>InventoryNumber: " + element["InventoryNumber"] + "</p>";
+                        result_html += "<p>CurrentDept: " + element["CurrentDept"] + "</p>";
+                        result_html += "<p>CurrentPerson: " + element["CurrentPerson"] + "</p>";
+                        result_html += "<p>Manufactorer: " + element["Manufactorer"] + "</p>";
+                        result_html += "<p>Comment: " + element["Comment"] + "</p>";
+                        result_html += "<p>Organization: " + element["Organization"] + "</p>";
+                        result_html += "<p>AcceptanceDate: " + element["AcceptanceDate"] + "</p>";               
+                        result_html += "<p>" + "-----------------" + "</p>";   
+                    });
+                    $("#responsible_data").html(result_html);
+                }
+                finally {
+                    $("#loader-responsible").fadeOut(300);
+                }
+
             })
         })
     </script>

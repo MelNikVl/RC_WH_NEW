@@ -1,6 +1,7 @@
 import datetime
 
 import requests
+from zeep import helpers
 from fastapi import Depends
 from requests import Session
 from requests.auth import HTTPBasicAuth
@@ -20,17 +21,8 @@ password = "Bp2684"
 basic = HTTPBasicAuth('rc-spb\\bpsupport', 'Bp2684')
 basic_id = "000355389"
 
-# def last_x_days():
-#     session = Session()
-#     session.verify = False
-#     session.auth = basic
-#     transport = Transport(session=session)
-#     client = Client(
-#         url,
-#         transport=transport)
-#     print(client.service.GetEquipment(DepthDays=10))
 
-def get_by_responsible():
+def last_x_days():
     session = Session()
     session.verify = False
     session.auth = basic
@@ -38,14 +30,36 @@ def get_by_responsible():
     client = Client(
         url,
         transport=transport)
-    print(client.service.GetEquipmentOfResponsible(220032))
+    print(client.service.GetEquipment(DepthDays=10))
+
+
+def get_by_responsible(id: int):
+    session = Session()
+    session.verify = False
+    session.auth = basic
+    transport = Transport(session=session)
+    client = Client(
+        url,
+        transport=transport)
+    try:
+        response = client.service.GetEquipmentOfResponsible(id) #450751
+        count0 = 0
+        for i in response:
+            for y in i[0]:
+                print(y)
+                # count0 += 1
+        json = helpers.serialize_object(response, dict)
+        json["success"] = True
+        print(count0)
+        return json
+    except:
+        return {"success" : False}
+
+
 
 def get_material(id: str,
                  user: User = Depends(AuthUtil.decode_jwt),
                  db: Session = Depends(get_db)):
-    # get_by_responsible(); return
-    # last_x_days()
-    # return
     session = Session()
     session.verify = False
     session.auth = basic
@@ -54,7 +68,6 @@ def get_material(id: str,
         url,
         transport=transport)
 
-    # print(client.service.GetEquipment(10))
     response = client.service.GetEquipmentInfo(EquipmentID=id)
 
     # логируем авторизацию
@@ -67,10 +80,6 @@ def get_material(id: str,
                                  )
     db.add(autorisation_event)
     db.commit()
-
-    print(response)
-    from zeep import helpers
     _json = helpers.serialize_object(response, dict)
     _json["success"] = True
-    # print(_json)
     return _json
