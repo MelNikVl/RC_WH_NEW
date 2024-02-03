@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="/static/style.css">
     <!--  добавляем фавконку -->
     <link rel="icon" href="/static/w.jpg" type="image/x-icon">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="/static/loader.css">
     <!-- https://codepen.io/nobuakihonma/pen/dYbqLQ -->
 </head>
 
 <body>
-    <div class="body_body">
+    <div class="body_for_1c">
         <div class="top-part">
             <div class="title_1">IT warehouse tracker (Search in 1c)</div>
             <div class="button_exit">
@@ -36,39 +36,57 @@
             <div class="clear"></div>
         </div>
 
-
-
-        <div class="counts">
-
-            <!-- <p class="p_for_count"><b>Всего пермещений: <div id="movement_count" class="mov_count"></div> </b></p> -->
-        </div>
-        <!-- <button class="word_button" id="form_file">Скачать информацию по активу (.docx)</button> -->
-        <div class="clear"></div>
-
-        <div class="two-col">
-            <div class="only_search_1c_class">
-                <input class="search_1c_class_1" type="text" name="" id="1c-id">
-                <input class="search_1c_class_2" id="search_btn" type="button"
-                    value="Найти по инвентарному номеру актива в 1С">
-                <div style="display: none;" id="loader-product" class="loader-1 center"><span></span></div>
+        <div class="body_for_1c_2">
+            <div class="tabs">
+                <a href="#" class="tab-link active" onclick="openTab('tab1')">Поиск по ID актива</a>
+                <a href="#" class="tab-link" onclick="openTab('tab2')">Поиск по ID сотрудника</a> 
             </div>
-            <div class="only_search_1c_class">
-                <input class="search_1c_class_1" type="text" name="" id="responsible-id">
-                <input class="search_1c_class_2" id="responsible_btn" type="button" value="Найти активы по табельному номеру человека в 1С">
-                <div style="display: none;" id="loader-responsible" class="loader-1 center"><span></span></div>
+        
+            <div id="tab1" class="tab-content active">
+                <div class="only_search_1c_class">
+                    <input class="search_1c_class_1" type="text" name="" id="1c-id">
+                    <input class="search_1c_class_2" id="search_btn" type="button"
+                        value="Найти по инвентарному номеру актива в 1С">
+                    <input class="search_1c_class_2 to_excel" id="download1_btn" type="button"
+                        value="to Excel">
+                    <div style="display: none;" id="loader-product" class="loader-1 center"><span></span></div>
+                </div>
+                <div id="1c_data" class="1c-data class_for_1c_only"></div>
             </div>
+
+            <div id="tab2" class="tab-content">
+                <div class="only_search_1c_class">
+                    <input class="search_1c_class_1" type="text" name="" id="responsible-id">
+                    <input class="search_1c_class_2" id="responsible_btn" type="button"
+                        value="Найти активы по табельному номеру человека в 1С">
+                        <input class="search_1c_class_2 to_excel" id="download2_btn" type="button"
+                        value="to Excel">
+                    <div style="display: none;" id="loader-responsible" class="loader-1 center"><span></span></div>
+                </div>
+                <div id="responsible_data" class="1c-data class_for_1c_only"></div>
+            </div>
+
         </div>
 
+    <script>
+        function openTab(tabName) {
+            var i, tabContent, tabLink;
+    
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+            }
+    
+            tabLink = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tabLink.length; i++) {
+                tabLink[i].classList.remove("active");
+            }
+    
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.classList.add("active");
+        }
+    </script>
 
-        <p></p>
-        <div id="1c_data" class="1c-data class_for_1c_only">
-
-        </div>
-        <div id="responsible_data" class="1c-data class_for_1c_only">
-
-        </div>
-
-    </div>
     <script>
         const params = new URLSearchParams(window.location.search)
         const access_token = params.get("t");
@@ -155,7 +173,14 @@
                     }
                     let json = await by_responsible(id);
                     let result_html = "";
+                    let totalElements = json["EquipmentData"].length;
+
+                    $("#total_elements").html("<p>Total Elements: " + totalElements + "</p>");
+
+                    let counter = 1;
                     json["EquipmentData"].forEach(element => {
+                        result_html += "<div class='equipment_1'>";
+                        result_html += "<p>Number: " + counter + "</p>";
                         result_html += "<p>Name: " + element["Name"] + "</p>";
                         result_html += "<p>InventoryNumber: " + element["InventoryNumber"] + "</p>";
                         result_html += "<p>CurrentDept: " + element["CurrentDept"] + "</p>";
@@ -163,8 +188,11 @@
                         result_html += "<p>Manufactorer: " + element["Manufactorer"] + "</p>";
                         result_html += "<p>Comment: " + element["Comment"] + "</p>";
                         result_html += "<p>Organization: " + element["Organization"] + "</p>";
-                        result_html += "<p>AcceptanceDate: " + element["AcceptanceDate"] + "</p>";               
-                        result_html += "<p>" + "-----------------" + "</p>";   
+                        result_html += "<p>AcceptanceDate: " + element["AcceptanceDate"] + "</p>";
+                        result_html += "</div>";
+                        
+                        // Увеличиваем счетчик
+                        counter++;
                     });
                     $("#responsible_data").html(result_html);
                 }
@@ -172,6 +200,45 @@
                     $("#loader-responsible").fadeOut(300);
                 }
 
+            })
+            $("#download1_btn").on('click', async () => {
+                let mat_id = $("#1c-id").val();
+                try {
+                    fetch(host + "/materials/one_product_list?id=" + mat_id, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + access_token
+                        }
+                    }).then(res => res.blob()).then(blob => {
+                        
+                        saveAs(blob, "one_product.xlsx");
+                    });
+                } catch (error) {
+                    alert("Произошла ошибка");
+                    return;
+                }
+            })
+            $("#download2_btn").on('click', async () => {
+                let id = $('#responsible-id').val().replace(/[^\d.-]/g, '');
+                    $('#responsible-id').val(id);
+                    if (id.length < 5) {
+                        alert("введен некорректный ID");
+                        return;
+                    }
+                try {
+                    fetch(host + "/materials/responsible_list?id=" + id, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + access_token
+                        }
+                    }).then(res => res.blob()).then(blob => {
+                        
+                        saveAs(blob, "products.xlsx");
+                    });
+                } catch (error) {
+                    alert("Произошла ошибка");
+                    return;
+                }
             })
         })
     </script>

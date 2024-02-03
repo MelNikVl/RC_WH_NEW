@@ -52,6 +52,8 @@ router.get("/only_1c")(FrontMainController.only_1c)
 materials.get("/from_1c")(get_material)
 materials.post("/add_from_1c")(MaterialsController.add_from_1c)
 materials.get("/by_responsible")(MaterialsController.get_by_responsible)
+materials.get("/responsible_list")(FrontMainController.responsible_list)
+materials.get("/one_product_list")(FrontMainController.excel_1c_list)
 
 router.get("/trash_page")(FrontMainController.trash_page)
 router.get("/{material_id}")(FrontMainController.only_one_card)

@@ -43,14 +43,14 @@ def get_by_responsible(id: int):
         transport=transport)
     try:
         response = client.service.GetEquipmentOfResponsible(id) #450751
-        count0 = 0
-        for i in response:
-            for y in i[0]:
-                print(y)
+        # count0 = 0
+        # for i in response:
+        #     for y in i[0]:
+        #         print(y)
                 # count0 += 1
         json = helpers.serialize_object(response, dict)
         json["success"] = True
-        print(count0)
+        print(json)
         return json
     except:
         return {"success" : False}
@@ -80,6 +80,18 @@ def get_material(id: str,
                                  )
     db.add(autorisation_event)
     db.commit()
+    _json = helpers.serialize_object(response, dict)
+    _json["success"] = True
+    return _json
+def get_one_material(id: str):
+    session = Session()
+    session.verify = False
+    session.auth = basic
+    transport = Transport(session=session)
+    client = Client(
+        url,
+        transport=transport)
+    response = client.service.GetEquipmentInfo(EquipmentID=id)
     _json = helpers.serialize_object(response, dict)
     _json["success"] = True
     return _json

@@ -646,7 +646,8 @@ tbody input[type='checkbox'] {
 .body_body {
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 2.4);
-    /* height: 200vh; */
+    /* overflow-y: scroll; */
+    height: 300vh;
 }
 
 .body_inst {
@@ -1094,11 +1095,13 @@ display: flex;
 .tab-link.active {
     background-color: #dfdfdf00; /* Замените это на цвет вашей активной вкладки */
     font-weight: bold;
+    border: 1px solid;
     /* color: #fff; */ /* Замените это на цвет текста вашей активной вкладки */
 }
 
 .tab-content.active {
     display: block;
+    padding: 20px;
 }
 
 .sep_2_for_1c {/* padding: 10px 15px; */display: flex;align-items: center;gap: 1em;align-content: space-around;/* background: #f2f2f2; */justify-content: flex-start;}
@@ -1117,6 +1120,7 @@ display: flex;
     background: #fff;
     text-align: center;
     border-right: 1px solid;
+    border: 1px solid;
 }
 
 .or_button {/* padding: 20px; */background: #ffd6008c;}
@@ -1125,8 +1129,8 @@ display: flex;
 
 .tab-content {
     display: none;
-    max-width: 70%;
-    padding: 20px;
+    /* max-width: 70%; */
+    padding: 20px 0 0 0;
 }
 
 .email_for_admin_page {padding: 1em 0 0;margin: 0 1em 0 1em;font-size: large;}
@@ -1145,16 +1149,46 @@ padding: 20px;
 
 .email_1223 {/* margin: 1em; */display: flex;margin: 1em;/* background: #dbdbdb; */padding: 0 1em;align-items: flex-end;align-content: center;flex-wrap: nowrap;flex-direction: row;}
 
-.only_search_1c_class {margin: 1em;background: #ffff3647;PADDING: 1em;border-radius: 20px;width: 61.6%;}
+.only_search_1c_class {margin: 1em;background: #ffba3647;PADDING: 1em;border-radius: 20px;/* width: 61.6%; */}
 
 .active {
     display: block;
     background: #c8f3d81a;
 }
 
+.to_excel {
+    /* padding: 20px; */
+    background: #40e0d054;
+    border-radius: 6px;
+    margin: 0 0 0 20px;
+}
+
+.body_for_1c_2 {
+    /* padding: 20px; */
+    max-width: 70%;
+}
+
+.body_for_1c {
+    padding: 20px;
+    /* width: 61.6%; */
+    overflow-y: scroll;
+
+}
+
+.equipment_1 {
+    padding: 20px;
+    background: #b3e2f5ad;
+    margin: 1em 0 0 0;
+    border-radius: 1em;
+    font-size: medium;
+    font-weight: bold;
+}
+
 .class_for_1c_only {
     padding: 20px;
-    width: 61.6%;
+    /* width: 61.6%; */
+    overflow-y: scroll;
+    /* height: 60vh; */
 }
 
 .mov_count {

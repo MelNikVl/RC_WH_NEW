@@ -8,6 +8,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 from fastapi.encoders import jsonable_encoder
+from app.utils.soap import get_by_responsible, get_material, get_one_material
 from crud.geolocation import GeoLocationCRUD
 from crud.materials import MaterialCRUD
 from starlette import status
@@ -29,6 +30,71 @@ class FrontMainController:
     @staticmethod
     async def ping(user: user_dependency):
         return Response("ok", media_type="text/plain")
+    
+    @staticmethod
+    async def excel_1c_list(id:str, user: User = Depends(AuthUtil.decode_jwt)) -> FileResponse:
+        try:
+            result = get_one_material(id)
+        except:
+            return {"success": False}
+        out_filename = '1c_list.xlsx'
+        headers = ["Name", "Organization", "AcceptanceDate", "CurrentDept", "CurrentPerson","Movement #", "Movement"]
+        workbook = xlsxwriter.Workbook(out_filename)
+        worksheet = workbook.add_worksheet()
+        cell_format = workbook.add_format({"valign": "top", 'text_wrap': True })
+        for col_num, data in enumerate(headers):
+            worksheet.write(0, col_num, data)
+        counter = 1
+        
+        for product in result["EquipmentData"]:
+            worksheet.write(counter, 0, product["Name"], cell_format)
+            worksheet.write(counter, 1, product["Organization"], cell_format)
+            worksheet.write(counter, 2, product["AcceptanceDate"].strftime("%d %B %Y"), cell_format)
+            worksheet.write(counter, 3, product["CurrentDept"], cell_format)
+            worksheet.write(counter, 4, product["CurrentPerson"], cell_format)
+            counter+=1
+        for idx, i in enumerate(product["MovementHistory"]):
+            temp = ""
+            if i["Comment"]:
+                temp += "Comment: " + i["Comment"] + "\n"
+            # temp = "Comment: " + i["Comment"] +"\n"
+            temp += "Dept: " + i["Dept"] +"\n"
+            temp += "Period: " + i["Period"].strftime("%d %B %Y") +"\n"
+            if i["Person"]: 
+                temp += "Person: " + i["Person"] +"\n"
+            temp += "Document: " + i["Document"]
+            worksheet.write(idx+1, 6, temp, cell_format)
+            worksheet.write(idx+1, 5, idx+1, cell_format)
+        workbook.close()
+        return FileResponse(out_filename,filename="list.xlsx")
+
+    @staticmethod
+    async def responsible_list(id:int, user: user_dependency) -> FileResponse:
+        try:
+            result = get_by_responsible(id)
+        except:
+            return {"success": False}
+        out_filename = 'responsible_list.xlsx'
+        headers = ["Name", "InventoryNumber", "CurrentDept", "CurrentPerson", "Manufactorer", "Comment", "Organization", "AcceptanceDate"]
+        workbook = xlsxwriter.Workbook(out_filename)
+        worksheet = workbook.add_worksheet()
+        cell_format = workbook.add_format({"valign": "top", 'text_wrap': True, })
+        for col_num, data in enumerate(headers):
+            worksheet.write(0, col_num, data)
+        counter = 1
+        
+        for product in result["EquipmentData"]:
+            worksheet.write(counter, 0, product["Name"], cell_format)
+            worksheet.write(counter, 1, product["InventoryNumber"], cell_format)
+            worksheet.write(counter, 2, product["CurrentDept"], cell_format)
+            worksheet.write(counter, 3, product["CurrentPerson"], cell_format)
+            worksheet.write(counter, 4, product["Manufactorer"], cell_format)
+            worksheet.write(counter, 5, product["Comment"], cell_format)
+            worksheet.write(counter, 6, product["Organization"], cell_format)
+            worksheet.write(counter, 7, product["AcceptanceDate"].strftime("%d %B %Y"), cell_format)
+            counter+=1
+        workbook.close()
+        return FileResponse(out_filename,filename="list.xlsx")
 
     @staticmethod
     async def generate_list(materials: MaterialsListRequest) -> FileResponse:
