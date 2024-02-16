@@ -19,7 +19,6 @@ app = FastAPI(
     description="здесь все методы работы с API"  # Set the project description
 )
 
-# ебота из документации - типа разрешено обращаться с разных адресов
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
