@@ -42,24 +42,21 @@ def get_by_responsible(id: int):
         url,
         transport=transport)
     try:
-        response = client.service.GetEquipmentOfResponsible(id) #450751
-        # count0 = 0
-        # for i in response:
-        #     for y in i[0]:
-        #         print(y)
-                # count0 += 1
+        response = client.service.GetEquipmentOfResponsible(id)  # 450751
         json = helpers.serialize_object(response, dict)
         json["success"] = True
         print(json)
         return json
     except:
-        return {"success" : False}
-
+        return {"success": False}
 
 
 def get_material(id: str,
                  user: User = Depends(AuthUtil.decode_jwt),
                  db: Session = Depends(get_db)):
+    # last_x_days()
+    # print("jljlkjlkjlkj")
+
     session = Session()
     session.verify = False
     session.auth = basic
@@ -80,9 +77,12 @@ def get_material(id: str,
                                  )
     db.add(autorisation_event)
     db.commit()
+
     _json = helpers.serialize_object(response, dict)
     _json["success"] = True
     return _json
+
+
 def get_one_material(id: str):
     session = Session()
     session.verify = False
