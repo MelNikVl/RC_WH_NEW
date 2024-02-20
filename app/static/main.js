@@ -53,7 +53,7 @@ $(document).ready(function () {
 
         else {
             $("#data-1c-popup .1c-data").html("")
-            let equip = resp["EquipmentData"];
+            let equip = resp["EquipmentData"][0];
             let date = equip["AcceptanceDate"];
             let history = equip["MovementHistory"];
             let name = equip["FullName"];
