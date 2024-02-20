@@ -1,24 +1,14 @@
-import datetime, os, smtplib, ssl, shutil, fastapi
-from email.mime.application import MIMEApplication
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from os.path import basename
-from typing import Dict, List, Optional
-
-from fastapi import Depends, Request, UploadFile, File
-from fastapi.encoders import jsonable_encoder
-from sqlalchemy import desc
+import datetime, fastapi
+from typing import Dict
+from fastapi import Depends, Request
 from sqlalchemy.orm import Session
-from app.crud.geolocation import GeoLocationCRUD
-from app.crud.materials import MaterialCRUD
-from app.payload.request import GeoLocationCreateRequest, GeoLocationGetByIdRequest, RepairCreateRequest, \
-    RepairStopRequest, RepairDetailsRequest, AccessoriesRequest
+from app.payload.request import AccessoriesRequest
 from starlette import status
 from app.utils.utils import response
 from app.controllers.front import templates
 from app.utils.auth import AuthUtil, user_dependency
 from db.db import get_db
-from models.models import User, LogItem, GeoLocation, Material, Trash, Repair, Accessories
+from models.models import LogItem, Accessories
 
 
 class AccessoriesController:

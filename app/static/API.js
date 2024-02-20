@@ -13,6 +13,7 @@ async function move_to_trash(id) {
         console.error(error);
     }
 }
+
 async function delete_user(username) {
     try {
         const response = await fetch(host + "/auth/delete_user" + "?user_for_delete=" + username, {
