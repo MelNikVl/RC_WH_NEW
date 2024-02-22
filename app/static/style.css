@@ -1191,6 +1191,8 @@ padding: 20px;
     /* height: 60vh; */
 }
 
+.info_page_1 {padding: 1em 1.5em;}
+
 .mov_count {
     padding: 16px 8px 0 0;
     font-size: large;
