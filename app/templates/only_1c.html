@@ -153,18 +153,23 @@
 
                     $("#results_x_days").empty();
 
-                    if (json.length) { // Предполагаем, что json - это массив
-                        json.forEach(item => {
-                            // Доступ к вложенным данным через __values__
-                            let values = item.__values__;
-                            // Теперь можно формировать строку для отображения без "__values__"
-                            let displayText = `Дата: ${values["Дата"]}, ИнвентарныйНомер: ${values["ИнвентарныйНомер"]}, Код: ${values["Код"]}, Наименование: ${values["Наименование"]}`;
-                            // Добавление сформированной строки в элемент #results
-                            $("#results_x_days").append(`<div class="for_x_days">${displayText}</div>`);
-                        });
-                    } else {
-                        $("#results_x_days").append(`<div>Полученные данные не содержат элементов</div>`);
+                    if (Array.isArray(json)) {
+                        if (json.length) { // Предполагаем, что json - это массив
+                            json.forEach(item => {
+                                // Доступ к вложенным данным через __values__
+                                let values = item.__values__;
+                                // Теперь можно формировать строку для отображения без "__values__"
+                                let displayText = `Дата: ${values["Дата"]}, ИнвентарныйНомер: ${values["ИнвентарныйНомер"]}, Код: ${values["Код"]}, Наименование: ${values["Наименование"]}`;
+                                // Добавление сформированной строки в элемент #results
+                                $("#results_x_days").append(`<div class="for_x_days">${displayText}</div>`);
+                            });
+                        } else {
+                            $("#results_x_days").append(`<div>Полученные данные не содержат элементов</div>`);
+                        }
                     }
+                    else {
+                            $("#results_x_days").append(`<div>Полученные данные не содержат элементов и это не массив</div>`);
+                        }
 
 
                     // if (Object.values(json).length) {
