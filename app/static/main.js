@@ -462,6 +462,8 @@ $('.input-file span').mousedown(function (e) {
     }
 });
 
+
+
 async function upload_photos(mat_id) {
     for (let i = 0; i < files_to_upload.length; i++) {
         let photo = new FormData();

@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from crud.materials import MaterialCRUD
 from zeep import Transport, Client
 
-from app.utils.soap import basic, url, get_material, get_by_responsible
+from app.utils.soap import basic, url, get_material, get_by_responsible, last_x_days
 from app.utils.utils import response
 from app.payload.response import MaterialUploadResponse
 from app.utils.auth import AuthUtil, user_dependency
@@ -102,6 +102,11 @@ class MaterialsController:
     @staticmethod
     async def get_by_responsible(user: user_dependency, id: int):
         return get_by_responsible(id)
+
+    @staticmethod
+    async def last_x_days(user: user_dependency, days: int):
+        return last_x_days(days)
+
     @staticmethod
     async def add_from_1c(
             user: user_dependency,

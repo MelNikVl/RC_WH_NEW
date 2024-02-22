@@ -40,6 +40,7 @@
             <div class="tabs">
                 <a href="#" class="tab-link active" onclick="openTab('tab1')">Поиск по ID актива</a>
                 <a href="#" class="tab-link" onclick="openTab('tab2')">Поиск по ID сотрудника</a> 
+                <a href="#" class="tab-link" onclick="openTab('tab3')">Поиск по активов на БСК</a>
             </div>
         
             <div id="tab1" class="tab-content active">
@@ -65,6 +66,15 @@
                 </div>
                 <div id="responsible_data" class="1c-data class_for_1c_only"></div>
             </div>
+
+            <div id="tab3" class="tab-content">
+                Показать активы записанные на БСК за последние <input class="" type="text" id="bsk-days"> дней ---- 
+                <button id="last_x_days_btn">Запросить</button>
+                <div id="results_x_days" class="1c-data class_for_1c_only"></div>
+            </div>
+
+
+            
 
         </div>
 
@@ -124,6 +134,54 @@
             }
         }
         $(document).ready(function () {
+
+             $("#last_x_days_btn").on("click", async function() {
+
+                let days = $("#bsk-days").val()
+
+                // Вызов AJAX функции для получения данных последних X дней
+                try {
+                    const response = await fetch(host + "/materials/last_x_days?days=" + days, {
+                        method: 'GET', // 
+                        headers: {
+                            'Authorization': 'Bearer ' + access_token
+                        }
+                    });
+                    const json = await response.json();
+                    // Обработка данных, полученных от сервера
+                    console.log(json);
+
+                    $("#results_x_days").empty();
+
+                    if (json.length) { // Предполагаем, что json - это массив
+                        json.forEach(item => {
+                            // Доступ к вложенным данным через __values__
+                            let values = item.__values__;
+                            // Теперь можно формировать строку для отображения без "__values__"
+                            let displayText = `Дата: ${values["Дата"]}, ИнвентарныйНомер: ${values["ИнвентарныйНомер"]}, Код: ${values["Код"]}, Наименование: ${values["Наименование"]}`;
+                            // Добавление сформированной строки в элемент #results
+                            $("#results_x_days").append(`<div class="for_x_days">${displayText}</div>`);
+                        });
+                    } else {
+                        $("#results_x_days").append(`<div>Полученные данные не содержат элементов</div>`);
+                    }
+
+
+                    // if (Object.values(json).length) {
+                    //     Object.values(json.__values__).forEach(item => {
+                    //         // Допустим, каждый item теперь объект, который мы хотим отобразить
+                    //         $("#results_x_days").append(`<div>${JSON.stringify(item)}</div>`);
+                    //     });
+                    // } else {
+                    //     $("#results_x_days").append(`<div>Полученные данные не содержат элементов</div>`);
+                    // }
+
+                } catch (error) {
+                    alert(error);
+                    return;
+                }
+            });
+
             $("#search_btn").on("click", async () => {
                 try {
                     $("#loader-product").fadeIn(300);

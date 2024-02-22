@@ -22,7 +22,7 @@ basic = HTTPBasicAuth('rc-spb\\bpsupport', 'Bp2684')
 basic_id = "000355389"
 
 
-def last_x_days():
+def last_x_days(days: int):
     session = Session()
     session.verify = False
     session.auth = basic
@@ -30,7 +30,15 @@ def last_x_days():
     client = Client(
         url,
         transport=transport)
-    print(client.service.GetEquipment(DepthDays=10))
+    try:
+        response = client.service.GetEquipment(DepthDays=days)
+        print(response)
+        # json = helpers.serialize_object(response, dict)
+        # json["success"] = True
+        # print(json)
+        return response
+    except:
+        return {"success": False}
 
 
 def get_by_responsible(id: int):

@@ -69,6 +69,7 @@ materials.get("/get_last_update")(MaterialsController.get_last_update)
 materials.post("/upload_photo")(MaterialsController.upload_photo)
 materials.post("/update_title")(MaterialsController.update_title)
 materials.post("/send_comment")(MaterialsController.send_comment)
+materials.get("/last_x_days")(MaterialsController.last_x_days)
 
 geolocation.post("/create")(GeoLocationController.create)
 geolocation.post("/get-by-id")(GeoLocationController.get_by_id)

@@ -1202,3 +1202,8 @@ padding: 20px;
     padding: 16px 0;
     font-size: x-large;
 }
+
+.for_x_days {
+    padding: 1em;
+    font-size: large;
+}
