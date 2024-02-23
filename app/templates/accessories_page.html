@@ -36,12 +36,7 @@
             <div class="clear"></div>
             <div class="counts">
                 <p class="p_for_count"><b>Всего комплектующих: {{ data.count_accessories }}</b></p>
-            </div>
-
-            <input class="" type="text" id="new_acc_location">
-                <button id="button_acc_location">Переместить</button>
-                <div id="log_acc_location" class=""></div>
-    
+            </div>    
 
         <div class="clear"></div>
     </div>
@@ -204,7 +199,14 @@
                     body: JSON.stringify({ id: id, new_location: newLocation })
                 });
                 const resp = await response.json();
-                if (!resp.status) {
+                if (resp.status) {
+                    let row = $(`input[data-id='${id}']`).closest('tr');
+                    row.css('background-color', 'lightgreen');
+                    // Возвращаем исходный цвет через 1 секунду
+                    setTimeout(() => {
+                        row.css('background-color', ''); // Уберите '', если есть исходный цвет
+                    }, 500);
+                } else {
                     alert("Ошибка при обновлении расположения");
                 }
             } catch (error) {

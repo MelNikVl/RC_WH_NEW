@@ -66,12 +66,13 @@ class GeoLocation(Base):
     comment: str = Column(String, default="")
     # repair_unique_id: str = Column(String, ForeignKey('repair.repair_unique_id'), nullable=True)
 
+
 class LogItem(Base):
     __tablename__ = "log"
 
     id: int = Column(Integer, primary_key=True, index=True)
     kind_table: str = Column(String)
-    user_id: int = Column(Integer) # вообще тут должен быть стринг, но почему то работает и так
+    user_id: int = Column(Integer)  # вообще тут должен быть стринг, но почему то работает и так
     passive_id: int = Column(Integer)
     modified_cols: str = Column(String)
     values_of_change: str = Column(String)
@@ -110,7 +111,7 @@ class Notifications(Base):
     id: int = Column(Integer, primary_key=True, index=True)
     category: str = Column(String)
     user: str = Column(String)
-    read: bool = Column(Boolean,  unique=False, default=False)
+    read: bool = Column(Boolean, unique=False, default=False)
     unique_code: str = Column(String)
     date_time: datetime = Column(DateTime)
     material_id: str = Column(String)
