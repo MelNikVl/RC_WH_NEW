@@ -26,7 +26,7 @@ class AccessoriesController:
 
         out: Dict = {}
 
-        top_info = db.query(LogItem).filter(LogItem.kind_table == "Комплектующие").\
+        top_info = db.query(LogItem).filter(LogItem.kind_table == "Комплектующие"). \
             filter(LogItem.passive_id == "выдача").order_by(LogItem.id.desc()).limit(5).all()
 
         accessories = db.query(Accessories).all()
@@ -62,10 +62,9 @@ class AccessoriesController:
                                 passive_id=body.title,
                                 modified_cols="добавление комплектующих",
                                 values_of_change=f'категория: {body.category},'
-                                                    f' количество {body.count}',
+                                                 f' количество {body.count}',
                                 date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                 )
-
         db.add(new_acc_event)
         db.add(accessories)
         db.commit()
@@ -93,7 +92,6 @@ class AccessoriesController:
                                                      f'{title} в количестве {count} шт, осталось {repair.count}',
                                     date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                     )
-
             db.add(new_acc_event)
             db.commit()
 
@@ -115,8 +113,31 @@ class AccessoriesController:
                                 values_of_change=f'новое количество: {count}',
                                 date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                 )
-
         db.add(new_acc_event)
         db.commit()
 
         return response(data="комплектующие добавлены", status=True)
+
+    @staticmethod
+    async def change_location_acc(new_location,
+                                  id,
+                                  user: user_dependency,
+                                  db: Session = Depends(get_db),
+                                  ):
+        acc_id = db.query(Accessories).filter(Accessories.id == id).first()
+        acc_id.place = new_location
+        acc_id.date_time = datetime.datetime.now()
+
+        new_acc_event = LogItem(kind_table="Комплектующие",
+                                user_id=user["username"],
+                                passive_id=id,
+                                modified_cols=f"комплектующие категории {id} перемещены в {new_location}",
+                                values_of_change=f'1 категория',
+                                date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                )
+
+        db.add(acc_id)
+        db.add(new_acc_event)
+        db.commit()
+
+        return response(data=f"комплектующие категории {id} перемещены в {new_location}", status=True)
