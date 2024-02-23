@@ -159,7 +159,12 @@
                                 // Доступ к вложенным данным через __values__
                                 let values = item.__values__;
                                 // Теперь можно формировать строку для отображения без "__values__"
-                                let displayText = `Дата: ${values["Дата"]}, ИнвентарныйНомер: ${values["ИнвентарныйНомер"]}, Код: ${values["Код"]}, Наименование: ${values["Наименование"]}`;
+                                let displayText = `<div class="one_transfer">
+                                <p>Дата: ${values["Дата"]},</p>
+                                <p>ИнвентарныйНомер: ${values["ИнвентарныйНомер"]},</p>
+                                <p>Код: ${values["Код"]},</p>
+                                <p>Наименование: ${values["Наименование"]}</p></div>`
+                                ;
                                 // Добавление сформированной строки в элемент #results
                                 $("#results_x_days").append(`<div class="for_x_days">${displayText}</div>`);
                             });

@@ -1207,3 +1207,9 @@ padding: 20px;
     padding: 1em;
     font-size: large;
 }
+
+.one_transfer {
+    background: whitesmoke;
+    padding: 1em;
+    border-radius: 1em;
+}
