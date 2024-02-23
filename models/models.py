@@ -71,7 +71,7 @@ class LogItem(Base):
 
     id: int = Column(Integer, primary_key=True, index=True)
     kind_table: str = Column(String)
-    user_id: int = Column(Integer)
+    user_id: int = Column(Integer) # вообще тут должен быть стринг, но почему то работает и так
     passive_id: int = Column(Integer)
     modified_cols: str = Column(String)
     values_of_change: str = Column(String)

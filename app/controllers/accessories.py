@@ -1,8 +1,9 @@
 import datetime, fastapi
 from typing import Dict
-from fastapi import Depends, Request
+from fastapi import Depends, HTTPException, Request
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from app.payload.request import AccessoriesRequest
+from app.payload.request import AccessoriesRequest, NewAccLocation
 from starlette import status
 from app.utils.utils import response
 from app.controllers.front import templates
@@ -119,20 +120,21 @@ class AccessoriesController:
         return response(data="комплектующие добавлены", status=True)
 
     @staticmethod
-    async def change_location_acc(new_location,
-                                  id,
+    async def change_location_acc(body: NewAccLocation,
                                   user: user_dependency,
-                                  db: Session = Depends(get_db),
+                                  db: Session = Depends(get_db)
                                   ):
-        acc_id = db.query(Accessories).filter(Accessories.id == id).first()
-        acc_id.place = new_location
+        acc_id = db.query(Accessories).filter(Accessories.id == body.id).first()
+        if not acc_id:
+            raise HTTPException(status_code=404, detail="Категория не найдена")
+        acc_id.place = body.new_location
         acc_id.date_time = datetime.datetime.now()
 
         new_acc_event = LogItem(kind_table="Комплектующие",
                                 user_id=user["username"],
-                                passive_id=id,
-                                modified_cols=f"комплектующие категории {id} перемещены в {new_location}",
-                                values_of_change=f'1 категория',
+                                passive_id=body.id,
+                                modified_cols=f"комплектующие перемещены",
+                                values_of_change=f'{body.new_location}',
                                 date_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                                 )
 
@@ -140,4 +142,5 @@ class AccessoriesController:
         db.add(new_acc_event)
         db.commit()
 
-        return response(data=f"комплектующие категории {id} перемещены в {new_location}", status=True)
+        # return JSONResponse(content={"data": "комплектующие категории перемещены", "status": True})
+        return response(data="комплектующие пермещены", status=True)

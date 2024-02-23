@@ -84,3 +84,8 @@ class AccessoriesRequest(BaseModel):
 class NewCommentRequest(BaseModel):
     text: str
     material_id: str
+
+
+class NewAccLocation(BaseModel):
+    id: int
+    new_location: str

@@ -37,8 +37,11 @@
             <div class="counts">
                 <p class="p_for_count"><b>Всего комплектующих: {{ data.count_accessories }}</b></p>
             </div>
-    
 
+            <input class="" type="text" id="new_acc_location">
+                <button id="button_acc_location">Переместить</button>
+                <div id="log_acc_location" class=""></div>
+    
 
         <div class="clear"></div>
     </div>
@@ -89,6 +92,7 @@
             <table class="fl-table" id="table">
                 <thead>
                     <tr>
+                        <th>id</th>
                         <th>Категория</th>
                         <th>Наименование</th>
                         <th>Количество (шт)</th>
@@ -99,10 +103,11 @@
                 <tbody>
                     {% for item in data[0] %}
                     <tr>
+                        <td>{{ item.id }}</td>
                         <td>{{ item.category }}</td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.count }}</td>
-                        <td>{{ item.place }}</td>
+                        <td><input type="text" class="edit-location" value="{{ item.place }}" data-id="{{ item.id }}"></td>
                         <td>{{ item.date_time }}</td>
                     </tr>
                     {% endfor %}
@@ -173,6 +178,40 @@
         $(".close-btn").on("click", function () {
             $(this).closest(".popup-wrapper").fadeOut(200);
         });
+
+        // возможность редактирования местоположения
+        $('.edit-location').on('blur keydown', function(e) {
+            // Проверяем нажатие клавиши Enter или потерю фокуса
+            if (e.type === 'blur' || e.keyCode === 13) {
+                e.preventDefault();
+                // Получаем новое значение и ID комплектующего
+                let newLocation = $(this).val();
+                let id = $(this).data('id');
+
+                // Отправляем данные на сервер
+                updateLocation(id, newLocation);
+            }
+        });
+
+        async function updateLocation(id, newLocation) {
+            try {
+                const response = await fetch('/accessories/change_location_acc', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + access_token
+                    },
+                    body: JSON.stringify({ id: id, new_location: newLocation })
+                });
+                const resp = await response.json();
+                if (!resp.status) {
+                    alert("Ошибка при обновлении расположения");
+                }
+            } catch (error) {
+                console.error("Ошибка при отправке запроса: ", error);
+            }
+        }
+
 
         //Открытие попапов
         $("#create").on("click", function () {
