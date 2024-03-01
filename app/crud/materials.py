@@ -49,6 +49,7 @@ class MaterialCRUD:
             db.commit()
             return parse_obj_as(MaterialUploadResponse, material[0])
 
+
     # Получения всего списка материалов
     @staticmethod
     async def list_of_materials(db):
