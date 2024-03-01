@@ -41,7 +41,7 @@ def last_x_days(days: int):
         return {"success": False}
 
 
-def get_by_responsible(id: int):
+def get_by_responsible(id: int, date: str):
     session = Session()
     session.verify = False
     session.auth = basic
@@ -50,21 +50,19 @@ def get_by_responsible(id: int):
         url,
         transport=transport)
     try:
-        response = client.service.GetEquipmentOfResponsible(id)  # 450751
+        response = client.service.GetEquipmentOfResponsible(id, datetime.datetime.strptime(date, "%Y-%m-%d").date())
         json = helpers.serialize_object(response, dict)
         json["success"] = True
         print(json)
         return json
-    except:
+    except Exception as e:
+        print(e)
         return {"success": False}
 
 
 def get_material(id: str,
                  user: User = Depends(AuthUtil.decode_jwt),
                  db: Session = Depends(get_db)):
-    # last_x_days()
-    # print("jljlkjlkjlkj")
-
     session = Session()
     session.verify = False
     session.auth = basic
