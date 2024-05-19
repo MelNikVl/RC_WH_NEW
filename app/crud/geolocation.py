@@ -13,7 +13,6 @@ from static_data import main_folder
 sys.path.append("..")
 
 class GeoLocationCRUD:
-
     @staticmethod
     async def create(material_id: int, place: str, client_mail: str, status: str, initiator: str, db):
         material = db.query(Material).filter(Material.id == material_id).all()

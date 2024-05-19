@@ -68,10 +68,9 @@ class GeoLocationController:
                                        )
                 db.add(create_geo_event)
                 db.commit()
+                return response(data=parse_obj_as(GeoLocationUploadResponse, geolocation), status=True)
             else:
                 return response(data={"text": "Введены некорректные данные"}, status=False)
-
-            return response(data=parse_obj_as(GeoLocationUploadResponse, geolocation), status=True)
         else:
             return response(data={"text": "актив в ремонте и не подлежит перемещению"}, status=False)
 
@@ -524,9 +523,10 @@ class GeoLocationController:
             for i in resp["EquipmentData"][0]["MovementHistory"]:
                 if (i["Period"]>last_1c.date_time):
                     new_array.append(i)
+            
             for i in new_array:
                 geolocation = GeoLocation(material_id=id, place=i["Dept"], client_mail=str(i["Person"] or ""),
-                                          date_time=i["Period"], initiator=user["username"], geo_type=1)
+                                          date_time=i["Period"], status="Перемещен в 1С", initiator=user["username"], geo_type=1)
                 db.add(geolocation)
         except Exception as e:
             print(e)

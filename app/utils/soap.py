@@ -3,11 +3,12 @@ import datetime
 import requests
 from zeep import helpers
 from fastapi import Depends
-from requests import Session
+from requests import Session as HTTPSession
 from requests.auth import HTTPBasicAuth
 from zeep import Client, Transport
 from zeep.wsse import UsernameToken
 import inspect
+from sqlalchemy.orm import Session
 
 from app.utils.auth import AuthUtil
 from models.models import User, LogItem, GeoLocation, Material, Trash, Repair
@@ -23,7 +24,7 @@ basic_id = "000355389"
 
 
 def last_x_days(days: int):
-    session = Session()
+    session = HTTPSession()
     session.verify = False
     session.auth = basic
     transport = Transport(session=session)
@@ -42,7 +43,7 @@ def last_x_days(days: int):
 
 
 def get_by_responsible(id: int, date: str):
-    session = Session()
+    session = HTTPSession()
     session.verify = False
     session.auth = basic
     transport = Transport(session=session)
@@ -60,10 +61,8 @@ def get_by_responsible(id: int, date: str):
         return {"success": False}
 
 
-def get_material(id: str,
-                 user: User = Depends(AuthUtil.decode_jwt),
-                 db: Session = Depends(get_db)):
-    session = Session()
+def get_material(id: str, user: User, db: Session):
+    session = HTTPSession()
     session.verify = False
     session.auth = basic
     transport = Transport(session=session)
@@ -84,13 +83,11 @@ def get_material(id: str,
     db.add(autorisation_event)
     db.commit()
 
-    _json = helpers.serialize_object(response, dict)
-    _json["success"] = True
-    return _json
+    return helpers.serialize_object(response, dict)
 
 
 def get_one_material(id: str):
-    session = Session()
+    session = HTTPSession()
     session.verify = False
     session.auth = basic
     transport = Transport(session=session)

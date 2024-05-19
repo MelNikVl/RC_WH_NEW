@@ -69,9 +69,9 @@ class FrontMainController:
         return FileResponse(out_filename,filename="list.xlsx")
 
     @staticmethod
-    async def responsible_list(id:int, user: user_dependency) -> FileResponse:
+    async def responsible_list(id:int, date: str, user: user_dependency) -> FileResponse:
         try:
-            result = get_by_responsible(id)
+            result = get_by_responsible(id, date)
         except:
             return {"success": False}
         out_filename = 'responsible_list.xlsx'

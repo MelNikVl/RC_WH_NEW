@@ -7,6 +7,8 @@ from typing import Annotated, Optional
 
 from fastapi import Depends, File, UploadFile, HTTPException, Form
 from pydantic import parse_obj_as
+import requests
+from zeep import helpers
 from sqlalchemy import update, desc
 from sqlalchemy.orm import Session
 from crud.materials import MaterialCRUD
@@ -81,7 +83,7 @@ class MaterialsController:
     async def get_material(id: str, user: user_dependency):
         if user.get("role"):
             try:
-                session = Session()
+                session = requests.Session()
                 session.verify = False
                 session.auth = basic
                 transport = Transport(session=session)
@@ -100,12 +102,16 @@ class MaterialsController:
             return response(data=f'Недостаточно прав', status=False)
 
     @staticmethod
-    async def get_by_responsible(user: user_dependency, id: int):
-        return get_by_responsible(id)
+    async def get_by_responsible(user: user_dependency, id: int, date: str):
+        return get_by_responsible(id, date)
 
     @staticmethod
     async def last_x_days(user: user_dependency, days: int):
         return last_x_days(days)
+    
+    @staticmethod
+    async def get_from_1c(user: user_dependency, id: str, db: Session = Depends(get_db)):
+        return get_material(id, user, db)
 
     @staticmethod
     async def add_from_1c(
@@ -115,12 +121,12 @@ class MaterialsController:
             category: str = Form(),
             description: str = Form(default=""),
             id: str = Form(),
-            new_geo: Annotated[str | None, Form()] = None,
+            new_geo: str = Form(),
             db: Session = Depends(get_db)
     ):
         global geolocation
         try:
-            data_1c = get_material(id)["EquipmentData"]
+            data_1c = get_material(id, user, db)["EquipmentData"][0]
             history = data_1c["MovementHistory"]
             # Путь к папке назначения
             destination_folder = os.path.join(f'{main_folder}\\photos', str(id))

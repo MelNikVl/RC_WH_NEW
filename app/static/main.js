@@ -545,8 +545,8 @@ $("#add_from_1c").on("click", function () {
             if (resp.status != true) {
                 alert("Произошла ошибка, попробуйте ещё раз");
             }
-            window.location.reload();
-            // console.log(resp)
+             window.location.reload();
+            //console.log(resp)
         },
         error: function (err) {
             // alert(err)

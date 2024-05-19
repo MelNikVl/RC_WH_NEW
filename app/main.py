@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 from config.routes import router, materials, geolocation, auth, logs, accessories, testing, for_admins
 from db.db import engine
 from models.models import Base
@@ -40,6 +41,16 @@ app.include_router(for_admins)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/it_warehouse_docs", StaticFiles(directory="it_warehouse_docs"), name="it_warehouse_docs")
+
+if __name__ == "__main__":
+    uvicorn.run("main:app",
+                port=50131,
+                host="it-wh",
+                ssl_keyfile="key.pem",
+                ssl_certfile="cert.pem",
+                log_level="info",
+                reload=True)
+
 
 try:
     Updater()

@@ -57,6 +57,7 @@
 
             <div id="tab2" class="tab-content">
                 <div class="only_search_1c_class">
+                    <input id="date" type="date" />
                     <input class="search_1c_class_1" type="text" name="" id="responsible-id">
                     <input class="search_1c_class_2" id="responsible_btn" type="button"
                         value="Найти активы по табельному номеру человека в 1С">
@@ -102,9 +103,9 @@
         const access_token = params.get("t");
         var host = document.location.origin;
 
-        async function by_responsible(responsible_id) {
+        async function by_responsible(responsible_id, date) {
             try {
-                const response = await fetch(host + "/materials/by_responsible?id=" + responsible_id, {
+                const response = await fetch(host + `/materials/by_responsible?id=${responsible_id}&date=${date}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + access_token
@@ -134,9 +135,8 @@
             }
         }
         $(document).ready(function () {
-
+            $("#date").attr("max", new Date().toISOString().split('T')[0]);
              $("#last_x_days_btn").on("click", async function() {
-
                 let days = $("#bsk-days").val()
 
                 // Вызов AJAX функции для получения данных последних X дней
@@ -239,7 +239,7 @@
                         alert("введен некорректный ID");
                         return;
                     }
-                    let json = await by_responsible(id);
+                    let json = await by_responsible(id, $("#date").val());
                     let result_html = "";
                     let totalElements = json["EquipmentData"].length;
 
@@ -294,7 +294,7 @@
                         return;
                     }
                 try {
-                    fetch(host + "/materials/responsible_list?id=" + id, {
+                    fetch(host + `/materials/responsible_list?id=${id}&date=${$("#date").val()}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': 'Bearer ' + access_token

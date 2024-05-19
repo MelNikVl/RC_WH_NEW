@@ -7,18 +7,13 @@ from email.mime.text import MIMEText
 from enum import Enum
 from os.path import basename
 from sqlalchemy.orm import Session
-
 from app.utils.utils import Mail
-from db.db import get_db
 from models.models import Notifications
 from static_data import host
 
-# gmail_login = "testpython20231@gmail.com"
-# gmail_pass = "seprtpqgzfwgcsvs"
 
 gmail_login = "it.wh@rencons.com"
 gmail_pass = "tznppgeklmillvha"
-
 
 
 class SUBJECT(Enum):

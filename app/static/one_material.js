@@ -183,7 +183,6 @@ $(document).ready(function () {
     } catch (error) {
       alert("произошла ошибка!");
       window.location.reload();
-
     }
   });
   $("#send_to_repair").on("click", function () {

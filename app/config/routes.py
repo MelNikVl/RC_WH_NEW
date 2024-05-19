@@ -49,7 +49,7 @@ router.get("/notification_answer")(FrontMainController.notification_answer)
 router.get("/test_page")(FrontMainController.test_page)
 
 router.get("/only_1c")(FrontMainController.only_1c)
-materials.get("/from_1c")(get_material)
+materials.get("/from_1c")(MaterialsController.get_from_1c)
 materials.post("/add_from_1c")(MaterialsController.add_from_1c)
 materials.get("/by_responsible")(MaterialsController.get_by_responsible)
 materials.get("/responsible_list")(FrontMainController.responsible_list)

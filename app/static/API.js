@@ -101,9 +101,13 @@ async function update_geo(data) {
             }
         });
         const json = await response.json();
-        response.
+        if (json["status"]){
             console.log('Успех:', JSON.stringify(json));
-        $("#new-geo-popup").fadeOut(200);
+            $("#new-geo-popup").fadeOut(200);
+        }else{
+            alert("Проверьте введенные данные (почту)!");
+        }
+            
     } catch (error) {
         console.log(error);
     }
