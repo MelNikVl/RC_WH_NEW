@@ -93,6 +93,12 @@ ___________________________________
 - добавить описание ремонта - нет
 - отправить на списание - да
 
+## Установка
+git clone https://github.com/MelNikVl/RC_WH_NEW.git
+cd RC_WH_NEW
+pip install -r requirements.txt
+python main.py
+
 .
 
 
