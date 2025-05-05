@@ -91,22 +91,19 @@ async def picture_download(message: Message):
         photo = await bot.download_file(file_path)
         dir_list = os.listdir(main_folder)
         if "photos" not in dir_list:
-            os.mkdir(f"{main_folder}\\photos")
-        photos_dir_list = os.listdir(f"{main_folder}\\photos")
+            os.mkdir(os.path.join(main_folder, "photos"))
+        photos_dir_list = os.listdir(os.path.join(main_folder, "photos"))
         if f'{state[message.chat.id]["technic_id"]}' not in photos_dir_list:
-            os.mkdir(f'{main_folder}\\photos\\{state[message.chat.id]["technic_id"]}')
-        if "photo.jpg" not in os.listdir(
-                f'{main_folder}\\photos\\{state[message.chat.id]["technic_id"]}') and \
-                state[message.chat.id][
-                    'category'] != 'другое':
-            with open(f'{main_folder}\\photos\\{state[message.chat.id]["technic_id"]}/photo.jpg',
+            os.mkdir(os.path.join(main_folder, "photos", state[message.chat.id]["technic_id"]))
+        if "photo.jpg" not in os.listdir(os.path.join(main_folder, "photos", state[message.chat.id]["technic_id"])) and \
+                state[message.chat.id]['category'] != 'другое':
+            with open(os.path.join(main_folder, "photos", state[message.chat.id]["technic_id"], "photo.jpg"),
                       'wb') as f:
                 f.write(photo.read())
             state[message.chat.id]['state'] = 'send_second_photo'
             await bot.send_message(message.chat.id, 'пришлите фото техники целиком')
         else:
-            with open(f'{main_folder}\\photos\\{state[message.chat.id]["technic_id"]}/photo_1.jpg',
-                      'wb') as f:
+            with open(os.path.join(main_folder, "photos", state[message.chat.id]["technic_id"], "photo_1.jpg"), 'wb') as f:
                 f.write(photo.read())
             state[message.chat.id]['state'] = 'add_model'
             await bot.send_message(message.chat.id, 'пришли номер техники')

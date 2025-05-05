@@ -17,7 +17,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="RC WH MO tracker.",  # Set the new project name
     version="3.1",  # Set the project version
-    description="здесь все методы работы с API"  # Set the project description
+    description="методы работы с API"  # Set the project description
 )
 
 app.add_middleware(
@@ -45,15 +45,10 @@ app.mount("/it_warehouse_docs", StaticFiles(directory="it_warehouse_docs"), name
 if __name__ == "__main__":
     uvicorn.run("main:app",
                 port=50131,
-                host="it-wh",
-                ssl_keyfile="key.pem",
-                ssl_certfile="cert.pem",
+                #host="it-wh",
+                #ssl_keyfile="key.pem",
+                #ssl_certfile="cert.pem",
                 log_level="info",
-                reload=True)
-
-
-try:
-    Updater()
-except Exception as e:
-    print(e)
-    pass
+                reload=True,
+                #ssl_keyfile_password="it-wh"
+                )

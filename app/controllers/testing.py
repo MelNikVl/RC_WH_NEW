@@ -29,7 +29,7 @@ class TestingController:
                                         date_time=datetime.datetime.now()
                                         )
             # ФОТО
-            destination_folder = os.path.join(f'{main_folder}\\photos', str(i))
+            destination_folder = os.path.join(main_folder, 'photos', str(i))
             os.makedirs(destination_folder, exist_ok=True)
             unique_filename = str(secrets.token_hex(4)) + os.path.splitext(file.filename)[1]
             destination_path = os.path.join(destination_folder, unique_filename)
@@ -95,6 +95,6 @@ class TestingController:
 
     @staticmethod
     def delete_folder_contents():
-        shutil.rmtree(f'{main_folder}\\photos')
+        shutil.rmtree(os.path.join(main_folder, 'photos'))
         return "папка фото склада очищена"
 

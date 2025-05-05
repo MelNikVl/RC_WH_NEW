@@ -167,7 +167,7 @@ class GeoLocationController:
         # создаем имена для папок
         timestamp = str(
             datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "_активов_" + str(len(materials_for_trash)))
-        destination_folder = os.path.join(f'{main_folder}\\archive_after_utilization', timestamp)
+        destination_folder = os.path.join(main_folder, "archive_after_utilization", timestamp)
 
         photo_folder = os.path.join(destination_folder, "trashing_photos")
         old_photo_folder = os.path.join(destination_folder, "material_old_photos")
@@ -198,7 +198,7 @@ class GeoLocationController:
 
         # перемещаем папки с фото в архив
         for i in materials_for_trash:
-            folder_to_move = os.path.join(f'{main_folder}\\photos', str(i.id))
+            folder_to_move = os.path.join(main_folder, 'photos', str(i.id))
             id_for_logging.append(i.id)  # добавим айдишник каждой техники к списку
             destination = os.path.join(old_photo_folder, str(i.id))
             os.makedirs(destination, exist_ok=True)

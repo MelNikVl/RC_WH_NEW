@@ -550,7 +550,7 @@ $("#add_from_1c").on("click", function () {
         },
         error: function (err) {
             // alert(err)
-            alert("Произошла ошибка, попробуйте ещё раз");
+            alert("Произошла ошибка, попробуйте ещё раз (мржет быть такой актив уже есть?)");
             window.location.reload();
         }
     });

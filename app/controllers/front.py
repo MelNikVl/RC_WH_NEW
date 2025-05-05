@@ -304,13 +304,21 @@ class FrontMainController:
 
         fik = jsonable_encoder(emails_1)
 
+        repairs = GeoLocationCRUD.list_of_repair(material_id, db)
+
+        repair_status = False
+
+        if len(repairs)>0:
+            repair_status = repairs[0][-1]["repair_status"]
+
         out: Dict = {"username": result["username"],
                      "token": t, "one_material": material_card,
                      "geo_material": material_geo1,
-                     "repairs": GeoLocationCRUD.list_of_repair(material_id, db),
+                     "repairs": repairs,
                      "date_time_f": formatted_date_time,
                      "current_place": current_geo.place,
                      "current_user": current_geo.client_mail,
+                     "repair": repair_status,
                      "current_status": current_geo.status,
                      "photo": get_first_photo(material_id)["picture"],
                      "len_of_files": get_first_photo(material_id)["len_of_files"],

@@ -129,7 +129,7 @@ class MaterialsController:
             data_1c = get_material(id, user, db)["EquipmentData"][0]
             history = data_1c["MovementHistory"]
             # Путь к папке назначения
-            destination_folder = os.path.join(f'{main_folder}\\photos', str(id))
+            destination_folder = os.path.join(main_folder, "photos", str(id))
 
             # Проверяем, существует ли папка назначения, и создаем ее при необходимости
             os.makedirs(destination_folder, exist_ok=True)
@@ -233,7 +233,7 @@ class MaterialsController:
             db.commit()
 
             try:
-                destination_folder = f'{main_folder}\\photos\\{id_for_delete}'
+                destination_folder = os.path.join(main_folder, "photos", id_for_delete)
                 # Удаляем папку на сервере
                 shutil.rmtree(destination_folder)
 
@@ -285,7 +285,7 @@ class MaterialsController:
                            user: User = Depends(AuthUtil.decode_jwt)):
 
         # Путь к папке назначения
-        destination_folder = os.path.join(f'{main_folder}\\photos', str(material_id))
+        destination_folder = os.path.join(main_folder, 'photos', str(material_id))
 
         # Проверяем, существует ли папка назначения, и создаем ее при необходимости
         os.makedirs(destination_folder, exist_ok=True)

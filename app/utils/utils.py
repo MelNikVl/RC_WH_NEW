@@ -24,7 +24,7 @@ def response(data=None, status: bool = True):
 
 # фотки к каждому товару
 def get_first_photo(material_id: str):
-    fold = main_folder + "\\photos\\" + material_id
+    fold = os.path.join(main_folder, "photos", material_id)
     file_list = os.listdir(fold)
 
     out: Dict = {}
